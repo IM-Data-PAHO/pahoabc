@@ -1,7 +1,7 @@
 Package: pahoabc
 Type: Package
 Title: PAHO ABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage.
-Version: 0.1.0
+Version: 0.0.1
 Author: PAHO CIM ISDATA
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: A set of immunization analyses beyond coverage.
