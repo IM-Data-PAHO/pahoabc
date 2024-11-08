@@ -3,43 +3,34 @@
 #' @param data Nominal data frame
 #' @param vac_init Initial vaccine to use in nominal dropout calculation
 #' @param vac_end Final vaccine to use in nominal dropout calculation
-#' @param geolevel Administrative level to group by for calculation, can be "ADM1" or "ADM2". If no geolevel is specified the default is NA which represents ADM0
+#' @param geo_level Administrative level to group by for calculation, can be "ADM1" or "ADM2". If no geo_level is specified the default is NA which represents ADM0
 #' @param birth_cohort Birth cohort to calculate for.
 #'
-#' @return A data frame with the calculated coverage for the administrative level used to calculate. Includes the nominal dropout rate, numerator, denominator and adherence rate.
+#' @return A data frame with the calculated coverage for the administrative level used to calculate. Includes the nominal dropout rate, numerator, denominator and adherence rate. based on the administrative level, birth cohort and vaccines selected
+#'
 #'
 #' @import dplyr
 #' @import lubridate
 #' @import tidyr
-
-library(dplyr)
-library(tidyr)
-library(lubridate)
-
-data <- pahoabc.EIR
-birth_cohort <- NA
-vac_init <- "DTP1"
-vac_end <- "DTP3"
-geolevel <- NA
-
-nominal_dropout <- function(data = pahoabc.EIR, vac_init = "DTP1", vac_end = "DTP3", geolevel = NA , birth_cohort=NA){
+#'
+nominal_dropout <- function(data = pahoabc.EIR, vac_init, vac_end, geo_level = NA , birth_cohort=NA){
 
   if (!is.na(birth_cohort)) {
     data <- data %>%
       filter(year(date_birth) == birth_cohort)
   }
 
-  if(is.na(geolevel)) {
+  if(is.na(geo_level)) {
     data <- data %>%
       select(ID, dose, date_vax)
-  }else if (geolevel == "ADM1") {
+  }else if (geo_level == "ADM1") {
     data <- data %>%
     select(ID, dose, date_vax, ADM1_residence)
-  }else if (geolevel == "ADM2"){
+  }else if (geo_level == "ADM2"){
     data <- data %>%
       select(ID, dose, date_vax, ADM1_residence, ADM2_residence)
   }else{
-    stop("Error: The geolevel parameter is declared and the value is not ADM1 or ADM2.")
+    stop("Error: The geo_level parameter is declared and the value is not ADM1 or ADM2.")
   }
 
 
@@ -67,11 +58,29 @@ nominal_dropout <- function(data = pahoabc.EIR, vac_init = "DTP1", vac_end = "DT
       TRUE ~ "adherence"
     ))
 
-  dropout_rate_nominal <- data %>%
-    group_by(dropout) %>%
-    summarise(num = n()) %>%
-    mutate(denom = sum(num),
-           percent = num / denom * 100)
+
+  if(is.na(geo_level)) {
+    dropout_rate_nominal <- data %>%
+      group_by(dropout) %>%
+      summarise(num = n()) %>%
+      mutate(denom = sum(num),
+             percent = num / denom * 100)
+  }else if (geo_level == "ADM1") {
+    dropout_rate_nominal <- data %>%
+      group_by(ADM1_residence, dropout) %>%
+      summarise(num = n()) %>%
+      mutate(denom = sum(num),
+             percent = num / denom * 100)
+  }else if (geo_level == "ADM2"){
+    dropout_rate_nominal <- data %>%
+      group_by(ADM1_residence, ADM2_residence, dropout) %>%
+      summarise(num = n()) %>%
+      mutate(denom = sum(num),
+             percent = num / denom * 100)
+  }else{
+    stop("Error: The geo_level parameter is declared and the value is not ADM1 or ADM2.")
+  }
+
+return(dropout_rate_nominal)
 
 }
-
