@@ -7,8 +7,8 @@
 #' \describe{
 #'   \item{ADM1}{The name of the first geographic administrative level.}
 #'   \item{year}{The year of the population data.}
-#'   \item{pop_0}{The population of children aged 0 years.}
-#'   \item{pop_1}{The population of children aged 1 year.}
+#'   \item{age}{The age (in years) of the population for that year and ADM1.}
+#'   \item{population}{The population for that year and ADM1.}
 #' }
 #' @source pahoabc
 "pahoabc.pop.ADM1"
