@@ -12,7 +12,7 @@
 #' @import dplyr
 #' @import lubridate
 #' @import tidyr
-#'
+#' @export
 nominal_dropout <- function(data = pahoabc.EIR, vac_init, vac_end, geo_level = NA , birth_cohort=NA){
 
   if (!is.na(birth_cohort)) {
