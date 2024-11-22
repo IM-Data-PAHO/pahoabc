@@ -1,4 +1,4 @@
-#' Calculate Vaccine Coverage by Residence and Occurrence
+#' (R)esidence (O)ccurrence (C)overage
 #'
 #' This function calculates vaccine coverage by both residence and occurrence at a specified geographic level
 #' (ADM1 or ADM2) for a given year and set of vaccines.
@@ -13,9 +13,9 @@
 #'         year, dose, geographic levels (ADM1 and ADM2 if applicable), doses applied, population, coverage, and coverage type.
 #' @examples
 #' # Example usage:
-#' # coverage <- residence_occurrence(data.EIR, data.schedule, data.pop, 2023, c("DTP1", "DTP3"), "ADM2")
+#' # coverage <- roc(data.EIR, data.schedule, data.pop, 2023, c("DTP1", "DTP3"), "ADM2")
 #' @export
-residence_occurrence <- function(data.EIR, data.schedule, data.pop, year_analysis, vaccines, geo_level) {
+roc <- function(data.EIR, data.schedule, data.pop, year_analysis, vaccines, geo_level) {
 
   # calculate coverage by residence and by occurrence
   coverage_residence <- calculate_coverage_by("residence", data.EIR, data.schedule, data.pop, year_analysis, vaccines, geo_level)

@@ -13,6 +13,7 @@
 #' @return A data frame with calculated coverage for the specified analysis type, year, vaccines, and geographic level.
 #' @keywords internal
 #' @import dplyr
+#' @import lubridate
 calculate_coverage_by <- function(analysis_type, data.EIR, data.schedule, data.pop, year_analysis, vaccines, geo_level) {
 
   # check geo_level is correctly specified
