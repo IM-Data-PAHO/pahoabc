@@ -1,10 +1,10 @@
-#' (R)esidence (O)ccurrence (C)overage Plot
+#' (R)esidence (Oc)currence Bar Plot
 #'
-#' This function creates a bar plot showing vaccination coverage by the place of residence and the place of vaccination occurrence, grouped by a geographic level.
+#' This function creates a bar plot showing vaccination coverage by place of residence and place of vaccination occurrence.
 #'
-#' @param data The output from the `pahoabc::roc()` function. This data should include columns for `dose`, `coverage_type`, `coverage`, `year_vax`, and geographic variables (`ADM1` and optionally `ADM2`).
+#' @param data The output from the `pahoabc::roc_coverage()` function.
 #' @param vaccine A character string specifying the vaccine of interest. Only one vaccine.
-#' @param within_ADM1 When analyzing data at the `ADM2` level, this optional parameter lets you specify a particular ADM1 to filter. Default is `NA`, which means no filtering by `ADM1`.
+#' @param within_ADM1 When analyzing data at the `ADM2` level, this optional parameter lets you specify a particular `ADM1` to filter. Default is `NA`, which means no filtering by `ADM1`.
 #'
 #' @return A ggplot object representing the bar plot.
 #'
@@ -13,7 +13,7 @@
 #' @import tidyr
 #'
 #' @export
-rocplot <- function(data, vaccine, within_ADM1 = NA) {
+roc_barplot <- function(data, vaccine, within_ADM1 = NA) {
   # check geographic level
   is_adm2 <- "ADM2" %in% names(data)
   name_of_geo <- ifelse(is_adm2, "ADM2", "ADM1")
@@ -31,7 +31,7 @@ rocplot <- function(data, vaccine, within_ADM1 = NA) {
       values_from = "coverage"
     )
 
-  # get max and min coverages
+  # get max coverage in data
   coverage_max <- max(
     to_plot_wide$occurrence,
     to_plot_wide$residence,

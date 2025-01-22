@@ -27,7 +27,7 @@ calculate_coverage_by(
 
 \item{vaccines}{A character vector specifying the doses to include in the analysis.}
 
-\item{geo_level}{A character string indicating the geographic level: "ADM1" or "ADM2".}
+\item{geo_level}{A character string indicating the geographic level: "ADM1" or "ADM2". This must match the geographic level in \code{data.pop}.}
 }
 \value{
 A data frame with calculated coverage for the specified analysis type, year, vaccines, and geographic level.

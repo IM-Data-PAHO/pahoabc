@@ -9,7 +9,7 @@
 #' @param data.pop A data frame with population data by geographic level, year, and age group.
 #' @param year_analysis The year for which the coverage calculation is being done.
 #' @param vaccines A character vector specifying the doses to include in the analysis.
-#' @param geo_level A character string indicating the geographic level: "ADM1" or "ADM2".
+#' @param geo_level A character string indicating the geographic level: "ADM1" or "ADM2". This must match the geographic level in \code{data.pop}.
 #' @return A data frame with calculated coverage for the specified analysis type, year, vaccines, and geographic level.
 #' @keywords internal
 #' @import dplyr

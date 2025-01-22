@@ -6,8 +6,8 @@
 #' @format A data frame with X rows and 8 variables:
 #' \describe{
 #'   \item{ID}{A unique identifier for each person.}
-#'   \item{birth_date}{The person's birth date.}
-#'   \item{vaccination_date}{The date of vaccination.}
+#'   \item{date_birth}{The person's birth date.}
+#'   \item{date_vax}{The date of vaccination.}
 #'   \item{ADM1_residence}{The first geographic administrative level of the person's residence.}
 #'   \item{ADM2_residence}{The second geographic administrative level of the person's residence.}
 #'   \item{ADM1_occurrence}{The first geographic administrative level where the vaccination occurred.}
