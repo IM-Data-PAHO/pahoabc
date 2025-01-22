@@ -88,7 +88,7 @@ roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, within_
     mutate(frequency = replace_na(frequency, 0)) %>%
     # calculate the proportion for each place of residence
     group_by(!!sym(residence_col)) %>%
-    mutate(proportion = frequency / sum(frequency)) %>%
+    mutate(proportion = if(sum(frequency) > 0) {frequency / sum(frequency)} else {0}) %>%
     ungroup()
 
   return(proportions)
