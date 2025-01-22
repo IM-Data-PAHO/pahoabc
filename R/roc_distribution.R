@@ -51,17 +51,41 @@ roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, within_
   residence_col <- paste0(geo_level, "_residence")
   occurrence_col <- paste0(geo_level, "_occurrence")
 
+  # get all unique places of residence and occurrence
+  all_residences <- unique(prepare_EIR[[residence_col]])
+  all_occurrences <- unique(prepare_EIR[[occurrence_col]])
+
+  # create a complete list of all possible combinations
+  complete_combinations <- expand.grid(
+    residence = all_residences,
+    occurrence = all_occurrences,
+    stringsAsFactors = FALSE
+  )
+
+  # rename columns dynamically to match geo_level
+  colnames(complete_combinations) <- c(residence_col, occurrence_col)
+
+  # remove combinations where both columns are equal
+  complete_combinations <- filter(
+    complete_combinations,
+    !!sym(residence_col) != !!sym(occurrence_col)
+  )
+
   # create a table with all the places of residence and occurrence
-  places <- prepare_EIR %>%
+  frequencies <- prepare_EIR %>%
     # select only the columns of place of residence and occurrence
     select(!!sym(residence_col), !!sym(occurrence_col)) %>%
     # remove those cases where both columns are equal
-    filter(!!sym(residence_col) != !!sym(occurrence_col))
+    filter(!!sym(residence_col) != !!sym(occurrence_col)) %>%
+    # calculate the frequency of each unique pair
+    count(!!sym(residence_col), !!sym(occurrence_col), name = "frequency")
 
   # calculate the proportion of vaccinations for each place of residence
-  proportions <- places %>%
-    # calculate the frequency of each unique pair
-    count(!!sym(residence_col), !!sym(occurrence_col), name = "frequency") %>%
+  proportions <- complete_combinations %>%
+    # make sure to have all possible places of residence and occurrence
+    left_join(., frequencies, by = c(residence_col, occurrence_col)) %>%
+    # add frequencies for those cases where there wasn't a match
+    mutate(frequency = replace_na(frequency, 0)) %>%
     # calculate the proportion for each place of residence
     group_by(!!sym(residence_col)) %>%
     mutate(proportion = frequency / sum(frequency)) %>%
