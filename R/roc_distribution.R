@@ -9,6 +9,7 @@
 #' @param vaccine A character string specifying the vaccine dose to analyze (e.g., "DTP1").
 #' @param birth_cohort An integer specifying the birth cohort to analyze.
 #' @param geo_level A character string specifying the geographic level to analyze. Must be either `ADM1` or `ADM2`.
+#' @param include_self_matches A boolean specifying whether to include those cases where the place of residence matches the place of vaccination (occurrence). Default is \code{FALSE}.
 #' @param within_ADM1 A character string specifying the `ADM1` region of interest when `geo_level` is `ADM2`. If `geo_level` is `ADM2`, this parameter is required.
 #'
 #' @return A data frame with proportions of doses applied by place of occurrence, for each place of residence.
@@ -16,7 +17,7 @@
 #' @import dplyr
 #'
 #' @export
-roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, within_ADM1 = NA) {
+roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, include_self_matches = FALSE, within_ADM1 = NA) {
 
   # check geo_level is correctly specified
   if(!(geo_level %in% c("ADM1", "ADM2"))) {
@@ -66,17 +67,21 @@ roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, within_
   colnames(complete_combinations) <- c(residence_col, occurrence_col)
 
   # remove combinations where both columns are equal
-  complete_combinations <- filter(
-    complete_combinations,
-    !!sym(residence_col) != !!sym(occurrence_col)
-  )
+  # NOTE: only when include_self_matches is false
+  if(!include_self_matches) {
+    complete_combinations <- filter(
+      complete_combinations,
+      !!sym(residence_col) != !!sym(occurrence_col)
+    )
+  }
 
   # create a table with all the places of residence and occurrence
   frequencies <- prepare_EIR %>%
     # select only the columns of place of residence and occurrence
     select(!!sym(residence_col), !!sym(occurrence_col)) %>%
     # remove those cases where both columns are equal
-    filter(!!sym(residence_col) != !!sym(occurrence_col)) %>%
+    # NOTE: only when include_self_matches is false
+    filter(if(!include_self_matches) {!!sym(residence_col) != !!sym(occurrence_col)} else {TRUE}) %>%
     # calculate the frequency of each unique pair
     count(!!sym(residence_col), !!sym(occurrence_col), name = "frequency")
 
@@ -90,6 +95,9 @@ roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, within_
     group_by(!!sym(residence_col)) %>%
     mutate(proportion = if(sum(frequency) > 0) {frequency / sum(frequency)} else {0}) %>%
     ungroup()
+
+  # print it nicely
+  proportions <- proportions %>% arrange(!!sym(residence_col))
 
   return(proportions)
 }

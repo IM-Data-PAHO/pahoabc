@@ -4,7 +4,14 @@
 \alias{roc_distribution}
 \title{(R)esidence (Oc)currence Dose Distribution}
 \usage{
-roc_distribution(data.EIR, vaccine, birth_cohort, geo_level, within_ADM1 = NA)
+roc_distribution(
+  data.EIR,
+  vaccine,
+  birth_cohort,
+  geo_level,
+  include_self_matches = FALSE,
+  within_ADM1 = NA
+)
 }
 \arguments{
 \item{data.EIR}{A data frame containing electronic immunization registry data.}
@@ -14,6 +21,8 @@ roc_distribution(data.EIR, vaccine, birth_cohort, geo_level, within_ADM1 = NA)
 \item{birth_cohort}{An integer specifying the birth cohort to analyze.}
 
 \item{geo_level}{A character string specifying the geographic level to analyze. Must be either `ADM1` or `ADM2`.}
+
+\item{include_self_matches}{A boolean specifying whether to include those cases where the place of residence matches the place of vaccination (occurrence). Default is \code{FALSE}.}
 
 \item{within_ADM1}{A character string specifying the `ADM1` region of interest when `geo_level` is `ADM2`. If `geo_level` is `ADM2`, this parameter is required.}
 }
