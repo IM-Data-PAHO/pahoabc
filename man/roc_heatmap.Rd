@@ -4,10 +4,12 @@
 \alias{roc_heatmap}
 \title{(R)esidence (Oc)currence Heatmap}
 \usage{
-roc_heatmap(data)
+roc_heatmap(data, digits = 0)
 }
 \arguments{
 \item{data}{The output from the `pahoabc::roc_distribution` function.}
+
+\item{digits}{The number of digits to show in the labels. Default is 0.}
 }
 \value{
 A ggplot object representing the heatmap.

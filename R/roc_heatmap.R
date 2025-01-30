@@ -4,6 +4,7 @@
 #' by place of occurrence, for each place of residence.
 #'
 #' @param data The output from the `pahoabc::roc_distribution` function.
+#' @param digits The number of digits to show in the labels. Default is 0.
 #'
 #' @return A ggplot object representing the heatmap.
 #'
@@ -12,7 +13,7 @@
 #' @import ggplot2
 #'
 #' @export
-roc_heatmap <- function(data) {
+roc_heatmap <- function(data, digits = 0) {
   # check if ADM1 or ADM2
   is_adm2 <- any(stringr::str_detect(names(data), "ADM2"))
 
@@ -24,7 +25,7 @@ roc_heatmap <- function(data) {
   # preparations for plot
   prepare_data <- data %>%
     # make proportions from 0 to 100
-    mutate(proportion = round(proportion * 100)) %>%
+    mutate(proportion = round(proportion * 100, digits)) %>%
     # compute text color dynamically: dark text on light background, light text on dark background
     mutate(text_color = ifelse(proportion > 50, "white", "black"))
 
