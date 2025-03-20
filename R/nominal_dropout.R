@@ -8,10 +8,10 @@
 #'
 #' @return A data frame with the calculated coverage for the administrative level used to calculate. Includes the nominal dropout rate, numerator, denominator and adherence rate. based on the administrative level, birth cohort and vaccines selected
 #'
-#'
+#' @import tidyr
 #' @import dplyr
 #' @import lubridate
-#' @import tidyr
+#'
 #' @export
 nominal_dropout <- function(data = pahoabc.EIR, vac_init, vac_end, geo_level = NA , birth_cohort=NA){
 
