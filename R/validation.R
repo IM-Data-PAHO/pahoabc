@@ -22,11 +22,11 @@
   has_ADM2 <- "ADM2" %in% names(data.pop)
 
   if(geo_level == "ADM0" & (has_ADM1 | has_ADM2)) {
-    stop("Error: data.pop should not contain ADM1 or ADM2 when geo_level is ADM0.")
+    stop("Error: data.pop should not contain ADM1 or ADM2.")
   } else if (geo_level == "ADM1" & (!has_ADM1 | has_ADM2)) {
-    stop("Error: data.pop should only contain ADM1 when geo_level is ADM1.")
+    stop("Error: data.pop should only contain ADM1.")
   } else if (geo_level == "ADM2" & (!has_ADM1 | !has_ADM2)) {
-    stop("Error: data.pop should contain both ADM1 and ADM2 when geo_level is ADM2.")
+    stop("Error: data.pop should contain both ADM1 and ADM2.")
   }
 }
 
