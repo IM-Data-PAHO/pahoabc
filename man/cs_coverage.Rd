@@ -8,9 +8,9 @@ cs_coverage(
   data.EIR,
   data.pop,
   data.schedule,
-  max_age = NA,
-  birth_cohorts = NA,
-  geo_level = NA
+  geo_level,
+  max_age = NULL,
+  birth_cohorts = NULL
 )
 }
 \arguments{
@@ -20,20 +20,22 @@ cs_coverage(
 
 \item{data.schedule}{A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
 
-\item{max_age}{Numeric (optional). The maximum age up to which vaccination completeness is assessed. If \code{NA} (default), all doses in \code{data.schedule} are considered.}
+\item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". \code{data.pop} must contain the columns to match.}
 
-\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NA} (default), coverage is calculated for all available years.}
+\item{max_age}{Numeric (optional). The maximum age up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.}
 
-\item{geo_level}{Character (optional). The geographic level to aggregate results by. Must be "ADM1", "ADM2", or \code{NA}. \code{data.pop} must contain the columns to match.}
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.}
 }
 \value{
 A data frame containing:
 \itemize{
   \item \code{year}: The birth cohort year.
-  \item Geographic subdivision columns (if applicable).
+  \item \code{ADM0}: The ADM0 (or country) name.
+  \item \code{ADM1_residence}: The name of the first administrative level for the given coverage.
+  \item \code{ADM2_residence}: The name of the second administrative level for the given coverage.
   \item \code{numerator}: The number of children with a complete vaccination schedule for the given cohort and geographic level.
   \item \code{population}: The population denominator for the given cohort and geographic level.
-  \item \code{coverage}: The calculated vaccination coverage as a percentage, rounded to two decimals.
+  \item \code{coverage}: The calculated vaccination coverage as a percentage for the given cohort and geographic level.
 }
 }
 \description{
