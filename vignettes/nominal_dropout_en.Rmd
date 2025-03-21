@@ -1,0 +1,87 @@
+---
+title: "nominal_dropout"
+author: "PAHO CIM"
+date: "2024-12-04"
+output: 
+  html_document:
+    self_contained: true
+    theme: cosmo
+    highlight: tango
+    code_folding: show
+    code_download: true
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rationale
+
+The dropout rate is an indicator used to evaluate the loss of follow-up in vaccination schedules. It reflects the percentage of individuals who did not receive a final dose (DTP3cv) among those who received an initial dose (DTP1cv). In aggregated systems, it is estimated using the following formula:
+
+Performing the analysis with aggregated data does not guarantee that the individuals who received both doses are the same, as shown in Figure 1a. Electronic nominal vaccination records enable a person-to-person analysis, ensuring that the individuals who received both doses are indeed the same, as illustrated in Figure 1b.
+
+![Figure 1: Visual representation of a nominal dropout analysis (figure created by authors)](dropout_vignette_fig1.svg)
+
+## Function description
+
+PAHOabc includes the functionality to estimate the dropout rate nominally, referred to as the nominal dropout rate. This allows for the analysis of any pair of doses by specifying an initial dose and a final dose. For correct interpretation, the initial dose must precede the final dose in the vaccination schedule, for example: DTP1cv – DTP3cv or DTP1cv – MCV. Additionally, it allows users to select the level of aggregation for the results, which can be at the national level or subnational levels (ADM1 or ADM2).
+
+## Usage
+
+### Install package
+
+The first step to run the nominal dropout rate analysis is to install the PAHOabc package available on Github
+
+```{r, install_package, eval=FALSE}
+devtools::install_github("IM-Data-PAHO/pahoabc")
+```
+
+### Load package and database
+
+The second step corresponds to enabling the package in the R Session and loading the test database that comes wrapped with the package. This database simulates an EIR from a fictitious country.
+
+```{r, load_package}
+## Enable package ----
+library(pahoabc)
+
+## Read the sample dataset into a variable ----
+EIR <- pahoabc.EIR
+tibble::glimpse(EIR)
+```
+For your own database to work, it should have the same structure and variable names as shown above. 
+
+Note:   
+
+ - ID: person identification number  
+ - date_birth: date of birth of person  
+ - date_vax: date of vaccination event  
+ - ADM1: Refers to the administrative level 1 territory of the country. For example: States, Region, etc...  
+ - ADM2: Refers to the administrative level 2 territory of the country. For example: Municipality, County, etc...  
+ - Residence: Refers to the territory where the person lives.  
+ - Occurrence: Refers to the territory where the vaccination event ocurred.  
+ - dose: Refers to a combination variable of the vaccine name/code and the number of dose. For example: DTP1 refers to the first dose administered of the DTP containing vaccine.  
+
+### Example
+Utilizes the nominal_dropout() function of the pahoabc package to calculate nominal dropout for ADM1, using the first and third doses of the DTP vaccine. This functions only uses the residence territory variables so make sure these exist in your dataframe. 
+```{r, nominal_dropout_usage}
+#Runs the nominal dropout function
+example_dropout <- nominal_dropout(data=EIR, vac_init = "DTP1", vac_end= "DTP3", geo_level = "ADM1")
+
+tibble::glimpse(example_dropout)
+```
+#### Parameters accepted
+
+- data: R Structured dataframe with the variables listed above.  
+- vac_init: The name of the vaccine to use as the start point of the analysis as stored in the **dose** column of the dataframe.  
+- vac_init: The name of the vaccine to use as the end point of the analysis as stored in the **dose** column of the dataframe.  
+- geo_level: Administrative level to use, this is an optional parameter. Can be "ADM1" or "ADM2" as strings
+- birth_cohort: Parameter to segment the analysis based on the year of birth of the person in the dataframe. This function uses the **date_birth** column in the dataframe.  
+
+Check the documentation of the function using ??nominal_dropout in R for additional information.
+
+
+
+
