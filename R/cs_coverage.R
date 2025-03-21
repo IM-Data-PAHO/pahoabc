@@ -22,7 +22,6 @@
 #' }
 #'
 #' @import dplyr
-#' @import tidyr
 #' @import lubridate
 #'
 #' @export
@@ -32,6 +31,23 @@ cs_coverage <- function(data.EIR, data.pop, data.schedule, geo_level, max_age = 
   .validate_data.pop(data.pop, geo_level)
   .validate_birth_cohorts(birth_cohorts)
   .validate_max_age(max_age)
+
+  # determine grouping column(s)
+  if(geo_level != "ADM0") {
+    residence_col <- paste0(geo_level, "_residence")
+
+    if(geo_level == "ADM2") {
+      # add ADM1 to grouping when ADM2 is selected
+      groups <- c("year", "ADM1_residence", residence_col)
+      named_groups <- c("year", "ADM1_residence" = "ADM1", setNames(geo_level, residence_col))
+    } else {
+      groups <- c("year", residence_col)
+      named_groups <- c("year", setNames(geo_level, residence_col))
+    }
+  } else {
+    groups <- c("year")
+    named_groups <- groups
+  }
 
   # determine vaccines to evaluate according to schedule and max_age
   if(!is.null(max_age)) {
@@ -57,15 +73,12 @@ cs_coverage <- function(data.EIR, data.pop, data.schedule, geo_level, max_age = 
 
   # get children with complete schedule
   line_list <- prepare_EIR %>%
-    select(-ends_with("occurrence"), -date_vax) %>%
-    mutate(vaccinated = TRUE) %>%
-    pivot_wider(
-      names_from = "dose",
-      values_from = "vaccinated",
-      values_fn = ~ first(.x),
-      values_fill = FALSE
-    ) %>%
-    mutate(complete_schedule = if_all(c(-ID, -date_birth, -ends_with("residence")), ~ .x))
+    mutate(year = year(date_birth)) %>%
+    group_by(across(c(ID, all_of(groups)))) %>%
+    summarise(
+      complete_schedule = all(doses_in_schedule %in% dose),
+      .groups = "drop"
+    )
 
   # get population for birth cohorts
   denominator <- data.pop %>%
@@ -79,23 +92,6 @@ cs_coverage <- function(data.EIR, data.pop, data.schedule, geo_level, max_age = 
     years_to_calculate <- intersect(years_in_numerator, years_in_denominator)
   } else {
     years_to_calculate <- birth_cohorts
-  }
-
-  # determine grouping column(s)
-  if(geo_level != "ADM0") {
-    residence_col <- paste0(geo_level, "_residence")
-
-    if(geo_level == "ADM2") {
-      # add ADM1 to grouping when ADM2 is selected
-      groups <- c("year", "ADM1_residence", residence_col)
-      named_groups <- c("year", "ADM1_residence" = "ADM1", setNames(geo_level, residence_col))
-    } else {
-      groups <- c("year", residence_col)
-      named_groups <- c("year", setNames(geo_level, residence_col))
-    }
-  } else {
-    groups <- c("year")
-    named_groups <- groups
   }
 
   # get number of children with complete schedule for the defined groups
