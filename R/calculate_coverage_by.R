@@ -19,93 +19,65 @@ calculate_coverage_by <- function(coverage_type, data.EIR, data.schedule, data.p
   .validate_geo_level(geo_level)
   .validate_data.pop(data.pop, geo_level)
 
+  # standardize EIR
+  standard_EIR <- data.EIR %>%
+    select(ID, starts_with("date"), ends_with(coverage_type), dose) %>%
+    rename(
+      ADM1 = !!sym(paste0("ADM1_", coverage_type)),
+      ADM2 = !!sym(paste0("ADM2_", coverage_type))
+    )
+
   # add the schedule to the EIR
-  EIR_with_schedule <- data.EIR %>%
-    left_join(., data.schedule, by = c("dose"))
+  EIR_with_schedule <- standard_EIR %>%
+    left_join(., data.schedule, by = c("dose")) %>%
+    rename(age = age_schedule)
 
   # calculate applied doses
   # first pass through some filters
   applied_doses <- EIR_with_schedule %>%
     # TODO: add filter for those vaccinated only at a valid age (vaccine-dependent)
     # filter for year of analysis
-    mutate(year_vax = year(date_vax)) %>%
-    filter(year_vax == year_analysis) %>%
+    mutate(year = year(date_vax)) %>%
+    filter(year == year_analysis) %>%
     # filter for vaccines of interest
     filter(dose %in% vaccines)
 
-  # apply grouping depending on geographic level
-  ADM1_name <- paste0("ADM1_", coverage_type)
-  ADM2_name <- paste0("ADM2_", coverage_type)
+  # determine grouping column(s)
+  basic_groups <- c("year", "age")
+  if(geo_level != "ADM0") {
+    # groups for ADM1
+    groups <- c(basic_groups, "ADM1")
 
-  if(geo_level == "ADM1") {
-    applied_doses <- applied_doses %>%
-      group_by(dose, year_vax, age_schedule, !!sym(ADM1_name))
-  } else if(geo_level == "ADM2") {
-    applied_doses <- applied_doses %>%
-      group_by(dose, year_vax, age_schedule, !!sym(ADM1_name), !!sym(ADM2_name))
+    # groups for ADM2
+    if(geo_level == "ADM2") {
+      groups <- c(groups, geo_level)
+    }
+  } else {
+    groups <- basic_groups
   }
 
   # sum applied doses for each dose, year and geographic level
   applied_doses <- applied_doses %>%
-    summarise(doses_applied = n()) %>%
-    ungroup()
+    group_by(dose, across(all_of(groups))) %>%
+    summarise(doses_applied = n(), .groups = "drop")
 
-  # add population depending on geographic level
-  if(geo_level == "ADM1") {
-    doses_with_pop <- applied_doses %>%
-      left_join(
-        ., data.pop,
-        by = c(
-          "year_vax" = "year",
-          "age_schedule" = "age",
-          setNames("ADM1", ADM1_name)
-        )
-      )
-  } else if(geo_level == "ADM2") {
-    doses_with_pop <- applied_doses %>%
-      left_join(
-        ., data.pop,
-        by = c(
-          "year_vax" = "year",
-          "age_schedule" = "age",
-          setNames("ADM1", ADM1_name),
-          setNames("ADM2", ADM2_name)
-        )
-      )
-  }
-
-  # calculate coverage
-  result <- doses_with_pop %>%
+  # final calculations
+  result <- applied_doses %>%
+    # add population
+    left_join(., data.pop, by = groups) %>%
+    # calculate coverage
     mutate(coverage = doses_applied / population * 100) %>%
     # add coverage type column
     mutate(coverage_type = coverage_type)
 
-  # select columns of interest depending on geographic level
-  # TODO: Improve so that we don't have to use an if-else.
-  if(geo_level == "ADM1") {
-    result <- result %>%
-      select(
-        year_vax,
-        dose,
-        ADM1 = !!sym(ADM1_name),
-        doses_applied,
-        population,
-        coverage,
-        coverage_type
-      )
-  } else if(geo_level == "ADM2") {
-    result <- result %>%
-      select(
-        year_vax,
-        dose,
-        ADM1 = !!sym(ADM1_name),
-        ADM2 = !!sym(ADM2_name),
-        doses_applied,
-        population,
-        coverage,
-        coverage_type
-      )
-  }
+  # standardize columns for output
+  standard_columns <- c(
+    "year", "dose", "ADM0", "ADM1", "ADM2", "doses_applied",
+    "population", "coverage", "coverage_type"
+  )
+  missing_cols <- setdiff(standard_columns, names(result)) # find missing
+  result[missing_cols] <- NA # add missing columns
+  result <- result[standard_columns] # reorder
 
   return(result)
 }
