@@ -4,16 +4,24 @@
 \alias{cs_upset}
 \title{(C)omplete (S)chedule Coverage Upset Plot}
 \usage{
-cs_upset(data.EIR, data.pop, data.schedule, birth_cohort)
+cs_upset(
+  data.EIR,
+  data.schedule,
+  birth_cohort,
+  denominator = NULL,
+  min_size = 1
+)
 }
 \arguments{
 \item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
 
-\item{data.pop}{A data frame with population denominators. Only works at ADM0. Must follow structure in \code{pahoabc.pop.ADM0}.}
-
 \item{data.schedule}{A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
 
 \item{birth_cohort}{Numeric. A single birth year for which to calculate and visualize coverage.}
+
+\item{denominator}{The denominator to use. If \code{NULL} (default), then the number of unique IDs in \code{data.EIR} is used.}
+
+\item{min_size}{The minimum number of doses a group has to have in order to be shown in the plot. Default is 1 percent of \code{denominator}.}
 }
 \value{
 A ComplexUpset plot.

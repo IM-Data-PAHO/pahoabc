@@ -4,9 +4,10 @@
 #' Individuals with a complete schedule are highlighted.
 #'
 #' @param data.EIR A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.pop A data frame with population denominators. Only works at ADM0. Must follow structure in \code{pahoabc.pop.ADM0}.
 #' @param data.schedule A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
 #' @param birth_cohort Numeric. A single birth year for which to calculate and visualize coverage.
+#' @param denominator The denominator to use. If \code{NULL} (default), then the number of unique IDs in \code{data.EIR} is used.
+#' @param min_size The minimum number of doses a group has to have in order to be shown in the plot. Default is 1 percent of \code{denominator}.
 #'
 #' @return A ComplexUpset plot.
 #'
@@ -17,37 +18,44 @@
 #' @import ggplot2
 #'
 #' @export
-cs_upset <- function(data.EIR, data.pop, data.schedule, birth_cohort) {
+cs_upset <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, min_size = 1) {
 
   # TODO: Fix set size for 2023
 
   .validate_birth_cohorts(birth_cohort)
-  .validate_data.pop(data.pop, "ADM0")
 
   # get the doses in schedule
   doses_in_schedule <- data.schedule %>%
     pull(dose) %>%
     unique()
 
-  # get population for birth cohorts
-  denominator <- data.pop %>%
-    filter(age == 0, year == birth_cohort) %>%
-    pull(population) %>%
-    sum()
-
   # get children with complete schedule
+  # NOTE: This could be done easier with pivot_wider, but it runs faster
+  #       this way.
+  # Step 1: Generate data frame with one row per child, with dose_list
+  #         showing a comma-separated string of the doses the child has
   line_list <- data.EIR %>%
     mutate(year = year(date_birth)) %>%
-    select(-ends_with("occurrence"), -date_vax) %>%
-    mutate(vaccinated = TRUE) %>%
-    pivot_wider(
-      names_from = "dose",
-      values_from = "vaccinated",
-      values_fn = ~ first(.x),
-      values_fill = FALSE
-    ) %>%
-    mutate(complete_schedule = if_all(c(-ID, -date_birth, -ends_with("residence")), ~ .x)) %>%
-    filter(year == birth_cohort)
+    filter(year == birth_cohort) %>%
+    group_by(ID) %>%
+    summarise(
+      dose_list = paste0(sort(unique(dose)), collapse = ","),
+      complete_schedule = all(doses_in_schedule %in% dose),
+      .groups = "drop"
+    )
+
+  # Step 2: Create empty columns and fill them if the child has the vaccine
+  #         in dose_list
+  line_list[doses_in_schedule] <- FALSE
+  for (dose in doses_in_schedule) {
+    # NOTE: Use \\b to detect word boundaries
+    line_list[[dose]] <- str_detect(line_list$dose_list, paste0("\\b", dose, "\\b"))
+  }
+
+  # get denominator
+  if(is.null(denominator)) {
+    denominator <- line_list %>% nrow()
+  }
 
   # get max set size
   max_set_size <- line_list %>%
@@ -58,15 +66,17 @@ cs_upset <- function(data.EIR, data.pop, data.schedule, birth_cohort) {
   # do plot
   p <-
     upset(
-      line_list,
-      doses_in_schedule,
+      data = line_list,
+      intersect = doses_in_schedule,
+      # modify labels on vertical bars
       base_annotations = list(
         # specify coverage for each category
         'Intersection size' = intersection_size(
           text_mapping = aes(
             label = paste0(
               round(
-                !!get_size_mode('exclusive_intersection') / denominator * 100
+                !!get_size_mode('exclusive_intersection') / denominator * 100,
+                1
               ),
               '%'
             )
@@ -74,6 +84,7 @@ cs_upset <- function(data.EIR, data.pop, data.schedule, birth_cohort) {
         ) +
           ylab("Number of doses")
       ),
+      # modify labels on horizontal bars
       set_sizes = (
         upset_set_size() +
           geom_text(
@@ -83,6 +94,9 @@ cs_upset <- function(data.EIR, data.pop, data.schedule, birth_cohort) {
           expand_limits(y = max_set_size * 1.1) +
           ylab("Number of doses")
       ),
+      # name of combination matrix axis
+      name = "Dose combinations",
+      # modify points in combination matrix
       matrix = (
         intersection_matrix(
           geom = geom_point(
@@ -90,8 +104,8 @@ cs_upset <- function(data.EIR, data.pop, data.schedule, birth_cohort) {
           )
         )
       ),
-      # only keep those that contribute to at least 5% of the total population
-      min_size = denominator * 0.05,
+      # keep only some groups
+      min_size = denominator * min_size / 100,
       # highlight complete schedules
       queries = list(upset_query(intersect = doses_in_schedule, fill = "#fc8d59", color = "#fc8d59"))
     )
