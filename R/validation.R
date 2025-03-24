@@ -63,3 +63,41 @@
     stop("Error: within_ADM1 must have length 1.")
   }
 }
+
+#' Validate coverage_type.
+#'
+#' @keywords internal
+#' @noRd
+.validate_coverage_type <- function(coverage_type) {
+  if(!(coverage_type %in% c("residence", "occurrence"))) {
+    stop("Error: coverage_type should be residence or occurrence.")
+  }
+}
+
+#' Validate vaccines.
+#'
+#' @import dplyr
+#'
+#' @keywords internal
+#' @noRd
+.validate_vaccines <- function(vaccines, data.schedule) {
+  vaccines_in_schedule <- data.schedule %>% pull(dose) %>% unique()
+
+  if(!is.null(vaccines) & !all(vaccines %in% vaccines_in_schedule)) {
+    stop("Error: One or more of the specified vaccines are not in the given schedule.")
+  }
+}
+
+#' Validate data.schedule.
+#'
+#' @keywords internal
+#' @noRd
+.validate_data.schedule <- function(data.schedule) {
+  if(!is.data.frame(data.schedule)) {
+    stop("Error: data.pop should be a data frame.")
+  }
+
+  if(!all(c("dose", "age_schedule") %in% names(data.schedule))) {
+    stop("Error: data.schedule should contain the following columns: dose, age_schedule.")
+  }
+}
