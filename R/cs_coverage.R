@@ -4,11 +4,11 @@
 #' The function determines which individuals have received all scheduled doses up to a specified age and calculates the proportion of fully vaccinated children by year and geographic subdivision.
 #'
 #' @param data.EIR A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.pop A data frame with population denominators. See \code{pahoabc.pop.ADM0}, \code{pahoabc.pop.ADM1} or \code{pahoabc.pop.ADM2} for structure examples.
 #' @param data.schedule A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
-#' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". \code{data.pop} must contain the columns to match.
-#' @param max_age Numeric (optional). The maximum age up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.
+#' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If \code{data.pop} is in use, it must contain the columns to match.
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.
+#' @param max_age Numeric (optional). The maximum age up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.
+#' @param data.pop Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.
 #'
 #' @return A data frame containing:
 #' \itemize{
@@ -25,7 +25,7 @@
 #' @import lubridate
 #'
 #' @export
-cs_coverage <- function(data.EIR, data.pop, data.schedule, geo_level, max_age = NULL, birth_cohorts = NULL) {
+cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts, max_age = NULL, data.pop = NULL) {
 
   .validate_geo_level(geo_level)
   .validate_data.pop(data.pop, geo_level)
@@ -64,12 +64,8 @@ cs_coverage <- function(data.EIR, data.pop, data.schedule, geo_level, max_age = 
   # prepare data
   prepare_EIR <- data.EIR %>%
     mutate(year = year(date_birth)) %>%
-    filter(dose %in% doses_in_schedule)
-
-  if(!is.null(birth_cohorts)) {
-    prepare_EIR <- prepare_EIR %>%
-      filter(year %in% birth_cohorts)
-  }
+    filter(dose %in% doses_in_schedule) %>%
+    filter(year %in% birth_cohorts)
 
   # get children with complete schedule
   line_list <- prepare_EIR %>%
@@ -81,17 +77,15 @@ cs_coverage <- function(data.EIR, data.pop, data.schedule, geo_level, max_age = 
     )
 
   # get population for birth cohorts
-  denominator <- data.pop %>%
-    filter(age == 0) %>%
-    select(-age)
+  if(is.null(data.pop)) {
+    denominator <- line_list %>%
+      group_by(across(all_of(groups))) %>%
+      summarise(population = n())
 
-  # get years for which we will calculate coverage
-  if(is.null(birth_cohorts)) {
-    years_in_numerator <- line_list %>% pull(year) %>% unique()
-    years_in_denominator <- denominator %>% pull(year) %>% unique()
-    years_to_calculate <- intersect(years_in_numerator, years_in_denominator)
   } else {
-    years_to_calculate <- birth_cohorts
+    denominator <- data.pop %>%
+      filter(age == 0) %>%
+      select(-age)
   }
 
   # get number of children with complete schedule for the defined groups
@@ -101,8 +95,12 @@ cs_coverage <- function(data.EIR, data.pop, data.schedule, geo_level, max_age = 
 
   # calculate coverage
   coverage <- numerator %>%
-    filter(year %in% years_to_calculate) %>%
-    left_join(denominator, by = named_groups) %>%
+    left_join(
+      denominator,
+      # NOTE: This is just to join correctly because data.pop and data.EIR
+      #       have different names for the ADMX columns.?
+      by = if(is.null(data.pop)) groups else named_groups
+    ) %>%
     mutate(coverage = round(numerator / population * 100, 2))
 
   # standardize columns for output

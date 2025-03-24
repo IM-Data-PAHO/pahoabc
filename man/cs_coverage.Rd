@@ -6,25 +6,25 @@
 \usage{
 cs_coverage(
   data.EIR,
-  data.pop,
   data.schedule,
   geo_level,
+  birth_cohorts,
   max_age = NULL,
-  birth_cohorts = NULL
+  data.pop = NULL
 )
 }
 \arguments{
 \item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
 
-\item{data.pop}{A data frame with population denominators. See \code{pahoabc.pop.ADM0}, \code{pahoabc.pop.ADM1} or \code{pahoabc.pop.ADM2} for structure examples.}
-
 \item{data.schedule}{A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
 
-\item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". \code{data.pop} must contain the columns to match.}
+\item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If \code{data.pop} is in use, it must contain the columns to match.}
+
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.}
 
 \item{max_age}{Numeric (optional). The maximum age up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.}
 
-\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.}
+\item{data.pop}{Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.}
 }
 \value{
 A data frame containing:

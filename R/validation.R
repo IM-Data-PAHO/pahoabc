@@ -13,20 +13,22 @@
 #' @keywords internal
 #' @noRd
 .validate_data.pop <- function(data.pop, geo_level) {
-  if(!is.data.frame(data.pop)) {
-    stop("Error: data.pop should be a data frame.")
+  if(!is.null(data.pop) & !is.data.frame(data.pop)) {
+    stop("Error: data.pop should be a data frame (or NULL when not in use).")
   }
 
-  # Check columns in data.pop based on geo_level
-  has_ADM1 <- "ADM1" %in% names(data.pop)
-  has_ADM2 <- "ADM2" %in% names(data.pop)
+  if(!is.null(data.pop)) {
+    # Check columns in data.pop based on geo_level
+    has_ADM1 <- "ADM1" %in% names(data.pop)
+    has_ADM2 <- "ADM2" %in% names(data.pop)
 
-  if(geo_level == "ADM0" & (has_ADM1 | has_ADM2)) {
-    stop("Error: data.pop should not contain ADM1 or ADM2.")
-  } else if (geo_level == "ADM1" & (!has_ADM1 | has_ADM2)) {
-    stop("Error: data.pop should only contain ADM1.")
-  } else if (geo_level == "ADM2" & (!has_ADM1 | !has_ADM2)) {
-    stop("Error: data.pop should contain both ADM1 and ADM2.")
+    if(geo_level == "ADM0" & (has_ADM1 | has_ADM2)) {
+      stop("Error: data.pop should not contain ADM1 or ADM2.")
+    } else if (geo_level == "ADM1" & (!has_ADM1 | has_ADM2)) {
+      stop("Error: data.pop should only contain ADM1.")
+    } else if (geo_level == "ADM2" & (!has_ADM1 | !has_ADM2)) {
+      stop("Error: data.pop should contain both ADM1 and ADM2.")
+    }
   }
 }
 
