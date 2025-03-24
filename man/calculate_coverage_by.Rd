@@ -5,7 +5,7 @@
 \title{Calculate Vaccine Coverage by Residence or Occurrence}
 \usage{
 calculate_coverage_by(
-  analysis_type,
+  coverage_type,
   data.EIR,
   data.schedule,
   data.pop,
@@ -15,7 +15,7 @@ calculate_coverage_by(
 )
 }
 \arguments{
-\item{analysis_type}{A character string specifying the type of analysis: either "residence" or "occurrence".}
+\item{coverage_type}{A character string specifying the type of analysis: either "residence" or "occurrence".}
 
 \item{data.EIR}{A data frame containing electronic immunization registry data.}
 
