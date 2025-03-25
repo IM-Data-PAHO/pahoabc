@@ -75,13 +75,64 @@ tibble::glimpse(example_dropout)
 #### Parameters accepted
 
 - data: R Structured dataframe with the variables listed above.  
-- vac_init: The name of the vaccine to use as the start point of the analysis as stored in the **dose** column of the dataframe.  
-- vac_init: The name of the vaccine to use as the end point of the analysis as stored in the **dose** column of the dataframe.  
+- vac_init: The name (string) of the vaccine to use as the start point of the analysis as stored in the **dose** column of the dataframe.  
+- vac_end: The name (string) of the vaccine to use as the end point of the analysis as stored in the **dose** column of the dataframe.  
 - geo_level: Administrative level to use, this is an optional parameter. Can be "ADM1" or "ADM2" as strings
-- birth_cohort: Parameter to segment the analysis based on the year of birth of the person in the dataframe. This function uses the **date_birth** column in the dataframe.  
+- birth_cohort(year): Parameter to segment the analysis based on the year of birth of the person in the dataframe. This function uses the **date_birth** column in the dataframe.  
 
-Check the documentation of the function using ??nominal_dropout in R for additional information.
+The **data, vac_init, vac_end** parameters are mandatory. **geo_level** and **birth_cohort** are optional and help to segment the data for more precise analyses.
 
+Check the documentation of the function using ??nominal_dropout() in R for additional information.
+
+## dropoutplot(): Plot output
+
+The nominal dropout component of **pahoabc** provides a function to produce a basic ggplot2 of the information provided. This plot can be modified using the standard ggplot methodology.
+
+### Parameters accepted
+
+The function **dropoutplot()** accepts the following parameters:
+
+- nominal_dropout_data: Dataframe formatted from the result of the **nominal_dropout()** function
+- vertical: (boolean) Shows the plot vertically or horizontally, Default is FALSE which corresponds to horizontal, TRUE corresponds to vertical.
+- order: Organizes the bars based on three options: "alpha", "desc" or "asc", default is "alpha"
+
+### Example
+
+```{r, nominal_dropout_plot}
+# Runs the dropoutplot function
+example_dropout_plot <- dropoutplot(nominal_dropout_data=example_dropout,vertical=FALSE, order="alpha")
+
+example_dropout_plot
+```
+
+## Extra: Making a beautiful dropoutplot()
+
+To make a prettier plot, we can work within the constraints of the ggplot2 package to modify our original plot object resulting from dropoutplot()
+```{r, pretty_plot}
+
+# loads the ggplot2 package for additional modifications
+library(ggplot2)
+
+# takes the example_dropout_plot and modifies it 
+example_dropout_plot +
+  # Sets the classic theme of ggplot
+  theme_classic()+
+  # Modifies the fill of the bar to a single color
+  aes(fill = "your_color") + 
+    scale_fill_manual(values = c("your_color" = "steelblue")) +
+    guides(fill = "none") +
+  # Adds a horizontal line at 5% to show what an arbitrary maximum should be
+  geom_hline(yintercept = 5, color = "darkred", linetype = "dashed", linewidth = 1) +
+  # Adds a label for the horizontal line
+  annotate("text", x = Inf, y = 5, label = "Arbitrary limit (5%)", 
+           vjust = -1, hjust = 1.1, color = "darkred") +
+  # Modifies the labels and adds a title 
+  labs(title = "Dropout between DTP1 and DTP3", subtitle = "Administrative level 1",
+       x = "Admnistrative level 1", caption = "Data obtained from a test data base") +
+  # Modifies the y axis to be fixed to 0-100 to show a clearer scale for dropout
+  scale_y_continuous(limits=c(0,100)) 
+
+```
 
 
 

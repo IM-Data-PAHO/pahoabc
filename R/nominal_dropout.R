@@ -10,10 +10,18 @@
 #'
 #' @import tidyr
 #' @import dplyr
+#' @import magrittr
 #' @import lubridate
 #'
 #' @export
 nominal_dropout <- function(data = pahoabc.EIR, vac_init, vac_end, geo_level = NA , birth_cohort=NA){
+
+  if (!vac_init %in% data$dose){
+    stop(paste0("Error: specified vac_init: '", vac_init, "' is not present in the dataset provided."))
+  } else if (!vac_end %in% data$dose) {
+    stop(paste0("Error: specified vac_end: '", vac_end, "' is not present in the dataset provided."))
+  }
+
 
   if (!is.na(birth_cohort)) {
     data <- data %>%
