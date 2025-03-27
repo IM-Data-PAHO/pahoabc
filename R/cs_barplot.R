@@ -2,7 +2,7 @@
 #'
 #' Generates a bar plot of complete schedule vaccination coverage, grouped by geographic area and colored by birth cohort.
 #'
-#' @param data Data frame. The output from the \code{pahoabc::cs_coverage} function.
+#' @param data The output from the \code{pahoabc::cs_coverage} function.
 #' @param geo_level The same geographic level provided in \code{pahoabc::cs_coverage}. Must be "ADM0", "ADM1" or "ADM2".
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be plotted. If \code{NULL} (default), all years are plotted.
 #' @param within_ADM1 Character (optional). When analyzing data at the "ADM2" level, this optional parameter lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
@@ -16,8 +16,8 @@
 cs_barplot <- function(data, geo_level, birth_cohorts = NULL, within_ADM1 = NULL) {
 
   .validate_geo_level(geo_level)
-  .validate_birth_cohorts(birth_cohorts)
-  .validate_within_ADM1(within_ADM1)
+  .validate_numeric(birth_cohorts, "birth_cohorts")
+  .validate_character(within_ADM1, "within_ADM1", 1)
 
   # determine aesthetic for x axis
   if(geo_level != "ADM0") {

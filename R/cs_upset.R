@@ -22,7 +22,10 @@ cs_upset <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, 
 
   # TODO: Fix set size for 2023
 
-  .validate_birth_cohorts(birth_cohort)
+  .validate_data.schedule(data.schedule)
+  .validate_numeric(birth_cohort, "birth_cohort", 1)
+  .validate_numeric(denominator, "denominator", 1)
+  .validate_numeric(min_size, "min_size", 1)
 
   # get the doses in schedule
   doses_in_schedule <- data.schedule %>%

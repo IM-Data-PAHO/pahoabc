@@ -4,7 +4,7 @@
 #'
 #' @param data The output from the \code{pahoabc::roc_coverage()} function.
 #' @param geo_level The same geographic level provided in \code{pahoabc::roc_coverage}. Must be "ADM0", "ADM1" or "ADM2".
-#' @param year A numeric value specifying the year of the data to be plotted. Only one year.??
+#' @param year A numeric value specifying the year of the data to be plotted. Only one year.
 #' @param vaccine A string specifying the vaccine of interest. Only one vaccine.
 #' @param within_ADM1 When analyzing data at the "ADM2" level, this optional string lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
 #'
@@ -16,6 +16,13 @@
 #'
 #' @export
 roc_barplot <- function(data, geo_level, year, vaccine, within_ADM1 = NULL) {
+
+  .validate_roc_barplot_data(data)
+  .validate_geo_level(geo_level)
+  .validate_numeric(year, "year", 1)
+  .validate_character(vaccine, "vaccine", 1)
+  .validate_vaccines(vaccine, data, "data")
+  .validate_character(within_ADM1, "within_ADM1", 1)
 
   # prepare dataframe for plot
   to_plot_wide <- data %>%

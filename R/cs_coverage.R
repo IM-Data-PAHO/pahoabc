@@ -25,12 +25,13 @@
 #' @import lubridate
 #'
 #' @export
-cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts, max_age = NULL, data.pop = NULL) {
+cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts = NULL, max_age = NULL, data.pop = NULL) {
 
+  .validate_data.schedule(data.schedule)
   .validate_geo_level(geo_level)
   .validate_data.pop(data.pop, geo_level)
-  .validate_birth_cohorts(birth_cohorts)
-  .validate_max_age(max_age)
+  .validate_numeric(birth_cohorts, "birth_cohorts")
+  .validate_numeric(max_age, "max_age", 1)
 
   # determine grouping column(s)
   if(geo_level != "ADM0") {
@@ -64,8 +65,11 @@ cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts, max_a
   # prepare data
   prepare_EIR <- data.EIR %>%
     mutate(year = year(date_birth)) %>%
-    filter(dose %in% doses_in_schedule) %>%
-    filter(year %in% birth_cohorts)
+    filter(dose %in% doses_in_schedule)
+
+  if(!is.null(birth_cohorts)) {
+    prepare_EIR <- prepare_EIR %>% filter(year %in% birth_cohorts)
+  }
 
   # get children with complete schedule
   line_list <- prepare_EIR %>%

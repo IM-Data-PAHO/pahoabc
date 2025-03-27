@@ -1,8 +1,42 @@
+#' Validate numeric values.
+#'
+#' @keywords internal
+#' @noRd
+.validate_numeric <- function(value, value_name, value_length = NULL) {
+  if(!is.null(value) & !is.numeric(value)) {
+    stop(paste0("Error: ", value_name, " should be numeric (or NULL when not in use)."))
+
+    if(!is.null(value_length)) {
+      if(length(value) != value_length) {
+        stop(paste0("Error: ", value_name, " should be of length ", value_length, "."))
+      }
+    }
+  }
+}
+
+#' Validate character values.
+#'
+#' @keywords internal
+#' @noRd
+.validate_character <- function(value, value_name, value_length = NULL) {
+  if(!is.null(value) & !is.character(value)) {
+    stop(paste0("Error: ", value_name, " should be a character (or NULL when not in use)."))
+
+    if(!is.null(value_length)) {
+      if(length(value) != value_length) {
+        stop(paste0("Error: ", value_name, " should be of length ", value_length, "."))
+      }
+    }
+  }
+}
+
 #' Validate geo_level.
 #'
 #' @keywords internal
 #' @noRd
 .validate_geo_level <- function(geo_level) {
+  .validate_character(geo_level, 1, "geo_level")
+
   if (!(geo_level %in% c("ADM0", "ADM1", "ADM2"))) {
     stop("Error: The geo_level parameter should be 'ADM0', 'ADM1', or 'ADM2'.")
   }
@@ -13,6 +47,7 @@
 #' @keywords internal
 #' @noRd
 .validate_data.pop <- function(data.pop, geo_level) {
+
   if(!is.null(data.pop) & !is.data.frame(data.pop)) {
     stop("Error: data.pop should be a data frame (or NULL when not in use).")
   }
@@ -32,43 +67,13 @@
   }
 }
 
-#' Validate max_age.
-#'
-#' @keywords internal
-#' @noRd
-.validate_max_age <- function(max_age) {
-  if(!is.null(max_age) & !is.numeric(max_age)) {
-    stop("Error: max_age should be numeric (or NULL when not in use).")
-  }
-}
-
-#' Validate birth_cohorts.
-#'
-#' @keywords internal
-#' @noRd
-.validate_birth_cohorts <- function(birth_cohorts) {
-  if(!is.null(birth_cohorts) & !is.numeric(birth_cohorts)) {
-    stop("Error: birth_cohorts should be numeric (or NULL when not in use).")
-  }
-}
-
-#' Validate within_ADM1.
-#'
-#' @keywords internal
-#' @noRd
-.validate_within_ADM1 <- function(within_ADM1) {
-  if(!is.null(within_ADM1) & !is.character(within_ADM1)) {
-    stop("Error: within_ADM1 must be a character (or NULL when not in use).")
-  } else if(length(within_ADM1) > 1) {
-    stop("Error: within_ADM1 must have length 1.")
-  }
-}
-
 #' Validate coverage_type.
 #'
 #' @keywords internal
 #' @noRd
 .validate_coverage_type <- function(coverage_type) {
+  .validate_character(coverage_type, "coverage_type", 1)
+
   if(!(coverage_type %in% c("residence", "occurrence"))) {
     stop("Error: coverage_type should be residence or occurrence.")
   }
@@ -80,11 +85,11 @@
 #'
 #' @keywords internal
 #' @noRd
-.validate_vaccines <- function(vaccines, data.schedule) {
-  vaccines_in_schedule <- data.schedule %>% pull(dose) %>% unique()
+.validate_vaccines <- function(vaccines, reference_vaccines, reference_name) {
+  vaccines_in_schedule <- reference_vaccines %>% pull(dose) %>% unique()
 
   if(!is.null(vaccines) & !all(vaccines %in% vaccines_in_schedule)) {
-    stop("Error: One or more of the specified vaccines are not in the given schedule.")
+    stop(paste0("Error: One or more of the specified vaccines are not in ", reference_name, "."))
   }
 }
 
@@ -99,5 +104,27 @@
 
   if(!all(c("dose", "age_schedule") %in% names(data.schedule))) {
     stop("Error: data.schedule should contain the following columns: dose, age_schedule.")
+  }
+}
+
+
+#' Validate input data to roc_barplot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_roc_barplot_data <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  # TODO: This could be declared as a package variable so we dont
+  #       have to repeat it here.
+  names_in_roc_coverage <- c(
+    "year", "dose", "ADM0", "ADM1", "ADM2", "doses_applied",
+    "population", "coverage", "coverage_type"
+  )
+
+  if(!all(names_in_roc_coverage %in% names(data))) {
+    stop("Error: data should be the output from roc_coverage.")
   }
 }

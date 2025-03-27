@@ -8,7 +8,7 @@ cs_coverage(
   data.EIR,
   data.schedule,
   geo_level,
-  birth_cohorts,
+  birth_cohorts = NULL,
   max_age = NULL,
   data.pop = NULL
 )

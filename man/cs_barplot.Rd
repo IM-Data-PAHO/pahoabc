@@ -7,7 +7,7 @@
 cs_barplot(data, geo_level, birth_cohorts = NULL, within_ADM1 = NULL)
 }
 \arguments{
-\item{data}{Data frame. The output from the \code{pahoabc::cs_coverage} function.}
+\item{data}{The output from the \code{pahoabc::cs_coverage} function.}
 
 \item{geo_level}{The same geographic level provided in \code{pahoabc::cs_coverage}. Must be "ADM0", "ADM1" or "ADM2".}
 
