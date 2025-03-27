@@ -4,14 +4,18 @@
 \alias{roc_barplot}
 \title{(R)esidence (Oc)currence Bar Plot}
 \usage{
-roc_barplot(data, vaccine, within_ADM1 = NA)
+roc_barplot(data, geo_level, year, vaccine, within_ADM1 = NULL)
 }
 \arguments{
-\item{data}{The output from the `pahoabc::roc_coverage()` function.}
+\item{data}{The output from the \code{pahoabc::roc_coverage()} function.}
 
-\item{vaccine}{A character string specifying the vaccine of interest. Only one vaccine.}
+\item{geo_level}{The same geographic level provided in \code{pahoabc::roc_coverage}. Must be "ADM0", "ADM1" or "ADM2".}
 
-\item{within_ADM1}{When analyzing data at the `ADM2` level, this optional parameter lets you specify a particular `ADM1` to filter. Default is `NA`, which means no filtering by `ADM1`.}
+\item{year}{A numeric value specifying the year of the data to be plotted. Only one year.}
+
+\item{vaccine}{A string specifying the vaccine of interest. Only one vaccine.}
+
+\item{within_ADM1}{When analyzing data at the "ADM2" level, this optional string lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".}
 }
 \value{
 A ggplot object representing the bar plot.

@@ -2,9 +2,11 @@
 #'
 #' This function creates a bar plot showing vaccination coverage by place of residence and place of vaccination occurrence.
 #'
-#' @param data The output from the `pahoabc::roc_coverage()` function.
-#' @param vaccine A character string specifying the vaccine of interest. Only one vaccine.
-#' @param within_ADM1 When analyzing data at the `ADM2` level, this optional parameter lets you specify a particular `ADM1` to filter. Default is `NA`, which means no filtering by `ADM1`.
+#' @param data The output from the \code{pahoabc::roc_coverage()} function.
+#' @param geo_level The same geographic level provided in \code{pahoabc::roc_coverage}. Must be "ADM0", "ADM1" or "ADM2".
+#' @param year A numeric value specifying the year of the data to be plotted. Only one year.??
+#' @param vaccine A string specifying the vaccine of interest. Only one vaccine.
+#' @param within_ADM1 When analyzing data at the "ADM2" level, this optional string lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
 #'
 #' @return A ggplot object representing the bar plot.
 #'
@@ -13,20 +15,19 @@
 #' @import tidyr
 #'
 #' @export
-roc_barplot <- function(data, vaccine, within_ADM1 = NA) {
-  # check geographic level
-  is_adm2 <- "ADM2" %in% names(data)
-  name_of_geo <- ifelse(is_adm2, "ADM2", "ADM1")
+roc_barplot <- function(data, geo_level, year, vaccine, within_ADM1 = NULL) {
 
   # prepare dataframe for plot
   to_plot_wide <- data %>%
-    # filter for vaccine of interest
-    filter(dose == vaccine) %>%
+    # filter for vaccine and year
+    filter(dose == vaccine, .data$year == .env$year) %>%
     # filter for ADM1 if necessary
-    filter(if(!is.na(within_ADM1)) {ADM1 == within_ADM1} else {TRUE}) %>%
+    filter(if(!is.null(within_ADM1)) {ADM1 == within_ADM1} else {TRUE}) %>%
+    # select columns of interest
+    select(.data$year, !!sym(geo_level), coverage, coverage_type) %>%
     # make wide for plot
     pivot_wider(
-      id_cols = c(year_vax, !!sym(name_of_geo)),
+      id_cols = c(.data$year, !!sym(geo_level)),
       names_from = "coverage_type",
       values_from = "coverage"
     )
@@ -43,10 +44,10 @@ roc_barplot <- function(data, vaccine, within_ADM1 = NA) {
   p <-
     ggplot(
       to_plot_wide,
-      aes(x = reorder(!!sym(name_of_geo), -occurrence))
+      aes(x = reorder(!!sym(geo_level), -occurrence))
     ) +
     labs(
-      title = "Coverage by Residence and Occurrence",
+      title = paste0("Coverage by Residence and Occurrence, ", year),
       x = "Geographic Area",
       y = "Coverage (%)"
     ) +
