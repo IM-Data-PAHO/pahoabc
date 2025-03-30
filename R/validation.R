@@ -35,7 +35,7 @@
 #' @keywords internal
 #' @noRd
 .validate_geo_level <- function(geo_level) {
-  .validate_character(geo_level, 1, "geo_level")
+  .validate_character(geo_level, "geo_level", 1)
 
   if (!(geo_level %in% c("ADM0", "ADM1", "ADM2"))) {
     stop("Error: The geo_level parameter should be 'ADM0', 'ADM1', or 'ADM2'.")
