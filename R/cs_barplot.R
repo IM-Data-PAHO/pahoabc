@@ -3,7 +3,6 @@
 #' Generates a bar plot of complete schedule vaccination coverage, grouped by geographic area and colored by birth cohort.
 #'
 #' @param data The output from the \code{pahoabc::cs_coverage} function.
-#' @param geo_level The same geographic level provided in \code{pahoabc::cs_coverage}. Must be "ADM0", "ADM1" or "ADM2".
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be plotted. If \code{NULL} (default), all years are plotted.
 #' @param within_ADM1 Character (optional). When analyzing data at the "ADM2" level, this optional parameter lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
 #'
@@ -13,18 +12,14 @@
 #' @import ggplot2
 #'
 #' @export
-cs_barplot <- function(data, geo_level, birth_cohorts = NULL, within_ADM1 = NULL) {
+cs_barplot <- function(data, birth_cohorts = NULL, within_ADM1 = NULL) {
 
-  .validate_geo_level(geo_level)
+  .validate_cs_barplot_data(data)
   .validate_numeric(birth_cohorts, "birth_cohorts")
   .validate_character(within_ADM1, "within_ADM1", 1)
 
-  # determine aesthetic for x axis
-  if(geo_level != "ADM0") {
-    x_aes <- paste0(geo_level, "_residence")
-  } else {
-    x_aes <- NULL
-  }
+  # detect geo level
+  ADM_detected <- .detect_geo_level(data)
 
   # prepare data for plot
   prepare_data <- data
@@ -36,10 +31,15 @@ cs_barplot <- function(data, geo_level, birth_cohorts = NULL, within_ADM1 = NULL
     filter(if(!is.null(within_ADM1)) {ADM1_residence == within_ADM1} else {TRUE})
 
   # do plot
-  if(geo_level == "ADM0") {
-    p <- ggplot(prepare_data, aes(x = geo_level, y = coverage, fill = year))
+  if(ADM_detected == 0) {
+    p <- ggplot(prepare_data, aes(x = "ADM0", y = coverage, fill = year))
   } else {
-    p <- ggplot(prepare_data, aes(x = reorder(!!sym(x_aes), -coverage), y = coverage, fill = year))
+    p <- ggplot(
+      prepare_data,
+      aes(
+        x = reorder(!!sym(paste0("ADM", ADM_detected)), -coverage),
+        y = coverage, fill = year)
+    )
   }
 
   p <- p + geom_col(position = "dodge") +

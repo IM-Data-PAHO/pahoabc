@@ -117,14 +117,53 @@
     stop("Error: data should be a data frame.")
   }
 
-  # TODO: This could be declared as a package variable so we dont
-  #       have to repeat it here.
-  names_in_roc_coverage <- c(
-    "year", "dose", "ADM0", "ADM1", "ADM2", "doses_applied",
-    "population", "coverage", "coverage_type"
+  minimum_columns <- c(
+    "year", "dose", "doses_applied", "population", "coverage", "coverage_type"
   )
 
-  if(!all(names_in_roc_coverage %in% names(data))) {
+  if(!all(minimum_columns %in% names(data))) {
     stop("Error: data should be the output from roc_coverage.")
   }
+}
+
+#' Validate input data to cs_barplot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_cs_barplot_data <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  minimum_columns <- c("year", "numerator", "population", "coverage")
+
+  if(!all(minimum_columns %in% names(data))) {
+    stop("Error: data should be the output from cs_coverage.")
+  }
+}
+
+#' Detect the smallest admin level in a data frame.
+#'
+#' @keywords internal
+#' @noRd
+.detect_geo_level <- function(data) {
+
+  columns_in_data <- names(data)
+  ADM_detected <- 0
+
+  if(any(c("ADM1", "ADM2") %in% columns_in_data)) {
+    if("ADM2" %in% columns_in_data) {
+      ADM_detected <- 2
+      message("ADM2 detected.")
+    } else {
+      ADM_detected <- 1
+      message("ADM1 detected.")
+    }
+  } else{
+    ADM_detected <- 0
+    message("ADM0 detected.")
+  }
+
+  return(ADM_detected)
+
 }

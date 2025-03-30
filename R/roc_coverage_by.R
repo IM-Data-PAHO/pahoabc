@@ -81,14 +81,5 @@ roc_coverage_by <- function(coverage_type, data.EIR, data.schedule, data.pop, ge
     # add coverage type column
     mutate(coverage_type = coverage_type)
 
-  # standardize columns for output
-  standard_columns <- c(
-    "year", "dose", "ADM0", "ADM1", "ADM2", "doses_applied",
-    "population", "coverage", "coverage_type"
-  )
-  missing_cols <- setdiff(standard_columns, names(result)) # find missing
-  result[missing_cols] <- NA # add missing columns
-  result <- result[standard_columns] # reorder
-
   return(result)
 }

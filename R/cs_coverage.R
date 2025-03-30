@@ -10,16 +10,7 @@
 #' @param max_age Numeric (optional). The maximum age up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.
 #' @param data.pop Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.
 #'
-#' @return A data frame containing:
-#' \itemize{
-#'   \item \code{year}: The birth cohort year.
-#'   \item \code{ADM0}: The ADM0 (or country) name.
-#'   \item \code{ADM1_residence}: The name of the first administrative level for the given coverage.
-#'   \item \code{ADM2_residence}: The name of the second administrative level for the given coverage.
-#'   \item \code{numerator}: The number of children with a complete vaccination schedule for the given cohort and geographic level.
-#'   \item \code{population}: The population denominator for the given cohort and geographic level.
-#'   \item \code{coverage}: The calculated vaccination coverage as a percentage for the given cohort and geographic level.
-#' }
+#' @return A data frame containing the complete schedule coverage by birth cohort for the specified \code{geo_level}.
 #'
 #' @import dplyr
 #' @import lubridate
@@ -34,20 +25,17 @@ cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts = NULL
   .validate_numeric(max_age, "max_age", 1)
 
   # determine grouping column(s)
+  basic_groups <- c("year")
   if(geo_level != "ADM0") {
-    residence_col <- paste0(geo_level, "_residence")
+    # groups for ADM1
+    groups <- c(basic_groups, "ADM1")
 
+    # groups for ADM2
     if(geo_level == "ADM2") {
-      # add ADM1 to grouping when ADM2 is selected
-      groups <- c("year", "ADM1_residence", residence_col)
-      named_groups <- c("year", "ADM1_residence" = "ADM1", setNames(geo_level, residence_col))
-    } else {
-      groups <- c("year", residence_col)
-      named_groups <- c("year", setNames(geo_level, residence_col))
+      groups <- c(groups, geo_level)
     }
   } else {
-    groups <- c("year")
-    named_groups <- groups
+    groups <- basic_groups
   }
 
   # determine vaccines to evaluate according to schedule and max_age
@@ -64,6 +52,13 @@ cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts = NULL
 
   # prepare data
   prepare_EIR <- data.EIR %>%
+    select(
+      ID,
+      starts_with("date"),
+      ADM1 = ADM1_residence,
+      ADM2 = ADM2_residence,
+      dose
+    ) %>%
     mutate(year = year(date_birth)) %>%
     filter(dose %in% doses_in_schedule)
 
@@ -99,22 +94,8 @@ cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts = NULL
 
   # calculate coverage
   coverage <- numerator %>%
-    left_join(
-      denominator,
-      # NOTE: This is just to join correctly because data.pop and data.EIR
-      #       have different names for the ADMX columns.?
-      by = if(is.null(data.pop)) groups else named_groups
-    ) %>%
+    left_join(denominator, by = groups) %>%
     mutate(coverage = round(numerator / population * 100, 2))
-
-  # standardize columns for output
-  standard_columns <- c(
-    "year", "ADM0", "ADM1_residence", "ADM2_residence", "numerator",
-    "population", "coverage"
-  )
-  missing_cols <- setdiff(standard_columns, names(coverage)) # find missing
-  coverage[missing_cols] <- NA # add missing columns
-  coverage <- coverage[standard_columns] # reorder
 
   return(coverage)
 

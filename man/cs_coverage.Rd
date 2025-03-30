@@ -27,16 +27,7 @@ cs_coverage(
 \item{data.pop}{Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.}
 }
 \value{
-A data frame containing:
-\itemize{
-  \item \code{year}: The birth cohort year.
-  \item \code{ADM0}: The ADM0 (or country) name.
-  \item \code{ADM1_residence}: The name of the first administrative level for the given coverage.
-  \item \code{ADM2_residence}: The name of the second administrative level for the given coverage.
-  \item \code{numerator}: The number of children with a complete vaccination schedule for the given cohort and geographic level.
-  \item \code{population}: The population denominator for the given cohort and geographic level.
-  \item \code{coverage}: The calculated vaccination coverage as a percentage for the given cohort and geographic level.
-}
+A data frame containing the complete schedule coverage by birth cohort for the specified \code{geo_level}.
 }
 \description{
 This function calculates complete vaccination coverage for a given birth cohort and geographic level using electronic immunization registry (EIR) data, a vaccination schedule, and population denominators.

@@ -4,12 +4,10 @@
 \alias{cs_barplot}
 \title{(C)omplete (S)chedule Coverage Bar Plot}
 \usage{
-cs_barplot(data, geo_level, birth_cohorts = NULL, within_ADM1 = NULL)
+cs_barplot(data, birth_cohorts = NULL, within_ADM1 = NULL)
 }
 \arguments{
 \item{data}{The output from the \code{pahoabc::cs_coverage} function.}
-
-\item{geo_level}{The same geographic level provided in \code{pahoabc::cs_coverage}. Must be "ADM0", "ADM1" or "ADM2".}
 
 \item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be plotted. If \code{NULL} (default), all years are plotted.}
 

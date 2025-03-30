@@ -4,12 +4,10 @@
 \alias{roc_barplot}
 \title{(R)esidence (Oc)currence Bar Plot}
 \usage{
-roc_barplot(data, geo_level, year, vaccine, within_ADM1 = NULL)
+roc_barplot(data, year, vaccine, within_ADM1 = NULL)
 }
 \arguments{
 \item{data}{The output from the \code{pahoabc::roc_coverage()} function.}
-
-\item{geo_level}{The same geographic level provided in \code{pahoabc::roc_coverage}. Must be "ADM0", "ADM1" or "ADM2".}
 
 \item{year}{A numeric value specifying the year of the data to be plotted. Only one year.}
 
