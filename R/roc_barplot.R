@@ -5,7 +5,7 @@
 #' @param data The output from the \code{pahoabc::roc_coverage()} function.
 #' @param year A numeric value specifying the year of the data to be plotted. Only one year.
 #' @param vaccine A string specifying the vaccine of interest. Only one vaccine.
-#' @param within_ADM1 When analyzing data at the "ADM2" level, this optional string lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
+#' @param within_ADM1 When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
 #'
 #' @return A ggplot object representing the bar plot.
 #'
@@ -20,7 +20,7 @@ roc_barplot <- function(data, year, vaccine, within_ADM1 = NULL) {
   .validate_numeric(year, "year", 1)
   .validate_character(vaccine, "vaccine", 1)
   .validate_vaccines(vaccine, data, "data")
-  .validate_character(within_ADM1, "within_ADM1", 1)
+  .validate_character(within_ADM1, "within_ADM1")
 
   # detect geo level
   ADM_detected <- .detect_geo_level(data)
@@ -35,7 +35,7 @@ roc_barplot <- function(data, year, vaccine, within_ADM1 = NULL) {
     # filter for vaccine and year
     filter(dose == vaccine, .data$year == .env$year) %>%
     # filter for ADM1 if necessary
-    filter(if(!is.null(within_ADM1)) {ADM1 == within_ADM1} else {TRUE}) %>%
+    filter(if(!is.null(within_ADM1)) {ADM1 %in% within_ADM1} else {TRUE}) %>%
     # select columns of interest
     select(pivot_columns, coverage, coverage_type) %>%
     # make wide for plot

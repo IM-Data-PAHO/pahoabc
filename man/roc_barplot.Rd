@@ -13,7 +13,7 @@ roc_barplot(data, year, vaccine, within_ADM1 = NULL)
 
 \item{vaccine}{A string specifying the vaccine of interest. Only one vaccine.}
 
-\item{within_ADM1}{When analyzing data at the "ADM2" level, this optional string lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".}
+\item{within_ADM1}{When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".}
 }
 \value{
 A ggplot object representing the bar plot.

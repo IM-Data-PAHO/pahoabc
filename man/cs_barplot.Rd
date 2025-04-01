@@ -11,7 +11,7 @@ cs_barplot(data, birth_cohorts = NULL, within_ADM1 = NULL)
 
 \item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be plotted. If \code{NULL} (default), all years are plotted.}
 
-\item{within_ADM1}{Character (optional). When analyzing data at the "ADM2" level, this optional parameter lets you specify a particular "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".}
+\item{within_ADM1}{Character (optional). When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".}
 }
 \value{
 A ggplot object representing the bar plot.
