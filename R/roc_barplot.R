@@ -17,10 +17,10 @@
 roc_barplot <- function(data, year, vaccine, within_ADM1 = NULL) {
 
   .validate_roc_barplot_data(data)
-  .validate_numeric(year, "year", 1)
-  .validate_character(vaccine, "vaccine", 1)
+  .validate_numeric(year, "year", exp_len = 1)
+  .validate_character(vaccine, "vaccine", exp_len = 1)
   .validate_vaccines(vaccine, data, "data")
-  .validate_character(within_ADM1, "within_ADM1")
+  .validate_character(within_ADM1, "within_ADM1", min_len = 1)
 
   # detect geo level
   ADM_detected <- .detect_geo_level(data)

@@ -21,8 +21,8 @@ cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts = NULL
   .validate_data.schedule(data.schedule)
   .validate_geo_level(geo_level)
   .validate_data.pop(data.pop, geo_level)
-  .validate_numeric(birth_cohorts, "birth_cohorts")
-  .validate_numeric(max_age, "max_age", 1)
+  .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1)
+  .validate_numeric(max_age, "max_age", exp_len = 1)
 
   # determine grouping column(s)
   basic_groups <- c("year")

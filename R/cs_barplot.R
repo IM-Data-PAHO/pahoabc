@@ -15,8 +15,8 @@
 cs_barplot <- function(data, birth_cohorts = NULL, within_ADM1 = NULL) {
 
   .validate_cs_barplot_data(data)
-  .validate_numeric(birth_cohorts, "birth_cohorts")
-  .validate_character(within_ADM1, "within_ADM1")
+  .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1, max_len = 9)
+  .validate_character(within_ADM1, "within_ADM1", min_len = 1)
 
   # detect geo level
   ADM_detected <- .detect_geo_level(data)

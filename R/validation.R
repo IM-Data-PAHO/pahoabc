@@ -2,30 +2,46 @@
 #'
 #' @keywords internal
 #' @noRd
-.validate_numeric <- function(value, value_name, value_length = NULL) {
+.validate_numeric <- function(value, value_name, min_len = NULL, exp_len = NULL, max_len = NULL) {
   if(!is.null(value) & !is.numeric(value)) {
     stop(paste0("Error: ", value_name, " should be numeric (or NULL when not in use)."))
-
-    if(!is.null(value_length)) {
-      if(length(value) != value_length) {
-        stop(paste0("Error: ", value_name, " should be of length ", value_length, "."))
-      }
-    }
   }
+
+  .validate_length(value, value_name, min_len, exp_len, max_len)
 }
 
 #' Validate character values.
 #'
 #' @keywords internal
 #' @noRd
-.validate_character <- function(value, value_name, value_length = NULL) {
+.validate_character <- function(value, value_name, min_len = NULL, exp_len = NULL, max_len = NULL) {
   if(!is.null(value) & !is.character(value)) {
     stop(paste0("Error: ", value_name, " should be a character (or NULL when not in use)."))
+  }
 
-    if(!is.null(value_length)) {
-      if(length(value) != value_length) {
-        stop(paste0("Error: ", value_name, " should be of length ", value_length, "."))
-      }
+  .validate_length(value, value_name, min_len, exp_len, max_len)
+}
+
+#' Validate length of vector.
+#'
+#' @keywords internal
+#' @noRd
+.validate_length <- function(value, value_name, min_len = NULL, exp_len = NULL, max_len = NULL) {
+  if(!is.null(min_len)) {
+    if(length(value) < min_len) {
+      stop(paste0("Error: ", value_name, " should be of at least length ", min_len, "."))
+    }
+  }
+
+  if(!is.null(exp_len)) {
+    if(length(value) != exp_len) {
+      stop(paste0("Error: ", value_name, " should be exactly of length ", exp_len, "."))
+    }
+  }
+
+  if(!is.null(max_len)) {
+    if(length(value) > max_len) {
+      stop(paste0("Error: ", value_name, " should be of at most length ", max_len, "."))
     }
   }
 }
@@ -139,6 +155,13 @@
 
   if(!all(minimum_columns %in% names(data))) {
     stop("Error: data should be the output from cs_coverage.")
+  }
+
+  # limit number of years so palette works in plot
+  number_of_years <- data %>% pull(year) %>% unique() %>% length()
+
+  if(number_of_years > 9) {
+    stop("Error: Too many years in data. Please reduce to 9 or less.")
   }
 }
 

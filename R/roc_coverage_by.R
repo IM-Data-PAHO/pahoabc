@@ -22,8 +22,8 @@ roc_coverage_by <- function(coverage_type, data.EIR, data.schedule, data.pop, ge
   .validate_data.schedule(data.schedule)
   .validate_geo_level(geo_level)
   .validate_data.pop(data.pop, geo_level)
-  .validate_numeric(years, "years")
-  .validate_character(vaccines, "vaccines")
+  .validate_numeric(years, "years", min_len = 1)
+  .validate_character(vaccines, "vaccines", min_len = 1)
   .validate_vaccines(vaccines, data.schedule, "data.schedule")
   .validate_vaccines(vaccines, data.EIR, "data.EIR")
 
