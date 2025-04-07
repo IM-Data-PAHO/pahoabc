@@ -1,12 +1,18 @@
 Package: pahoabc
 Type: Package
 Title: PAHO ABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage.
-Version: 0.0.1
-Author: PAHO CIM ISDATA
-Maintainer: The package maintainer <yourself@somewhere.net>
+Version: beta
+Authors@R: c(
+    person("Ignacio", "Castro", email = "castroign@paho.org", role = "ctb"),
+    person("Dan", "Alvarez", email = "alvarezdan@paho.org", role = "ctb"),
+    person("Rafael", "Leon", email = "leonraf@paho.org", role = "ctb"),
+    person("Alejandro", "Vasquez", role = "rev"),
+    person("Pan American Health Organization", email = "immunization@paho.org", role = c("aut", "cph", "fnd", "cre"))
+  )
+Maintainer: PAHO/CIM <immunization@paho.org>
 Description: A set of immunization analyses beyond coverage.
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
@@ -16,3 +22,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://im-data-paho.github.io/pahoabc/, https://github.com/IM-Data-PAHO/pahoabc
+BugReports: https://github.com/IM-Data-PAHO/pahoabc/issues

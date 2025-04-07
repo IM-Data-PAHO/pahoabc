@@ -1,0 +1,39 @@
+url: https://im-data-paho.github.io/pahoabc/
+template:
+  bootstrap: 5
+citation: true
+navbar:
+  structure:
+    left:  [reference, articles]
+    right: [search, github]
+reference:
+  - title: Complete Schedule Coverage
+    desc: Functions for calculating and visualizing complete schedule coverage.
+    contents:
+      - cs_coverage
+      - cs_barplot
+      - cs_upset
+
+  - title: Dropout Rate
+    desc: Functions for calculating and visualizing nominal dropout rate.
+    contents:
+      - nominal_dropout
+      - dropoutplot
+
+  - title: Residence vs. Ocurrence Coverage
+    desc: Functions for calculating and visualizing coverage by place of residence or vaccination.
+    contents:
+      - roc_coverage
+      - roc_barplot
+      - roc_distribution
+      - roc_heatmap
+      - roc_coverage_by
+
+  - title: Example Data
+    desc: Example data frames to understand how the package works and what it expects.
+    contents:
+      - pahoabc.EIR
+      - pahoabc.pop.ADM0
+      - pahoabc.pop.ADM1
+      - pahoabc.pop.ADM2
+      - pahoabc.schedule
