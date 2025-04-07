@@ -10,7 +10,6 @@
 #'
 #' @import tidyr
 #' @import dplyr
-#' @import magrittr
 #' @import lubridate
 #'
 #' @export
