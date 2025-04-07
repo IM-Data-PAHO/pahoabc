@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  nominal_dropout_en: nominal_dropout_en.html
+last_built: 2025-04-07T03:30Z
+urls:
+  reference: https://im-data-paho.github.io/pahoabc/reference
+  article: https://im-data-paho.github.io/pahoabc/articles
