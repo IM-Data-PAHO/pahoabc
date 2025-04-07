@@ -24,3 +24,10 @@ Suggests:
 VignetteBuilder: knitr
 URL: https://im-data-paho.github.io/pahoabc/, https://github.com/IM-Data-PAHO/pahoabc
 BugReports: https://github.com/IM-Data-PAHO/pahoabc/issues
+Imports: 
+    ComplexUpset,
+    dplyr,
+    ggplot2,
+    lubridate,
+    stringr,
+    tidyr
