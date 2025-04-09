@@ -1,0 +1,83 @@
+---
+title: "Coverage by Place of Residence vs. Ocurrence"
+author: "PAHO/CIM"
+date: "April 9, 2025"
+output: 
+  html_document:
+    self_contained: true
+    theme: cosmo
+    highlight: tango
+    code_folding: show
+    code_download: true
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include = FALSE, message = FALSE, warning = FALSE}
+library(pahoabc)
+library(dplyr)
+library(knitr)
+```
+
+# Introduction
+
+It is common for Electronic Immunization Registries (EIR) to collect both the place of residence and the place of occurrence of the vaccination event. Vaccination coverage can be estimated by grouping events according to either location. However, denominators are typically estimated based on the place of residence.
+
+Using either residence or occurrence as the numerator can lead to underestimation or overestimation of coverage, and sometimes result in values above 100%, especially in areas where vaccination services are more available.
+
+The residence vs. occurrence module in the PAHOabc package provides a set of functions to explore and analyze this phenomenon.
+
+> **Note**
+> 
+> All functions used for residence and occurrence analyses within PAHOabc begin with the `roc_` prefix.
+
+# Coverage Analysis
+
+The `roc_coverage()` and `roc_barplot()` functions work together to perform coverage analysis and visualization. The `roc_coverage()` function computes vaccination coverage by both residence and occurrence across selected administrative levels, years, and vaccines. Its output (a data table) is structured to be directly compatible with `roc_barplot()`, which generates a visualization for a specific year and vaccine.
+
+Alternatively, the `roc_coverage_by()` function is available when you want to calculate coverage by either residence or occurrence (but not both). While it produces a similar table, its output is not compatible with `roc_barplot()`.
+
+![Figure 1. Expected workflow for coverage analysis)](roc_workflow_1.svg)
+
+Here is a simple use case of the `roc_coverage()` function.
+
+```{r analysis-example, message=FALSE}
+
+# compute coverage
+coverage_df <- roc_coverage(
+  data.EIR = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  data.pop = pahoabc.pop.ADM1,
+  geo_level = "ADM1",
+  years = 2023, # this can be a vector of years
+  vaccines = "DTP1" # this can be a vector of vaccines
+)
+
+# show results in table
+coverage_df %>%
+  kable(digits = 3, caption = "Vaccination coverage by ADM1 level")
+```
+
+This output may be fed directly into the `roc_barplot()` function as shown below.
+
+```{r viz-example, message=FALSE}
+
+# visualize output from roc_coverage()
+coverage_plot <- roc_barplot(
+  data = coverage_df,
+  year = 2023,
+  vaccine = "DTP1"
+)
+
+coverage_plot
+```
+
+This chart shows the vaccination coverage achieved by each subnational administrative level, considering both the place of occurrence and the place of residence. The yellow bars represent coverage by place of occurrence, meaning that the numerator includes all doses administered in that location. The orange diamonds represent coverage by place of residence, meaning that the numerator includes people who reside in that location, regardless of where they received the vaccine.
+
+We can observe that the coverage by **both residence and occurrence** in ADM1_1, ADM1_4, and ADM1_5 are similar. However, in ADM1_2 and ADM1_3, there are differences between the two types of coverage.
+
+In ADM1_2, the coverage by occurrence reaches 141%, while the coverage by residence is 95%, resulting in a difference of 46 percentage points. In ADM1_3, the coverage by occurrence is 80%, while the coverage by residence is 90%, with a difference of 10 percentage points (in the opposite direction).
+
+These patterns suggest a meaningful population flow between administrative areas. Specifically, in ADM1_2, the high coverage by occurrence alongside lower coverage by residence indicates that many individuals vaccinated in this area actually reside elsewhere. Conversely, ADM1_3 shows higher coverage by residence than by occurrence, suggesting that a significant number of its residents are traveling to other areas to receive their vaccinations.
+
+# Distribution Analysis
