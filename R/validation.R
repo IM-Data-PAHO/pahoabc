@@ -7,7 +7,9 @@
     stop(paste0("Error: ", value_name, " should be numeric (or NULL when not in use)."))
   }
 
-  .validate_length(value, value_name, min_len, exp_len, max_len)
+  if(!is.null(value)) {
+    .validate_length(value, value_name, min_len, exp_len, max_len)
+  }
 }
 
 #' Validate character values.
@@ -19,7 +21,9 @@
     stop(paste0("Error: ", value_name, " should be a character (or NULL when not in use)."))
   }
 
-  .validate_length(value, value_name, min_len, exp_len, max_len)
+  if(!is.null(value)) {
+    .validate_length(value, value_name, min_len, exp_len, max_len)
+  }
 }
 
 #' Validate length of vector.
