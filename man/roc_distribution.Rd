@@ -10,7 +10,7 @@ roc_distribution(
   birth_cohort,
   geo_level,
   include_self_matches = FALSE,
-  within_ADM1 = NA
+  within_ADM1 = NULL
 )
 }
 \arguments{
@@ -22,9 +22,9 @@ roc_distribution(
 
 \item{geo_level}{A character string specifying the geographic level to analyze. Must be either `ADM1` or `ADM2`.}
 
-\item{include_self_matches}{A boolean specifying whether to include those cases where the place of residence matches the place of vaccination (occurrence). Default is \code{FALSE}.}
+\item{include_self_matches}{A logical specifying whether to include those cases where the place of residence matches the place of vaccination (occurrence). Default is \code{FALSE}.}
 
-\item{within_ADM1}{A character string specifying the `ADM1` region of interest when `geo_level` is `ADM2`. If `geo_level` is `ADM2`, this parameter is required.}
+\item{within_ADM1}{A character string specifying the "ADM1" region of interest when \code{geo_level} is "ADM2". If \code{geo_level} is "ADM2", this parameter is required.}
 }
 \value{
 A data frame with proportions of doses applied by place of occurrence, for each place of residence.

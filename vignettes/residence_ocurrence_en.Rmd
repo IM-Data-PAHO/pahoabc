@@ -37,11 +37,11 @@ The `roc_coverage()` and `roc_barplot()` functions work together to perform cove
 
 Alternatively, the `roc_coverage_by()` function is available when you want to calculate coverage by either residence or occurrence (but not both). While it produces a similar table, its output is not compatible with `roc_barplot()`.
 
-![Figure 1. Expected workflow for coverage analysis)](roc_workflow_1.svg)
+![Figure 1. Expected workflow for coverage analysis](roc_workflow_1.svg)
 
-Here is a simple use case of the `roc_coverage()` function.
+Here is a simple use case of the `roc_coverage()` function, where we compute coverage by both metrics for the DTP1 vaccine in 2023 for our example datasets.
 
-```{r analysis-example, message=FALSE}
+```{r cov-analysis-example, message=FALSE}
 
 # compute coverage
 coverage_df <- roc_coverage(
@@ -60,7 +60,7 @@ coverage_df %>%
 
 This output may be fed directly into the `roc_barplot()` function as shown below.
 
-```{r viz-example, message=FALSE}
+```{r cov-viz-example, message=FALSE, fig.width=12, fig.height=6}
 
 # visualize output from roc_coverage()
 coverage_plot <- roc_barplot(
@@ -69,6 +69,7 @@ coverage_plot <- roc_barplot(
   vaccine = "DTP1"
 )
 
+# show
 coverage_plot
 ```
 
@@ -76,8 +77,112 @@ This chart shows the vaccination coverage achieved by each subnational administr
 
 We can observe that the coverage by **both residence and occurrence** in ADM1_1, ADM1_4, and ADM1_5 are similar. However, in ADM1_2 and ADM1_3, there are differences between the two types of coverage.
 
-In ADM1_2, the coverage by occurrence reaches 141%, while the coverage by residence is 95%, resulting in a difference of 46 percentage points. In ADM1_3, the coverage by occurrence is 80%, while the coverage by residence is 90%, with a difference of 10 percentage points (in the opposite direction).
+In ADM1_2, the coverage by occurrence reaches 141%, while the coverage by residence is 95%, resulting in a difference of 46 percentage points. In ADM1_3, the coverage by occurrence is 80%, while the coverage by residence is 90%, with a difference of 10 percentage points in favor of the coverage by residence.
 
 These patterns suggest a meaningful population flow between administrative areas. Specifically, in ADM1_2, the high coverage by occurrence alongside lower coverage by residence indicates that many individuals vaccinated in this area actually reside elsewhere. Conversely, ADM1_3 shows higher coverage by residence than by occurrence, suggesting that a significant number of its residents are traveling to other areas to receive their vaccinations.
 
 # Distribution Analysis
+
+The `roc_distribution()` and `roc_heatmap()` functions provide a way of analyzing population flow between administrative areas. For example, one might be interested in observing where people who reside in a single region get vaccinated (e.g., do they all get vaccinated within their own region, or do they move to other regions?).
+
+Figure 2 shows the expected workflow for these functions.
+
+![Figure 2. Expected workflow for distribution analysis](roc_workflow_2.svg)
+
+## Analysis at the first administrative level
+
+This analysis only requires you to provide your EIR in conjunction with other simple parameters. For example, let us compute how vaccination is distributed at the first administrative level for the DTP1 vaccine in 2022.
+
+```{r dist-analysis-example, message=FALSE}
+
+# compute distribution of doses for each place of residence
+distribution_df <- roc_distribution(
+  data.EIR = pahoabc.EIR,
+  vaccine = "DTP1",
+  geo_level = "ADM1",
+  birth_cohort = 2022,
+  include_self_matches = TRUE
+)
+
+# show results in table (view only a couple of regions for simplicity)
+distribution_df %>%
+  filter(ADM1_residence %in% c("ADM1_1", "ADM1_3")) %>%
+  kable(digits = 3, caption = "Vaccination distribution for each place of residence by place of ocurrence")
+```
+
+For example, 88% of people who reside in ADM1_3 got vaccinated for DTP1 there as well. But an additional 11% received their DTP1 vaccination elsewhere (namely, in ADM1_2). If you want to further drill into the people that got vaccinated in a place different from their place of residence, you may set the `include_self_matches` parameter to `FALSE`.
+
+```{r dist-analysis-example-2, message=FALSE}
+
+# compute distribution of doses for each place of residence
+distribution_df2 <- roc_distribution(
+  data.EIR = pahoabc.EIR,
+  vaccine = "DTP1",
+  geo_level = "ADM1",
+  birth_cohort = 2022,
+  # set this to FALSE to exclude cases where people get vaccinated in their place of residence
+  include_self_matches = FALSE
+)
+
+# show results in table (focus on ADM1_3 only for this example)
+distribution_df2 %>%
+  filter(ADM1_residence == "ADM1_3") %>%
+  kable(digits = 3, caption = "Where do residents of ADM1_3 get vaccinated?")
+```
+
+This shows that 97% of the people in ADM1_3 **who do not get vaccinated in their place of residence**, get vaccinated in ADM1_2.
+
+A clearer picture of this can be provided by the `roc_heatmap()` function.
+
+```{r dist-viz-example, message=FALSE, fig.width=12, fig.height=6}
+library(patchwork) # to show them side by side
+
+# generate the plots
+distribution_plot <- roc_heatmap(distribution_df) # with self matches
+distribution_plot2 <- roc_heatmap(distribution_df2) # without self matches
+
+# show them side by side
+distribution_plot + distribution_plot2
+```
+
+> **Note**
+> 
+> The plot on the right shows the proportion of doses administered in a place **different from their place of residence**. This is why the diagonal is empty.
+
+These plots may be read either in a vertical or horizontal fashion. When reading the plot vertically, the columns will sum to 100%. That is, each column represents the population of, say, ADM1_1 and where they get vaccinated. For example, if we concentrate on the plot on the right and read it vertically, we may say that, of the total amount of people who reside in ADM1_1 and get vaccinated in a place different from their place of residence, 64% does so in ADM1_3, 27% in ADM1_2 and a remaining 9% in ADM1_4.
+
+When reading horizontally, rows **will not** sum to 100%, but are still indicative of the residences of people getting vaccinated in a certain region. For example, reading the plot on the left in a horizontal fashion we may note that 94% of the residents of ADM1_2 get vaccinated there as well, but this region also vaccinates a significant proportion of residents of ADM1_3 (11%).
+
+## Analysis at the second administrative level
+
+An analysis at a more granular level is beneficial in this case. Let us repeat the above process, but at the second administrative level (e.g., districts within a certain region).
+
+```{r dist-analysis-example-3, message=FALSE, fig.width=12, fig.height=6}
+
+# compute distribution of doses for each place of residence at second
+# administrative level (focus on ADM1_3 only for this example)
+distribution_df3 <- roc_distribution(
+  data.EIR = pahoabc.EIR,
+  vaccine = "DTP1",
+  geo_level = "ADM2",
+  birth_cohort = 2022,
+  include_self_matches = FALSE,
+  within_ADM1 = "ADM1_3" # set the region to drill into
+)
+
+# show results in plot 
+distribution_plot3 <- roc_heatmap(
+  distribution_df3
+)
+
+# show
+distribution_plot3
+```
+
+In this heatmap, we observe the proportion of vaccination events that take place in a location different from the place of residence, broken down by the second administrative level.
+
+As an example, it is notable that among all individuals residing in ADM2_3_10 who are vaccinated outside their area of residence, 71% receive their vaccine in ADM2_3_11. Similarly, 44% of individuals from ADM2_3_23 who are vaccinated elsewhere are also vaccinated in ADM2_3_11.
+
+Looking at the heatmap horizontally, we can see that ADM2_3_20 provides vaccinations to a large number of people coming from other areas: 22% of those from ADM2_3_12, 21% from ADM2_3_15, 22% from ADM2_3_17, 11% from ADM2_3_18, and 36% from ADM2_3_7 are vaccinated there.
+
+The top row is also interesting, since it indicates people getting vaccinated outside of ADM1_3 entirely. For example, in column 4, 86% of the residents of ADM3_3_13 get vaccinated outside of ADM1_3, suggesting a strong population flow.

@@ -26,6 +26,16 @@
   }
 }
 
+#' Validate logical values.
+#'
+#' @keywords internal
+#' @noRd
+.validate_logical <- function(value, value_name) {
+  if(!is.logical(value) | is.na(value)) {
+    stop(paste0("Error: ", value_name, " should be a logical value."))
+  }
+}
+
 #' Validate length of vector.
 #'
 #' @keywords internal
@@ -54,11 +64,17 @@
 #'
 #' @keywords internal
 #' @noRd
-.validate_geo_level <- function(geo_level) {
+.validate_geo_level <- function(geo_level, ADM_to_check = c("ADM0", "ADM1", "ADM2")) {
   .validate_character(geo_level, "geo_level", 1)
 
-  if (!(geo_level %in% c("ADM0", "ADM1", "ADM2"))) {
-    stop("Error: The geo_level parameter should be 'ADM0', 'ADM1', or 'ADM2'.")
+  if(!(geo_level %in% ADM_to_check)) {
+    stop(
+      paste0(
+        "Error: The geo_level parameter should be one of: ",
+        paste0(ADM_to_check, collapse = ", "),
+        "."
+      )
+    )
   }
 }
 
@@ -169,6 +185,22 @@
   }
 }
 
+#' Validate input data to roc_heatmap.
+#'
+#' @keywords internal
+#' @noRd
+.validate_roc_heatmap_data <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  minimum_columns <- c("frequency", "proportion")
+
+  if(!all(minimum_columns %in% names(data))) {
+    stop("Error: data should be the output from roc_distribution.")
+  }
+}
+
 #' Detect the smallest admin level in a data frame.
 #'
 #' @keywords internal
@@ -177,6 +209,10 @@
 
   columns_in_data <- names(data)
   ADM_detected <- 0
+
+  # remove _residence or _ocurrence suffixes
+  columns_in_data <- str_remove(columns_in_data, "_residence")
+  columns_in_data <- str_remove(columns_in_data, "_ocurrence")
 
   if(any(c("ADM1", "ADM2") %in% columns_in_data)) {
     if("ADM2" %in% columns_in_data) {

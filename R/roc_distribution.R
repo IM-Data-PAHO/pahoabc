@@ -9,23 +9,25 @@
 #' @param vaccine A character string specifying the vaccine dose to analyze (e.g., "DTP1").
 #' @param birth_cohort An integer specifying the birth cohort to analyze.
 #' @param geo_level A character string specifying the geographic level to analyze. Must be either `ADM1` or `ADM2`.
-#' @param include_self_matches A boolean specifying whether to include those cases where the place of residence matches the place of vaccination (occurrence). Default is \code{FALSE}.
-#' @param within_ADM1 A character string specifying the `ADM1` region of interest when `geo_level` is `ADM2`. If `geo_level` is `ADM2`, this parameter is required.
+#' @param include_self_matches A logical specifying whether to include those cases where the place of residence matches the place of vaccination (occurrence). Default is \code{FALSE}.
+#' @param within_ADM1 A character string specifying the "ADM1" region of interest when \code{geo_level} is "ADM2". If \code{geo_level} is "ADM2", this parameter is required.
 #'
 #' @return A data frame with proportions of doses applied by place of occurrence, for each place of residence.
 #'
 #' @import dplyr
 #'
 #' @export
-roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, include_self_matches = FALSE, within_ADM1 = NA) {
+roc_distribution <- function(data.EIR, vaccine, birth_cohort, geo_level, include_self_matches = FALSE, within_ADM1 = NULL) {
 
-  # check geo_level is correctly specified
-  if(!(geo_level %in% c("ADM1", "ADM2"))) {
-    stop("Error: The geo_level parameter should be ADM1 or ADM2.")
-  }
+  .validate_character(vaccine, "vaccine", exp_len = 1)
+  .validate_vaccines(vaccine, data.EIR, "data.EIR")
+  .validate_numeric(birth_cohort, "birth_cohort", exp_len = 1)
+  .validate_geo_level(geo_level, ADM_to_check = c("ADM1", "ADM2"))
+  .validate_logical(include_self_matches, "include_self_matches")
+  .validate_character(within_ADM1, "within_ADM1", exp_len = 1)
 
   # check if within_ADM1 is specified if ADM2 selected
-  if(geo_level == "ADM2" && is.na(within_ADM1)) {
+  if(geo_level == "ADM2" & is.null(within_ADM1)) {
     stop("Error: The within_ADM1 parameter must be specified when geo_level is ADM2.")
   }
 

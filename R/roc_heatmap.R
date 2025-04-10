@@ -14,13 +14,16 @@
 #'
 #' @export
 roc_heatmap <- function(data, digits = 0) {
+
+  .validate_roc_heatmap_data(data)
+  .validate_numeric(digits, "digits", exp_len = 1)
+
   # check if ADM1 or ADM2
-  is_adm2 <- any(stringr::str_detect(names(data), "ADM2"))
+  ADM_detected <- .detect_geo_level(data)
 
   # construct the column names according to the geographic level
-  geo_level <- ifelse(is_adm2, "2", "1")
-  residence_col <- paste0("ADM", geo_level, "_residence")
-  occurrence_col <- paste0("ADM", geo_level, "_occurrence")
+  residence_col <- paste0("ADM", ADM_detected, "_residence")
+  occurrence_col <- paste0("ADM", ADM_detected, "_occurrence")
 
   # preparations for plot
   prepare_data <- data %>%
@@ -30,7 +33,7 @@ roc_heatmap <- function(data, digits = 0) {
     mutate(text_color = ifelse(proportion > 50, "white", "black"))
 
   # reorder occurrence column: "OTHER" at the end always
-  if(is_adm2) {
+  if(ADM_detected == 2) {
     occurrence_levels <- prepare_data[[occurrence_col]] %>%
       unique() %>%
       sort() %>%
