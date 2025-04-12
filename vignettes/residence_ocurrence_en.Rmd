@@ -1,5 +1,5 @@
 ---
-title: "Coverage by Place of Residence vs. Ocurrence"
+title: "Coverage by Place of Residence vs. Occurrence"
 author: "PAHO/CIM"
 date: "April 9, 2025"
 output: 
@@ -19,7 +19,7 @@ library(dplyr)
 library(knitr)
 ```
 
-# Introduction
+# Rationale
 
 It is common for Electronic Immunization Registries (EIR) to collect both the place of residence and the place of occurrence of the vaccination event. Vaccination coverage can be estimated by grouping events according to either location. However, denominators are typically estimated based on the place of residence.
 
@@ -33,11 +33,15 @@ The residence vs. occurrence module in the PAHOabc package provides a set of fun
 
 # Coverage Analysis
 
+## Expected Workflow
+
 The `roc_coverage()` and `roc_barplot()` functions work together to perform coverage analysis and visualization. The `roc_coverage()` function computes vaccination coverage by both residence and occurrence across selected administrative levels, years, and vaccines. Its output (a data table) is structured to be directly compatible with `roc_barplot()`, which generates a visualization for a specific year and vaccine.
 
 Alternatively, the `roc_coverage_by()` function is available when you want to calculate coverage by either residence or occurrence (but not both). While it produces a similar table, its output is not compatible with `roc_barplot()`.
 
-![Figure 1. Expected workflow for coverage analysis](roc_workflow_1.svg)
+![Figure 1. Expected workflow for residence/occurrence coverage analysis.](roc_workflow_1.svg)
+
+## Example
 
 Here is a simple use case of the `roc_coverage()` function, where we compute coverage by both metrics for the DTP1 vaccine in 2023 for our example datasets.
 
@@ -83,6 +87,8 @@ These patterns suggest a meaningful population flow between administrative areas
 
 # Distribution Analysis
 
+## Expected Workflow
+
 The `roc_distribution()` and `roc_heatmap()` functions provide a way of analyzing population flow between administrative areas. For example, one might be interested in observing where people who reside in a single region get vaccinated (e.g., do they all get vaccinated within their own region, or do they move to other regions?).
 
 Figure 2 shows the expected workflow for these functions.
@@ -107,7 +113,7 @@ distribution_df <- roc_distribution(
 # show results in table (view only a couple of regions for simplicity)
 distribution_df %>%
   filter(ADM1_residence %in% c("ADM1_1", "ADM1_3")) %>%
-  kable(digits = 3, caption = "Vaccination distribution for each place of residence by place of ocurrence")
+  kable(digits = 3, caption = "Vaccination distribution for each place of residence by place of occurrence")
 ```
 
 For example, 88% of people who reside in ADM1_3 got vaccinated for DTP1 there as well. But an additional 11% received their DTP1 vaccination elsewhere (namely, in ADM1_2). If you want to further drill into the people that got vaccinated in a place different from their place of residence, you may set the `include_self_matches` parameter to `FALSE`.
