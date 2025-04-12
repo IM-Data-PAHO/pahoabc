@@ -2,9 +2,10 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  complete_schedule_en: complete_schedule_en.html
   nominal_dropout_en: nominal_dropout_en.html
   residence_ocurrence_en: residence_ocurrence_en.html
-last_built: 2025-04-10T18:28Z
+last_built: 2025-04-12T00:54Z
 urls:
   reference: https://im-data-paho.github.io/pahoabc/reference
   article: https://im-data-paho.github.io/pahoabc/articles
