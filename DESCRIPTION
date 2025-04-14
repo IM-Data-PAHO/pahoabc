@@ -7,6 +7,8 @@ Authors@R: c(
     person("Dan", "Alvarez", email = "alvarezdan@paho.org", role = "ctb"),
     person("Rafael", "Leon", email = "leonraf@paho.org", role = "ctb"),
     person("Alejandro", "Vasquez", role = "rev"),
+    person("Pamela", "Burgos", email = "burgospam@paho.org", role = "rev"),
+    person("Marcela", "Contreras", email = "contrermar@paho.org", role = "rev"),
     person("Pan American Health Organization", email = "immunization@paho.org", role = c("aut", "cph", "fnd", "cre"))
   )
 Maintainer: PAHO/CIM <immunization@paho.org>
