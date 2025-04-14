@@ -19,7 +19,17 @@ Within the framework of the resolution "Reinvigorating immunization as a public 
 
 ### How does PAHOabc respond to these lines of action?
 
-[Pending]
+The PAHOabc R package is designed to support CIM's mission by providing advanced data analysis tools to strengthen immunization programs across the Americas. Aligned with CIM's strategic action lines, this package facilitates:
+
+•	Enhanced Surveillance and Monitoring: 
+PAHOabc enables countries to go beyond basic coverage analysis, facilitating the estimation of innovative indicators such as complete schedule coverage, nominal dropout rates, and other key metrics.
+
+•	Evidence-Based Decision Making: 
+By providing tools for in-depth data exploration and visualization, PAHOabc supports the use of scientific evidence to guide program decisions and implementation.
+
+•	Strengthening Data Capabilities: 
+This package aims to strengthen the data analysis capabilities of the human resources that are part of the immunization programs.
+By empowering countries to leverage their data effectively, PAHOabc contributes to CIM's goal of revitalizing immunization programs and ensuring equitable access to life-saving vaccines.
 
 ## Installation
 
