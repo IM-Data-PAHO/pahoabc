@@ -1,11 +1,35 @@
 url: https://im-data-paho.github.io/pahoabc/
+
 template:
   bootstrap: 5
+
 citation: true
+
 navbar:
   structure:
     left:  [reference, articles]
     right: [search, github]
+  components:
+    articles:
+      text: Guides
+      menu:
+      - text: Modules
+      - text: Nominal Dropout Rate
+        href: articles/nominal_dropout_en.html
+      - text: Residence vs. Occurrence Coverage
+        href: articles/residence_occurrence_en.html
+      - text: Complete Schedule Coverage
+        href: articles/complete_schedule_en.html
+      - text: -------
+      - text: Other guides
+      - text: Using our example datasets
+        href: articles/example_datasets_en.html
+
+authors:
+   Pan American Health Organization:
+     html: "<img src='man/figures/pahobrand-blue-stacked-2024-en.png' height='100' alt='PAHO'/>"
+     href: "https://www.paho.org/en"
+
 reference:
   - title: Complete Schedule Coverage
     desc: Functions for calculating and visualizing complete schedule coverage.
