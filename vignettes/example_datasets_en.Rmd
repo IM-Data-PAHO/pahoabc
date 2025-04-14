@@ -21,7 +21,7 @@ library(knitr)
 
 # Overview
 
-The PAHOabc package includes a set of example datasets to help users understand how to use its functions effectively. These datasets simulate a fictional country's immunization system and are structured to work seamlessly with the tools provided by the package. This vignette provides an overview of each dataset and describes how they are used throughout the package's modules.
+The PAHOabc package includes a set of example datasets to help users understand how to use its functions effectively. These datasets simulate a fictional country's immunization information system and are structured to work seamlessly with the tools provided by the package. This vignette provides an overview of each dataset and describes how they are used throughout the package's modules.
 
 # List of example datasets
 
@@ -33,11 +33,11 @@ The `pahoabc::pahoabc.EIR` dataframe is the most important dataset in the packag
 pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
-All records include ADM1 and ADM2 identifiers for both residence and occurrence, making it possible to analyze population flows and coverage across different geographic levels.
+All records include subnational geographic levels ADM1 and ADM2 identifiers for both residence and occurrence, making it possible to analyze population flows and coverage across different geographic levels.
 
 ## pahoabc.schedule
 
-The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing each vaccine dose and its recommended age of administration (in years). It helps the package determine whether an individual is up to date with their vaccinations.
+The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing each vaccine dose and its recommended age of administration (in months). It helps the package determine whether an individual is up to date with their vaccinations.
 
 ```{r pahoabc-schedule, message=FALSE}
 pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
@@ -49,7 +49,7 @@ pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
 
 ## Population datasets
 
-Population datasets provide population estimates at different geographic levels, for different years and children of varying ages. Depending on the geographic level at which we want to perform an analysis, PAHOabc may require you to provide the corresponding population to use as a denominator (mainly for coverage analyses).
+Population datasets provide population estimates at different geographic levels, for various years and children of varying ages. Depending on the geographic level at which we want to perform an analysis, PAHOabc may require you to provide the corresponding population to use as a denominator (mainly for coverage analyses).
 
 ### pahoabc.pop.ADM0
 
@@ -61,7 +61,7 @@ pahoabc.pop.ADM0 %>% kable(caption = "Example Population at ADM0")
 
 ### pahoabc.pop.ADM1
 
-The `pahoabc::pahoabc.pop.ADM1` dataset provides population data aggregated at the first administrative level (ADM1), typically corresponding to regions, provinces, or states.
+The `pahoabc::pahoabc.pop.ADM1` dataset provides population data aggregated at the first subnational administrative level (ADM1), typically corresponding to regions, provinces, or states.
 
 ```{r pahoabc-pop-ADM1, message=FALSE}
 pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
