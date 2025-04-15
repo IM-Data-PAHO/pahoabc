@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>PAHO ABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage. • pahoabc</title>
+<title>PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage. • pahoabc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -16,9 +16,9 @@
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="PAHO ABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage.">
-<meta name="description" content="A set of immunization analyses beyond coverage. Use four spaces when indenting paragraphs within the Description.">
-<meta property="og:description" content="A set of immunization analyses beyond coverage. Use four spaces when indenting paragraphs within the Description.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage.">
+<meta name="description" content="A set of immunization analyses beyond coverage.">
+<meta property="og:description" content="A set of immunization analyses beyond coverage.">
 <meta property="og:image" content="https://im-data-paho.github.io/pahoabc/logo.png">
 </head>
 <body>
@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,11 +40,15 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
+<li><h6 class="dropdown-header" data-toc-skip>Modules</h6></li>
     <li><a class="dropdown-item" href="articles/nominal_dropout_en.html">Nominal Dropout Rate</a></li>
-    <li><a class="dropdown-item" href="articles/residence_ocurrence_en.html">Coverage by Place of Residence vs. Occurrence</a></li>
+    <li><a class="dropdown-item" href="articles/residence_occurrence_en.html">Residence vs. Occurrence Coverage</a></li>
+    <li><a class="dropdown-item" href="articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
+    <li><a class="dropdown-item" href="articles/example_datasets_en.html">Using our example datasets</a></li>
   </ul>
 </li>
       </ul>
@@ -67,11 +71,58 @@
 </div>
 <p>PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage. For documentation and vignettes, see: <a href="https://im-data-paho.github.io/pahoabc">https://im-data-paho.github.io/pahoabc</a>.</p>
 <div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>The Special Program Comprehensive Immunization (CIM) at the Pan American Health Organization (PAHO) seeks to promote and coordinate technical cooperation and partnerships to support Member States’ efforts to sustainably and equitably reduce morbidity and mortality from vaccine-preventable diseases (VPDs) through control and elimination strategies to improve the quality of life and life expectancy of the peoples of the Americas.</p>
+<p>For over 40 years, the success of the Expanded Program on Immunization (EPI) has made the Region of the Americas a global leader in the elimination and control of VPDs, such as smallpox, polio, rubella, congenital rubella syndrome, measles, and neonatal tetanus. Since the creation of the EPI in 1977, countries have moved from using six vaccines in their national vaccination schemes, to an average of more than 16 vaccines, which represent greater protection for the population.</p>
+<p>Within the framework of the resolution “Reinvigorating immunization as a public good for universal health” approved in 2021 by PAHO’s governing bodies, CIM seeks to revitalize immunization programs in Member States by implementing innovative approaches and best practices through six lines of action:</p>
+<ol style="list-style-type: decimal">
+<li>Strengthen governance, leadership and financing of immunization programs.</li>
+<li>Improve immunization coverage monitoring and surveillance by incorporating digital intelligence strategies into routine analysis.</li>
+<li>Strengthen the integration of immunization programs into the primary health care system toward universal health.</li>
+<li>Develop innovative and strategic communication approaches to build social awareness and trust in vaccines and increase access to services.</li>
+<li>Strengthening human resource capacities for immunization programs.</li>
+<li>Using scientific evidence to guide decision making and program delivery.</li>
+</ol>
+<div class="section level3">
+<h3 id="how-does-pahoabc-respond-to-these-lines-of-action">How does PAHOabc respond to these lines of action?<a class="anchor" aria-label="anchor" href="#how-does-pahoabc-respond-to-these-lines-of-action"></a>
+</h3>
+<p>The PAHOabc R package is designed to support PAHO/CIM’s mission by providing advanced data analysis tools to strengthen immunization programs across the Americas. Aligned with CIM’s strategic action lines, this package facilitates:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Enhanced Surveillance and Monitoring</strong><br>
+PAHOabc enables countries to go beyond basic coverage analysis, facilitating the estimation of innovative indicators such as complete schedule coverage, nominal dropout rates, and other key metrics.</p></li>
+<li><p><strong>Evidence-Based Decision Making</strong><br>
+By providing tools for in-depth data exploration and visualization, PAHOabc supports the use of scientific evidence to guide program decisions and implementation.</p></li>
+<li><p><strong>Strengthening Data Capabilities</strong><br>
+This package aims to strengthen the data analysis capabilities of the human resources that are part of the immunization programs. By empowering countries to leverage their data effectively, PAHOabc contributes to CIM’s goal of revitalizing immunization programs and ensuring equitable access to life-saving vaccines.</p></li>
+</ol>
+</div>
+</div>
+<div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install from GitHub</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<p>PAHOabc contains three main modules:</p>
+<ol style="list-style-type: decimal">
+<li><p><a href="https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html"><strong>Residence vs. Occurrence Coverage</strong></a><br>
+Tools for comparing vaccination coverage based on where people live versus where they were vaccinated. This module helps identify population movement and service coverage gaps across geographic areas.</p></li>
+<li><p><a href="https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html"><strong>Nominal Dropout Rate Analysis</strong></a><br>
+Calculates dropout rates between any two vaccine doses using nominal data. This module ensures accurate follow-up tracking across a vaccination schedule.</p></li>
+<li><p><a href="https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html"><strong>Complete Schedule Coverage</strong></a><br>
+Evaluates whether individuals have received all required doses in a national immunization schedule. This module differs from standard coverage calculation as it evaluates each individual’s compliance of the national immunization schedule.</p></li>
+</ol>
+<p>Each module works seamlessly with the example datasets provided in the package. These examples make it easy to test out the functionality and serve as a reference when preparing your own data. Learn more about these example datasets <a href="https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.html">in this vignette</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="contribute">Contribute<a class="anchor" aria-label="anchor" href="#contribute"></a>
+</h2>
+<p>We welcome suggestions, bug reports, and feature requests through the <a href="https://github.com/IM-Data-PAHO/pahoabc/issues" class="external-link">GitHub Issues</a> page. If you’d like to contribute code or fixes, feel free to open a <a href="https://github.com/IM-Data-PAHO/pahoabc/pulls" class="external-link">pull request</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -86,7 +137,7 @@
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small>file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small>PAHO/CIM Open Source License</small></li>
 </ul>
 </div>
 
@@ -101,7 +152,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Pan American Health Organization <br><small class="roles"> Author, copyright holder, funder, maintainer </small>  </li>
+<li>
+<a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a> <br><small class="roles"> Author, copyright holder, funder, maintainer </small>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -113,7 +165,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Pan American Health Organization.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

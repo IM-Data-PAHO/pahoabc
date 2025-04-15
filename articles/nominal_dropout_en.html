@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,11 +37,15 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
+<li><h6 class="dropdown-header" data-toc-skip>Modules</h6></li>
     <li><a class="dropdown-item" href="../articles/nominal_dropout_en.html">Nominal Dropout Rate</a></li>
-    <li><a class="dropdown-item" href="../articles/residence_ocurrence_en.html">Coverage by Place of Residence vs. Occurrence</a></li>
+    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Coverage</a></li>
+    <li><a class="dropdown-item" href="../articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our example datasets</a></li>
   </ul>
 </li>
       </ul>
@@ -67,7 +71,7 @@
             
             <h4 data-toc-skip class="date">December 4, 2024</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.3.0/vignettes/nominal_dropout_en.Rmd" class="external-link"><code>vignettes/nominal_dropout_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/main/vignettes/nominal_dropout_en.Rmd" class="external-link"><code>vignettes/nominal_dropout_en.Rmd</code></a></small>
       <div class="d-none name"><code>nominal_dropout_en.Rmd</code></div>
     </div>
 
@@ -126,7 +130,7 @@ database simulates an EIR from a fictitious country.</p>
 <span></span>
 <span><span class="co">## Read the sample dataset into a variable ----</span></span>
 <span><span class="va">EIR</span> <span class="op">&lt;-</span> <span class="va">pahoabc.EIR</span></span>
-<span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">EIR</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pillar/man/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">EIR</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Rows: 492,688</span></span>
 <span><span class="co">## Columns: 8</span></span>
 <span><span class="co">## $ ID              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 191997<span style="color: #949494;">, </span>212189<span style="color: #949494;">, </span>118063<span style="color: #949494;">, </span>118063<span style="color: #949494;">, </span>130751<span style="color: #949494;">, </span>136532<span style="color: #949494;">, </span>212120…</span></span>
@@ -177,7 +181,7 @@ variables so make sure these exist in your dataframe.</p>
 <span><span class="co">## Data contains duplicate rows where ID and dose are duplicated. We recommend you</span></span>
 <span><span class="co">## verify for duplicates before running the process to increase accuracy.</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">example_dropout</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pillar/man/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">example_dropout</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Rows: 10</span></span>
 <span><span class="co">## Columns: 5</span></span>
 <span><span class="co">## Groups: ADM1_residence [5]</span></span>
@@ -283,7 +287,7 @@ dropoutplot()</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Pan American Health Organization.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

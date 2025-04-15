@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,11 +37,15 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
+<li><h6 class="dropdown-header" data-toc-skip>Modules</h6></li>
     <li><a class="dropdown-item" href="../articles/nominal_dropout_en.html">Nominal Dropout Rate</a></li>
-    <li><a class="dropdown-item" href="../articles/residence_ocurrence_en.html">Coverage by Place of Residence vs. Occurrence</a></li>
+    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Coverage</a></li>
+    <li><a class="dropdown-item" href="../articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our example datasets</a></li>
   </ul>
 </li>
       </ul>
@@ -67,7 +71,7 @@
             
             <h4 data-toc-skip class="date">April 11, 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.3.0/vignettes/complete_schedule_en.Rmd" class="external-link"><code>vignettes/complete_schedule_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/main/vignettes/complete_schedule_en.Rmd" class="external-link"><code>vignettes/complete_schedule_en.Rmd</code></a></small>
       <div class="d-none name"><code>complete_schedule_en.Rmd</code></div>
     </div>
 
@@ -104,30 +108,30 @@ format as the example schedule shown below.</p>
 <span><span class="fu">pahoabc</span><span class="fu">::</span><span class="va"><a href="../reference/pahoabc.schedule.html">pahoabc.schedule</a></span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">kable</span><span class="op">(</span></span>
 <span>    caption <span class="op">=</span> <span class="st">"Example country vaccination schedule"</span>,</span>
-<span>    col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dose"</span>, <span class="st">"Recommended age (in years)"</span><span class="op">)</span></span>
+<span>    col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dose"</span>, <span class="st">"Recommended age (in months)"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Example country vaccination schedule</caption>
 <thead><tr class="header">
 <th align="left">Dose</th>
-<th align="right">Recommended age (in years)</th>
+<th align="right">Recommended age (in months)</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">SRP1</td>
-<td align="right">1</td>
+<td align="right">12</td>
 </tr>
 <tr class="even">
 <td align="left">DTP1</td>
-<td align="right">0</td>
+<td align="right">2</td>
 </tr>
 <tr class="odd">
 <td align="left">DTP2</td>
-<td align="right">0</td>
+<td align="right">4</td>
 </tr>
 <tr class="even">
 <td align="left">DTP3</td>
-<td align="right">0</td>
+<td align="right">6</td>
 </tr>
 <tr class="odd">
 <td align="left">BCG RN</td>
@@ -135,7 +139,7 @@ format as the example schedule shown below.</p>
 </tr>
 <tr class="even">
 <td align="left">YFV1</td>
-<td align="right">0</td>
+<td align="right">12</td>
 </tr>
 </tbody>
 </table>
@@ -271,7 +275,7 @@ a newborn’s BCG vaccine using temporary identification numbers.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Pan American Health Organization.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
