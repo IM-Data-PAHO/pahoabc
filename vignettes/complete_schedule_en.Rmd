@@ -37,7 +37,7 @@ To enable this package to analyze the vaccination schedule, it is necessary to p
 pahoabc::pahoabc.schedule %>% 
   kable(
     caption = "Example country vaccination schedule",
-    col.names = c("Dose", "Recommended age (in years)")
+    col.names = c("Dose", "Recommended age (in months)")
   )
 ```
 

@@ -85,7 +85,7 @@ cs_upset <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, 
             )
           )
         ) +
-          ylab("Number of doses")
+          ylab("Number of people")
       ),
       # modify labels on horizontal bars
       set_sizes = (
