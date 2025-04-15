@@ -41,14 +41,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 PAHOabc contains three main modules:
 
-1. **Residence vs. Occurrence Analysis**  
-   Tools for comparing vaccination coverage based on where people live versus where they were vaccinated. This module helps identify population movement and service coverage gaps across geographic areas. Learn more [in this vignette](https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html).
+1. [**Residence vs. Occurrence Coverage**](https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html)  
+   Tools for comparing vaccination coverage based on where people live versus where they were vaccinated. This module helps identify population movement and service coverage gaps across geographic areas.
 
-2. **Nominal Dropout Analysis**  
-   Calculates dropout rates between any two vaccine doses using nominal data. This module ensures accurate follow-up tracking across a vaccination schedule. Learn more [in this vignette](https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html).
+2. [**Nominal Dropout Rate Analysis**](https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html)  
+   Calculates dropout rates between any two vaccine doses using nominal data. This module ensures accurate follow-up tracking across a vaccination schedule.
 
-3. **Complete Schedule Coverage**  
-   Evaluates whether individuals have received all required doses in a national immunization schedule. This module differs from standard coverage calculation as it evaluates each individual's compliance of the national immunization schedule. Learn more [in this vignette](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html).
+3. [**Complete Schedule Coverage**](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html)  
+   Evaluates whether individuals have received all required doses in a national immunization schedule. This module differs from standard coverage calculation as it evaluates each individual's compliance of the national immunization schedule.
 
 Each module works seamlessly with the example datasets provided in the package. These examples make it easy to test out the functionality and serve as a reference when preparing your own data. Learn more about these example datasets [in this vignette](https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.html).
 
