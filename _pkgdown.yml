@@ -38,7 +38,7 @@ reference:
       - cs_barplot
       - cs_upset
 
-  - title: Dropout Rate
+  - title: Nominal Dropout Rate
     desc: Functions for calculating and visualizing nominal dropout rate.
     contents:
       - nominal_dropout
