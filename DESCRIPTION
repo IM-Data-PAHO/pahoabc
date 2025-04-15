@@ -1,7 +1,7 @@
 Package: pahoabc
 Type: Package
 Title: PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage.
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(
     person("Ignacio", "Castro", email = "castroign@paho.org", role = "ctb"),
     person("Dan", "Alvarez", email = "alvarezdan@paho.org", role = "ctb"),
@@ -13,7 +13,6 @@ Authors@R: c(
   )
 Maintainer: PAHO/CIM <immunization@paho.org>
 Description: A set of immunization analyses beyond coverage.
-    Use four spaces when indenting paragraphs within the Description.
 License: PAHO/CIM Open Source License
 Encoding: UTF-8
 LazyData: true
