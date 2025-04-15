@@ -22,7 +22,7 @@ cs_coverage(
 
 \item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.}
 
-\item{max_age}{Numeric (optional). The maximum age up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.}
+\item{max_age}{Numeric (optional). The maximum age (in months) up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.}
 
 \item{data.pop}{Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.}
 }

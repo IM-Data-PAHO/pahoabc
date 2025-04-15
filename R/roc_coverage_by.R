@@ -27,6 +27,9 @@ roc_coverage_by <- function(coverage_type, data.EIR, data.schedule, data.pop, ge
   .validate_vaccines(vaccines, data.schedule, "data.schedule")
   .validate_vaccines(vaccines, data.EIR, "data.EIR")
 
+  # convert schedule to years
+  this_schedule <- .schedule_to_years(data.schedule)
+
   # prepare EIR
   prepare_EIR <- data.EIR %>%
     select(ID, starts_with("date"), ends_with(coverage_type), dose) %>%
@@ -35,7 +38,7 @@ roc_coverage_by <- function(coverage_type, data.EIR, data.schedule, data.pop, ge
       ADM2 = !!sym(paste0("ADM2_", coverage_type))
     ) %>%
     # add vaccination schedule per vaccine
-    left_join(., data.schedule, by = c("dose")) %>%
+    left_join(., this_schedule, by = c("dose")) %>%
     rename(age = age_schedule)
 
   # calculate applied doses

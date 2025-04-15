@@ -5,7 +5,7 @@
 #' @format A data frame with X rows and 2 variables:
 #' \describe{
 #'   \item{dose}{The name of the vaccine dose.}
-#'   \item{age_schedule}{The age of the target population for that dose.}
+#'   \item{age_schedule}{The age of the target population for that dose (in months).}
 #' }
 #' @source pahoabc
 "pahoabc.schedule"
