@@ -16,6 +16,7 @@ output:
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
 library(pahoabc)
 library(dplyr)
+library(ggplot2)
 library(knitr)
 ```
 
@@ -243,6 +244,10 @@ library(patchwork) # to show them side by side
 # generate the plots
 distribution_plot <- roc_heatmap(distribution_df) # with self matches
 distribution_plot2 <- roc_heatmap(distribution_df2) # without self matches
+
+# add subtitle
+distribution_plot <- distribution_plot + labs(subtitle = "With self matches")
+distribution_plot2 <- distribution_plot2 + labs(subtitle = "Without self matches")
 
 # show them side by side
 distribution_plot + distribution_plot2
