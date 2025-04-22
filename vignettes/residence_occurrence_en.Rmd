@@ -194,7 +194,7 @@ The figure below shows the expected workflow for these functions.
 
 ### Example at First Administrative Level
 
-This analysis only requires you to provide your EIR in conjunction with other simple parameters. For example, let us compute how vaccination is distributed at the first administrative level for the DTP1 vaccine in 2022.
+This analysis only requires you to provide your EIR in conjunction with other simple parameters. For example, let us compute how vaccination is distributed at the first administrative level for the DTP1 vaccine in 2023.
 
 ```{r dist-analysis-example, message=FALSE}
 
@@ -203,7 +203,7 @@ distribution_df <- roc_distribution(
   data.EIR = pahoabc.EIR,
   vaccine = "DTP1",
   geo_level = "ADM1",
-  birth_cohort = 2022,
+  birth_cohort = 2023,
   include_self_matches = TRUE
 )
 
@@ -213,7 +213,7 @@ distribution_df %>%
   kable(digits = 3, caption = "Vaccination distribution for each place of residence by place of occurrence")
 ```
 
-For example, 88% of people who reside in ADM1_3 got vaccinated for DTP1 there as well. But an additional 11% received their DTP1 vaccination elsewhere (namely, in ADM1_2). If you want to further drill into the people that got vaccinated in a place different from their place of residence, you may set the `include_self_matches` parameter to `FALSE`.
+For example, 87% of people who reside in ADM1_3 got vaccinated for DTP1 there as well. But an additional 13% received their DTP1 vaccination elsewhere (namely, in ADM1_2). If you want to further drill into the people that got vaccinated in a place different from their place of residence, you may set the `include_self_matches` parameter to `FALSE`.
 
 ```{r dist-analysis-example-2, message=FALSE}
 
@@ -222,7 +222,7 @@ distribution_df2 <- roc_distribution(
   data.EIR = pahoabc.EIR,
   vaccine = "DTP1",
   geo_level = "ADM1",
-  birth_cohort = 2022,
+  birth_cohort = 2023,
   # set this to FALSE to exclude cases where people get vaccinated in their place of residence
   include_self_matches = FALSE
 )
@@ -233,7 +233,7 @@ distribution_df2 %>%
   kable(digits = 3, caption = "Where do residents of ADM1_3 get vaccinated?")
 ```
 
-This shows that 97% of the people in ADM1_3 **who do not get vaccinated in their place of residence**, get vaccinated in ADM1_2.
+This shows that 96% of the people in ADM1_3 **who do not get vaccinated in their place of residence**, get vaccinated in ADM1_2.
 
 A clearer picture of this can be provided by the `roc_heatmap()` function.
 
@@ -252,9 +252,9 @@ distribution_plot + distribution_plot2
 > 
 > The plot on the right shows the proportion of doses administered in a place **different from their place of residence**. This is why the diagonal is empty.
 
-These plots may be read either in a vertical or horizontal fashion. When reading the plot vertically, the columns will sum to 100% (up to a rounding error). That is, each column represents the population of, say, ADM1_1 and where they get vaccinated. For example, if we concentrate on the plot on the right and read it vertically, we may say that, of the total amount of people who reside in ADM1_1 and get vaccinated in a place different from their place of residence, 64% does so in ADM1_3, 27% in ADM1_2 and a remaining 9% in ADM1_4.
+These plots may be read either in a vertical or horizontal fashion. When reading the plot vertically, the columns will sum to 100% (up to a rounding error). That is, each column represents the population of, say, ADM1_1 and where they get vaccinated. For example, if we concentrate on the plot on the right and read it vertically, we may say that, of the total amount of people who reside in ADM1_1 and get vaccinated in a place different from their place of residence, 54% does so in ADM1_3, 31% in ADM1_2 and a remaining 16% in ADM1_4 and ADM1_5.
 
-When reading horizontally, rows **will not** sum to 100%, but are still indicative of the residences of people getting vaccinated in a certain region. For example, reading the plot on the left in a horizontal fashion we may note that 94% of the residents of ADM1_2 get vaccinated there as well, but this region also vaccinates a significant proportion of residents of ADM1_3 (11%).
+When reading horizontally, rows **will not** sum to 100%, but are still indicative of the residences of people getting vaccinated in a certain region. For example, reading the plot on the left in a horizontal fashion we may note that 92% of the residents of ADM1_2 get vaccinated there as well, but this region also vaccinates a significant proportion of residents of ADM1_3 (13%).
 
 ### Example at Second Administrative Level
 
@@ -268,7 +268,7 @@ distribution_df3 <- roc_distribution(
   data.EIR = pahoabc.EIR,
   vaccine = "DTP1",
   geo_level = "ADM2",
-  birth_cohort = 2022,
+  birth_cohort = 2023,
   include_self_matches = FALSE,
   within_ADM1 = "ADM1_3" # set the region to drill into
 )
@@ -284,11 +284,11 @@ distribution_plot3
 
 In this heatmap, we observe the proportion of vaccination events that take place in a location different from the place of residence, broken down by the second administrative level.
 
-As an example, it is notable that among all individuals residing in ADM2_3_10 who are vaccinated outside their area of residence, 71% receive their vaccine in ADM2_3_11. Similarly, 44% of individuals from ADM2_3_23 who are vaccinated elsewhere are also vaccinated in ADM2_3_11.
+As an example, it is notable that among all individuals residing in ADM2_3_10 who are vaccinated outside their area of residence, 72% receive their vaccine in ADM2_3_11. Similarly, 23% of individuals from ADM2_3_23 who are vaccinated elsewhere, are vaccinated in ADM2_3_11.
 
-Looking at the heatmap horizontally, we can see that ADM2_3_20 provides vaccinations to a large number of people coming from other areas: 22% of those from ADM2_3_12, 21% from ADM2_3_15, 22% from ADM2_3_17, 11% from ADM2_3_18, and 36% from ADM2_3_7 are vaccinated there.
+Looking at the heatmap horizontally, we can see that ADM2_3_20 provides vaccinations to a large number of people coming from other areas: 35% of those from ADM2_3_7, 18% from ADM2_3_15, 17% from ADM2_3_12, 14% from ADM2_3_17, etc.
 
-The top row is also interesting, since it indicates people getting vaccinated outside of ADM1_3 entirely. For example, in column 4, 86% of the residents of ADM3_3_13 get vaccinated outside of ADM1_3, suggesting a strong population flow.
+The top row is also interesting, since it indicates people getting vaccinated outside of ADM1_3 entirely. For example, in column 4, 85% of the residents of ADM3_3_13 get vaccinated outside of ADM1_3, suggesting a strong population flow.
 
 # Summary
 
