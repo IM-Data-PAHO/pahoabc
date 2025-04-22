@@ -48,7 +48,7 @@ Currently, PAHOabc contains three main modules. Follow the links below to explor
    Functions for comparing vaccination coverage and dose distribution based on where people live versus where they were vaccinated. This module helps identify population movement and service coverage gaps across geographic areas.
 
 3. [**Complete Schedule Coverage**](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html)  
-   Evaluates whether individuals have received all required doses in a national immunization schedule. This module differs from standard coverage calculation as it evaluates each individual's compliance of the national immunization schedule.
+   Evaluates whether individuals have received all required doses in a national immunization schedule (for a specific cohort up to a specified age). This module differs from standard coverage calculation as it evaluates each individual's compliance of the national immunization schedule.
 
 Each module works seamlessly with the example datasets provided in the package. These examples make it easy to test out the functionality and serve as a reference when preparing your own data. Learn more about these example datasets [in this vignette](https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.html).
 
