@@ -35,6 +35,8 @@ Namely, PAHOabc can distinguish three administrative levels, which listed from t
 2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
 3. ADM2: The second geographic subdivision in the country. Each ADM1 contains several ADM2 subdivisions.
 
+![](ADM_explanation.svg)
+
 ## Vaccine Names
 
 Our example datasets use a specific naming convention for the vaccine doses. This might not match your own naming schemes, but it will not affect the usage of the package as long as you make sure to be consistent when naming vaccine doses.
