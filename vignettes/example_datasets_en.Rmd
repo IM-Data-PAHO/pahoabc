@@ -1,5 +1,5 @@
 ---
-title: "Understanding the Example Datasets in PAHOabc"
+title: "Using our Example Datasets"
 author: "PAHO/CIM"
 date: "April 14, 2025"
 output: 
@@ -19,9 +19,36 @@ library(dplyr)
 library(knitr)
 ```
 
-# Overview
+# Rationale
 
 The PAHOabc package includes a set of example datasets to help users understand how to use its functions effectively. These datasets simulate a fictional country's immunization information system and are structured to work seamlessly with the tools provided by the package. This vignette provides an overview of each dataset and describes how they are used throughout the package's modules.
+
+# Glossary
+
+## Political Geographic Boundaries
+
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+
+Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+
+1. ADM0: The country. This is the top-most administrative level.
+2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
+3. ADM2: The second geographic subdivision in the country. Each ADM1 contains several ADM2 subdivisions.
+
+## Vaccine Names
+
+Our example datasets use a specific naming convention for the vaccine doses. This might not match your own naming schemes, but it will not affect the usage of the package as long as you make sure to be consistent when naming vaccine doses.
+
+For example, the vaccine names used in the PAHOabc package are:
+
+| Abbreviation | Full Name                                                        |
+|--------------|------------------------------------------------------------------|
+| SRP1         | Measles, Rubella, and Mumps Vaccine (1st dose)                   |
+| DTP1         | Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)            |
+| DTP2         | Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)            |
+| DTP3         | Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)            |
+| BCG RN       | Bacillus Calmette–Guérin Vaccine (at birth)                      |
+| YFV1         | Yellow Fever Vaccine (1st dose)                                  |
 
 # List of example datasets
 
@@ -33,7 +60,14 @@ The `pahoabc::pahoabc.EIR` dataframe is the most important dataset in the packag
 pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
-All records include subnational geographic levels ADM1 and ADM2 identifiers for both residence and occurrence, making it possible to analyze population flows and coverage across different geographic levels.
+- `ID`: Unique person identification number.
+- `date_birth`: Date of birth of person. 
+- `date_vax`: Date of vaccination event. 
+- ADM1: Refers to the first geographic administrative level of the country.
+- ADM2: Refers to the second geographic administrative level of the country.
+- Residence: Refers to the place where the person lives.  
+- Occurrence: Refers to the place where the vaccination event occurred.  
+- `dose`: A combined variable representing the vaccine type and its corresponding dose number. For example, DTP1 refers to the first dose of a vaccine containing diphtheria, tetanus, and pertussis components.
 
 ## pahoabc.schedule
 
@@ -43,11 +77,14 @@ The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedu
 pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
 ```
 
+- `dose`: A combined variable representing the vaccine type and its corresponding dose number. For example, DTP1 refers to the first dose of a vaccine containing diphtheria, tetanus, and pertussis components.
+- `age_schedule`: The recommended age of administration of the corresponding `dose` in months.
+
 > **Note**
 > 
 > The `dose` names must match exactly those in the `dose` column of the `pahoabc.EIR` dataset.
 
-## Population datasets
+## Population Datasets
 
 Population datasets provide population estimates at different geographic levels, for various years and children of varying ages. Depending on the geographic level at which we want to perform an analysis, PAHOabc may require you to provide the corresponding population to use as a denominator (mainly for coverage analyses).
 
@@ -59,6 +96,8 @@ The `pahoabc::pahoabc.pop.ADM0` dataset provides aggregated population estimates
 pahoabc.pop.ADM0 %>% kable(caption = "Example Population at ADM0")
 ```
 
+This table is in long format and contains the corresponding `population` of children of a specific `age` during a given `year`.
+
 ### pahoabc.pop.ADM1
 
 The `pahoabc::pahoabc.pop.ADM1` dataset provides population data aggregated at the first subnational administrative level (ADM1), typically corresponding to regions, provinces, or states.
@@ -67,6 +106,8 @@ The `pahoabc::pahoabc.pop.ADM1` dataset provides population data aggregated at t
 pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
 ```
 
+Note that this table is in long format and contains the corresponding `population` of children of a specific `age` during a given `year` at the `ADM1` level.
+
 ### pahoabc.pop.ADM2
 
 The `pahoabc::pahoabc.pop.ADM2` dataset provides more granular population data by both ADM1 and ADM2 levels, allowing analyses at a finer geographic resolution.
@@ -74,6 +115,8 @@ The `pahoabc::pahoabc.pop.ADM2` dataset provides more granular population data b
 ```{r pahoabc-pop-ADM2, message=FALSE}
 pahoabc.pop.ADM2 %>% head() %>% kable(caption = "Example Population at ADM2")
 ```
+
+Note that this table is in long format and contains the corresponding `population` of children of a specific `age` during a given `year` at the `ADM2` level.
 
 # Summary
 
