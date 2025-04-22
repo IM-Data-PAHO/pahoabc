@@ -16,7 +16,7 @@ navbar:
       - text: Modules
       - text: Nominal Dropout Rate
         href: articles/nominal_dropout_en.html
-      - text: Residence vs. Occurrence Coverage
+      - text: Residence vs. Occurrence Analyses
         href: articles/residence_occurrence_en.html
       - text: Complete Schedule Coverage
         href: articles/complete_schedule_en.html
@@ -31,27 +31,27 @@ authors:
      href: "https://www.paho.org/en"
 
 reference:
-  - title: Complete Schedule Coverage
-    desc: Functions for calculating and visualizing complete schedule coverage.
-    contents:
-      - cs_coverage
-      - cs_barplot
-      - cs_upset
-
   - title: Nominal Dropout Rate
     desc: Functions for calculating and visualizing nominal dropout rate.
     contents:
       - nominal_dropout
       - dropoutplot
 
-  - title: Residence vs. Ocurrence Coverage
-    desc: Functions for calculating and visualizing coverage by place of residence or vaccination.
+  - title: Residence vs. Ocurrence Analyses
+    desc: Functions for calculating and visualizing coverage and dose distribution by place of residence or vaccination.
     contents:
       - roc_coverage
       - roc_barplot
       - roc_distribution
       - roc_heatmap
       - roc_coverage_by
+
+  - title: Complete Schedule Coverage
+    desc: Functions for calculating and visualizing complete schedule coverage.
+    contents:
+      - cs_coverage
+      - cs_barplot
+      - cs_upset
 
   - title: Example Data
     desc: Example data frames to understand how the package works and what it expects.

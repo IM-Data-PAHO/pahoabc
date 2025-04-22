@@ -1,5 +1,5 @@
 ---
-title: "Coverage by Place of Residence vs. Occurrence"
+title: "Coverage and Dose Distribution by Place of Residence vs. Occurrence"
 author: "PAHO/CIM"
 date: "April 9, 2025"
 output: 
