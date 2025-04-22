@@ -200,3 +200,57 @@
     stop("Error: data should be the output from roc_distribution.")
   }
 }
+
+
+#' Validate EIR duplicates.
+#'
+#' @keywords internal
+#' @noRd
+#'
+.validate_duplicates <- function(data.EIR, vac_init, vac_end) {
+  data.EIR <- data.EIR %>%
+    filter(dose == vac_init | dose == vac_end) %>%
+    mutate(dose = ifelse(dose == vac_init, "vac_init", "vac_end"))
+
+  data_unique_rows <- data.EIR %>%
+    distinct(ID, dose) %>%
+    nrow()
+  data_rows <- data.EIR %>%
+    nrow()
+
+  if(data_unique_rows != data_rows) {
+    warning("Data contains duplicate rows where ID and dose are duplicated. We recommend you verify for duplicates before running the process to increase accuracy. ")
+  }
+}
+
+
+#Validate nod vaccines
+#' Validate EIR duplicates.
+#'
+#' @keywords internal
+#' @noRd
+#'
+.validate_nod_vaccines <- function(data.EIR, vac_init, vac_end) {
+if (!vac_init %in% data.EIR$dose){
+  stop(paste0("Error: specified vaccine_init: '", vac_init, "' is not present in the dataset provided."))
+} else if (!vac_end %in% data.EIR$dose) {
+  stop(paste0("Error: specified vacccine_end: '", vac_end, "' is not present in the dataset provided."))
+}
+}
+
+#' Validate Date object.
+#'
+#' @keywords internal
+#' @noRd
+.validate_date <- function(date_var, param_name = "date_var") {
+  ## class check
+  if (!inherits(date_var, "Date")) {
+    stop(
+      paste0("Error: `%s` must be of class Date (got <%s>).",
+              param_name, paste(class(date_var), collapse = ", ")),
+      call. = FALSE
+    )
+  }
+
+  invisible(TRUE)  # silent success
+}

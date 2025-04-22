@@ -68,7 +68,7 @@ Note:
 Utilizes the nominal_dropout() function of the pahoabc package to calculate nominal dropout for ADM1, using the first and third doses of the DTP vaccine. This functions only uses the residence territory variables so make sure these exist in your dataframe. 
 ```{r, nominal_dropout_usage}
 #Runs the nominal dropout function
-example_dropout <- nominal_dropout(data=EIR, vac_init = "DTP1", vac_end= "DTP3", geo_level = "ADM1")
+example_dropout <- nod_dropout(data.EIR=EIR, vaccine_init = "DTP1", vaccine_end= "DTP3", geo_level = "ADM1")
 
 tibble::glimpse(example_dropout)
 ```
@@ -100,7 +100,7 @@ The function **dropoutplot()** accepts the following parameters:
 
 ```{r, nominal_dropout_plot}
 # Runs the dropoutplot function
-example_dropout_plot <- dropoutplot(nominal_dropout_data=example_dropout,vertical=FALSE, order="alpha")
+example_dropout_plot <- nod_barplot(data=example_dropout, order="alpha")
 
 example_dropout_plot
 ```
