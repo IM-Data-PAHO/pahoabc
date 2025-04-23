@@ -34,8 +34,8 @@ reference:
   - title: Nominal Dropout Rate
     desc: Functions for calculating and visualizing nominal dropout rate.
     contents:
-      - nominal_dropout
-      - dropoutplot
+      - nod_dropout
+      - nod_barplot
 
   - title: Residence vs. Ocurrence Analyses
     desc: Functions for calculating and visualizing coverage and dose distribution by place of residence or vaccination.

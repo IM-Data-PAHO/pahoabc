@@ -31,8 +31,10 @@ Performing the analysis with aggregated data does not guarantee that the individ
 > 
 > All functions used for nominal dropout analyses within PAHOabc begin with the `nod_` prefix.
 
-![Figure 1: Visual representation of a nominal dropout analysis (figure created by authors)](nod_rationale.png){width=90%}
+![](nod_rationale.png){width=90%}
+
 # Glossary
+
 ## Political Geographic Boundaries
 
 Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
@@ -71,6 +73,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 ## Load Data
 
 The functions in this module require you to provide your **EIR dataset** in a specific format.
+
 To make it easy for you to test out PAHOabc's functionality and understand the structure we require for your datasets, we will now explore the example dataset provided by PAHOabc that is required by this module.
 
 ### EIR
@@ -95,9 +98,10 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 PAHOabc includes the functionality to estimate the nominal dropout rate, on a per-person basis. This allows for the analysis of any pair of doses by specifying an initial dose and a final dose. For correct interpretation, the initial dose must precede the final dose in the vaccination schedule, for example: DTP1 – DTP3 or DTP1 – MCV. Additionally, it allows users to select the level of aggregation for the results, which can be at the national level or subnational levels (ADM1 or ADM2).
 
 ### Expected workflow
-The `nod_dropout()` and `nod_barplot()` functions work together to perform nominal dropout analysis and visualization. The `nod_dropout()` function computes the nominal dropout and complete cases by residence across selected administrative levels, birth cohorts, and vaccines. Its output (a data table) is structured to be directly compatible with `nod_barplot()`, which generates a visualization for the data computed.
-![](nod_workflow.svg)
 
+The `nod_dropout()` and `nod_barplot()` functions work together to perform nominal dropout analysis and visualization. The `nod_dropout()` function computes the nominal dropout and complete cases by residence across selected administrative levels, birth cohorts, and vaccines. Its output (a data table) is structured to be directly compatible with `nod_barplot()`, which generates a visualization for the data computed.
+
+![](nod_workflow.svg)
 
 ### Example
 
@@ -154,7 +158,6 @@ The function `nod_barplot()` accepts the following parameters:
 This chart shows the nominal dropout per Administrative level 1 as well as a 5% line to indicate a threshold of nominal dropout. Having a high dropout rate means a large percentage of the persons analyzed are not registering for the follow up doses of their schedule. Ideally, every person that has received a dose of a multi-dose schedule should return to receive the follow up dose. In this case the administrative level **ADM1_1** is the one doing the worst, whilst the **ADM1_4** is doing the best. 
 
 All of the administrative units have a nominal dropout rate above **25%** meaning, at least 25% of the persons in that target group **did not come back for their follow up dose**. 
-
 
 # Summary
 
