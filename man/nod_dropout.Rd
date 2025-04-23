@@ -2,7 +2,7 @@
 % Please edit documentation in R/nod_dropout.R
 \name{nod_dropout}
 \alias{nod_dropout}
-\title{Nominal dropout rate}
+\title{(No)minal (D)ropout Rate}
 \usage{
 nod_dropout(
   data.EIR,
@@ -13,19 +13,19 @@ nod_dropout(
 )
 }
 \arguments{
-\item{data.EIR}{Nominal data dataframe.}
+\item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
 
 \item{vaccine_init}{Initial vaccine to use in nominal dropout calculation.}
 
 \item{vaccine_end}{Final vaccine to use in nominal dropout calculation.}
 
-\item{geo_level}{Administrative level to group by for calculation, can be "ADM0","ADM1" or "ADM2". If no geo_level is specified the default is "ADM0".}
+\item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".}
 
-\item{birth_cohorts}{Birth cohorts to calculate for. As a vector of years}
+\item{birth_cohorts}{Birth cohorts to calculate for. As a vector of years.}
 }
 \value{
 A data frame with the calculated coverage for the administrative level selected. Includes the nominal dropout rate, numerator, denominator and completeness rate. based on the administrative level, birth cohorts and vaccines selected.
 }
 \description{
-Nominal dropout rate
+(No)minal (D)ropout Rate
 }
