@@ -27,29 +27,107 @@ The purpose of this analysis is to evaluate whether the target population has be
 > 
 > All functions used for complete schedule coverage analyses within PAHOabc begin with the `cs_` prefix.
 
-# Country Vaccination Schedule
+# Glossary
 
-To enable this package to analyze the vaccination schedule, it is necessary to provide the country's immunization schedule using the same format as the example schedule shown below.
+## Political Geographic Boundaries
 
-```{r schedule=example, message=FALSE}
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
 
-# show example vaccination schedule
-pahoabc::pahoabc.schedule %>% 
-  kable(
-    caption = "Example country vaccination schedule",
-    col.names = c("Dose", "Recommended age (in months)")
-  )
+Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+
+1. ADM0: The country. This is the top-most administrative level.
+2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
+3. ADM2: The second geographic subdivision in the country. Each ADM1 contains several ADM2 subdivisions.
+
+## Vaccine Names
+
+Our example datasets use a specific naming convention for the vaccine doses. This might not match your own naming schemes, but it will not affect the usage of the package as long as you make sure to be consistent when naming vaccine doses.
+
+For example, the vaccine names used in the PAHOabc package are:
+
+| Abbreviation | Full Name                                                        |
+|--------------|------------------------------------------------------------------|
+| SRP1         | Measles, Rubella, and Mumps Vaccine (1st dose)                   |
+| DTP1         | Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)            |
+| DTP2         | Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)            |
+| DTP3         | Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)            |
+| BCG RN       | Bacillus Calmette–Guérin Vaccine (at birth)                      |
+| YFV1         | Yellow Fever Vaccine (1st dose)                                  |
+
+# Usage
+
+## Install Package
+
+The first step to run the residence occurrence analyses is to install the PAHOabc package available on GitHub.
+
+```{r, install_package, eval=FALSE}
+devtools::install_github("IM-Data-PAHO/pahoabc")
 ```
 
-# Complete Schedule Coverage Computation
+## Load Data
 
-## Expected Workflow
+The functions in this module require you to provide three datasets in a specific format.
+
+1. Your EIR.
+2. The vaccination schedule related to this EIR.
+3. A table with population denominators depending on the geographic level of your analysis.
+    1. This is optional for the `cs_coverage()` function (but not shown in this vignette).
+
+To make it easy for you to test out PAHOabc's functionality and understand the structure we require for your datasets, we will now explore the example datasets provided by PAHOabc that are required by this module.
+
+### EIR
+
+The `pahoabc::pahoabc.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person, including information on their residence, where they were vaccinated (occurrence), their date of birth, and the vaccine dose received.
+
+```{r pahoabc-EIR, message=FALSE}
+pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+```
+
+- `ID`: Unique person identification number.
+- `date_birth`: Date of birth of person. 
+- `date_vax`: Date of vaccination event. 
+- ADM1: Refers to the first geographic administrative level of the country.
+- ADM2: Refers to the second geographic administrative level of the country.
+- Residence: Refers to the place where the person lives.  
+- Occurrence: Refers to the place where the vaccination event occurred.  
+- `dose`: A combined variable representing the vaccine type and its corresponding dose number. For example, DTP1 refers to the first dose of a vaccine containing diphtheria, tetanus, and pertussis components.
+
+### Vaccination Schedule
+
+The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing each vaccine dose and its recommended age of administration (in months). It helps the package determine whether an individual is up to date with their vaccinations.
+
+```{r pahoabc-schedule, message=FALSE}
+pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
+```
+
+- `dose`: A combined variable representing the vaccine type and its corresponding dose number. For example, DTP1 refers to the first dose of a vaccine containing diphtheria, tetanus, and pertussis components.
+- `age_schedule`: The recommended age of administration of the corresponding `dose` in months.
+
+> **Note**
+> 
+> The `dose` names must match exactly those in the `dose` column of the `pahoabc.EIR` dataset.
+
+### Population Denominators
+
+This module will require you to provide a table with population denominators. The geographic level of this table will be directly dependent on the geographic level of your analysis. For example, if you were to perform an analysis at ADM1 level, the required population denominator table must contain the following.
+
+```{r pahoabc-pop-ADM1, message=FALSE}
+pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
+```
+
+Note that this table is in long format and contains the corresponding `population` of children of a specific `age` during a given `year` for a certain `ADM1` level.
+
+## Complete Schedule Coverage Analysis
+
+### Expected Workflow
 
 The `cs_coverage()`, `cs_barplot()` and `cs_upset()` functions provide a way of analyzing and visualizing complete schedule coverage. Their relationships are shown in Figure 1.
 
 ![Figure 1. Expected workflow for complete schedule coverage analysis.](cs_workflow.svg)
 
-## Example
+<br>
+
+### Example
 
 Below is a simplified example of the calculation of complete schedule coverage for the first subnational administrative level, focusing on the birth cohort of the year 2022.
 
@@ -68,7 +146,7 @@ coverage_df %>%
   kable(digits = 2, caption = "Complete schedule coverage by ADM1 level")
 ```
 
-## Bar plot
+### Bar plot
 
 It is possible to display the previously obtained results in a bar plot with `cs_barplot()`.
 
@@ -81,7 +159,7 @@ coverage_plot <- cs_barplot(data = coverage_df)
 coverage_plot
 ```
 
-## Upset plot
+### Upset plot
 
 The `cs_upset()` function allows us to produce an upset plot to evaluate the percentage of individuals included in the EIR who have received any of the possible combinations of the available vaccines. The orange bar represents the proportion of individuals who have received all the evaluated vaccines, thus indicating the complete schedule coverage. The horizontal bars show the proportion of individuals who received each specific vaccine (i.e., the coverage for that vaccine).
 
@@ -98,5 +176,6 @@ coverage_upset <- cs_upset(
 coverage_upset
 ```
 
-In the example the complete schedule coverage reached 13.7% and is represented by the orange bar. 
+In the example the complete schedule coverage reached 13.7% and is represented by the orange bar.
+
 It is noteworthy that 24.1% of individuals in the EIR received only the BCG vaccine, and that the third most frequent combination (9.1%) consists of individuals who received all other vaccines except BCG. This could indicate an error in recording a newborn's BCG vaccine using temporary identification numbers.
