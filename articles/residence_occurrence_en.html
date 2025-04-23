@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Coverage by Place of Residence vs. Occurrence • pahoabc</title>
+<title>Residence vs. Occurrence Analyses • pahoabc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Coverage by Place of Residence vs. Occurrence">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Residence vs. Occurrence Analyses">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,11 +41,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
 <li><h6 class="dropdown-header" data-toc-skip>Modules</h6></li>
     <li><a class="dropdown-item" href="../articles/nominal_dropout_en.html">Nominal Dropout Rate</a></li>
-    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Coverage</a></li>
+    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Analyses</a></li>
     <li><a class="dropdown-item" href="../articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
-    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our example datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our Example Datasets</a></li>
   </ul>
 </li>
       </ul>
@@ -66,12 +66,12 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Coverage by Place of Residence vs. Occurrence</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Residence vs. Occurrence Analyses</h1>
                         <h4 data-toc-skip class="author">PAHO/CIM</h4>
             
             <h4 data-toc-skip class="date">April 9, 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.4.0/vignettes/residence_occurrence_en.Rmd" class="external-link"><code>vignettes/residence_occurrence_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/main/vignettes/residence_occurrence_en.Rmd" class="external-link"><code>vignettes/residence_occurrence_en.Rmd</code></a></small>
       <div class="d-none name"><code>residence_occurrence_en.Rmd</code></div>
     </div>
 
@@ -98,11 +98,355 @@ PAHOabc begin with the <code>roc_</code> prefix.</p>
 </blockquote>
 </div>
 <div class="section level2">
-<h2 id="coverage-analysis">Coverage Analysis<a class="anchor" aria-label="anchor" href="#coverage-analysis"></a>
+<h2 id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a>
 </h2>
 <div class="section level3">
-<h3 id="expected-workflow">Expected Workflow<a class="anchor" aria-label="anchor" href="#expected-workflow"></a>
+<h3 id="political-geographic-boundaries">Political Geographic Boundaries<a class="anchor" aria-label="anchor" href="#political-geographic-boundaries"></a>
 </h3>
+<p>Throughout this vignette, we will make reference to different levels
+of political geographic boundaries. These levels are defined by the
+country/territory and can have different names from country to country.
+PAHOabc is agnostic to these names and requires the user to recode their
+variable names to fit the PAHOabc structure.</p>
+<p>Namely, PAHOabc can distinguish three administrative levels, which
+listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
+<ol style="list-style-type: decimal">
+<li>ADM0: The country. This is the top-most administrative level.</li>
+<li>ADM1: The first geographic subdivision in the country. ADM0 contains
+several ADM1 subdivisions.</li>
+<li>ADM2: The second geographic subdivision in the country. Each ADM1
+contains several ADM2 subdivisions.</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="vaccine-names">Vaccine Names<a class="anchor" aria-label="anchor" href="#vaccine-names"></a>
+</h3>
+<p>Our example datasets use a specific naming convention for the vaccine
+doses. This might not match your own naming schemes, but it will not
+affect the usage of the package as long as you make sure to be
+consistent when naming vaccine doses.</p>
+<p>For example, the vaccine names used in the PAHOabc package are:</p>
+<table class="table">
+<colgroup>
+<col width="17%">
+<col width="82%">
+</colgroup>
+<thead><tr class="header">
+<th>Abbreviation</th>
+<th>Full Name</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>SRP1</td>
+<td>Measles, Rubella, and Mumps Vaccine (1st dose)</td>
+</tr>
+<tr class="even">
+<td>DTP1</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)</td>
+</tr>
+<tr class="odd">
+<td>DTP2</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)</td>
+</tr>
+<tr class="even">
+<td>DTP3</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)</td>
+</tr>
+<tr class="odd">
+<td>BCG RN</td>
+<td>Bacillus Calmette–Guérin Vaccine (at birth)</td>
+</tr>
+<tr class="even">
+<td>YFV1</td>
+<td>Yellow Fever Vaccine (1st dose)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<div class="section level3">
+<h3 id="install-package">Install Package<a class="anchor" aria-label="anchor" href="#install-package"></a>
+</h3>
+<p>The first step to run the residence occurrence analyses is to install
+the PAHOabc package available on GitHub.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="load-data">Load Data<a class="anchor" aria-label="anchor" href="#load-data"></a>
+</h3>
+<p>The functions in this module require you to provide three datasets in
+a specific format.</p>
+<ol style="list-style-type: decimal">
+<li>Your EIR.</li>
+<li>The vaccination schedule related to this EIR.</li>
+<li>A table with population denominators depending on the geographic
+level of your analysis.</li>
+</ol>
+<p>To make it easy for you to test out PAHOabc’s functionality and
+understand the structure we require for your datasets, we will now
+explore the example datasets provided by PAHOabc that are required by
+this module.</p>
+<div class="section level4">
+<h4 id="eir">EIR<a class="anchor" aria-label="anchor" href="#eir"></a>
+</h4>
+<p>The <code><a href="../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> data frame provides a
+simulated, nominal-level table representing individual vaccination
+events from an Electronic Immunization Registry (EIR). Each row
+corresponds to a single vaccination act for a person, including
+information on their residence, where they were vaccinated (occurrence),
+their date of birth, and the vaccine dose received.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
+<table style="width:100%;" class="table">
+<caption>Example Electronic Immunization Registry</caption>
+<colgroup>
+<col width="7%">
+<col width="11%">
+<col width="11%">
+<col width="15%">
+<col width="15%">
+<col width="16%">
+<col width="16%">
+<col width="7%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">ID</th>
+<th align="left">date_birth</th>
+<th align="left">date_vax</th>
+<th align="left">ADM1_residence</th>
+<th align="left">ADM2_residence</th>
+<th align="left">ADM1_occurrence</th>
+<th align="left">ADM2_occurrence</th>
+<th align="left">dose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">191997</td>
+<td align="left">2023-08-08</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_4</td>
+<td align="left">ADM2_4_35</td>
+<td align="left">ADM1_4</td>
+<td align="left">ADM2_4_35</td>
+<td align="left">DTP2</td>
+</tr>
+<tr class="even">
+<td align="right">212189</td>
+<td align="left">2023-12-20</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_61</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_61</td>
+<td align="left">BCG RN</td>
+</tr>
+<tr class="odd">
+<td align="right">118063</td>
+<td align="left">2022-09-15</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">DTP1</td>
+</tr>
+<tr class="even">
+<td align="right">118063</td>
+<td align="left">2022-09-15</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">YFV1</td>
+</tr>
+<tr class="odd">
+<td align="right">130751</td>
+<td align="left">2022-10-27</td>
+<td align="left">2023-12-12</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_55</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_55</td>
+<td align="left">YFV1</td>
+</tr>
+<tr class="even">
+<td align="right">136532</td>
+<td align="left">2021-09-21</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_3</td>
+<td align="left">ADM2_3_12</td>
+<td align="left">ADM1_3</td>
+<td align="left">ADM2_3_12</td>
+<td align="left">SRP1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<code>ID</code>: Unique person identification number.</li>
+<li>
+<code>date_birth</code>: Date of birth of person.</li>
+<li>
+<code>date_vax</code>: Date of vaccination event.</li>
+<li>ADM1: Refers to the first geographic administrative level of the
+country.</li>
+<li>ADM2: Refers to the second geographic administrative level of the
+country.</li>
+<li>Residence: Refers to the place where the person lives.<br>
+</li>
+<li>Occurrence: Refers to the place where the vaccination event
+occurred.<br>
+</li>
+<li>
+<code>dose</code>: A combined variable representing the vaccine type
+and its corresponding dose number. For example, DTP1 refers to the first
+dose of a vaccine containing diphtheria, tetanus, and pertussis
+components.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="vaccination-schedule">Vaccination Schedule<a class="anchor" aria-label="anchor" href="#vaccination-schedule"></a>
+</h4>
+<p>The <code><a href="../reference/pahoabc.schedule.html">pahoabc::pahoabc.schedule</a></code> dataset defines the
+national immunization schedule, listing each vaccine dose and its
+recommended age of administration (in months). It helps the package
+determine whether an individual is up to date with their
+vaccinations.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pahoabc.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Immunization Schedule"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Example Immunization Schedule</caption>
+<thead><tr class="header">
+<th align="left">dose</th>
+<th align="right">age_schedule</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">SRP1</td>
+<td align="right">12</td>
+</tr>
+<tr class="even">
+<td align="left">DTP1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">DTP2</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">DTP3</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">BCG RN</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">YFV1</td>
+<td align="right">12</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<code>dose</code>: A combined variable representing the vaccine type
+and its corresponding dose number. For example, DTP1 refers to the first
+dose of a vaccine containing diphtheria, tetanus, and pertussis
+components.</li>
+<li>
+<code>age_schedule</code>: The recommended age of administration of
+the corresponding <code>dose</code> in months.</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>The <code>dose</code> names must match exactly those in the
+<code>dose</code> column of the <code>pahoabc.EIR</code> dataset.</p>
+</blockquote>
+</div>
+<div class="section level4">
+<h4 id="population-denominators">Population Denominators<a class="anchor" aria-label="anchor" href="#population-denominators"></a>
+</h4>
+<p>This module will require you to provide a table with population
+denominators. The geographic level of this table will be directly
+dependent on the geographic level of your analysis. For example, if you
+were to perform an analysis at ADM1 level, the required population
+denominator table must contain the following.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pahoabc.pop.ADM1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Population at ADM1"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Example Population at ADM1</caption>
+<thead><tr class="header">
+<th align="left">ADM1</th>
+<th align="right">year</th>
+<th align="right">age</th>
+<th align="right">population</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="right">2022</td>
+<td align="right">0</td>
+<td align="right">1718.189</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="right">2022</td>
+<td align="right">1</td>
+<td align="right">1808.964</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="right">2023</td>
+<td align="right">0</td>
+<td align="right">1703.145</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="right">2023</td>
+<td align="right">1</td>
+<td align="right">1792.443</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_2</td>
+<td align="right">2022</td>
+<td align="right">0</td>
+<td align="right">6575.261</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_2</td>
+<td align="right">2022</td>
+<td align="right">1</td>
+<td align="right">6922.644</td>
+</tr>
+</tbody>
+</table>
+<p>Note that this table is in long format and contains the corresponding
+<code>population</code> of children of a specific <code>age</code>
+during a given <code>year</code> for a certain <code>ADM1</code>
+level.</p>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>If your analysis is at a different political geographic level, see
+<code><a href="../reference/pahoabc.pop.ADM0.html">pahoabc::pahoabc.pop.ADM0</a></code> and
+<code><a href="../reference/pahoabc.pop.ADM2.html">pahoabc::pahoabc.pop.ADM2</a></code> for the required format and
+columns.</p>
+</blockquote>
+</div>
+</div>
+<div class="section level3">
+<h3 id="coverage-analysis">Coverage Analysis<a class="anchor" aria-label="anchor" href="#coverage-analysis"></a>
+</h3>
+<p>The first subsection of this module provides a way of analyzing
+coverage rates by both place of residence and place of vaccination
+(occurrence).</p>
+<div class="section level4">
+<h4 id="expected-workflow">Expected Workflow<a class="anchor" aria-label="anchor" href="#expected-workflow"></a>
+</h4>
 <p>The <code><a href="../reference/roc_coverage.html">roc_coverage()</a></code> and <code><a href="../reference/roc_barplot.html">roc_barplot()</a></code>
 functions work together to perform coverage analysis and visualization.
 The <code><a href="../reference/roc_coverage.html">roc_coverage()</a></code> function computes vaccination coverage
@@ -114,18 +458,15 @@ visualization for a specific year and vaccine.</p>
 available when you want to calculate coverage by either residence or
 occurrence (but not both). While it produces a similar table, its output
 is not compatible with <code><a href="../reference/roc_barplot.html">roc_barplot()</a></code>.</p>
-<div class="float">
-<img src="roc_workflow_1.svg" alt="Figure 1. Expected workflow for residence/occurrence coverage analysis."><div class="figcaption">Figure 1. Expected workflow for
-residence/occurrence coverage analysis.</div>
+<p><img src="roc_workflow_1.svg"></p>
 </div>
-</div>
-<div class="section level3">
-<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h3>
+<div class="section level4">
+<h4 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h4>
 <p>Here is a simple use case of the <code><a href="../reference/roc_coverage.html">roc_coverage()</a></code>
 function, where we compute coverage by both metrics for the DTP1 vaccine
 in 2023 for our example datasets.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute coverage</span></span>
 <span><span class="va">coverage_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roc_coverage.html">roc_coverage</a></span><span class="op">(</span></span>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
@@ -266,7 +607,7 @@ in 2023 for our example datasets.</p>
 </table>
 <p>This output may be fed directly into the <code><a href="../reference/roc_barplot.html">roc_barplot()</a></code>
 function as shown below.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualize output from roc_coverage()</span></span>
 <span><span class="va">coverage_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roc_barplot.html">roc_barplot</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">coverage_df</span>,</span>
@@ -303,38 +644,37 @@ occurrence, suggesting that a significant number of its residents are
 traveling to other areas to receive their vaccinations.</p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="distribution-analysis">Distribution Analysis<a class="anchor" aria-label="anchor" href="#distribution-analysis"></a>
-</h2>
 <div class="section level3">
-<h3 id="expected-workflow-1">Expected Workflow<a class="anchor" aria-label="anchor" href="#expected-workflow-1"></a>
+<h3 id="dose-distribution-analysis">Dose Distribution Analysis<a class="anchor" aria-label="anchor" href="#dose-distribution-analysis"></a>
 </h3>
+<p>The distribution analysis functions in this package help analyze
+where people get vaccinated depending on their place of residence.</p>
+<div class="section level4">
+<h4 id="expected-workflow-1">Expected Workflow<a class="anchor" aria-label="anchor" href="#expected-workflow-1"></a>
+</h4>
 <p>The <code><a href="../reference/roc_distribution.html">roc_distribution()</a></code> and <code><a href="../reference/roc_heatmap.html">roc_heatmap()</a></code>
 functions provide a way of analyzing population flow between
 administrative areas. For example, one might be interested in observing
 where people who reside in a single region get vaccinated (e.g., do they
 all get vaccinated within their own region, or do they move to other
 regions?).</p>
-<p>Figure 2 shows the expected workflow for these functions.</p>
-<div class="float">
-<img src="roc_workflow_2.svg" alt="Figure 2. Expected workflow for distribution analysis"><div class="figcaption">Figure 2. Expected workflow for distribution
-analysis</div>
+<p>The figure below shows the expected workflow for these functions.</p>
+<p><img src="roc_workflow_2.svg"></p>
 </div>
-</div>
-<div class="section level3">
-<h3 id="analysis-at-the-first-administrative-level">Analysis at the first administrative level<a class="anchor" aria-label="anchor" href="#analysis-at-the-first-administrative-level"></a>
-</h3>
+<div class="section level4">
+<h4 id="example-at-first-administrative-level">Example at First Administrative Level<a class="anchor" aria-label="anchor" href="#example-at-first-administrative-level"></a>
+</h4>
 <p>This analysis only requires you to provide your EIR in conjunction
 with other simple parameters. For example, let us compute how
 vaccination is distributed at the first administrative level for the
-DTP1 vaccine in 2022.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+DTP1 vaccine in 2023.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute distribution of doses for each place of residence</span></span>
 <span><span class="va">distribution_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roc_distribution.html">roc_distribution</a></span><span class="op">(</span></span>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  vaccine <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
-<span>  birth_cohort <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  birth_cohort <span class="op">=</span> <span class="fl">2023</span>,</span>
 <span>  include_self_matches <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -354,15 +694,15 @@ of occurrence</caption>
 <tbody>
 <tr class="odd">
 <td align="left">ADM1_1</td>
-<td align="left">ADM1_2</td>
-<td align="right">3</td>
-<td align="right">0.003</td>
-</tr>
-<tr class="even">
-<td align="left">ADM1_1</td>
 <td align="left">ADM1_3</td>
 <td align="right">7</td>
 <td align="right">0.006</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="left">ADM1_2</td>
+<td align="right">4</td>
+<td align="right">0.004</td>
 </tr>
 <tr class="odd">
 <td align="left">ADM1_1</td>
@@ -372,61 +712,61 @@ of occurrence</caption>
 </tr>
 <tr class="even">
 <td align="left">ADM1_1</td>
-<td align="left">ADM1_1</td>
-<td align="right">1176</td>
-<td align="right">0.991</td>
+<td align="left">ADM1_5</td>
+<td align="right">1</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="odd">
 <td align="left">ADM1_1</td>
-<td align="left">ADM1_5</td>
-<td align="right">0</td>
-<td align="right">0.000</td>
+<td align="left">ADM1_1</td>
+<td align="right">1084</td>
+<td align="right">0.988</td>
 </tr>
 <tr class="even">
 <td align="left">ADM1_3</td>
-<td align="left">ADM1_2</td>
-<td align="right">3115</td>
-<td align="right">0.113</td>
+<td align="left">ADM1_3</td>
+<td align="right">18443</td>
+<td align="right">0.868</td>
 </tr>
 <tr class="odd">
 <td align="left">ADM1_3</td>
-<td align="left">ADM1_3</td>
-<td align="right">24364</td>
-<td align="right">0.883</td>
+<td align="left">ADM1_2</td>
+<td align="right">2685</td>
+<td align="right">0.126</td>
 </tr>
 <tr class="even">
 <td align="left">ADM1_3</td>
 <td align="left">ADM1_4</td>
-<td align="right">77</td>
-<td align="right">0.003</td>
+<td align="right">88</td>
+<td align="right">0.004</td>
 </tr>
 <tr class="odd">
 <td align="left">ADM1_3</td>
-<td align="left">ADM1_1</td>
-<td align="right">12</td>
-<td align="right">0.000</td>
+<td align="left">ADM1_5</td>
+<td align="right">17</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="even">
 <td align="left">ADM1_3</td>
-<td align="left">ADM1_5</td>
-<td align="right">19</td>
+<td align="left">ADM1_1</td>
+<td align="right">12</td>
 <td align="right">0.001</td>
 </tr>
 </tbody>
 </table>
-<p>For example, 88% of people who reside in ADM1_3 got vaccinated for
-DTP1 there as well. But an additional 11% received their DTP1
+<p>For example, 87% of people who reside in ADM1_3 got vaccinated for
+DTP1 there as well. But an additional 13% received their DTP1
 vaccination elsewhere (namely, in ADM1_2). If you want to further drill
 into the people that got vaccinated in a place different from their
 place of residence, you may set the <code>include_self_matches</code>
 parameter to <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute distribution of doses for each place of residence</span></span>
 <span><span class="va">distribution_df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roc_distribution.html">roc_distribution</a></span><span class="op">(</span></span>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  vaccine <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
-<span>  birth_cohort <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  birth_cohort <span class="op">=</span> <span class="fl">2023</span>,</span>
 <span>  <span class="co"># set this to FALSE to exclude cases where people get vaccinated in their place of residence</span></span>
 <span>  include_self_matches <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -447,40 +787,44 @@ parameter to <code>FALSE</code>.</p>
 <tr class="odd">
 <td align="left">ADM1_3</td>
 <td align="left">ADM1_2</td>
-<td align="right">3115</td>
-<td align="right">0.966</td>
+<td align="right">2685</td>
+<td align="right">0.958</td>
 </tr>
 <tr class="even">
 <td align="left">ADM1_3</td>
 <td align="left">ADM1_4</td>
-<td align="right">77</td>
-<td align="right">0.024</td>
+<td align="right">88</td>
+<td align="right">0.031</td>
 </tr>
 <tr class="odd">
+<td align="left">ADM1_3</td>
+<td align="left">ADM1_5</td>
+<td align="right">17</td>
+<td align="right">0.006</td>
+</tr>
+<tr class="even">
 <td align="left">ADM1_3</td>
 <td align="left">ADM1_1</td>
 <td align="right">12</td>
 <td align="right">0.004</td>
 </tr>
-<tr class="even">
-<td align="left">ADM1_3</td>
-<td align="left">ADM1_5</td>
-<td align="right">19</td>
-<td align="right">0.006</td>
-</tr>
 </tbody>
 </table>
-<p>This shows that 97% of the people in ADM1_3 <strong>who do not get
+<p>This shows that 96% of the people in ADM1_3 <strong>who do not get
 vaccinated in their place of residence</strong>, get vaccinated in
 ADM1_2.</p>
 <p>A clearer picture of this can be provided by the
 <code><a href="../reference/roc_heatmap.html">roc_heatmap()</a></code> function.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span> <span class="co"># to show them side by side</span></span>
 <span></span>
 <span><span class="co"># generate the plots</span></span>
 <span><span class="va">distribution_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roc_heatmap.html">roc_heatmap</a></span><span class="op">(</span><span class="va">distribution_df</span><span class="op">)</span> <span class="co"># with self matches</span></span>
 <span><span class="va">distribution_plot2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roc_heatmap.html">roc_heatmap</a></span><span class="op">(</span><span class="va">distribution_df2</span><span class="op">)</span> <span class="co"># without self matches</span></span>
+<span></span>
+<span><span class="co"># add subtitle</span></span>
+<span><span class="va">distribution_plot</span> <span class="op">&lt;-</span> <span class="va">distribution_plot</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"With self matches"</span><span class="op">)</span></span>
+<span><span class="va">distribution_plot2</span> <span class="op">&lt;-</span> <span class="va">distribution_plot2</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Without self matches"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># show them side by side</span></span>
 <span><span class="va">distribution_plot</span> <span class="op">+</span> <span class="va">distribution_plot2</span></span></code></pre></div>
@@ -492,34 +836,34 @@ place <strong>different from their place of residence</strong>. This is
 why the diagonal is empty.</p>
 </blockquote>
 <p>These plots may be read either in a vertical or horizontal fashion.
-When reading the plot vertically, the columns will sum to 100%. That is,
-each column represents the population of, say, ADM1_1 and where they get
-vaccinated. For example, if we concentrate on the plot on the right and
-read it vertically, we may say that, of the total amount of people who
-reside in ADM1_1 and get vaccinated in a place different from their
-place of residence, 64% does so in ADM1_3, 27% in ADM1_2 and a remaining
-9% in ADM1_4.</p>
+When reading the plot vertically, the columns will sum to 100% (up to a
+rounding error). That is, each column represents the population of, say,
+ADM1_1 and where they get vaccinated. For example, if we concentrate on
+the plot on the right and read it vertically, we may say that, of the
+total amount of people who reside in ADM1_1 and get vaccinated in a
+place different from their place of residence, 54% does so in ADM1_3,
+31% in ADM1_2 and a remaining 16% in ADM1_4 and ADM1_5.</p>
 <p>When reading horizontally, rows <strong>will not</strong> sum to
 100%, but are still indicative of the residences of people getting
 vaccinated in a certain region. For example, reading the plot on the
-left in a horizontal fashion we may note that 94% of the residents of
+left in a horizontal fashion we may note that 92% of the residents of
 ADM1_2 get vaccinated there as well, but this region also vaccinates a
-significant proportion of residents of ADM1_3 (11%).</p>
+significant proportion of residents of ADM1_3 (13%).</p>
 </div>
-<div class="section level3">
-<h3 id="analysis-at-the-second-administrative-level">Analysis at the second administrative level<a class="anchor" aria-label="anchor" href="#analysis-at-the-second-administrative-level"></a>
-</h3>
+<div class="section level4">
+<h4 id="example-at-second-administrative-level">Example at Second Administrative Level<a class="anchor" aria-label="anchor" href="#example-at-second-administrative-level"></a>
+</h4>
 <p>An analysis at a more granular level is beneficial in this case. Let
 us repeat the above process, but at the second administrative level
 (e.g., districts within a certain region).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute distribution of doses for each place of residence at second</span></span>
 <span><span class="co"># administrative level (focus on ADM1_3 only for this example)</span></span>
 <span><span class="va">distribution_df3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/roc_distribution.html">roc_distribution</a></span><span class="op">(</span></span>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  vaccine <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM2"</span>,</span>
-<span>  birth_cohort <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  birth_cohort <span class="op">=</span> <span class="fl">2023</span>,</span>
 <span>  include_self_matches <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  within_ADM1 <span class="op">=</span> <span class="st">"ADM1_3"</span> <span class="co"># set the region to drill into</span></span>
 <span><span class="op">)</span></span>
@@ -536,20 +880,34 @@ us repeat the above process, but at the second administrative level
 take place in a location different from the place of residence, broken
 down by the second administrative level.</p>
 <p>As an example, it is notable that among all individuals residing in
-ADM2_3_10 who are vaccinated outside their area of residence, 71%
-receive their vaccine in ADM2_3_11. Similarly, 44% of individuals from
-ADM2_3_23 who are vaccinated elsewhere are also vaccinated in
-ADM2_3_11.</p>
+ADM2_3_10 who are vaccinated outside their area of residence, 72%
+receive their vaccine in ADM2_3_11. Similarly, 23% of individuals from
+ADM2_3_23 who are vaccinated elsewhere, are vaccinated in ADM2_3_11.</p>
 <p>Looking at the heatmap horizontally, we can see that ADM2_3_20
 provides vaccinations to a large number of people coming from other
-areas: 22% of those from ADM2_3_12, 21% from ADM2_3_15, 22% from
-ADM2_3_17, 11% from ADM2_3_18, and 36% from ADM2_3_7 are vaccinated
-there.</p>
+areas: 35% of those from ADM2_3_7, 18% from ADM2_3_15, 17% from
+ADM2_3_12, 14% from ADM2_3_17, etc.</p>
 <p>The top row is also interesting, since it indicates people getting
-vaccinated outside of ADM1_3 entirely. For example, in column 4, 86% of
+vaccinated outside of ADM1_3 entirely. For example, in column 4, 85% of
 the residents of ADM3_3_13 get vaccinated outside of ADM1_3, suggesting
 a strong population flow.</p>
 </div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
+<p>This vignette showed how you can use the PAHOabc package to compare
+vaccination coverage by place of residence and place of occurrence, and
+to explore how people move between areas to get vaccinated.</p>
+<p>We saw that coverage can vary a lot depending on which location you
+use, and in some cases, coverage by occurrence can go over 100% — a sign
+that people are coming from elsewhere to get vaccinated. The
+distribution and heatmap functions help visualize these patterns and can
+reveal which areas act as service hubs or where people are going for
+vaccines.</p>
+<p>Overall, this kind of analysis helps make sense of population flows
+and supports better planning for immunization programs.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Understanding the Example Datasets in PAHOabc • pahoabc</title>
+<title>Using our Example Datasets • pahoabc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Understanding the Example Datasets in PAHOabc">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Using our Example Datasets">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,11 +41,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
 <li><h6 class="dropdown-header" data-toc-skip>Modules</h6></li>
     <li><a class="dropdown-item" href="../articles/nominal_dropout_en.html">Nominal Dropout Rate</a></li>
-    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Coverage</a></li>
+    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Analyses</a></li>
     <li><a class="dropdown-item" href="../articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
-    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our example datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our Example Datasets</a></li>
   </ul>
 </li>
       </ul>
@@ -66,19 +66,19 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Understanding the Example Datasets in PAHOabc</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Using our Example Datasets</h1>
                         <h4 data-toc-skip class="author">PAHO/CIM</h4>
             
             <h4 data-toc-skip class="date">April 14, 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.4.0/vignettes/example_datasets_en.Rmd" class="external-link"><code>vignettes/example_datasets_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/main/vignettes/example_datasets_en.Rmd" class="external-link"><code>vignettes/example_datasets_en.Rmd</code></a></small>
       <div class="d-none name"><code>example_datasets_en.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h2 id="rationale">Rationale<a class="anchor" aria-label="anchor" href="#rationale"></a>
 </h2>
 <p>The PAHOabc package includes a set of example datasets to help users
 understand how to use its functions effectively. These datasets simulate
@@ -86,6 +86,74 @@ a fictional country’s immunization information system and are structured
 to work seamlessly with the tools provided by the package. This vignette
 provides an overview of each dataset and describes how they are used
 throughout the package’s modules.</p>
+</div>
+<div class="section level2">
+<h2 id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a>
+</h2>
+<div class="section level3">
+<h3 id="political-geographic-boundaries">Political Geographic Boundaries<a class="anchor" aria-label="anchor" href="#political-geographic-boundaries"></a>
+</h3>
+<p>Throughout this vignette, we will make reference to different levels
+of political geographic boundaries. These levels are defined by the
+country/territory and can have different names from country to country.
+PAHOabc is agnostic to these names and requires the user to recode their
+variable names to fit the PAHOabc structure.</p>
+<p>Namely, PAHOabc can distinguish three administrative levels, which
+listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
+<ol style="list-style-type: decimal">
+<li>ADM0: The country. This is the top-most administrative level.</li>
+<li>ADM1: The first geographic subdivision in the country. ADM0 contains
+several ADM1 subdivisions.</li>
+<li>ADM2: The second geographic subdivision in the country. Each ADM1
+contains several ADM2 subdivisions.</li>
+</ol>
+<p><img src="ADM_explanation.svg"></p>
+</div>
+<div class="section level3">
+<h3 id="vaccine-names">Vaccine Names<a class="anchor" aria-label="anchor" href="#vaccine-names"></a>
+</h3>
+<p>Our example datasets use a specific naming convention for the vaccine
+doses. This might not match your own naming schemes, but it will not
+affect the usage of the package as long as you make sure to be
+consistent when naming vaccine doses.</p>
+<p>For example, the vaccine names used in the PAHOabc package are:</p>
+<table class="table">
+<colgroup>
+<col width="17%">
+<col width="82%">
+</colgroup>
+<thead><tr class="header">
+<th>Abbreviation</th>
+<th>Full Name</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>SRP1</td>
+<td>Measles, Rubella, and Mumps Vaccine (1st dose)</td>
+</tr>
+<tr class="even">
+<td>DTP1</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)</td>
+</tr>
+<tr class="odd">
+<td>DTP2</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)</td>
+</tr>
+<tr class="even">
+<td>DTP3</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)</td>
+</tr>
+<tr class="odd">
+<td>BCG RN</td>
+<td>Bacillus Calmette–Guérin Vaccine (at birth)</td>
+</tr>
+<tr class="even">
+<td>YFV1</td>
+<td>Yellow Fever Vaccine (1st dose)</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section level2">
 <h2 id="list-of-example-datasets">List of example datasets<a class="anchor" aria-label="anchor" href="#list-of-example-datasets"></a>
@@ -186,10 +254,28 @@ their date of birth, and the vaccine dose received.</p>
 </tr>
 </tbody>
 </table>
-<p>All records include subnational geographic levels ADM1 and ADM2
-identifiers for both residence and occurrence, making it possible to
-analyze population flows and coverage across different geographic
-levels.</p>
+<ul>
+<li>
+<code>ID</code>: Unique person identification number.</li>
+<li>
+<code>date_birth</code>: Date of birth of person.</li>
+<li>
+<code>date_vax</code>: Date of vaccination event.</li>
+<li>ADM1: Refers to the first geographic administrative level of the
+country.</li>
+<li>ADM2: Refers to the second geographic administrative level of the
+country.</li>
+<li>Residence: Refers to the place where the person lives.<br>
+</li>
+<li>Occurrence: Refers to the place where the vaccination event
+occurred.<br>
+</li>
+<li>
+<code>dose</code>: A combined variable representing the vaccine type
+and its corresponding dose number. For example, DTP1 refers to the first
+dose of a vaccine containing diphtheria, tetanus, and pertussis
+components.</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="pahoabc-schedule">pahoabc.schedule<a class="anchor" aria-label="anchor" href="#pahoabc-schedule"></a>
@@ -234,6 +320,16 @@ vaccinations.</p>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>
+<code>dose</code>: A combined variable representing the vaccine type
+and its corresponding dose number. For example, DTP1 refers to the first
+dose of a vaccine containing diphtheria, tetanus, and pertussis
+components.</li>
+<li>
+<code>age_schedule</code>: The recommended age of administration of
+the corresponding <code>dose</code> in months.</li>
+</ul>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>The <code>dose</code> names must match exactly those in the
@@ -241,7 +337,7 @@ vaccinations.</p>
 </blockquote>
 </div>
 <div class="section level3">
-<h3 id="population-datasets">Population datasets<a class="anchor" aria-label="anchor" href="#population-datasets"></a>
+<h3 id="population-datasets">Population Datasets<a class="anchor" aria-label="anchor" href="#population-datasets"></a>
 </h3>
 <p>Population datasets provide population estimates at different
 geographic levels, for various years and children of varying ages.
@@ -285,6 +381,9 @@ aggregated population estimates at the national level (ADM0).</p>
 </tr>
 </tbody>
 </table>
+<p>This table is in long format and contains the corresponding
+<code>population</code> of children of a specific <code>age</code>
+during a given <code>year</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="pahoabc-pop-adm1">pahoabc.pop.ADM1<a class="anchor" aria-label="anchor" href="#pahoabc-pop-adm1"></a>
@@ -341,6 +440,9 @@ population data aggregated at the first subnational administrative level
 </tr>
 </tbody>
 </table>
+<p>Note that this table is in long format and contains the corresponding
+<code>population</code> of children of a specific <code>age</code>
+during a given <code>year</code> at the <code>ADM1</code> level.</p>
 </div>
 <div class="section level4">
 <h4 id="pahoabc-pop-adm2">pahoabc.pop.ADM2<a class="anchor" aria-label="anchor" href="#pahoabc-pop-adm2"></a>
@@ -404,6 +506,9 @@ at a finer geographic resolution.</p>
 </tr>
 </tbody>
 </table>
+<p>Note that this table is in long format and contains the corresponding
+<code>population</code> of children of a specific <code>age</code>
+during a given <code>year</code> at the <code>ADM2</code> level.</p>
 </div>
 </div>
 </div>

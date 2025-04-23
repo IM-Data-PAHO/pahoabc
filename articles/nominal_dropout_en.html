@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,11 +41,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
 <li><h6 class="dropdown-header" data-toc-skip>Modules</h6></li>
     <li><a class="dropdown-item" href="../articles/nominal_dropout_en.html">Nominal Dropout Rate</a></li>
-    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Coverage</a></li>
+    <li><a class="dropdown-item" href="../articles/residence_occurrence_en.html">Residence vs. Occurrence Analyses</a></li>
     <li><a class="dropdown-item" href="../articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
-    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our example datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/example_datasets_en.html">Using our Example Datasets</a></li>
   </ul>
 </li>
       </ul>
@@ -69,9 +69,9 @@
       <img src="../logo.png" class="logo" alt=""><h1>Nominal Dropout Rate</h1>
                         <h4 data-toc-skip class="author">PAHO/CIM</h4>
             
-            <h4 data-toc-skip class="date">December 4, 2024</h4>
+            <h4 data-toc-skip class="date">April 22, 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.4.0/vignettes/nominal_dropout_en.Rmd" class="external-link"><code>vignettes/nominal_dropout_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/main/vignettes/nominal_dropout_en.Rmd" class="external-link"><code>vignettes/nominal_dropout_en.Rmd</code></a></small>
       <div class="d-none name"><code>nominal_dropout_en.Rmd</code></div>
     </div>
 
@@ -82,36 +82,93 @@
 </h2>
 <p>The dropout rate is an indicator used to evaluate the loss of
 follow-up in vaccination schedules. It reflects the percentage of
-individuals who did not receive a final dose (DTP3cv) among those who
-received an initial dose (DTP1cv). In aggregated systems, it is
+individuals who did not receive a final dose (i.e, DTP3) among those who
+received an initial dose (i.e, DTP1). In aggregated systems, it is
 estimated using the following formula:</p>
 <p>Performing the analysis with aggregated data does not guarantee that
 the individuals who received both doses are the same, as shown in Figure
 1a. Electronic nominal vaccination records enable a person-to-person
 analysis, ensuring that the individuals who received both doses are
 indeed the same, as illustrated in Figure 1b.</p>
-<div class="float">
-<img src="dropout_vignette_fig1.svg" alt="Figure 1: Visual representation of a nominal dropout analysis (figure created by authors)"><div class="figcaption">Figure 1: Visual representation of a nominal
-dropout analysis (figure created by authors)</div>
-</div>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>All functions used for nominal dropout analyses within PAHOabc begin
+with the <code>nod_</code> prefix.</p>
+</blockquote>
+<p><img src="nod_rationale.png" style="width:90.0%"></p>
 </div>
 <div class="section level2">
-<h2 id="function-description">Function description<a class="anchor" aria-label="anchor" href="#function-description"></a>
+<h2 id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a>
 </h2>
-<p>PAHOabc includes the functionality to estimate the dropout rate
-nominally, referred to as the nominal dropout rate. This allows for the
-analysis of any pair of doses by specifying an initial dose and a final
-dose. For correct interpretation, the initial dose must precede the
-final dose in the vaccination schedule, for example: DTP1cv – DTP3cv or
-DTP1cv – MCV. Additionally, it allows users to select the level of
-aggregation for the results, which can be at the national level or
-subnational levels (ADM1 or ADM2).</p>
+<div class="section level3">
+<h3 id="political-geographic-boundaries">Political Geographic Boundaries<a class="anchor" aria-label="anchor" href="#political-geographic-boundaries"></a>
+</h3>
+<p>Throughout this vignette, we will make reference to different levels
+of political geographic boundaries. These levels are defined by the
+country/territory and can have different names from country to country.
+PAHOabc is agnostic to these names and requires the user to recode their
+variable names to fit the PAHOabc structure.</p>
+<p>Namely, PAHOabc can distinguish three administrative levels, which
+listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
+<ol style="list-style-type: decimal">
+<li>ADM0: The country. This is the top-most administrative level.</li>
+<li>ADM1: The first geographic subdivision in the country. ADM0 contains
+several ADM1 subdivisions.</li>
+<li>ADM2: The second geographic subdivision in the country. Each ADM1
+contains several ADM2 subdivisions.</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="vaccine-names">Vaccine Names<a class="anchor" aria-label="anchor" href="#vaccine-names"></a>
+</h3>
+<p>Our example datasets use a specific naming convention for the vaccine
+doses. This might not match your own naming schemes, but it will not
+affect the usage of the package as long as you make sure to be
+consistent when naming vaccine doses.</p>
+<p>For example, the vaccine names used in the PAHOabc package are:</p>
+<table class="table">
+<colgroup>
+<col width="17%">
+<col width="82%">
+</colgroup>
+<thead><tr class="header">
+<th>Abbreviation</th>
+<th>Full Name</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>SRP1</td>
+<td>Measles, Rubella, and Mumps Vaccine (1st dose)</td>
+</tr>
+<tr class="even">
+<td>DTP1</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)</td>
+</tr>
+<tr class="odd">
+<td>DTP2</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)</td>
+</tr>
+<tr class="even">
+<td>DTP3</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)</td>
+</tr>
+<tr class="odd">
+<td>BCG RN</td>
+<td>Bacillus Calmette–Guérin Vaccine (at birth)</td>
+</tr>
+<tr class="even">
+<td>YFV1</td>
+<td>Yellow Fever Vaccine (1st dose)</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <div class="section level3">
-<h3 id="install-package">Install package<a class="anchor" aria-label="anchor" href="#install-package"></a>
+<h3 id="install-package">Install Package<a class="anchor" aria-label="anchor" href="#install-package"></a>
 </h3>
 <p>The first step to run the nominal dropout rate analysis is to install
 the PAHOabc package available on Github</p>
@@ -119,166 +176,367 @@ the PAHOabc package available on Github</p>
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="load-package-and-database">Load package and database<a class="anchor" aria-label="anchor" href="#load-package-and-database"></a>
+<h3 id="load-data">Load Data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h3>
-<p>The second step corresponds to enabling the package in the R Session
-and loading the test database that comes wrapped with the package. This
-database simulates an EIR from a fictitious country.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## Enable package ----</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://im-data-paho.github.io/pahoabc/">pahoabc</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Read the sample dataset into a variable ----</span></span>
-<span><span class="va">EIR</span> <span class="op">&lt;-</span> <span class="va">pahoabc.EIR</span></span>
-<span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">EIR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Rows: 492,688</span></span>
-<span><span class="co">## Columns: 8</span></span>
-<span><span class="co">## $ ID              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 191997<span style="color: #949494;">, </span>212189<span style="color: #949494;">, </span>118063<span style="color: #949494;">, </span>118063<span style="color: #949494;">, </span>130751<span style="color: #949494;">, </span>136532<span style="color: #949494;">, </span>212120…</span></span>
-<span><span class="co">## $ date_birth      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-08-08<span style="color: #949494;">, </span>2023-12-20<span style="color: #949494;">, </span>2022-09-15<span style="color: #949494;">, </span>2022-09-15<span style="color: #949494;">, </span>2022-…</span></span>
-<span><span class="co">## $ date_vax        <span style="color: #949494; font-style: italic;">&lt;date&gt;</span> 2023-12-26<span style="color: #949494;">, </span>2023-12-26<span style="color: #949494;">, </span>2023-12-26<span style="color: #949494;">, </span>2023-12-26<span style="color: #949494;">, </span>2023-…</span></span>
-<span><span class="co">## $ ADM1_residence  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ADM1_4"<span style="color: #949494;">, </span>"ADM1_5"<span style="color: #949494;">, </span>"ADM1_2"<span style="color: #949494;">, </span>"ADM1_2"<span style="color: #949494;">, </span>"ADM1_5"<span style="color: #949494;">, </span>"ADM…</span></span>
-<span><span class="co">## $ ADM2_residence  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ADM2_4_35"<span style="color: #949494;">, </span>"ADM2_5_61"<span style="color: #949494;">, </span>"ADM2_2_5"<span style="color: #949494;">, </span>"ADM2_2_5"<span style="color: #949494;">, </span>"ADM…</span></span>
-<span><span class="co">## $ ADM1_occurrence <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ADM1_4"<span style="color: #949494;">, </span>"ADM1_5"<span style="color: #949494;">, </span>"ADM1_2"<span style="color: #949494;">, </span>"ADM1_2"<span style="color: #949494;">, </span>"ADM1_5"<span style="color: #949494;">, </span>"ADM…</span></span>
-<span><span class="co">## $ ADM2_occurrence <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ADM2_4_35"<span style="color: #949494;">, </span>"ADM2_5_61"<span style="color: #949494;">, </span>"ADM2_2_5"<span style="color: #949494;">, </span>"ADM2_2_5"<span style="color: #949494;">, </span>"ADM…</span></span>
-<span><span class="co">## $ dose            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "DTP2"<span style="color: #949494;">, </span>"BCG RN"<span style="color: #949494;">, </span>"DTP1"<span style="color: #949494;">, </span>"YFV1"<span style="color: #949494;">, </span>"YFV1"<span style="color: #949494;">, </span>"SRP1"<span style="color: #949494;">, </span>"BCG…</span></span></code></pre>
-<p>For your own database to work, it should have the same structure and
-variable names as shown above.</p>
-<p>Note:</p>
-<ul>
-<li>ID: person identification number<br>
-</li>
-<li>date_birth: date of birth of person<br>
-</li>
-<li>date_vax: date of vaccination event<br>
-</li>
-<li>ADM1: Refers to the administrative level 1 territory of the country.
-For example: States, Region, etc…<br>
-</li>
-<li>ADM2: Refers to the administrative level 2 territory of the country.
-For example: Municipality, County, etc…<br>
-</li>
-<li>Residence: Refers to the territory where the person lives.<br>
-</li>
-<li>Occurrence: Refers to the territory where the vaccination event
-ocurred.<br>
-</li>
-<li>dose: Refers to a combination variable of the vaccine name/code and
-the number of dose. For example: DTP1 refers to the first dose
-administered of the DTP containing vaccine.</li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h3>
-<p>Utilizes the nominal_dropout() function of the pahoabc package to
-calculate nominal dropout for ADM1, using the first and third doses of
-the DTP vaccine. This functions only uses the residence territory
-variables so make sure these exist in your dataframe.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#Runs the nominal dropout function</span></span>
-<span><span class="va">example_dropout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nominal_dropout.html">nominal_dropout</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">EIR</span>, vac_init <span class="op">=</span> <span class="st">"DTP1"</span>, vac_end<span class="op">=</span> <span class="st">"DTP3"</span>, geo_level <span class="op">=</span> <span class="st">"ADM1"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in nominal_dropout(data = EIR, vac_init = "DTP1", vac_end = "DTP3", :</span></span>
-<span><span class="co">## Data contains duplicate rows where ID and dose are duplicated. We recommend you</span></span>
-<span><span class="co">## verify for duplicates before running the process to increase accuracy.</span></span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">example_dropout</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Rows: 10</span></span>
-<span><span class="co">## Columns: 5</span></span>
-<span><span class="co">## Groups: ADM1_residence [5]</span></span>
-<span><span class="co">## $ ADM1_residence <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "ADM1_1"<span style="color: #949494;">, </span>"ADM1_1"<span style="color: #949494;">, </span>"ADM1_2"<span style="color: #949494;">, </span>"ADM1_2"<span style="color: #949494;">, </span>"ADM1_3"<span style="color: #949494;">, </span>"ADM1…</span></span>
-<span><span class="co">## $ dropout        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "adherence"<span style="color: #949494;">, </span>"dropout"<span style="color: #949494;">, </span>"adherence"<span style="color: #949494;">, </span>"dropout"<span style="color: #949494;">, </span>"adhere…</span></span>
-<span><span class="co">## $ num            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1491<span style="color: #949494;">, </span>1116<span style="color: #949494;">, </span>6967<span style="color: #949494;">, </span>5462<span style="color: #949494;">, </span>30999<span style="color: #949494;">, </span>24609<span style="color: #949494;">, </span>5304<span style="color: #949494;">, </span>2270<span style="color: #949494;">, </span>2703<span style="color: #949494;">,</span>…</span></span>
-<span><span class="co">## $ denom          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2607<span style="color: #949494;">, </span>2607<span style="color: #949494;">, </span>12429<span style="color: #949494;">, </span>12429<span style="color: #949494;">, </span>55608<span style="color: #949494;">, </span>55608<span style="color: #949494;">, </span>7574<span style="color: #949494;">, </span>7574<span style="color: #949494;">, </span>404…</span></span>
-<span><span class="co">## $ percent        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 57.19217<span style="color: #949494;">, </span>42.80783<span style="color: #949494;">, </span>56.05439<span style="color: #949494;">, </span>43.94561<span style="color: #949494;">, </span>55.74558<span style="color: #949494;">, </span>44.25…</span></span></code></pre>
+<p>The functions in this module require you to provide your <strong>EIR
+dataset</strong> in a specific format.</p>
+<p>To make it easy for you to test out PAHOabc’s functionality and
+understand the structure we require for your datasets, we will now
+explore the example dataset provided by PAHOabc that is required by this
+module.</p>
 <div class="section level4">
-<h4 id="parameters-accepted">Parameters accepted<a class="anchor" aria-label="anchor" href="#parameters-accepted"></a>
+<h4 id="eir">EIR<a class="anchor" aria-label="anchor" href="#eir"></a>
 </h4>
+<p>The <code><a href="../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> data frame provides a
+simulated, nominal-level table representing individual vaccination
+events from an Electronic Immunization Registry (EIR). Each row
+corresponds to a single vaccination act for a person, including
+information on their residence, where they were vaccinated (occurrence),
+their date of birth, and the vaccine dose received.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
+<table style="width:100%;" class="table">
+<caption>Example Electronic Immunization Registry</caption>
+<colgroup>
+<col width="7%">
+<col width="11%">
+<col width="11%">
+<col width="15%">
+<col width="15%">
+<col width="16%">
+<col width="16%">
+<col width="7%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">ID</th>
+<th align="left">date_birth</th>
+<th align="left">date_vax</th>
+<th align="left">ADM1_residence</th>
+<th align="left">ADM2_residence</th>
+<th align="left">ADM1_occurrence</th>
+<th align="left">ADM2_occurrence</th>
+<th align="left">dose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">191997</td>
+<td align="left">2023-08-08</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_4</td>
+<td align="left">ADM2_4_35</td>
+<td align="left">ADM1_4</td>
+<td align="left">ADM2_4_35</td>
+<td align="left">DTP2</td>
+</tr>
+<tr class="even">
+<td align="right">212189</td>
+<td align="left">2023-12-20</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_61</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_61</td>
+<td align="left">BCG RN</td>
+</tr>
+<tr class="odd">
+<td align="right">118063</td>
+<td align="left">2022-09-15</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">DTP1</td>
+</tr>
+<tr class="even">
+<td align="right">118063</td>
+<td align="left">2022-09-15</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">YFV1</td>
+</tr>
+<tr class="odd">
+<td align="right">130751</td>
+<td align="left">2022-10-27</td>
+<td align="left">2023-12-12</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_55</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_55</td>
+<td align="left">YFV1</td>
+</tr>
+<tr class="even">
+<td align="right">136532</td>
+<td align="left">2021-09-21</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_3</td>
+<td align="left">ADM2_3_12</td>
+<td align="left">ADM1_3</td>
+<td align="left">ADM2_3_12</td>
+<td align="left">SRP1</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>data: R Structured dataframe with the variables listed above.<br>
+<li>
+<code>ID</code>: Unique person identification number.</li>
+<li>
+<code>date_birth</code>: Date of birth of person.</li>
+<li>
+<code>date_vax</code>: Date of vaccination event.</li>
+<li>ADM1: Refers to the first geographic administrative level of the
+country.</li>
+<li>ADM2: Refers to the second geographic administrative level of the
+country.</li>
+<li>Residence: Refers to the place where the person lives.<br>
 </li>
-<li>vac_init: The name (string) of the vaccine to use as the start point
-of the analysis as stored in the <strong>dose</strong> column of the
-dataframe.<br>
+<li>Occurrence: Refers to the place where the vaccination event
+occurred.<br>
 </li>
-<li>vac_end: The name (string) of the vaccine to use as the end point of
-the analysis as stored in the <strong>dose</strong> column of the
-dataframe.<br>
-</li>
-<li>geo_level: Administrative level to use, this is an optional
-parameter. Can be “ADM1” or “ADM2” as strings</li>
-<li>birth_cohort(year): Parameter to segment the analysis based on the
-year of birth of the person in the dataframe. This function uses the
-<strong>date_birth</strong> column in the dataframe.</li>
+<li>
+<code>dose</code>: A combined variable representing the vaccine type
+and its corresponding dose number. For example, DTP1 refers to the first
+dose of a vaccine containing diphtheria, tetanus, and pertussis
+components.</li>
 </ul>
-<p>The <strong>data, vac_init, vac_end</strong> parameters are
-mandatory. <strong>geo_level</strong> and <strong>birth_cohort</strong>
-are optional and help to segment the data for more precise analyses.</p>
-<p>Check the documentation of the function using ??nominal_dropout() in
-R for additional information.</p>
 </div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="dropoutplot-plot-output">dropoutplot(): Plot output<a class="anchor" aria-label="anchor" href="#dropoutplot-plot-output"></a>
-</h2>
-<p>The nominal dropout component of <strong>pahoabc</strong> provides a
-function to produce a basic ggplot2 of the information provided. This
-plot can be modified using the standard ggplot methodology.</p>
 <div class="section level3">
-<h3 id="parameters-accepted-1">Parameters accepted<a class="anchor" aria-label="anchor" href="#parameters-accepted-1"></a>
+<h3 id="nominal-dropout-analysis">Nominal Dropout Analysis<a class="anchor" aria-label="anchor" href="#nominal-dropout-analysis"></a>
 </h3>
-<p>The function <strong>dropoutplot()</strong> accepts the following
-parameters:</p>
+<p>PAHOabc includes the functionality to estimate the nominal dropout
+rate, on a per-person basis. This allows for the analysis of any pair of
+doses by specifying an initial dose and a final dose. For correct
+interpretation, the initial dose must precede the final dose in the
+vaccination schedule, for example: DTP1 – DTP3 or DTP1 – MCV.
+Additionally, it allows users to select the level of aggregation for the
+results, which can be at the national level or subnational levels (ADM1
+or ADM2).</p>
+<div class="section level4">
+<h4 id="expected-workflow">Expected workflow<a class="anchor" aria-label="anchor" href="#expected-workflow"></a>
+</h4>
+<p>The <code><a href="../reference/nod_dropout.html">nod_dropout()</a></code> and <code><a href="../reference/nod_barplot.html">nod_barplot()</a></code>
+functions work together to perform nominal dropout analysis and
+visualization. The <code><a href="../reference/nod_dropout.html">nod_dropout()</a></code> function computes the
+nominal dropout and complete cases by residence across selected
+administrative levels, birth cohorts, and vaccines. Its output (a data
+table) is structured to be directly compatible with
+<code><a href="../reference/nod_barplot.html">nod_barplot()</a></code>, which generates a visualization for the data
+computed.</p>
+<p><img src="nod_workflow.svg"></p>
+</div>
+<div class="section level4">
+<h4 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h4>
+<p>Here is a simple use case of the <code><a href="../reference/nod_dropout.html">nod_dropout()</a></code> function,
+where we compute nominal dropout for ADM 1 for DTP1 and DTP3 in our
+example dataset.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Compute nominal dropout</span></span>
+<span><span class="co">#Runs the nominal dropout function</span></span>
+<span><span class="va">example_dropout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nod_dropout.html">nod_dropout</a></span><span class="op">(</span>data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>                               vaccine_init <span class="op">=</span> <span class="st">"DTP1"</span>, <span class="co">#Starting vaccine based on your dataset</span></span>
+<span>                               vaccine_end<span class="op">=</span> <span class="st">"DTP3"</span>, <span class="co">#Ending vaccine based on your dataset</span></span>
+<span>                               geo_level <span class="op">=</span> <span class="st">"ADM1"</span>, <span class="co">#Can be ADM0, ADM1 or ADM2</span></span>
+<span>                               birth_cohorts <span class="op">=</span> <span class="cn">NULL</span> <span class="co">#Can be a vector of years or a year</span></span>
+<span>                               <span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in .validate_duplicates(data.EIR, vaccine_init, vaccine_end): Data</span></span>
+<span><span class="co">## contains duplicate rows where ID and dose are duplicated. We recommend you</span></span>
+<span><span class="co">## verify for duplicates before running the process to increase accuracy.</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># show results in table</span></span>
+<span><span class="va">example_dropout</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span>, caption <span class="op">=</span> <span class="st">"Nominal dropout rate between DTP1 and DTP3 by ADM1 level"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Nominal dropout rate between DTP1 and DTP3 by ADM1
+level</caption>
+<thead><tr class="header">
+<th align="left">ADM1_residence</th>
+<th align="left">indicator</th>
+<th align="right">num</th>
+<th align="right">denom</th>
+<th align="right">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="left">complete</td>
+<td align="right">1491</td>
+<td align="right">2607</td>
+<td align="right">57.192</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="left">dropout</td>
+<td align="right">1116</td>
+<td align="right">2607</td>
+<td align="right">42.808</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_2</td>
+<td align="left">complete</td>
+<td align="right">6967</td>
+<td align="right">12429</td>
+<td align="right">56.054</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_2</td>
+<td align="left">dropout</td>
+<td align="right">5462</td>
+<td align="right">12429</td>
+<td align="right">43.946</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_3</td>
+<td align="left">complete</td>
+<td align="right">30999</td>
+<td align="right">55608</td>
+<td align="right">55.746</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_3</td>
+<td align="left">dropout</td>
+<td align="right">24609</td>
+<td align="right">55608</td>
+<td align="right">44.254</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_4</td>
+<td align="left">complete</td>
+<td align="right">5304</td>
+<td align="right">7574</td>
+<td align="right">70.029</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_4</td>
+<td align="left">dropout</td>
+<td align="right">2270</td>
+<td align="right">7574</td>
+<td align="right">29.971</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_5</td>
+<td align="left">complete</td>
+<td align="right">2703</td>
+<td align="right">4040</td>
+<td align="right">66.906</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_5</td>
+<td align="left">dropout</td>
+<td align="right">1337</td>
+<td align="right">4040</td>
+<td align="right">33.094</td>
+</tr>
+</tbody>
+</table>
+<div class="section level5">
+<h5 id="parameters-accepted">Parameters accepted<a class="anchor" aria-label="anchor" href="#parameters-accepted"></a>
+</h5>
 <ul>
-<li>nominal_dropout_data: Dataframe formatted from the result of the
-<strong>nominal_dropout()</strong> function</li>
-<li>vertical: (boolean) Shows the plot vertically or horizontally,
-Default is FALSE which corresponds to horizontal, TRUE corresponds to
-vertical.</li>
-<li>order: Organizes the bars based on three options: “alpha”, “desc” or
-“asc”, default is “alpha”</li>
+<li>
+<code>data</code>: R Structured dataframe with the variables listed
+above.<br>
+</li>
+<li>
+<code>vaccine_init</code>: The name (string) of the vaccine to use
+as the start point of the analysis as stored in the
+<strong>dose</strong> column of the dataframe.<br>
+</li>
+<li>
+<code>vaccine_end</code>: The name (string) of the vaccine to use as
+the end point of the analysis as stored in the <strong>dose</strong>
+column of the dataframe.<br>
+</li>
+<li>
+<code>geo_level</code>: Administrative level to use, this is an
+optional parameter. Can be “ADM0”, “ADM1” or “ADM2” as strings. Defaults
+to “ADM0” if ignored.</li>
+<li>
+<code>birth_cohorts</code>(years): Parameter to segment the analysis
+based on the year of birth of the persons in the dataframe. This
+function uses the <code>date_birth</code> column in the dataframe and
+can be a single year or a vector of years.</li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="example-1">Example<a class="anchor" aria-label="anchor" href="#example-1"></a>
-</h3>
+<p>The <code>data</code>, <code>vaccine_init</code>,
+<code>vaccine_end</code> parameters are mandatory.
+<code>geo_level</code> and <code>birth_cohorts</code> are optional and
+help to segment the data for more precise analyses.</p>
+<p>Check the documentation of the function using ??nod_dropout() in R
+for additional information.</p>
+<p>This output may be fed directly into the nod_barplot() function as
+shown below.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Runs the nod_barplot function</span></span>
+<span><span class="va">example_dropout_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nod_barplot.html">nod_barplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">example_dropout</span>, order<span class="op">=</span><span class="st">"alpha"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## ADM1 detected.</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Runs the dropoutplot function</span></span>
-<span><span class="va">example_dropout_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dropoutplot.html">dropoutplot</a></span><span class="op">(</span>nominal_dropout_data<span class="op">=</span><span class="va">example_dropout</span>,vertical<span class="op">=</span><span class="cn">FALSE</span>, order<span class="op">=</span><span class="st">"alpha"</span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="co">#show plot</span></span>
 <span><span class="va">example_dropout_plot</span></span></code></pre></div>
 <p><img src="nominal_dropout_en_files/figure-html/nominal_dropout_plot-1.png" width="700"></p>
 </div>
+<div class="section level5">
+<h5 id="parameters-accepted-1">Parameters accepted<a class="anchor" aria-label="anchor" href="#parameters-accepted-1"></a>
+</h5>
+<p>The function <code><a href="../reference/nod_barplot.html">nod_barplot()</a></code> accepts the following
+parameters:</p>
+<ul>
+<li>
+<code>data</code>:
+Dataframe<code>formatted from the result of the</code>nod_dropout()`
+function.</li>
+<li>
+<code>order</code>: Organizes the bars based on three options:
+“alpha”, “desc” or “asc”, default is “alpha”.</li>
+<li>
+<code>within_ADM1</code> Allows to filter within an ADM1 to filter
+and display only the ADM2 data corresponding to the specified ADM1.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="interpretation">Interpretation<a class="anchor" aria-label="anchor" href="#interpretation"></a>
+</h5>
+<p>This chart shows the nominal dropout per Administrative level 1 as
+well as a 5% line to indicate a threshold of nominal dropout. Having a
+high dropout rate means a large percentage of the persons analyzed are
+not registering for the follow up doses of their schedule. Ideally,
+every person that has received a dose of a multi-dose schedule should
+return to receive the follow up dose. In this case the administrative
+level <strong>ADM1_1</strong> is the one doing the worst, whilst the
+<strong>ADM1_4</strong> is doing the best.</p>
+<p>All of the administrative units have a nominal dropout rate above
+<strong>25%</strong> meaning, at least 25% of the persons in that target
+group <strong>did not come back for their follow up dose</strong>.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level2">
-<h2 id="extra-making-a-beautiful-dropoutplot">Extra: Making a beautiful dropoutplot()<a class="anchor" aria-label="anchor" href="#extra-making-a-beautiful-dropoutplot"></a>
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
-<p>To make a prettier plot, we can work within the constraints of the
-ggplot2 package to modify our original plot object resulting from
-dropoutplot()</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># loads the ggplot2 package for additional modifications</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># takes the example_dropout_plot and modifies it </span></span>
-<span><span class="va">example_dropout_plot</span> <span class="op">+</span></span>
-<span>  <span class="co"># Sets the classic theme of ggplot</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="co"># Modifies the fill of the bar to a single color</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"your_color"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"your_color"</span> <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># Adds a horizontal line at 5% to show what an arbitrary maximum should be</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">5</span>, color <span class="op">=</span> <span class="st">"darkred"</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># Adds a label for the horizontal line</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, x <span class="op">=</span> <span class="cn">Inf</span>, y <span class="op">=</span> <span class="fl">5</span>, label <span class="op">=</span> <span class="st">"Arbitrary limit (5%)"</span>, </span>
-<span>           vjust <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, hjust <span class="op">=</span> <span class="fl">1.1</span>, color <span class="op">=</span> <span class="st">"darkred"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># Modifies the labels and adds a title </span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Dropout between DTP1 and DTP3"</span>, subtitle <span class="op">=</span> <span class="st">"Administrative level 1"</span>,</span>
-<span>       x <span class="op">=</span> <span class="st">"Admnistrative level 1"</span>, caption <span class="op">=</span> <span class="st">"Data obtained from a test data base"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># Modifies the y axis to be fixed to 0-100 to show a clearer scale for dropout</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="nominal_dropout_en_files/figure-html/pretty_plot-1.png" width="700"></p>
+<p>Accurately monitoring continuity in multi-dose vaccination schedules
+is vital for immunisation programmes. The <em>nominal dropout
+rate</em>—the proportion of individuals who begin a series (e.g., DTP1)
+but fail to receive its final dose (e.g., DTP3)—offers a person-level
+view of programme performance that aggregated counts cannot. This
+vignette introduces <strong>PAHOabc</strong>, an R package that
+streamlines nominal dropout analysis by harnessing electronic
+immunisation registry (EIR) data.</p>
+<p>After defining key concepts—administrative units (ADM0–2) and
+standardised vaccine-dose codes—the document walks the reader through a
+reproducible workflow: installing the package, exploring the bundled
+example EIR, computing dropout with <code><a href="../reference/nod_dropout.html">nod_dropout()</a></code>, and
+visualising results with <code><a href="../reference/nod_barplot.html">nod_barplot()</a></code>. A worked example
+estimates DTP1→DTP3 dropout at the ADM1 level, revealing that every
+subdivision exceeds the 25 % dropout threshold; ADM1_1 performs the
+worst, while ADM1_4 performs the best relative to a 5 % target line.</p>
+<p>By coupling granular EIR data with a transparent analytical pipeline,
+<strong>PAHOabc</strong> enables precise, geographically disaggregated
+insights into follow-up losses, equipping health authorities to target
+interventions where they are most needed.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

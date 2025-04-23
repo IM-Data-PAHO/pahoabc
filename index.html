@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,11 +44,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
 <li><h6 class="dropdown-header" data-toc-skip>Modules</h6></li>
     <li><a class="dropdown-item" href="articles/nominal_dropout_en.html">Nominal Dropout Rate</a></li>
-    <li><a class="dropdown-item" href="articles/residence_occurrence_en.html">Residence vs. Occurrence Coverage</a></li>
+    <li><a class="dropdown-item" href="articles/residence_occurrence_en.html">Residence vs. Occurrence Analyses</a></li>
     <li><a class="dropdown-item" href="articles/complete_schedule_en.html">Complete Schedule Coverage</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
-    <li><a class="dropdown-item" href="articles/example_datasets_en.html">Using our example datasets</a></li>
+    <li><a class="dropdown-item" href="articles/example_datasets_en.html">Using our Example Datasets</a></li>
   </ul>
 </li>
       </ul>
@@ -108,16 +108,20 @@ This package aims to strengthen the data analysis capabilities of the human reso
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>PAHOabc contains three main modules:</p>
+<p>Currently, PAHOabc contains three main modules. Follow the links below to explore detailed vignettes with practical examples and guidance on how to use each module:</p>
 <ol style="list-style-type: decimal">
-<li><p><a href="https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html"><strong>Residence vs. Occurrence Coverage</strong></a><br>
-Tools for comparing vaccination coverage based on where people live versus where they were vaccinated. This module helps identify population movement and service coverage gaps across geographic areas.</p></li>
-<li><p><a href="https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html"><strong>Nominal Dropout Rate Analysis</strong></a><br>
+<li><p><a href="https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html"><strong>Nominal Dropout Rate</strong></a><br>
 Calculates dropout rates between any two vaccine doses using nominal data. This module ensures accurate follow-up tracking across a vaccination schedule.</p></li>
+<li><p><a href="https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html"><strong>Residence vs. Occurrence Analyses</strong></a><br>
+Functions for comparing vaccination coverage and dose distribution based on where people live versus where they were vaccinated. This module helps identify population movement and service coverage gaps across geographic areas.</p></li>
 <li><p><a href="https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html"><strong>Complete Schedule Coverage</strong></a><br>
-Evaluates whether individuals have received all required doses in a national immunization schedule. This module differs from standard coverage calculation as it evaluates each individual’s compliance of the national immunization schedule.</p></li>
+Evaluates whether individuals have received all required doses in a national immunization schedule (for a specific cohort up to a specified age). This module differs from standard coverage calculation as it evaluates each individual’s compliance of the national immunization schedule.</p></li>
 </ol>
 <p>Each module works seamlessly with the example datasets provided in the package. These examples make it easy to test out the functionality and serve as a reference when preparing your own data. Learn more about these example datasets <a href="https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.html">in this vignette</a>.</p>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>You can explore all the available vignettes by clicking on the <strong>Guides</strong> button in the navigation bar.</p>
+</blockquote>
 </div>
 <div class="section level2">
 <h2 id="contribute">Contribute<a class="anchor" aria-label="anchor" href="#contribute"></a>
