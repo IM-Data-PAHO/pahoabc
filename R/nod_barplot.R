@@ -13,9 +13,6 @@
 #' @import ggplot2
 #' @export
 #'
-data <- example_dropout
-within_ADM1=NULL
-order = "alpha"
 nod_barplot <- function(data, order = "alpha", within_ADM1=NULL){
 
   ##TODO validate dataframe
@@ -75,6 +72,7 @@ nod_barplot <- function(data, order = "alpha", within_ADM1=NULL){
   #Does simple plot
   nod_barplot <- ggplot(data =  nominal_dropout_data, aes(x=x_label, y = percent))+
     geom_bar(stat="identity", position="dodge")+
+    coord_flip()+
     labs(title=plot_title, y="Dropout rate (%)", x= plot_x)+
     theme_classic()+
     # Modifies the fill of the bar to a single color
