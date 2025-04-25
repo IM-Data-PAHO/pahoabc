@@ -223,21 +223,6 @@
   }
 }
 
-
-#Validate nod vaccines
-#' Validate EIR duplicates.
-#'
-#' @keywords internal
-#' @noRd
-#'
-.validate_nod_vaccines <- function(data.EIR, vac_init, vac_end) {
-if (!vac_init %in% data.EIR$dose){
-  stop(paste0("Error: specified vaccine_init: '", vac_init, "' is not present in the dataset provided."))
-} else if (!vac_end %in% data.EIR$dose) {
-  stop(paste0("Error: specified vacccine_end: '", vac_end, "' is not present in the dataset provided."))
-}
-}
-
 #' Validate Date object.
 #'
 #' @keywords internal

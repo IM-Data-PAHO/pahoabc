@@ -2,7 +2,7 @@
 
 export(cs_barplot)
 export(cs_coverage)
-export(cs_upset)
+export(cs_upsetplot)
 export(nod_barplot)
 export(nod_dropout)
 export(roc_barplot)

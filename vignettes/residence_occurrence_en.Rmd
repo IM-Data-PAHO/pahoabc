@@ -135,7 +135,9 @@ The `roc_coverage()` and `roc_barplot()` functions work together to perform cove
 
 Alternatively, the `roc_coverage_by()` function is available when you want to calculate coverage by either residence or occurrence (but not both). While it produces a similar table, its output is not compatible with `roc_barplot()`.
 
-![](roc_workflow_1.svg)
+![Figure 1. Expected workflow for coverage analyses.](roc_workflow_1.svg)
+
+<br>
 
 ### Example
 
@@ -191,7 +193,9 @@ The `roc_distribution()` and `roc_heatmap()` functions provide a way of analyzin
 
 The figure below shows the expected workflow for these functions.
 
-![](roc_workflow_2.svg)
+![Figure 2. Expected workflow for dose distribution analyses.](roc_workflow_2.svg)
+
+<br>
 
 ### Example at First Administrative Level
 

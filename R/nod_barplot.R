@@ -1,21 +1,19 @@
-#' Nominal dropout plot
+#' (No)minal (D)ropout Bar Plot
 #'
-#' @param data Dataframe formatted from the output of the \code{pahoabc::nod_dropout} function
+#' @param data Dataframe formatted from the output of the \code{pahoabc::nod_dropout} function.
 #' @param within_ADM1 When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
 #' @param order Organizes the bars based on three options: "alpha", "desc" or "asc", default is "alpha"
 #'
-#' @return A ggplot simple barplot for the administrative level used to calculate the nominal dropout. Includes the nominal dropout rate, numerator, denominator and adherence rate. based on the administrative level, birth cohort and vaccines selected
-#'
+#' @return A ggplot object representing the bar plot.
 #'
 #' @import dplyr
 #' @import lubridate
 #' @import tidyr
 #' @import ggplot2
 #' @export
-#'
-nod_barplot <- function(data, order = "alpha", within_ADM1=NULL){
+nod_barplot <- function(data, order = "alpha", within_ADM1 = NULL) {
 
-  ##TODO validate dataframe
+  # TODO: validate dataframe
 
   .validate_character(within_ADM1, "within_ADM1", min_len = 1)
   .validate_character(order, "order", exp_len = 1)
@@ -27,7 +25,6 @@ nod_barplot <- function(data, order = "alpha", within_ADM1=NULL){
   # detect geo level
   ADM_detected <- .detect_geo_level(data)
   geo_column <- paste0("ADM", ADM_detected, "_residence")
-
 
   # Selects the name of the x axis depending on the level of disgregation in data
   if(ADM_detected == 2){
@@ -77,20 +74,20 @@ nod_barplot <- function(data, order = "alpha", within_ADM1=NULL){
     theme_classic()+
     # Modifies the fill of the bar to a single color
     aes(fill = "your_color") +
-    scale_fill_manual(values = c("your_color" = "steelblue")) +
+    scale_fill_manual(values = c("your_color" = "#fee090")) +
     guides(fill = "none") +
     # Adds a horizontal line at 5% to show what an arbitrary maximum should be
-    geom_hline(yintercept = 5, color = "darkred", linetype = "dashed", linewidth = 1) +
+    geom_hline(yintercept = 5, color = "#b35806", linetype = "dashed", linewidth = 1) +
     # Adds a label for the horizontal line
     annotate("text", x = Inf, y = 5, label = "(5%)",
-             vjust = -1, hjust = 1.1, color = "darkred") +
+             vjust = -1, hjust = 1.1, color = "#b35806") +
     # Modifies the labels and adds a title
-    labs(title = "Dropout between DTP1 and DTP3", caption = "Data obtained from a test data base") +
+    labs(title = "Nominal dropout rate") +
     # Modifies the y axis to be fixed to 0-100 to show a clearer scale for dropout
     scale_y_continuous(limits=c(0,100))
 
 
-  # Returns the dropout bar plot (simple)
+  # Returns the dropout bar plot
   return(nod_barplot)
 }
 

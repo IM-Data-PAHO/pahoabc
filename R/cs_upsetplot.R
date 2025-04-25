@@ -18,9 +18,7 @@
 #' @import ggplot2
 #'
 #' @export
-cs_upset <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, min_size = 1) {
-
-  # TODO: Fix set size for 2023
+cs_upsetplot <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, min_size = 1) {
 
   .validate_data.schedule(data.schedule)
   .validate_numeric(birth_cohort, "birth_cohort", exp_len = 1)
@@ -53,6 +51,15 @@ cs_upset <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, 
   for (dose in doses_in_schedule) {
     # NOTE: Use \\b to detect word boundaries
     line_list[[dose]] <- str_detect(line_list$dose_list, paste0("\\b", dose, "\\b"))
+  }
+
+  # check if anyone has a complete schedule to know if we have to highlight
+  # the CS bar in the upset plot
+  if(any(line_list$complete_schedule)) {
+    highlight_query <- list(upset_query(intersect = doses_in_schedule, fill = "#fc8d59", color = "#fc8d59"))
+  } else {
+    highlight_query <- list() # an empty query
+    warning("Warning: No individuals in data.EIR with complete schedule according to data.schedule.")
   }
 
   # get denominator
@@ -109,8 +116,10 @@ cs_upset <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, 
       ),
       # keep only some groups
       min_size = denominator * min_size / 100,
-      # highlight complete schedules
-      queries = list(upset_query(intersect = doses_in_schedule, fill = "#fc8d59", color = "#fc8d59"))
+      # highlight complete schedules (if applicable)
+      queries = highlight_query,
+      # keep all doses in schedule even if there are no matches
+      keep_empty_groups = TRUE
     )
 
   return(p)
