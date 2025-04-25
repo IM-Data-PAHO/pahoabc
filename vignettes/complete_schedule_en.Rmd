@@ -132,7 +132,7 @@ Note that this table is in long format and contains the corresponding `populatio
 
 ### Expected Workflow
 
-The `cs_coverage()`, `cs_barplot()` and `cs_upset()` functions provide a way of analyzing and visualizing complete schedule coverage. Their relationships are shown in Figure 1.
+The `cs_coverage()`, `cs_barplot()` and `cs_upsetplot()` functions provide a way of analyzing and visualizing complete schedule coverage. Their relationships are shown in Figure 1.
 
 ![Figure 1. Expected workflow for complete schedule coverage analysis.](cs_workflow.svg)
 
@@ -172,12 +172,12 @@ coverage_plot
 
 ### Upset plot
 
-The `cs_upset()` function allows us to produce an upset plot to evaluate the percentage of individuals included in the EIR who have received any of the possible combinations of the available vaccines. The orange bar represents the proportion of individuals who have received all the evaluated vaccines, thus indicating the complete schedule coverage. The horizontal bars show the proportion of individuals who received each specific vaccine (i.e., the coverage for that vaccine).
+The `cs_upsetplot()` function allows us to produce an upset plot to evaluate the percentage of individuals included in the EIR who have received any of the possible combinations of the available vaccines. The orange bar represents the proportion of individuals who have received all the evaluated vaccines, thus indicating the complete schedule coverage. The horizontal bars show the proportion of individuals who received each specific vaccine (i.e., the coverage for that vaccine).
 
 ```{r cov-upset-example, message=FALSE, fig.width=12, fig.height=6}
 
 # produce upset plot
-coverage_upset <- cs_upset(
+coverage_upset <- cs_upsetplot(
   data.EIR = pahoabc.EIR,
   data.schedule = pahoabc.schedule,
   birth_cohort = 2022

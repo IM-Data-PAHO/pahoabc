@@ -18,9 +18,7 @@
 #' @import ggplot2
 #'
 #' @export
-cs_upset <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, min_size = 1) {
-
-  # TODO: Fix set size for 2023
+cs_upsetplot <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, min_size = 1) {
 
   .validate_data.schedule(data.schedule)
   .validate_numeric(birth_cohort, "birth_cohort", exp_len = 1)
