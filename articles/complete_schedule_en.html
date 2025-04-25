@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,15 +82,30 @@
 </h2>
 <p>The purpose of this analysis is to evaluate whether the target
 population has been fully vaccinated according to the country’s defined
-immunization schedule for a specific location and cohort. To construct
-this indicator, it is essential to assess if each individual received
-all doses specified in the schedule. For instance, a country’s complete
-immunization schedule might include: 1 dose of BCG for newborns, 3 doses
-of DTP-containing vaccine, 1 dose of MMR, and 1 dose of yellow fever
-vaccine. Unlike administrative records, which often use a tracer dose
-from the end of the schedule (e.g., DTP3), the use of Electronic
-Immunization Records (EIR) allows for the evaluation of all vaccines
-within the schedule.</p>
+immunization schedule for a specific location, cohort and age.</p>
+<p>Imagine the Republic of “ImmunoNation.” In ImmunoNation, a complete
+immunization schedule for a child might include the following:</p>
+<ul>
+<li>
+<em>At birth</em>: 1 dose of the BCG vaccine (which protects against
+tuberculosis).</li>
+<li>
+<em>During the first 11 months</em>: 3 doses of a vaccine containing
+DTP (this combination vaccine protects against Diphtheria, Tetanus, and
+Pertussis).</li>
+<li>
+<em>At 12 months</em>: 1 dose of the MMR vaccine (which protects
+against Measles, Mumps, and Rubella).</li>
+<li>
+<em>At some point in childhood</em>: 1 dose of the yellow fever
+vaccine.</li>
+</ul>
+<p>This is just an example of what a complete immunization schedule
+could look like in a country like ImmunoNation. Each country defines the
+vaccines and the number of doses needed to protect its population from
+different diseases.</p>
+<p>To construct this indicator, it is essential to assess if each
+individual received all doses specified in the schedule.</p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>All functions used for complete schedule coverage analyses within
@@ -98,23 +113,237 @@ PAHOabc begin with the <code>cs_</code> prefix.</p>
 </blockquote>
 </div>
 <div class="section level2">
-<h2 id="country-vaccination-schedule">Country Vaccination Schedule<a class="anchor" aria-label="anchor" href="#country-vaccination-schedule"></a>
+<h2 id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a>
 </h2>
-<p>To enable this package to analyze the vaccination schedule, it is
-necessary to provide the country’s immunization schedule using the same
-format as the example schedule shown below.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># show example vaccination schedule</span></span>
-<span><span class="fu">pahoabc</span><span class="fu">::</span><span class="va"><a href="../reference/pahoabc.schedule.html">pahoabc.schedule</a></span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">kable</span><span class="op">(</span></span>
-<span>    caption <span class="op">=</span> <span class="st">"Example country vaccination schedule"</span>,</span>
-<span>    col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dose"</span>, <span class="st">"Recommended age (in months)"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="political-geographic-boundaries">Political Geographic Boundaries<a class="anchor" aria-label="anchor" href="#political-geographic-boundaries"></a>
+</h3>
+<p>Throughout this vignette, we will make reference to different levels
+of political geographic boundaries. These levels are defined by the
+country/territory and can have different names from country to country.
+PAHOabc is agnostic to these names and requires the user to recode their
+variable names to fit the PAHOabc structure.</p>
+<p>Namely, PAHOabc can distinguish three administrative levels, which
+listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
+<ol style="list-style-type: decimal">
+<li>ADM0: The country. This is the top-most administrative level.</li>
+<li>ADM1: The first geographic subdivision in the country. ADM0 contains
+several ADM1 subdivisions.</li>
+<li>ADM2: The second geographic subdivision in the country. Each ADM1
+contains several ADM2 subdivisions.</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="vaccine-names">Vaccine Names<a class="anchor" aria-label="anchor" href="#vaccine-names"></a>
+</h3>
+<p>Our example datasets use a specific naming convention for the vaccine
+doses. This might not match your own naming schemes, but it will not
+affect the usage of the package as long as you make sure to be
+consistent when naming vaccine doses.</p>
+<p>For example, the vaccine names used in the PAHOabc package are:</p>
 <table class="table">
-<caption>Example country vaccination schedule</caption>
+<colgroup>
+<col width="17%">
+<col width="82%">
+</colgroup>
 <thead><tr class="header">
-<th align="left">Dose</th>
-<th align="right">Recommended age (in months)</th>
+<th>Abbreviation</th>
+<th>Full Name</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>SRP1</td>
+<td>Measles, Rubella, and Mumps Vaccine (1st dose)</td>
+</tr>
+<tr class="even">
+<td>DTP1</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)</td>
+</tr>
+<tr class="odd">
+<td>DTP2</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)</td>
+</tr>
+<tr class="even">
+<td>DTP3</td>
+<td>Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)</td>
+</tr>
+<tr class="odd">
+<td>BCG RN</td>
+<td>Bacillus Calmette–Guérin Vaccine (at birth)</td>
+</tr>
+<tr class="even">
+<td>YFV1</td>
+<td>Yellow Fever Vaccine (1st dose)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<div class="section level3">
+<h3 id="install-package">Install Package<a class="anchor" aria-label="anchor" href="#install-package"></a>
+</h3>
+<p>The first step to run the residence occurrence analyses is to install
+the PAHOabc package available on GitHub.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="load-data">Load Data<a class="anchor" aria-label="anchor" href="#load-data"></a>
+</h3>
+<p>The functions in this module require you to provide three datasets in
+a specific format.</p>
+<ol style="list-style-type: decimal">
+<li>Your EIR.</li>
+<li>The vaccination schedule related to this EIR.</li>
+<li>A table with population denominators depending on the geographic
+level of your analysis.
+<ol style="list-style-type: decimal">
+<li>This is optional for the <code><a href="../reference/cs_coverage.html">cs_coverage()</a></code> function (but
+not shown in this vignette).</li>
+</ol>
+</li>
+</ol>
+<p>To make it easy for you to test out PAHOabc’s functionality and
+understand the structure we require for your datasets, we will now
+explore the example datasets provided by PAHOabc that are required by
+this module.</p>
+<div class="section level4">
+<h4 id="eir">EIR<a class="anchor" aria-label="anchor" href="#eir"></a>
+</h4>
+<p>The <code><a href="../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> data frame provides a
+simulated, nominal-level table representing individual vaccination
+events from an Electronic Immunization Registry (EIR). Each row
+corresponds to a single vaccination act for a person, including
+information on their residence, where they were vaccinated (occurrence),
+their date of birth, and the vaccine dose received.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
+<table style="width:100%;" class="table">
+<caption>Example Electronic Immunization Registry</caption>
+<colgroup>
+<col width="7%">
+<col width="11%">
+<col width="11%">
+<col width="15%">
+<col width="15%">
+<col width="16%">
+<col width="16%">
+<col width="7%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">ID</th>
+<th align="left">date_birth</th>
+<th align="left">date_vax</th>
+<th align="left">ADM1_residence</th>
+<th align="left">ADM2_residence</th>
+<th align="left">ADM1_occurrence</th>
+<th align="left">ADM2_occurrence</th>
+<th align="left">dose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">191997</td>
+<td align="left">2023-08-08</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_4</td>
+<td align="left">ADM2_4_35</td>
+<td align="left">ADM1_4</td>
+<td align="left">ADM2_4_35</td>
+<td align="left">DTP2</td>
+</tr>
+<tr class="even">
+<td align="right">212189</td>
+<td align="left">2023-12-20</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_61</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_61</td>
+<td align="left">BCG RN</td>
+</tr>
+<tr class="odd">
+<td align="right">118063</td>
+<td align="left">2022-09-15</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">DTP1</td>
+</tr>
+<tr class="even">
+<td align="right">118063</td>
+<td align="left">2022-09-15</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2_5</td>
+<td align="left">YFV1</td>
+</tr>
+<tr class="odd">
+<td align="right">130751</td>
+<td align="left">2022-10-27</td>
+<td align="left">2023-12-12</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_55</td>
+<td align="left">ADM1_5</td>
+<td align="left">ADM2_5_55</td>
+<td align="left">YFV1</td>
+</tr>
+<tr class="even">
+<td align="right">136532</td>
+<td align="left">2021-09-21</td>
+<td align="left">2023-12-26</td>
+<td align="left">ADM1_3</td>
+<td align="left">ADM2_3_12</td>
+<td align="left">ADM1_3</td>
+<td align="left">ADM2_3_12</td>
+<td align="left">SRP1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<code>ID</code>: Unique person identification number.</li>
+<li>
+<code>date_birth</code>: Date of birth of person.</li>
+<li>
+<code>date_vax</code>: Date of vaccination event.</li>
+<li>ADM1: Refers to the first geographic administrative level of the
+country.</li>
+<li>ADM2: Refers to the second geographic administrative level of the
+country.</li>
+<li>Residence: Refers to the place where the person lives.<br>
+</li>
+<li>Occurrence: Refers to the place where the vaccination event
+occurred.<br>
+</li>
+<li>
+<code>dose</code>: A combined variable representing the vaccine type
+and its corresponding dose number. For example, DTP1 refers to the first
+dose of a vaccine containing diphtheria, tetanus, and pertussis
+components.</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="vaccination-schedule">Vaccination Schedule<a class="anchor" aria-label="anchor" href="#vaccination-schedule"></a>
+</h4>
+<p>The <code><a href="../reference/pahoabc.schedule.html">pahoabc::pahoabc.schedule</a></code> dataset defines the
+national immunization schedule, listing each vaccine dose and its
+recommended age of administration (in months). It helps the package
+determine whether an individual is up to date with their
+vaccinations.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pahoabc.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Immunization Schedule"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Example Immunization Schedule</caption>
+<thead><tr class="header">
+<th align="left">dose</th>
+<th align="right">age_schedule</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -143,29 +372,108 @@ format as the example schedule shown below.</p>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>
+<code>dose</code>: A combined variable representing the vaccine type
+and its corresponding dose number. For example, DTP1 refers to the first
+dose of a vaccine containing diphtheria, tetanus, and pertussis
+components.</li>
+<li>
+<code>age_schedule</code>: The recommended age of administration of
+the corresponding <code>dose</code> in months.</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>The <code>dose</code> names must match exactly those in the
+<code>dose</code> column of the <code>pahoabc.EIR</code> dataset.</p>
+</blockquote>
 </div>
-<div class="section level2">
-<h2 id="complete-schedule-coverage-computation">Complete Schedule Coverage Computation<a class="anchor" aria-label="anchor" href="#complete-schedule-coverage-computation"></a>
-</h2>
+<div class="section level4">
+<h4 id="population-denominators">Population Denominators<a class="anchor" aria-label="anchor" href="#population-denominators"></a>
+</h4>
+<p>This module will require you to provide a table with population
+denominators. The geographic level of this table will be directly
+dependent on the geographic level of your analysis. For example, if you
+were to perform an analysis at ADM1 level, the required population
+denominator table must contain the following.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pahoabc.pop.ADM1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Population at ADM1"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Example Population at ADM1</caption>
+<thead><tr class="header">
+<th align="left">ADM1</th>
+<th align="right">year</th>
+<th align="right">age</th>
+<th align="right">population</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="right">2022</td>
+<td align="right">0</td>
+<td align="right">1718.189</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="right">2022</td>
+<td align="right">1</td>
+<td align="right">1808.964</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="right">2023</td>
+<td align="right">0</td>
+<td align="right">1703.145</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="right">2023</td>
+<td align="right">1</td>
+<td align="right">1792.443</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_2</td>
+<td align="right">2022</td>
+<td align="right">0</td>
+<td align="right">6575.261</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_2</td>
+<td align="right">2022</td>
+<td align="right">1</td>
+<td align="right">6922.644</td>
+</tr>
+</tbody>
+</table>
+<p>Note that this table is in long format and contains the corresponding
+<code>population</code> of children of a specific <code>age</code>
+during a given <code>year</code> for a certain <code>ADM1</code>
+level.</p>
+</div>
+</div>
 <div class="section level3">
-<h3 id="expected-workflow">Expected Workflow<a class="anchor" aria-label="anchor" href="#expected-workflow"></a>
+<h3 id="complete-schedule-coverage-analysis">Complete Schedule Coverage Analysis<a class="anchor" aria-label="anchor" href="#complete-schedule-coverage-analysis"></a>
 </h3>
+<div class="section level4">
+<h4 id="expected-workflow">Expected Workflow<a class="anchor" aria-label="anchor" href="#expected-workflow"></a>
+</h4>
 <p>The <code><a href="../reference/cs_coverage.html">cs_coverage()</a></code>, <code><a href="../reference/cs_barplot.html">cs_barplot()</a></code> and
-<code><a href="../reference/cs_upset.html">cs_upset()</a></code> functions provide a way of analyzing and
+<code><a href="../reference/cs_upsetplot.html">cs_upsetplot()</a></code> functions provide a way of analyzing and
 visualizing complete schedule coverage. Their relationships are shown in
 Figure 1.</p>
 <div class="float">
 <img src="cs_workflow.svg" alt="Figure 1. Expected workflow for complete schedule coverage analysis."><div class="figcaption">Figure 1. Expected workflow for complete
 schedule coverage analysis.</div>
 </div>
+<p><br></p>
 </div>
-<div class="section level3">
-<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h3>
+<div class="section level4">
+<h4 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h4>
 <p>Below is a simplified example of the calculation of complete schedule
 coverage for the first subnational administrative level, focusing on the
 birth cohort of the year 2022.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute coverage</span></span>
 <span><span class="va">coverage_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cs_coverage.html">cs_coverage</a></span><span class="op">(</span></span>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
@@ -225,12 +533,12 @@ birth cohort of the year 2022.</p>
 </tbody>
 </table>
 </div>
-<div class="section level3">
-<h3 id="bar-plot">Bar plot<a class="anchor" aria-label="anchor" href="#bar-plot"></a>
-</h3>
+<div class="section level4">
+<h4 id="bar-plot">Bar plot<a class="anchor" aria-label="anchor" href="#bar-plot"></a>
+</h4>
 <p>It is possible to display the previously obtained results in a bar
 plot with <code><a href="../reference/cs_barplot.html">cs_barplot()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualize output from cs_coverage()</span></span>
 <span><span class="va">coverage_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cs_barplot.html">cs_barplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">coverage_df</span><span class="op">)</span></span>
 <span></span>
@@ -238,20 +546,20 @@ plot with <code><a href="../reference/cs_barplot.html">cs_barplot()</a></code>.<
 <span><span class="va">coverage_plot</span></span></code></pre></div>
 <p><img src="complete_schedule_en_files/figure-html/cov-viz-example-1.png" width="1152"></p>
 </div>
-<div class="section level3">
-<h3 id="upset-plot">Upset plot<a class="anchor" aria-label="anchor" href="#upset-plot"></a>
-</h3>
-<p>The <code><a href="../reference/cs_upset.html">cs_upset()</a></code> function allows us to produce an upset
-plot to evaluate the percentage of individuals included in the EIR who
-have received any of the possible combinations of the available
+<div class="section level4">
+<h4 id="upset-plot">Upset plot<a class="anchor" aria-label="anchor" href="#upset-plot"></a>
+</h4>
+<p>The <code><a href="../reference/cs_upsetplot.html">cs_upsetplot()</a></code> function allows us to produce an
+upset plot to evaluate the percentage of individuals included in the EIR
+who have received any of the possible combinations of the available
 vaccines. The orange bar represents the proportion of individuals who
 have received all the evaluated vaccines, thus indicating the complete
 schedule coverage. The horizontal bars show the proportion of
 individuals who received each specific vaccine (i.e., the coverage for
 that vaccine).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># produce upset plot</span></span>
-<span><span class="va">coverage_upset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cs_upset.html">cs_upset</a></span><span class="op">(</span></span>
+<span><span class="va">coverage_upset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cs_upsetplot.html">cs_upsetplot</a></span><span class="op">(</span></span>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
 <span>  birth_cohort <span class="op">=</span> <span class="fl">2022</span></span>
@@ -261,11 +569,13 @@ that vaccine).</p>
 <span><span class="va">coverage_upset</span></span></code></pre></div>
 <p><img src="complete_schedule_en_files/figure-html/cov-upset-example-1.png" width="1152"></p>
 <p>In the example the complete schedule coverage reached 13.7% and is
-represented by the orange bar. It is noteworthy that 24.1% of
-individuals in the EIR received only the BCG vaccine, and that the third
-most frequent combination (9.1%) consists of individuals who received
-all other vaccines except BCG. This could indicate an error in recording
-a newborn’s BCG vaccine using temporary identification numbers.</p>
+represented by the orange bar.</p>
+<p>It is noteworthy that 24.1% of individuals in the EIR received only
+the BCG vaccine, and that the third most frequent combination (9.1%)
+consists of individuals who received all other vaccines except BCG. This
+could indicate an error in recording a newborn’s BCG vaccine using
+temporary identification numbers.</p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
