@@ -21,7 +21,18 @@ library(knitr)
 
 # Rationale
 
-The purpose of this analysis is to evaluate whether the target population has been fully vaccinated according to the country's defined immunization schedule for a specific location and cohort. To construct this indicator, it is essential to assess if each individual received all doses specified in the schedule. For instance, a country's complete immunization schedule might include: 1 dose of BCG for newborns, 3 doses of DTP-containing vaccine, 1 dose of MMR, and 1 dose of yellow fever vaccine. Unlike administrative records, which often use a tracer dose from the end of the schedule (e.g., DTP3), the use of Electronic Immunization Records (EIR) allows for the evaluation of all vaccines within the schedule.
+The purpose of this analysis is to evaluate whether the target population has been fully vaccinated according to the country's defined immunization schedule for a specific location, cohort and age. 
+
+Imagine the Republic of "ImmunoNation." In ImmunoNation, a complete immunization schedule for a child might include the following:
+
+- *At birth*: 1 dose of the BCG vaccine (which protects against tuberculosis).
+- *During the first 11 months*: 3 doses of a vaccine containing DTP (this combination vaccine protects against Diphtheria, Tetanus, and Pertussis).
+- *At 12 months*: 1 dose of the MMR vaccine (which protects against Measles, Mumps, and Rubella).
+- *At some point in childhood*: 1 dose of the yellow fever vaccine.
+
+This is just an example of what a complete immunization schedule could look like in a country like ImmunoNation. Each country defines the vaccines and the number of doses needed to protect its population from different diseases.
+
+To construct this indicator, it is essential to assess if each individual received all doses specified in the schedule. 
 
 > **Note**
 > 
