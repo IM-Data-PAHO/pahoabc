@@ -8,6 +8,7 @@
 #' @param birth_cohort Numeric. A single birth year for which to calculate and visualize coverage.
 #' @param denominator The denominator to use. If \code{NULL} (default), then the number of unique IDs in \code{data.EIR} is used.
 #' @param min_size The minimum number of doses (as a percentage of the \code{denominator}) a group has to have in order to be shown in the plot. Default is 1 percent.
+#' @param set_order A vector containing the desired order of the doses as they will appear in the combination matrix. They must match the names in the \code{dose} column of \code{data.EIR} and \code{data.schedule}. If NULL, uses the default ordering scheme of \code{ComplexUpset::upset()}.
 #'
 #' @return A ComplexUpset plot.
 #'
@@ -18,7 +19,7 @@
 #' @import ggplot2
 #'
 #' @export
-cs_upsetplot <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, min_size = 1) {
+cs_upsetplot <- function(data.EIR, data.schedule, birth_cohort, denominator = NULL, min_size = 1, set_order = NULL) {
 
   .validate_data.schedule(data.schedule)
   .validate_numeric(birth_cohort, "birth_cohort", exp_len = 1)
@@ -73,6 +74,15 @@ cs_upsetplot <- function(data.EIR, data.schedule, birth_cohort, denominator = NU
     summarise(across(everything(), ~ sum(.), .names = "count_{.col}")) %>%
     max()
 
+  # user-provided custom order
+  if(!is.null(set_order)) {
+    # filter to valid names, preserve order, reverse to make first name appear at the top
+    doses_in_schedule <- rev(set_order[set_order %in% doses_in_schedule])
+    sort_sets_flag <- FALSE
+  } else {
+    sort_sets_flag <- 'descending' # the default in upset()
+  }
+
   # do plot
   p <-
     upset(
@@ -119,7 +129,9 @@ cs_upsetplot <- function(data.EIR, data.schedule, birth_cohort, denominator = NU
       # highlight complete schedules (if applicable)
       queries = highlight_query,
       # keep all doses in schedule even if there are no matches
-      keep_empty_groups = TRUE
+      keep_empty_groups = TRUE,
+      # whether to sort the sets by default
+      sort_sets = sort_sets_flag
     )
 
   return(p)

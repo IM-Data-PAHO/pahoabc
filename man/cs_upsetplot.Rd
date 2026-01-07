@@ -9,7 +9,8 @@ cs_upsetplot(
   data.schedule,
   birth_cohort,
   denominator = NULL,
-  min_size = 1
+  min_size = 1,
+  set_order = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ cs_upsetplot(
 \item{denominator}{The denominator to use. If \code{NULL} (default), then the number of unique IDs in \code{data.EIR} is used.}
 
 \item{min_size}{The minimum number of doses (as a percentage of the \code{denominator}) a group has to have in order to be shown in the plot. Default is 1 percent.}
+
+\item{set_order}{A vector containing the desired order of the doses as they will appear in the combination matrix. They must match the names in the \code{dose} column of \code{data.EIR} and \code{data.schedule}. If NULL, uses the default ordering scheme of \code{ComplexUpset::upset()}.}
 }
 \value{
 A ComplexUpset plot.
