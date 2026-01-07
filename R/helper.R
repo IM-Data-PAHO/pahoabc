@@ -28,14 +28,14 @@
 
 }
 
-#' Convert the vaccination schedule from months to years.
+#' Convert the vaccination schedule from days to years. Automatically rounds down to lowest whole year.
 #'
 #' @keywords internal
 #' @noRd
 .schedule_to_years <- function(data.schedule) {
 
-  # convert age column from months to years
-  converted <- data.schedule %>% mutate(age_schedule = floor(age_schedule / 12))
+  # convert age column from days to years
+  converted <- data.schedule %>% mutate(age_schedule = floor(age_schedule / 365))
 
   return(converted)
 }

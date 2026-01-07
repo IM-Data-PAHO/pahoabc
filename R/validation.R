@@ -138,7 +138,7 @@
     stop("Error: data.pop should be a data frame.")
   }
 
-  if(!all(c("dose", "age_schedule") %in% names(data.schedule))) {
+  if(!all(c("dose", "age_schedule", "age_schedule_low", "age_schedule_high") %in% names(data.schedule))) {
     stop("Error: data.schedule should contain the following columns: dose, age_schedule.")
   }
 }

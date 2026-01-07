@@ -7,7 +7,7 @@
 #' @param data.schedule A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
 #' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If \code{data.pop} is in use, it must contain the columns to match.
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.
-#' @param max_age Numeric (optional). The maximum age (in months) up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.
+#' @param max_age Numeric (optional). The maximum age (in days) up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.
 #' @param data.pop Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.
 #'
 #' @return A data frame containing the complete schedule coverage by birth cohort for the specified \code{geo_level}.

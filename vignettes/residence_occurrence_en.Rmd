@@ -98,14 +98,16 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 
 ### Vaccination Schedule
 
-The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing each vaccine dose and its recommended age of administration (in months). It helps the package determine whether an individual is up to date with their vaccinations.
+The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing each vaccine dose and its recommended age of administration (in days). It helps the package determine whether an individual is up to date with their vaccinations.
 
 ```{r pahoabc-schedule, message=FALSE}
 pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
 ```
 
 - `dose`: A combined variable representing the vaccine type and its corresponding dose number. For example, DTP1 refers to the first dose of a vaccine containing diphtheria, tetanus, and pertussis components.
-- `age_schedule`: The recommended age of administration of the corresponding `dose` in months.
+- `age_schedule`: The recommended age of administration of the corresponding `dose` in days.
+- `age_schedule_low`: The lower limit for the target age in days.
+- `age_schedule_high`: The upper limit for the target age in days.
 
 > **Note**
 > 
