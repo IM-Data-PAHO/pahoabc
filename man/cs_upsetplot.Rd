@@ -24,7 +24,7 @@ cs_upsetplot(
 
 \item{min_size}{The minimum number of doses (as a percentage of the \code{denominator}) a group has to have in order to be shown in the plot. Default is 1 percent.}
 
-\item{set_order}{A vector containing the desired order of the doses as they will appear in the combination matrix. They must match the names in the \code{dose} column of \code{data.EIR} and \code{data.schedule}. If NULL, uses the default ordering scheme of \code{ComplexUpset::upset()}.}
+\item{set_order}{A vector containing the desired order of the doses as they will appear in the combination matrix. They must match the names in the \code{dose} column of \code{data.EIR} and \code{data.schedule}. If \code{NULL}, uses the default ordering scheme of \code{ComplexUpset::upset()}.}
 }
 \value{
 A ComplexUpset plot.
