@@ -31,11 +31,16 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Install complex-upset from GitHub in a robust way
+        run: |
+          if (!require("remotes")) install.packages("remotes")
+          remotes::install_github("krassowski/complex-upset", force = TRUE, upgrade = "never")
+        shell: Rscript {0}
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, github::krassowski/complex-upset, local::.
+          extra-packages: any::pkgdown, local::.
           needs: website
-          cache: false
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
