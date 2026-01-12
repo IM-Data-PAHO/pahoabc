@@ -1,0 +1,56 @@
+# (R)esidence (Oc)currence Dose Distribution
+
+This function calculates the distribution of vaccinations by place of
+residence and place of occurrence, and outputs a data frame with
+frequencies and proportions of vaccinations for each combination. It is
+designed to handle both ADM1- and ADM2-level geographic levels.
+
+## Usage
+
+``` r
+roc_distribution(
+  data.EIR,
+  vaccine,
+  birth_cohort,
+  geo_level,
+  include_self_matches = FALSE,
+  within_ADM1 = NULL
+)
+```
+
+## Arguments
+
+- data.EIR:
+
+  A data frame containing electronic immunization registry data.
+
+- vaccine:
+
+  A character string specifying the vaccine dose to analyze (e.g.,
+  "DTP1").
+
+- birth_cohort:
+
+  An integer specifying the birth cohort to analyze.
+
+- geo_level:
+
+  A character string specifying the geographic level to analyze. Must be
+  either \`ADM1\` or \`ADM2\`.
+
+- include_self_matches:
+
+  A logical specifying whether to include those cases where the place of
+  residence matches the place of vaccination (occurrence). Default is
+  `FALSE`.
+
+- within_ADM1:
+
+  A character string specifying the "ADM1" region of interest when
+  `geo_level` is "ADM2". If `geo_level` is "ADM2", this parameter is
+  required.
+
+## Value
+
+A data frame with proportions of doses applied by place of occurrence,
+for each place of residence.

@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Complete Schedule Coverage • pahoabc</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -26,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +70,7 @@
             
             <h4 data-toc-skip class="date">April 11, 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.6.0/vignettes/complete_schedule_en.Rmd" class="external-link"><code>vignettes/complete_schedule_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/main/vignettes/complete_schedule_en.Rmd" class="external-link"><code>vignettes/complete_schedule_en.Rmd</code></a></small>
       <div class="d-none name"><code>complete_schedule_en.Rmd</code></div>
     </div>
 
@@ -334,7 +333,7 @@ components.</li>
 </h4>
 <p>The <code><a href="../reference/pahoabc.schedule.html">pahoabc::pahoabc.schedule</a></code> dataset defines the
 national immunization schedule, listing each vaccine dose and its
-recommended age of administration (in months). It helps the package
+recommended age of administration (in days). It helps the package
 determine whether an individual is up to date with their
 vaccinations.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -344,31 +343,45 @@ vaccinations.</p>
 <thead><tr class="header">
 <th align="left">dose</th>
 <th align="right">age_schedule</th>
+<th align="right">age_schedule_low</th>
+<th align="right">age_schedule_high</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">SRP1</td>
-<td align="right">12</td>
+<td align="right">365</td>
+<td align="right">365</td>
+<td align="right">395</td>
 </tr>
 <tr class="even">
 <td align="left">DTP1</td>
-<td align="right">2</td>
+<td align="right">60</td>
+<td align="right">60</td>
+<td align="right">90</td>
 </tr>
 <tr class="odd">
 <td align="left">DTP2</td>
-<td align="right">4</td>
+<td align="right">120</td>
+<td align="right">120</td>
+<td align="right">150</td>
 </tr>
 <tr class="even">
 <td align="left">DTP3</td>
-<td align="right">6</td>
+<td align="right">180</td>
+<td align="right">180</td>
+<td align="right">210</td>
 </tr>
 <tr class="odd">
 <td align="left">BCG RN</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">30</td>
 </tr>
 <tr class="even">
 <td align="left">YFV1</td>
-<td align="right">12</td>
+<td align="right">365</td>
+<td align="right">365</td>
+<td align="right">395</td>
 </tr>
 </tbody>
 </table>
@@ -380,7 +393,13 @@ dose of a vaccine containing diphtheria, tetanus, and pertussis
 components.</li>
 <li>
 <code>age_schedule</code>: The recommended age of administration of
-the corresponding <code>dose</code> in months.</li>
+the corresponding <code>dose</code> in days.</li>
+<li>
+<code>age_schedule_low</code>: The lower limit for the target age in
+days.</li>
+<li>
+<code>age_schedule_high</code>: The upper limit for the target age
+in days.</li>
 </ul>
 <blockquote>
 <p><strong>Note</strong></p>
@@ -544,7 +563,7 @@ plot with <code><a href="../reference/cs_barplot.html">cs_barplot()</a></code>.<
 <span></span>
 <span><span class="co"># show</span></span>
 <span><span class="va">coverage_plot</span></span></code></pre></div>
-<p><img src="complete_schedule_en_files/figure-html/cov-viz-example-1.png" width="1152"></p>
+<p><img src="complete_schedule_en_files/figure-html/cov-viz-example-1.png" class="r-plt" alt="" width="1152"></p>
 </div>
 <div class="section level4">
 <h4 id="upset-plot">Upset plot<a class="anchor" aria-label="anchor" href="#upset-plot"></a>
@@ -563,11 +582,19 @@ that vaccine).</p>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
 <span>  birth_cohort <span class="op">=</span> <span class="fl">2022</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># show</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">ComplexUpset</span> package.</span></span>
+<span><span class="co">##   Please report the issue at</span></span>
+<span><span class="co">##   <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/krassowski/complex-upset/issues&gt;</span>.</span></span>
+<span><span class="co">## <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># show</span></span>
 <span><span class="va">coverage_upset</span></span></code></pre></div>
-<p><img src="complete_schedule_en_files/figure-html/cov-upset-example-1.png" width="1152"></p>
+<p><img src="complete_schedule_en_files/figure-html/cov-upset-example-1.png" class="r-plt" alt="" width="1152"></p>
 <p>In the example the complete schedule coverage reached 13.7% and is
 represented by the orange bar.</p>
 <p>It is noteworthy that 24.1% of individuals in the EIR received only
@@ -589,7 +616,7 @@ temporary identification numbers.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

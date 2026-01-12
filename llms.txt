@@ -1,0 +1,135 @@
+# PAHOabc
+
+PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond
+(C)overage.
+
+PAHOabc aims to support the Pan American Health Organization’s (PAHO)
+Comprehensive Immunization Unit (CIM) mission by providing advanced data
+analysis tools for immunization programs in the Americas. Specifically,
+it facilitates the calculation of innovative indicators beyond basic
+coverage, supports evidence-based decision-making through in-depth data
+exploration and visualization, and contributes to strengthening data
+capabilities within immunization programs by empowering human resources
+to effectively leverage their data.
+
+For documentation and vignettes, see:
+<https://im-data-paho.github.io/pahoabc>.
+
+## Installation
+
+``` r
+# Install from GitHub
+devtools::install_github("IM-Data-PAHO/pahoabc")
+```
+
+## Usage
+
+Currently, PAHOabc contains three main modules. Follow the links below
+to explore detailed vignettes with practical examples and guidance on
+how to use each module:
+
+1.  [**Nominal Dropout
+    Rate**](https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html)  
+    Calculates dropout rates between any two vaccine doses using nominal
+    data. This module ensures accurate follow-up tracking across a
+    vaccination schedule.
+
+2.  [**Residence vs. Occurrence
+    Analyses**](https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html)  
+    Functions for comparing vaccination coverage and dose distribution
+    based on where people live versus where they were vaccinated. This
+    module helps identify population movement and service coverage gaps
+    across geographic areas.
+
+3.  [**Complete Schedule
+    Coverage**](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html)  
+    Evaluates whether individuals have received all required doses in a
+    national immunization schedule (for a specific cohort up to a
+    specified age). This module differs from standard coverage
+    calculation as it evaluates each individual’s compliance of the
+    national immunization schedule.
+
+Each module works seamlessly with the example datasets provided in the
+package. These examples make it easy to test out the functionality and
+serve as a reference when preparing your own data. Learn more about
+these example datasets [in this
+vignette](https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.html).
+
+> **Note**
+>
+> You can explore all the available vignettes by clicking on the
+> **Guides** button in the navigation bar.
+
+## Contribute
+
+We welcome suggestions, bug reports, and feature requests through the
+[GitHub Issues](https://github.com/IM-Data-PAHO/pahoabc/issues) page. If
+you’d like to contribute code or fixes, feel free to open a [pull
+request](https://github.com/IM-Data-PAHO/pahoabc/pulls).
+
+# Package index
+
+## Nominal Dropout Rate
+
+Functions for calculating and visualizing nominal dropout rate.
+
+- [`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+  : (No)minal (D)ropout Rate
+- [`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+  : (No)minal (D)ropout Bar Plot
+
+## Residence vs. Ocurrence Analyses
+
+Functions for calculating and visualizing coverage and dose distribution
+by place of residence or vaccination.
+
+- [`roc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage.md)
+  : (R)esidence (Oc)currence Coverage
+- [`roc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/roc_barplot.md)
+  : (R)esidence (Oc)currence Bar Plot
+- [`roc_distribution()`](https://im-data-paho.github.io/pahoabc/reference/roc_distribution.md)
+  : (R)esidence (Oc)currence Dose Distribution
+- [`roc_heatmap()`](https://im-data-paho.github.io/pahoabc/reference/roc_heatmap.md)
+  : (R)esidence (Oc)currence Heatmap
+- [`roc_coverage_by()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage_by.md)
+  : (R)esidence or (Oc)currence Coverage
+
+## Complete Schedule Coverage
+
+Functions for calculating and visualizing complete schedule coverage.
+
+- [`cs_coverage()`](https://im-data-paho.github.io/pahoabc/reference/cs_coverage.md)
+  : (C)omplete (S)chedule Coverage
+- [`cs_barplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_barplot.md)
+  : (C)omplete (S)chedule Coverage Bar Plot
+- [`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
+  : (C)omplete (S)chedule Coverage Upset Plot
+
+## Example Data
+
+Example data frames to understand how the package works and what it
+expects.
+
+- [`pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+  : PAHOABC Electronic Immunization Registry (EIR)
+- [`pahoabc.pop.ADM0`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM0.md)
+  : PAHOABC Aggregated Population Data by ADM0
+- [`pahoabc.pop.ADM1`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM1.md)
+  : PAHOABC Aggregated Population Data by ADM1
+- [`pahoabc.pop.ADM2`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM2.md)
+  : PAHOABC Aggregated Population Data by ADM1 and ADM2
+- [`pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+  : PAHOABC Vaccination Schedule
+
+# Articles
+
+### All vignettes
+
+- [Complete Schedule
+  Coverage](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.md):
+- [Using our Example
+  Datasets](https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.md):
+- [Nominal Dropout
+  Rate](https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.md):
+- [Residence vs. Occurrence
+  Analyses](https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.md):
