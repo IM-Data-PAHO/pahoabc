@@ -1,8 +1,6 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
-  push:
-    branches: [main, master]
   pull_request:
   release:
     types: [published]
@@ -20,6 +18,7 @@ jobs:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_LIBS_USER: /home/runner/work/_temp/Library
     permissions:
       contents: write
     steps:
@@ -38,8 +37,9 @@ jobs:
 
       - name: Install complex-upset from GitHub (override)
         run: |
-          if (!require("remotes")) install.packages("remotes", lib = Sys.getenv("R_LIBS_USER"))
-          remotes::install_github("krassowski/complex-upset", force = TRUE, upgrade = "never", lib = Sys.getenv("R_LIBS_USER"))
+          lib <- Sys.getenv("R_LIBS_USER")
+          if (!require("remotes", lib.loc = lib)) install.packages("remotes", lib = lib)
+          remotes::install_github("krassowski/complex-upset", force = TRUE, upgrade = "never", lib = lib)
         shell: Rscript {0}
 
       - name: Build site
