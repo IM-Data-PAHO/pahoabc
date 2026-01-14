@@ -151,12 +151,12 @@ pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
 |:-------|-------------:|-----------------:|------------------:|
-| SRP1   |          365 |              365 |               395 |
-| DTP1   |           60 |               60 |                90 |
-| DTP2   |          120 |              120 |               150 |
-| DTP3   |          180 |              180 |               210 |
-| BCG RN |            0 |                0 |                30 |
-| YFV1   |          365 |              365 |               395 |
+| SRP1   |          365 |              360 |               420 |
+| DTP1   |           60 |               54 |                90 |
+| DTP2   |          120 |              116 |               150 |
+| DTP3   |          180 |              176 |               210 |
+| BCG RN |            0 |                0 |                28 |
+| YFV1   |          365 |              360 |               420 |
 
 Example Immunization Schedule
 
