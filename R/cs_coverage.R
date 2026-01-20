@@ -6,7 +6,7 @@
 #' @param data.EIR A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
 #' @param data.schedule A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
 #' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If \code{data.pop} is in use, it must contain the columns to match.
-#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.
+#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available cohorts.
 #' @param max_age Numeric (optional). The maximum age (in days) up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.
 #' @param data.pop Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.
 #'
@@ -83,6 +83,7 @@ cs_coverage <- function(data.EIR, data.schedule, geo_level, birth_cohorts = NULL
 
   } else {
     denominator <- data.pop %>%
+      # select age == 0 because this contains the population of age 0 for that year
       filter(age == 0) %>%
       select(-age)
   }

@@ -20,7 +20,7 @@ cs_coverage(
 
 \item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If \code{data.pop} is in use, it must contain the columns to match.}
 
-\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available years.}
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available cohorts.}
 
 \item{max_age}{Numeric (optional). The maximum age (in days) up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.}
 

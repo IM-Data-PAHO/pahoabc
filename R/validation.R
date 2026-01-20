@@ -239,3 +239,41 @@
 
   invisible(TRUE)  # silent success
 }
+
+#' Validate data.EIR structure and (optionally) schedule compatibility.
+#'
+#' @keywords internal
+#' @noRd
+.validate_data.EIR <- function(data.EIR, data.schedule = NULL) {
+  if(!is.data.frame(data.EIR)) {
+    stop("Error: data.EIR should be a data frame.")
+  }
+
+  required_columns <- c(
+    "ID",
+    "date_birth",
+    "date_vax",
+    "ADM1_residence",
+    "ADM2_residence",
+    "ADM1_occurrence",
+    "ADM2_occurrence",
+    "dose"
+  )
+
+  if(!all(required_columns %in% names(data.EIR))) {
+    stop("Error: data.EIR should contain the following columns: ID, date_birth, date_vax, ADM1_residence, ADM2_residence, ADM1_occurrence, ADM2_occurrence, dose.")
+  }
+
+  if(!is.null(data.schedule)) {
+    missing_in_schedule <- setdiff(unique(data.EIR$dose), unique(data.schedule$dose))
+    if(length(missing_in_schedule) > 0) {
+      warning(
+        paste0(
+          "Warning: The following dose(s) are present in data.EIR but missing from data.schedule: ",
+          paste(missing_in_schedule, collapse = ", "),
+          "."
+        )
+      )
+    }
+  }
+}
