@@ -2,13 +2,13 @@
 #' 
 #' This function calculates the coverage by birth cohort, further disagreggating by geographic level, using data from the electronic immunization registry (EIR).
 #'
-#' @param data.EIR A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.schedule A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
-#' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0". Note also that if \code{data.pop} is in use, it must contain the columns to match.
+#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
+#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
+#' @param geo_level Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0". Note also that if \code{data.pop} is in use, it must contain the columns to match.
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all vaccines in \code{data.EIR} are included.
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available cohorts.
 #' @param data.pop Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.
-#' @param only_valid_doses Logical (optional). If \code{TRUE} (default), only count vaccinations that occurred within the valid age window defined by \code{age_schedule_low} and \code{age_schedule_high}. If \code{FALSE}, do not filter by age at vaccination.
+#' @param validate_doses Logical (optional). If \code{TRUE} (default), only count vaccinations that occurred within the valid age window defined by \code{age_schedule_low} and \code{age_schedule_high}. If \code{FALSE}, does not validate doses before counting them.
 #' 
 #' @return A data frame containing the coverage by birth cohort for the specified \code{geo_level}.
 #' 
@@ -16,7 +16,7 @@
 #' @import lubridate
 #' 
 #' @export
-bc_coverage <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL, birth_cohorts = NULL, data.pop = NULL, only_valid_doses = TRUE) {
+bc_coverage <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL, birth_cohorts = NULL, data.pop = NULL, validate_doses = TRUE) {
 
   # validations
   .validate_geo_level(geo_level)
@@ -26,7 +26,7 @@ bc_coverage <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = 
   .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1)
   .validate_data.pop(data.pop, geo_level)
   .validate_vaccines(vaccines, data.schedule, "data.schedule")
-  .validate_logical(only_valid_doses, "only_valid_doses")
+  .validate_logical(validate_doses, "validate_doses")
 
   # determine grouping column(s)
   basic_groups <- c("year_cohort")
@@ -71,7 +71,7 @@ bc_coverage <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = 
     ) %>%
     left_join(prepare_schedule, by = "dose")
 
-  if(only_valid_doses) {
+  if(validate_doses) {
     prepare_EIR <- prepare_EIR %>%
       filter(
         age_at_vax >= age_schedule_low,

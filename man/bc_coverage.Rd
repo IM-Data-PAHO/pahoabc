@@ -11,15 +11,15 @@ bc_coverage(
   vaccines = NULL,
   birth_cohorts = NULL,
   data.pop = NULL,
-  only_valid_doses = TRUE
+  validate_doses = TRUE
 )
 }
 \arguments{
-\item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
 
-\item{data.schedule}{A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
+\item{data.schedule}{Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
 
-\item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0". Note also that if \code{data.pop} is in use, it must contain the columns to match.}
+\item{geo_level}{Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0". Note also that if \code{data.pop} is in use, it must contain the columns to match.}
 
 \item{vaccines}{Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all vaccines in \code{data.EIR} are included.}
 
@@ -27,7 +27,7 @@ bc_coverage(
 
 \item{data.pop}{Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.}
 
-\item{only_valid_doses}{Logical (optional). If \code{TRUE} (default), only count vaccinations that occurred within the valid age window defined by \code{age_schedule_low} and \code{age_schedule_high}. If \code{FALSE}, do not filter by age at vaccination.}
+\item{validate_doses}{Logical (optional). If \code{TRUE} (default), only count vaccinations that occurred within the valid age window defined by \code{age_schedule_low} and \code{age_schedule_high}. If \code{FALSE}, does not validate doses before counting them.}
 }
 \value{
 A data frame containing the coverage by birth cohort for the specified \code{geo_level}.

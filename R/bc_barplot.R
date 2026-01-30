@@ -2,8 +2,8 @@
 #'
 #' Generates a bar plot of birth cohort coverage, grouped by geographic area and colored by birth cohort year.
 #'
-#' @param data The output from the \code{pahoabc::bc_coverage} function.
-#' @param vaccine A string specifying the vaccine of interest. Only one vaccine.
+#' @param data Data frame. The output from the \code{pahoabc::bc_coverage} function.
+#' @param vaccine Character. A string specifying the vaccine of interest. Only one vaccine.
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be plotted. If \code{NULL} (default), all years are plotted.
 #' @param within_ADM1 Character (optional). When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
 #' @param palette Character (optional). A RColorBrewer palette name for the cohort colors. Default is \code{"YlOrBr"}.

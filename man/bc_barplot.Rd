@@ -13,9 +13,9 @@ bc_barplot(
 )
 }
 \arguments{
-\item{data}{The output from the \code{pahoabc::bc_coverage} function.}
+\item{data}{Data frame. The output from the \code{pahoabc::bc_coverage} function.}
 
-\item{vaccine}{A string specifying the vaccine of interest. Only one vaccine.}
+\item{vaccine}{Character. A string specifying the vaccine of interest. Only one vaccine.}
 
 \item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be plotted. If \code{NULL} (default), all years are plotted.}
 
