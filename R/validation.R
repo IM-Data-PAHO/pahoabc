@@ -162,6 +162,24 @@
   }
 }
 
+#' Validate input data to bc_barplot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_bc_barplot_data <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  minimum_columns <- c(
+    "dose", "year_cohort", "numerator", "population", "coverage"
+  )
+
+  if(!all(minimum_columns %in% names(data))) {
+    stop("Error: data should be the output from bc_coverage.")
+  }
+}
+
 #' Validate input data to cs_barplot.
 #'
 #' @keywords internal
