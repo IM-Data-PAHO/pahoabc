@@ -72,8 +72,8 @@ For example, the vaccine names used in the PAHOabc package are:
 
 ### Install Package
 
-The first step to run the residence occurrence analyses is to install
-the PAHOabc package available on GitHub.
+The first step to run the complete schedule coverage analyses is to
+install the PAHOabc package available on GitHub.
 
 ``` r
 devtools::install_github("IM-Data-PAHO/pahoabc")

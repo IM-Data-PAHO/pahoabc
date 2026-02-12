@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Birth Cohort
+  Coverage](https://im-data-paho.github.io/pahoabc/articles/birth_cohort_coverage_en.md):
 - [Complete Schedule
   Coverage](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.md):
 - [Using our Example

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Complete Schedule Coverage • pahoabc</title>
+<title>Birth Cohort Coverage • pahoabc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Complete Schedule Coverage">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Birth Cohort Coverage">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -66,13 +66,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Complete Schedule Coverage</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Birth Cohort Coverage</h1>
                         <h4 data-toc-skip class="author">PAHO/CIM</h4>
             
-            <h4 data-toc-skip class="date">April 11, 2025</h4>
+            <h4 data-toc-skip class="date">February 12, 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.8.0/vignettes/complete_schedule_en.Rmd" class="external-link"><code>vignettes/complete_schedule_en.Rmd</code></a></small>
-      <div class="d-none name"><code>complete_schedule_en.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.8.0/vignettes/birth_cohort_coverage_en.Rmd" class="external-link"><code>vignettes/birth_cohort_coverage_en.Rmd</code></a></small>
+      <div class="d-none name"><code>birth_cohort_coverage_en.Rmd</code></div>
     </div>
 
     
@@ -80,104 +80,28 @@
 <div class="section level2">
 <h2 id="rationale">Rationale<a class="anchor" aria-label="anchor" href="#rationale"></a>
 </h2>
-<p>The purpose of this analysis is to evaluate whether the target
-population has been fully vaccinated according to the country’s defined
-immunization schedule for a specific location, cohort and age.</p>
-<p>Imagine the Republic of “ImmunoNation.” In ImmunoNation, a complete
-immunization schedule for a child might include the following:</p>
-<ul>
-<li>
-<em>At birth</em>: 1 dose of the BCG vaccine (which protects against
-tuberculosis).</li>
-<li>
-<em>During the first 11 months</em>: 3 doses of a vaccine containing
-DTP (this combination vaccine protects against Diphtheria, Tetanus, and
-Pertussis).</li>
-<li>
-<em>At 12 months</em>: 1 dose of the MMR vaccine (which protects
-against Measles, Mumps, and Rubella).</li>
-<li>
-<em>At some point in childhood</em>: 1 dose of the yellow fever
-vaccine.</li>
-</ul>
-<p>This is just an example of what a complete immunization schedule
-could look like in a country like ImmunoNation. Each country defines the
-vaccines and the number of doses needed to protect its population from
-different diseases.</p>
-<p>To construct this indicator, it is essential to assess if each
-individual received all doses specified in the schedule.</p>
+<p>The objective of this indicator is to monitor a specific birth cohort
+of newborns to determine their vaccination status and estimate the level
+of population protection against vaccine-preventable diseases. This
+analysis is essential for preventing the accumulation of susceptible
+individuals, maximizing herd immunity, and developing targeted
+vaccination strategies for those who have not received the necessary
+doses.</p>
+<p>Vaccination coverage by birth cohort is calculates using the
+following formula:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Coverage by birth cohort (%)</mtext><mo>=</mo><mfrac><mtext mathvariant="normal"># of vaccines administered to people in a specific birth cohort</mtext><mtext mathvariant="normal">Total people in the specific birth cohort</mtext></mfrac><mo>×</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">
+\text{Coverage by birth cohort (\%)} =
+\frac{\text{# of vaccines administered to people in a specific birth cohort}}{\text{Total people in the specific birth cohort}} \times 100
+</annotation></semantics></math></p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>All functions used for complete schedule coverage analyses within
-PAHOabc begin with the <code>cs_</code> prefix.</p>
+PAHOabc begin with the <code>bc_</code> prefix.</p>
 </blockquote>
 </div>
 <div class="section level2">
 <h2 id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a>
 </h2>
-<div class="section level3">
-<h3 id="political-geographic-boundaries">Political Geographic Boundaries<a class="anchor" aria-label="anchor" href="#political-geographic-boundaries"></a>
-</h3>
-<p>Throughout this vignette, we will make reference to different levels
-of political geographic boundaries. These levels are defined by the
-country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.</p>
-<p>Namely, PAHOabc can distinguish three administrative levels, which
-listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
-<ol style="list-style-type: decimal">
-<li>ADM0: The country. This is the top-most administrative level.</li>
-<li>ADM1: The first geographic subdivision in the country. ADM0 contains
-several ADM1 subdivisions.</li>
-<li>ADM2: The second geographic subdivision in the country. Each ADM1
-contains several ADM2 subdivisions.</li>
-</ol>
-</div>
-<div class="section level3">
-<h3 id="vaccine-names">Vaccine Names<a class="anchor" aria-label="anchor" href="#vaccine-names"></a>
-</h3>
-<p>Our example datasets use a specific naming convention for the vaccine
-doses. This might not match your own naming schemes, but it will not
-affect the usage of the package as long as you make sure to be
-consistent when naming vaccine doses.</p>
-<p>For example, the vaccine names used in the PAHOabc package are:</p>
-<table class="table">
-<colgroup>
-<col width="17%">
-<col width="82%">
-</colgroup>
-<thead><tr class="header">
-<th>Abbreviation</th>
-<th>Full Name</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>SRP1</td>
-<td>Measles, Rubella, and Mumps Vaccine (1st dose)</td>
-</tr>
-<tr class="even">
-<td>DTP1</td>
-<td>Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)</td>
-</tr>
-<tr class="odd">
-<td>DTP2</td>
-<td>Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)</td>
-</tr>
-<tr class="even">
-<td>DTP3</td>
-<td>Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)</td>
-</tr>
-<tr class="odd">
-<td>BCG RN</td>
-<td>Bacillus Calmette–Guérin Vaccine (at birth)</td>
-</tr>
-<tr class="even">
-<td>YFV1</td>
-<td>Yellow Fever Vaccine (1st dose)</td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -185,7 +109,7 @@ consistent when naming vaccine doses.</p>
 <div class="section level3">
 <h3 id="install-package">Install Package<a class="anchor" aria-label="anchor" href="#install-package"></a>
 </h3>
-<p>The first step to run the complete schedule coverage analyses is to
+<p>The first step to run the birth cohort coverage analyses is to
 install the PAHOabc package available on GitHub.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
@@ -198,13 +122,8 @@ a specific format.</p>
 <ol style="list-style-type: decimal">
 <li>Your EIR.</li>
 <li>The vaccination schedule related to this EIR.</li>
-<li>A table with population denominators depending on the geographic
-level of your analysis.
-<ol style="list-style-type: decimal">
-<li>This is optional for the <code><a href="../reference/cs_coverage.html">cs_coverage()</a></code> function (but
-not shown in this vignette).</li>
-</ol>
-</li>
+<li>Optionally, a table with population denominators at the same
+geographic level of disaggregation as your analysis.</li>
 </ol>
 <p>To make it easy for you to test out PAHOabc’s functionality and
 understand the structure we require for your datasets, we will now
@@ -411,11 +330,12 @@ in days.</li>
 <div class="section level4">
 <h4 id="population-denominators">Population Denominators<a class="anchor" aria-label="anchor" href="#population-denominators"></a>
 </h4>
-<p>This module will require you to provide a table with population
-denominators. The geographic level of this table will be directly
-dependent on the geographic level of your analysis. For example, if you
-were to perform an analysis at ADM1 level, the required population
-denominator table must contain the following.</p>
+<p>While not mandatory, this module will lets you provide a population
+table to use as denominator for the coverage calculation. The geographic
+level of this table will be directly dependent on the geographic level
+of your analysis. For example, if you were to perform an analysis at
+ADM1 level, the required population denominator table must contain the
+following.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pahoabc.pop.ADM1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Population at ADM1"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -465,50 +385,68 @@ denominator table must contain the following.</p>
 </tr>
 </tbody>
 </table>
-<p>Note that this table is in long format and contains the corresponding
+<p>Note that this table is in long format and contains the
 <code>population</code> of children of a specific <code>age</code>
 during a given <code>year</code> for a certain <code>ADM1</code>
 level.</p>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>Please take into account that since this analysis is performed with
+birth cohorts, only the rows with <code>age</code>=0 are of interest in
+the population table, since these represent the number of children that
+belong to that specific birth cohort (year).</p>
+</blockquote>
 </div>
 </div>
 <div class="section level3">
-<h3 id="complete-schedule-coverage-analysis">Complete Schedule Coverage Analysis<a class="anchor" aria-label="anchor" href="#complete-schedule-coverage-analysis"></a>
+<h3 id="birth-cohort-coverage-analysis">Birth cohort coverage analysis<a class="anchor" aria-label="anchor" href="#birth-cohort-coverage-analysis"></a>
 </h3>
+<p>This module lets users estimate the vaccination coverage by birth
+cohort. This allows for the analysis of any vaccine among a specific
+birth cohort. For correct interpretation, you must take into account
+that it represents the percentage of people vaccinated among a specific
+year of birth, regardless of the year in which they were vaccinated, so
+it could be different from the administrative coverage of a particular
+year. Additionally, it allows users to select the level of aggregation
+for the results, which can be at the national level or subnational
+levels (<code>ADM1</code> or <code>ADM2</code>).</p>
 <div class="section level4">
 <h4 id="expected-workflow">Expected Workflow<a class="anchor" aria-label="anchor" href="#expected-workflow"></a>
 </h4>
-<p>The <code><a href="../reference/cs_coverage.html">cs_coverage()</a></code>, <code><a href="../reference/cs_barplot.html">cs_barplot()</a></code> and
-<code><a href="../reference/cs_upsetplot.html">cs_upsetplot()</a></code> functions provide a way of analyzing and
-visualizing complete schedule coverage. Their relationships are shown in
-Figure 1.</p>
+<p>The <code><a href="../reference/bc_coverage.html">bc_coverage()</a></code> and <code><a href="../reference/bc_barplot.html">bc_barplot()</a></code>
+functions provide a way of analyzing and visualizing coverage by birth
+cohort. Their relationships are shown in Figure 1.</p>
 <div class="float">
-<img src="cs_workflow.svg" alt="Figure 1. Expected workflow for complete schedule coverage analysis."><div class="figcaption">Figure 1. Expected workflow for complete
-schedule coverage analysis.</div>
+<img src="bc_workflow.svg" alt="Figure 1. Expected workflow for the birth cohort coverage analysis."><div class="figcaption">Figure 1. Expected workflow for the birth cohort
+coverage analysis.</div>
 </div>
 <p><br></p>
 </div>
 <div class="section level4">
 <h4 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h4>
-<p>Below is a simplified example of the calculation of complete schedule
-coverage for the first subnational administrative level, focusing on the
-birth cohort of the year 2022.</p>
+<p>Here is a simple use case of the <code><a href="../reference/bc_coverage.html">bc_coverage()</a></code> function,
+where we use our example dataset to compute vaccination coverage for the
+first dose of the measles-containing vaccine, for the 2022 birth year
+cohort.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute coverage</span></span>
-<span><span class="va">coverage_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cs_coverage.html">cs_coverage</a></span><span class="op">(</span></span>
+<span><span class="va">coverage_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bc_coverage.html">bc_coverage</a></span><span class="op">(</span></span>
 <span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
+<span>  vaccines <span class="op">=</span> <span class="st">"SRP1"</span>, <span class="co"># this can be a vector of vaccines</span></span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span> <span class="co"># this can be a vector of years</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># show results in table</span></span>
 <span><span class="va">coverage_df</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Complete schedule coverage by ADM1 level"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Coverage by birth cohort by ADM1 level"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Complete schedule coverage by ADM1 level</caption>
+<caption>Coverage by birth cohort by ADM1 level</caption>
 <thead><tr class="header">
-<th align="right">year</th>
+<th align="left">dose</th>
+<th align="right">year_cohort</th>
 <th align="left">ADM1</th>
 <th align="right">numerator</th>
 <th align="right">population</th>
@@ -516,95 +454,72 @@ birth cohort of the year 2022.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left">SRP1</td>
 <td align="right">2022</td>
 <td align="left">ADM1_1</td>
-<td align="right">406</td>
+<td align="right">558</td>
 <td align="right">1733</td>
-<td align="right">23.43</td>
+<td align="right">32.20</td>
 </tr>
 <tr class="even">
+<td align="left">SRP1</td>
 <td align="right">2022</td>
 <td align="left">ADM1_2</td>
-<td align="right">1145</td>
+<td align="right">3138</td>
 <td align="right">12428</td>
-<td align="right">9.21</td>
+<td align="right">25.25</td>
 </tr>
 <tr class="odd">
+<td align="left">SRP1</td>
 <td align="right">2022</td>
 <td align="left">ADM1_3</td>
-<td align="right">6508</td>
+<td align="right">13967</td>
 <td align="right">50238</td>
-<td align="right">12.95</td>
+<td align="right">27.80</td>
 </tr>
 <tr class="even">
+<td align="left">SRP1</td>
 <td align="right">2022</td>
 <td align="left">ADM1_4</td>
-<td align="right">1355</td>
+<td align="right">2977</td>
 <td align="right">6382</td>
-<td align="right">21.23</td>
+<td align="right">46.65</td>
 </tr>
 <tr class="odd">
+<td align="left">SRP1</td>
 <td align="right">2022</td>
 <td align="left">ADM1_5</td>
-<td align="right">735</td>
+<td align="right">1362</td>
 <td align="right">3488</td>
-<td align="right">21.07</td>
+<td align="right">39.05</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section level4">
-<h4 id="bar-plot">Bar plot<a class="anchor" aria-label="anchor" href="#bar-plot"></a>
-</h4>
-<p>It is possible to display the previously obtained results in a bar
-plot with <code><a href="../reference/cs_barplot.html">cs_barplot()</a></code>.</p>
+<p>We can visually observe these results by calling the
+<code><a href="../reference/bc_barplot.html">bc_barplot()</a></code> function as shown below.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualize output from cs_coverage()</span></span>
-<span><span class="va">coverage_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cs_barplot.html">cs_barplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">coverage_df</span><span class="op">)</span></span>
+<span><span class="va">coverage_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bc_barplot.html">bc_barplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">coverage_df</span>, vaccine <span class="op">=</span> <span class="st">"SRP1"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># show</span></span>
 <span><span class="va">coverage_plot</span></span></code></pre></div>
-<p><img src="complete_schedule_en_files/figure-html/cov-viz-example-1.png" class="r-plt" alt="" width="1152"></p>
-</div>
-<div class="section level4">
-<h4 id="upset-plot">Upset plot<a class="anchor" aria-label="anchor" href="#upset-plot"></a>
-</h4>
-<p>The <code><a href="../reference/cs_upsetplot.html">cs_upsetplot()</a></code> function allows us to produce an
-upset plot to evaluate the percentage of individuals included in the EIR
-who have received any of the possible combinations of the available
-vaccines. The orange bar represents the proportion of individuals who
-have received all the evaluated vaccines, thus indicating the complete
-schedule coverage. The horizontal bars show the proportion of
-individuals who received each specific vaccine (i.e., the coverage for
-that vaccine).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># produce upset plot</span></span>
-<span><span class="va">coverage_upset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cs_upsetplot.html">cs_upsetplot</a></span><span class="op">(</span></span>
-<span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
-<span>  birth_cohort <span class="op">=</span> <span class="fl">2022</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">ComplexUpset</span> package.</span></span>
-<span><span class="co">##   Please report the issue at</span></span>
-<span><span class="co">##   <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/krassowski/complex-upset/issues&gt;</span>.</span></span>
-<span><span class="co">## <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
-<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
-<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># show</span></span>
-<span><span class="va">coverage_upset</span></span></code></pre></div>
-<p><img src="complete_schedule_en_files/figure-html/cov-upset-example-1.png" class="r-plt" alt="" width="1152"></p>
-<p>In the example the complete schedule coverage reached 13.7% and is
-represented by the orange bar.</p>
-<p>It is noteworthy that 24.1% of individuals in the EIR received only
-the BCG vaccine, and that the third most frequent combination (9.1%)
-consists of individuals who received all other vaccines except BCG. This
-could indicate an error in recording a newborn’s BCG vaccine using
-temporary identification numbers.</p>
+<p><img src="birth_cohort_coverage_en_files/figure-html/cov-viz-example-1.png" class="r-plt" alt="" width="1152"></p>
+<p>A review of the different subnational levels reveals a significant
+disparity: the <code>ADM1_4</code> region records the best performance
+in vaccination (~47%), while the <code>ADM1_2</code> area exhibits the
+poorest result (~25%).</p>
 </div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
+<p>By incorporating vaccination coverage based on birth cohort, PAHOabc
+enables public health officials to accurately assess the immunity level
+of specific population groups within a given territory. This deep,
+cohort-specific insight is essential for effective strategic planning,
+including the execution of measles and rubella follow-up campaigns and
+the development of targeted HPV vaccine catch-up strategies.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

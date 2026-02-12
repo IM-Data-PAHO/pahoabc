@@ -42,7 +42,7 @@ cs_coverage(
 
   Numeric (optional). A vector specifying the birth cohort(s) for which
   coverage should be calculated. If `NULL` (default), coverage is
-  calculated for all available years.
+  calculated for all available cohorts.
 
 - max_age:
 

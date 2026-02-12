@@ -93,6 +93,10 @@ by place of residence or vaccination.
   : (R)esidence (Oc)currence Heatmap
 - [`roc_coverage_by()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage_by.md)
   : (R)esidence or (Oc)currence Coverage
+- [`bc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+  : (B)irth (C)ohort Coverage
+- [`bc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/bc_barplot.md)
+  : (B)irth (C)ohort Coverage Bar Plot
 
 ## Complete Schedule Coverage
 
@@ -125,6 +129,8 @@ expects.
 
 ### All vignettes
 
+- [Birth Cohort
+  Coverage](https://im-data-paho.github.io/pahoabc/articles/birth_cohort_coverage_en.md):
 - [Complete Schedule
   Coverage](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.md):
 - [Using our Example
