@@ -20,6 +20,8 @@ navbar:
         href: articles/residence_occurrence_en.html
       - text: Complete Schedule Coverage
         href: articles/complete_schedule_en.html
+      - text: Birth Cohort Coverage
+        href: articles/birth_cohort_coverage_en.html
       - text: -------
       - text: Other guides
       - text: Using our Example Datasets
@@ -45,6 +47,8 @@ reference:
       - roc_distribution
       - roc_heatmap
       - roc_coverage_by
+      - bc_coverage
+      - bc_barplot
 
   - title: Complete Schedule Coverage
     desc: Functions for calculating and visualizing complete schedule coverage.
