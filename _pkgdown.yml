@@ -57,6 +57,12 @@ reference:
       - cs_barplot
       - cs_upsetplot
 
+  - title: Birth Cohort Coverage
+    desc: Functions for calculating and visualizing birth cohort coverage.
+    contents:
+      - bc_coverage
+      - bc_barplot
+
   - title: Example Data
     desc: Example data frames to understand how the package works and what it expects.
     contents:
