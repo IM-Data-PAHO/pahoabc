@@ -40,6 +40,15 @@ Functions for calculating and visualizing complete schedule coverage.
 - [`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
   : (C)omplete (S)chedule Coverage Upset Plot
 
+## Birth Cohort Coverage
+
+Functions for calculating and visualizing birth cohort coverage.
+
+- [`bc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+  : (B)irth (C)ohort Coverage
+- [`bc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/bc_barplot.md)
+  : (B)irth (C)ohort Coverage Bar Plot
+
 ## Example Data
 
 Example data frames to understand how the package works and what it

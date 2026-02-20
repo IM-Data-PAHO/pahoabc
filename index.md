@@ -49,6 +49,12 @@ how to use each module:
     calculation as it evaluates each individual’s compliance of the
     national immunization schedule.
 
+4.  [**Birth Cohort
+    Coverage**](https://im-data-paho.github.io/pahoabc/articles/birth_cohort_coverage_en.html)  
+    Lets users track and visualize vaccination status among a specific
+    cohort of newborns. Helps evaluate population-level protection
+    against vaccine-preventable diseases.
+
 Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and
 serve as a reference when preparing your own data. Learn more about

@@ -49,6 +49,12 @@ how to use each module:
     calculation as it evaluates each individual’s compliance of the
     national immunization schedule.
 
+4.  [**Birth Cohort
+    Coverage**](https://im-data-paho.github.io/pahoabc/articles/birth_cohort_coverage_en.html)  
+    Lets users track and visualize vaccination status among a specific
+    cohort of newborns. Helps evaluate population-level protection
+    against vaccine-preventable diseases.
+
 Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and
 serve as a reference when preparing your own data. Learn more about
@@ -108,6 +114,15 @@ Functions for calculating and visualizing complete schedule coverage.
   : (C)omplete (S)chedule Coverage Bar Plot
 - [`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
   : (C)omplete (S)chedule Coverage Upset Plot
+
+## Birth Cohort Coverage
+
+Functions for calculating and visualizing birth cohort coverage.
+
+- [`bc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+  : (B)irth (C)ohort Coverage
+- [`bc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/bc_barplot.md)
+  : (B)irth (C)ohort Coverage Bar Plot
 
 ## Example Data
 
