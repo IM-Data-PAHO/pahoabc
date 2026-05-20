@@ -34,11 +34,10 @@ dcc_rate <- function(data.EIR, date_1, date_2, geo_level = "ADM0") {
     } else {
       character(0)
     }
-  geo_level = "ADM1"
   # Calculates the dcc_rate
   dcc_rate <- data.EIR %>%
     # Detects inconsistencies, also counts missing dates
-    mutate(consistency = case_when(.data[[date_2]] >= .data[[date_1]] ~  "INCONSISTENT",
+    mutate(consistency = case_when(.data[[date_2]] > .data[[date_1]] ~  "INCONSISTENT",
                                   is.na(.data[[date_2]]) | is.na(.data[[date_1]]) ~ "DATE_MISSING",
                                   TRUE ~ "CONSISTENT")) %>%
     # Groups by geo_level depending on choice of variables
