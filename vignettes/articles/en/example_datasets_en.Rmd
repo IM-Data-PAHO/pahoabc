@@ -13,6 +13,8 @@ output:
     toc_depth: 2
 ---
 
+<a href="../es/example_datasets_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
+
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
 library(pahoabc)
 library(dplyr)

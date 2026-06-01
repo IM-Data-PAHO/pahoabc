@@ -15,17 +15,17 @@ navbar:
       menu:
       - text: Modules
       - text: Nominal Dropout Rate
-        href: articles/nominal_dropout_en.html
+        href: articles/en/nominal_dropout_en.html
       - text: Residence vs. Occurrence Analyses
-        href: articles/residence_occurrence_en.html
+        href: articles/en/residence_occurrence_en.html
       - text: Complete Schedule Coverage
-        href: articles/complete_schedule_en.html
+        href: articles/en/complete_schedule_en.html
       - text: Birth Cohort Coverage
-        href: articles/birth_cohort_coverage_en.html
+        href: articles/en/birth_cohort_coverage_en.html
       - text: -------
       - text: Other guides
       - text: Using our Example Datasets
-        href: articles/example_datasets_en.html
+        href: articles/en/example_datasets_en.html
 
 authors:
    Pan American Health Organization:
