@@ -1,7 +1,7 @@
 ---
 title: "Cobertura por cohorte de nacimiento"
 author: "OPS/CIM"
-date: "February 12, 2026"
+date: "12 de febrero de 2026"
 output:
   html_document:
     self_contained: true
@@ -23,13 +23,13 @@ library(knitr)
 
 # Fundamento
 
-El objetivo de este indicador es monitorear una cohorte específica de recién nacidos para determinar su estado de vacunación y estimar el nivel de protección poblacional frente a las enfermedades prevenibles por vacunación. Este análisis es esencial para prevenir la acumulación de personas susceptibles, maximizar la inmunidad de rebaño y desarrollar estrategias de vacunación dirigidas a quienes no han recibido las dosis necesarias.
+El objetivo de este indicador es dar seguimiento a una cohorte específica de recién nacidos para conocer su estado de vacunación y estimar el nivel de protección de la población frente a las enfermedades prevenibles por vacunación. Este análisis ayuda a prevenir la acumulación de personas susceptibles, fortalecer la inmunidad colectiva y orientar estrategias de vacunación para quienes no han recibido las dosis necesarias.
 
 La cobertura de vacunación por cohorte de nacimiento se calcula mediante la siguiente fórmula:
 
 $$
 \text{Cobertura por cohorte de nacimiento (\%)} =
-\frac{\text{# de personas vacunadas en una cohorte de nacimiento específica}}{\text{Total de personas en la cohorte de nacimiento específica}} \times 100
+\frac{\text{# de personas vacunadas en una cohorte de nacimiento específica}}{\text{Total de personas en esa cohorte de nacimiento}} \times 100
 $$
 
 > **Nota**
@@ -50,69 +50,69 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Cargar los datos
 
-Las funciones de este módulo requieren que usted proporcione tres conjuntos de datos en un formato específico.
+Las funciones de este módulo requieren tres conjuntos de datos en un formato específico.
 
-1. Su EIR.
-2. El esquema de vacunación relacionado con este EIR.
+1. Su RNVe.
+2. El esquema de vacunación relacionado con este RNVe.
 3. Opcionalmente, una tabla con denominadores poblacionales al mismo nivel geográfico de desagregación que su análisis.
 
-Para facilitarle la prueba de la funcionalidad de PAHOabc y la comprensión de la estructura que requerimos para sus conjuntos de datos, exploraremos ahora los conjuntos de datos de ejemplo proporcionados por PAHOabc que requiere este módulo.
+Para facilitar la prueba de PAHOabc y la comprensión de la estructura requerida, a continuación se presentan los conjuntos de datos de ejemplo que utiliza este módulo.
 
-### EIR
+### RNVe
 
-El data frame `pahoabc::pahoabc.EIR` proporciona una tabla simulada de nivel nominal que representa eventos de vacunación individuales de un Registro Electrónico de Inmunización (EIR). Cada fila corresponde a un único acto de vacunación de una persona, incluyendo información sobre su residencia, dónde fue vacunada (ocurrencia), su fecha de nacimiento y la dosis de vacuna recibida.
+El conjunto de datos `pahoabc::pahoabc.EIR` proporciona un ejemplo de Registro Nominal de Vacunación electrónico (RNVe). Es una tabla nominal simulada con eventos individuales de vacunación. Cada fila corresponde a una vacunación e incluye información sobre la residencia de la persona, el lugar donde fue vacunada (ocurrencia), su fecha de nacimiento y la dosis recibida.
 
 ```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Electrónico de Inmunización")
+pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 - `ID`: Número único de identificación de la persona.
-- `date_birth`: Fecha de nacimiento de la persona.
-- `date_vax`: Fecha del evento de vacunación.
-- ADM1: Hace referencia al primer nivel administrativo geográfico del país.
-- ADM2: Hace referencia al segundo nivel administrativo geográfico del país.
-- Residence: Hace referencia al lugar donde vive la persona.
-- Occurrence: Hace referencia al lugar donde ocurrió el evento de vacunación.
-- `dose`: Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
+- Fecha de nacimiento (`date_birth`): Fecha de nacimiento de la persona.
+- Fecha de vacunación (`date_vax`): Fecha del evento de vacunación.
+- ADM1: Primer nivel administrativo geográfico del país.
+- ADM2: Segundo nivel administrativo geográfico del país.
+- Lugar de residencia (`Residence`): Lugar donde vive la persona.
+- Lugar de vacunación (`Occurrence`): Lugar donde ocurrió la vacunación.
+- Dosis (`dose`): Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
 
 ### Esquema de vacunación
 
-El conjunto de datos `pahoabc::pahoabc.schedule` define el esquema nacional de vacunación, listando cada dosis de vacuna y su edad recomendada de administración (en días). Ayuda al paquete a determinar si una persona está al día con sus vacunas.
+El conjunto de datos `pahoabc::pahoabc.schedule` define el esquema nacional de vacunación, con cada dosis y su edad recomendada de administración (en días). Esta tabla permite determinar si una persona tiene las vacunas que le corresponden según el esquema.
 
 ```{r pahoabc-schedule, message=FALSE}
 pahoabc.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
 ```
 
-- `dose`: Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
-- `age_schedule`: La edad recomendada de administración de la `dose` correspondiente, en días.
-- `age_schedule_low`: El límite inferior de la edad objetivo en días.
-- `age_schedule_high`: El límite superior de la edad objetivo en días.
+- Dosis (`dose`): Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
+- Edad programada (`age_schedule`): Edad recomendada de administración de la dosis, en días.
+- Límite inferior de edad (`age_schedule_low`): Límite inferior de la edad objetivo, en días.
+- Límite superior de edad (`age_schedule_high`): Límite superior de la edad objetivo, en días.
 
 > **Nota**
 >
-> Los nombres en `dose` deben coincidir exactamente con los de la columna `dose` del conjunto de datos `pahoabc.EIR`.
+> Los nombres de las dosis en la columna `dose` deben coincidir exactamente con los del conjunto de datos `pahoabc.EIR`.
 
 ### Denominadores poblacionales
 
-Si bien no es obligatorio, este módulo le permite proporcionar una tabla de población para usarla como denominador en el cálculo de la cobertura. El nivel geográfico de esta tabla dependerá directamente del nivel geográfico de su análisis. Por ejemplo, si fuera a realizar un análisis a nivel ADM1, la tabla de denominadores poblacionales requerida debe contener lo siguiente.
+Aunque no es obligatorio, este módulo permite usar una tabla de población como denominador para calcular la cobertura. El nivel geográfico de esta tabla debe coincidir con el nivel geográfico del análisis. Por ejemplo, para un análisis a nivel ADM1, la tabla de denominadores poblacionales debe tener la siguiente estructura.
 
 ```{r pahoabc-pop-ADM1, message=FALSE}
 pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
 ```
 
-Tenga en cuenta que esta tabla está en formato largo y contiene la `population` de niños de una `age` específica durante un `year` determinado para un cierto nivel `ADM1`.
+Esta tabla está en formato largo y contiene la población (`population`) de niños de una edad (`age`) específica durante un año (`year`) determinado para un nivel `ADM1`.
 
 > **Nota**
 >
-> Tenga en cuenta que, dado que este análisis se realiza con cohortes de nacimiento, solo las filas con `age`=0 son de interés en la tabla de población, ya que estas representan el número de niños que pertenecen a esa cohorte de nacimiento (año) específica.
+> Como este análisis se realiza con cohortes de nacimiento, solo se usan las filas donde la edad (`age`) es igual a 0 en la tabla de población. Estas filas representan el número de niños que pertenecen a esa cohorte de nacimiento.
 
 ## Análisis de cobertura por cohorte de nacimiento
 
-Este módulo permite a los usuarios estimar la cobertura de vacunación por cohorte de nacimiento. Esto permite el análisis de cualquier vacuna entre una cohorte de nacimiento específica. Para una interpretación correcta, debe tener en cuenta que representa el porcentaje de personas vacunadas de un año de nacimiento específico, independientemente del año en que fueron vacunadas, por lo que podría diferir de la cobertura administrativa de un año en particular. Además, permite a los usuarios seleccionar el nivel de agregación de los resultados, que puede ser a nivel nacional o a niveles subnacionales (`ADM1` o `ADM2`).
+Este módulo permite estimar la cobertura de vacunación por cohorte de nacimiento para cualquier vacuna. Para interpretar correctamente los resultados, tenga en cuenta que el indicador representa el porcentaje de personas vacunadas dentro de un año de nacimiento específico, independientemente del año en que fueron vacunadas. Por eso puede diferir de la cobertura administrativa de un año determinado. El usuario también puede seleccionar el nivel de agregación de los resultados: nacional, ADM1 o ADM2.
 
 ### Flujo de trabajo esperado
 
-Las funciones `bc_coverage()` y `bc_barplot()` proporcionan una forma de analizar y visualizar la cobertura por cohorte de nacimiento. Sus relaciones se muestran en la Figura 1.
+Las funciones `bc_coverage()` y `bc_barplot()` permiten analizar y visualizar la cobertura por cohorte de nacimiento. Su relación se muestra en la Figura 1.
 
 ![Figura 1. Flujo de trabajo esperado para el análisis de cobertura por cohorte de nacimiento.](bc_workflow.svg)
 
@@ -120,7 +120,7 @@ Las funciones `bc_coverage()` y `bc_barplot()` proporcionan una forma de analiza
 
 ### Ejemplo
 
-A continuación, un caso de uso sencillo de la función `bc_coverage()`, donde usamos nuestro conjunto de datos de ejemplo para calcular la cobertura de vacunación de la primera dosis de la vacuna que contiene sarampión, para la cohorte del año de nacimiento 2022.
+A continuación se muestra un caso de uso sencillo de `bc_coverage()` en el que se calcula la cobertura de vacunación de la primera dosis de la vacuna que contiene sarampión para la cohorte de nacimiento de 2022.
 
 ```{r cov-analysis-example, message=FALSE}
 
@@ -138,19 +138,19 @@ coverage_df %>%
   kable(digits = 2, caption = "Cobertura por cohorte de nacimiento a nivel ADM1")
 ```
 
-Podemos observar visualmente estos resultados llamando a la función `bc_barplot()` como se muestra a continuación.
+Estos resultados se pueden visualizar con la función `bc_barplot()`, como se muestra a continuación.
 
 ```{r cov-viz-example, message=FALSE, fig.width=12, fig.height=6}
 
-# visualizar la salida de bc_coverage()
+# visualizar el resultado de bc_coverage()
 coverage_plot <- bc_barplot(data = coverage_df, vaccine = "SRP1")
 
 # mostrar
 coverage_plot
 ```
 
-Una revisión de los distintos niveles subnacionales revela una disparidad significativa: la región `ADM1_4` registra el mejor desempeño en vacunación (~47 %), mientras que el área `ADM1_2` exhibe el peor resultado (~25 %).
+La revisión de los niveles subnacionales muestra una diferencia importante: `ADM1_4` presenta el mejor resultado de vacunación (~47 %), mientras que `ADM1_2` presenta el resultado más bajo (~25 %).
 
 # Resumen
 
-Al incorporar la cobertura de vacunación basada en la cohorte de nacimiento, PAHOabc permite a los funcionarios de salud pública evaluar con precisión el nivel de inmunidad de grupos poblacionales específicos dentro de un territorio determinado. Este conocimiento profundo y específico por cohorte es esencial para una planificación estratégica eficaz, incluyendo la ejecución de campañas de seguimiento de sarampión y rubéola y el desarrollo de estrategias dirigidas de puesta al día de la vacuna contra el VPH.
+Al incorporar la cobertura de vacunación por cohorte de nacimiento, PAHOabc ayuda a las autoridades de salud a evaluar el nivel de protección de grupos poblacionales específicos dentro de un territorio. Esta información es útil para la planificación estratégica, incluidas las campañas de seguimiento contra el sarampión y la rubéola, y las estrategias de vacunación de puesta al día contra el VPH.

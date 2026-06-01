@@ -307,6 +307,6 @@ The top row is also interesting, since it indicates people getting vaccinated ou
 
 This vignette showed how you can use the PAHOabc package to compare vaccination coverage by place of residence and place of occurrence, and to explore how people move between areas to get vaccinated.
 
-We saw that coverage can vary a lot depending on which location you use, and in some cases, coverage by occurrence can go over 100% — a sign that people are coming from elsewhere to get vaccinated. The distribution and heatmap functions help visualize these patterns and can reveal which areas act as service hubs or where people are going for vaccines.
+We saw that coverage can vary a lot depending on which location you use, and in some cases, coverage by occurrence can go over 100% — a sign that people may be coming from elsewhere to get vaccinated. The distribution and heatmap functions help visualize these patterns and can reveal which areas act as service hubs or where people are going for vaccines.
 
 Overall, this kind of analysis helps make sense of population flows and supports better planning for immunization programs.

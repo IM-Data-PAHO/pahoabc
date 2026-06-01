@@ -1,7 +1,7 @@
 ---
-title: "Análisis de residencia vs. ocurrencia"
+title: "Análisis de residencia vs. lugar de vacunación"
 author: "OPS/CIM"
-date: "April 9, 2025"
+date: "9 de abril de 2025"
 output:
   html_document:
     self_contained: true
@@ -24,21 +24,21 @@ library(knitr)
 
 # Fundamento
 
-Es común que los Registros Electrónicos de Inmunización (EIR) capturen tanto el lugar de residencia como el lugar de ocurrencia del evento de vacunación. La cobertura de vacunación puede estimarse agrupando los eventos según cualquiera de las dos ubicaciones. Sin embargo, los denominadores se estiman típicamente con base en el lugar de residencia.
+Es común que los Registros Nominales de Vacunación electrónicos (RNVe) incluyan tanto el lugar de residencia como el lugar donde ocurrió la vacunación. La cobertura de vacunación puede estimarse agrupando los eventos por cualquiera de estas dos ubicaciones. Sin embargo, los denominadores generalmente se estiman con base en el lugar de residencia.
 
-Usar la residencia o la ocurrencia como numerador puede llevar a una subestimación o sobreestimación de la cobertura y, en ocasiones, dar como resultado valores superiores al 100 %, especialmente en áreas donde los servicios de vacunación están más disponibles.
+Usar el lugar de residencia o el lugar de vacunación como numerador puede llevar a subestimar o sobreestimar la cobertura. En ocasiones, la cobertura puede superar el 100 %, especialmente en áreas donde los servicios de vacunación están más disponibles o reciben personas de otras zonas.
 
-El módulo de residencia vs. ocurrencia del paquete PAHOabc proporciona un conjunto de funciones para explorar y analizar este fenómeno.
+El módulo de residencia y lugar de vacunación de PAHOabc proporciona funciones para explorar y analizar este fenómeno.
 
 > **Nota**
 >
-> Todas las funciones utilizadas para los análisis de residencia y ocurrencia dentro de PAHOabc comienzan con el prefijo `roc_`.
+> Todas las funciones utilizadas para los análisis de residencia y lugar de vacunación dentro de PAHOabc comienzan con el prefijo `roc_`.
 
 # Glosario
 
-## Límites político-geográficos
+## Divisiones político-geográficas
 
-A lo largo de esta viñeta haremos referencia a distintos niveles de límites político-geográficos. Estos niveles están definidos por el país/territorio y pueden tener distintos nombres de un país a otro. PAHOabc es agnóstico respecto a estos nombres y requiere que el usuario recodifique los nombres de sus variables para ajustarse a la estructura de PAHOabc.
+A lo largo de esta viñeta se hace referencia a distintos niveles de división político-geográfica. Estos niveles son definidos por cada país o territorio y pueden recibir nombres diferentes. PAHOabc no depende de esos nombres locales; por eso, el usuario debe recodificar sus variables para ajustarlas a la estructura que utiliza el paquete.
 
 En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
@@ -46,15 +46,15 @@ En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados
 2. ADM1: La primera subdivisión geográfica del país. ADM0 contiene varias subdivisiones ADM1.
 3. ADM2: La segunda subdivisión geográfica del país. Cada ADM1 contiene varias subdivisiones ADM2.
 
-## Nombres de las vacunas
+## Nombres de vacunas
 
-Nuestros conjuntos de datos de ejemplo utilizan una convención de nombres específica para las dosis de vacunas. Es posible que esto no coincida con sus propios esquemas de nombres, pero no afectará el uso del paquete siempre que se asegure de ser consistente al nombrar las dosis de vacunas.
+Los conjuntos de datos de ejemplo utilizan una convención específica para nombrar las dosis de vacunas. Es posible que esta convención no coincida con la que usa su país o institución, pero esto no afecta el uso del paquete si los nombres se aplican de manera consistente.
 
 Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc son:
 
 | Abreviatura  | Nombre completo                                                  |
 |--------------|------------------------------------------------------------------|
-| SRP1         | Vacuna contra sarampión, rubéola y parotiditis (1.ª dosis)       |
+| SRP1         | Vacuna contra sarampión, rubéola y paperas (1.ª dosis)           |
 | DTP1         | Vacuna contra difteria, tétanos y tos ferina (1.ª dosis)         |
 | DTP2         | Vacuna contra difteria, tétanos y tos ferina (2.ª dosis)         |
 | DTP3         | Vacuna contra difteria, tétanos y tos ferina (3.ª dosis)         |
@@ -65,7 +65,7 @@ Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc son:
 
 ## Instalar el paquete
 
-El primer paso para ejecutar los análisis de residencia y ocurrencia es instalar el paquete PAHOabc disponible en GitHub.
+El primer paso para ejecutar los análisis de residencia y lugar de vacunación es instalar el paquete PAHOabc, disponible en GitHub.
 
 ```{r, install_package, eval=FALSE}
 devtools::install_github("IM-Data-PAHO/pahoabc")
@@ -73,57 +73,57 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Cargar los datos
 
-Las funciones de este módulo requieren que usted proporcione tres conjuntos de datos en un formato específico.
+Las funciones de este módulo requieren tres conjuntos de datos en un formato específico.
 
-1. Su EIR.
-2. El esquema de vacunación relacionado con este EIR.
+1. Su RNVe.
+2. El esquema de vacunación relacionado con este RNVe.
 3. Una tabla con denominadores poblacionales según el nivel geográfico de su análisis.
 
-Para facilitarle la prueba de la funcionalidad de PAHOabc y la comprensión de la estructura que requerimos para sus conjuntos de datos, exploraremos ahora los conjuntos de datos de ejemplo proporcionados por PAHOabc que requiere este módulo.
+Para facilitar la prueba de PAHOabc y la comprensión de la estructura requerida, a continuación se presentan los conjuntos de datos de ejemplo que utiliza este módulo.
 
-### EIR
+### RNVe
 
-El data frame `pahoabc::pahoabc.EIR` proporciona una tabla simulada de nivel nominal que representa eventos de vacunación individuales de un Registro Electrónico de Inmunización (EIR). Cada fila corresponde a un único acto de vacunación de una persona, incluyendo información sobre su residencia, dónde fue vacunada (ocurrencia), su fecha de nacimiento y la dosis de vacuna recibida.
+El conjunto de datos `pahoabc::pahoabc.EIR` proporciona un ejemplo de Registro Nominal de Vacunación electrónico (RNVe). Es una tabla nominal simulada con eventos individuales de vacunación. Cada fila corresponde a una vacunación e incluye información sobre la residencia de la persona, el lugar donde fue vacunada (ocurrencia), su fecha de nacimiento y la dosis recibida.
 
 ```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Electrónico de Inmunización")
+pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 - `ID`: Número único de identificación de la persona.
-- `date_birth`: Fecha de nacimiento de la persona.
-- `date_vax`: Fecha del evento de vacunación.
-- ADM1: Hace referencia al primer nivel administrativo geográfico del país.
-- ADM2: Hace referencia al segundo nivel administrativo geográfico del país.
-- Residence: Hace referencia al lugar donde vive la persona.
-- Occurrence: Hace referencia al lugar donde ocurrió el evento de vacunación.
-- `dose`: Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
+- Fecha de nacimiento (`date_birth`): Fecha de nacimiento de la persona.
+- Fecha de vacunación (`date_vax`): Fecha del evento de vacunación.
+- ADM1: Primer nivel administrativo geográfico del país.
+- ADM2: Segundo nivel administrativo geográfico del país.
+- Lugar de residencia (`Residence`): Lugar donde vive la persona.
+- Lugar de vacunación (`Occurrence`): Lugar donde ocurrió la vacunación.
+- Dosis (`dose`): Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
 
 ### Esquema de vacunación
 
-El conjunto de datos `pahoabc::pahoabc.schedule` define el esquema nacional de vacunación, listando cada dosis de vacuna y su edad recomendada de administración (en días). Ayuda al paquete a determinar si una persona está al día con sus vacunas.
+El conjunto de datos `pahoabc::pahoabc.schedule` define el esquema nacional de vacunación, con cada dosis y su edad recomendada de administración (en días). Esta tabla permite determinar si una persona tiene las vacunas que le corresponden según el esquema.
 
 ```{r pahoabc-schedule, message=FALSE}
 pahoabc.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
 ```
 
-- `dose`: Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
-- `age_schedule`: La edad recomendada de administración de la `dose` correspondiente, en días.
-- `age_schedule_low`: El límite inferior de la edad objetivo en días.
-- `age_schedule_high`: El límite superior de la edad objetivo en días.
+- Dosis (`dose`): Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente. Por ejemplo, DTP1 se refiere a la primera dosis de una vacuna que contiene componentes de difteria, tétanos y tos ferina.
+- Edad programada (`age_schedule`): Edad recomendada de administración de la dosis, en días.
+- Límite inferior de edad (`age_schedule_low`): Límite inferior de la edad objetivo, en días.
+- Límite superior de edad (`age_schedule_high`): Límite superior de la edad objetivo, en días.
 
 > **Nota**
 >
-> Los nombres en `dose` deben coincidir exactamente con los de la columna `dose` del conjunto de datos `pahoabc.EIR`.
+> Los nombres de las dosis en la columna `dose` deben coincidir exactamente con los del conjunto de datos `pahoabc.EIR`.
 
 ### Denominadores poblacionales
 
-Este módulo requerirá que usted proporcione una tabla con denominadores poblacionales. El nivel geográfico de esta tabla dependerá directamente del nivel geográfico de su análisis. Por ejemplo, si fuera a realizar un análisis a nivel ADM1, la tabla de denominadores poblacionales requerida debe contener lo siguiente.
+Este módulo requiere una tabla con denominadores poblacionales. El nivel geográfico de esta tabla debe coincidir con el nivel geográfico del análisis. Por ejemplo, para un análisis a nivel ADM1, la tabla de denominadores poblacionales debe tener la siguiente estructura.
 
 ```{r pahoabc-pop-ADM1, message=FALSE}
 pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
 ```
 
-Tenga en cuenta que esta tabla está en formato largo y contiene la `population` correspondiente de niños de una `age` específica durante un `year` determinado para un cierto nivel `ADM1`.
+Esta tabla está en formato largo y contiene la población (`population`) de niños de una edad (`age`) específica durante un año (`year`) determinado para un nivel `ADM1`.
 
 > **Nota**
 >
@@ -131,13 +131,13 @@ Tenga en cuenta que esta tabla está en formato largo y contiene la `population`
 
 ## Análisis de cobertura
 
-La primera subsección de este módulo proporciona una forma de analizar las tasas de cobertura tanto por lugar de residencia como por lugar de vacunación (ocurrencia).
+La primera parte de este módulo permite analizar la cobertura tanto por lugar de residencia como por lugar de vacunación (ocurrencia).
 
 ### Flujo de trabajo esperado
 
-Las funciones `roc_coverage()` y `roc_barplot()` trabajan en conjunto para realizar el análisis y la visualización de la cobertura. La función `roc_coverage()` calcula la cobertura de vacunación tanto por residencia como por ocurrencia a través de los niveles administrativos, años y vacunas seleccionados. Su salida (una tabla de datos) está estructurada para ser directamente compatible con `roc_barplot()`, que genera una visualización para un año y una vacuna específicos.
+Las funciones `roc_coverage()` y `roc_barplot()` trabajan en conjunto para analizar y visualizar la cobertura. La función `roc_coverage()` calcula la cobertura de vacunación por residencia y por lugar de vacunación, según los niveles administrativos, años y vacunas seleccionados. Su resultado es una tabla compatible con `roc_barplot()`, que genera una visualización para un año y una vacuna específicos.
 
-Alternativamente, la función `roc_coverage_by()` está disponible cuando se desea calcular la cobertura por residencia o por ocurrencia (pero no por ambas). Si bien produce una tabla similar, su salida no es compatible con `roc_barplot()`.
+La función `roc_coverage_by()` está disponible cuando se desea calcular la cobertura solo por residencia o solo por lugar de vacunación. Aunque produce una tabla similar, su resultado no es compatible con `roc_barplot()`.
 
 ![Figura 1. Flujo de trabajo esperado para los análisis de cobertura.](roc_workflow_1.svg)
 
@@ -145,7 +145,7 @@ Alternativamente, la función `roc_coverage_by()` está disponible cuando se des
 
 ### Ejemplo
 
-A continuación, un caso de uso sencillo de la función `roc_coverage()`, donde calculamos la cobertura por ambas métricas para la vacuna DTP1 en 2023 para nuestros conjuntos de datos de ejemplo.
+A continuación se muestra un caso de uso sencillo de `roc_coverage()`, en el que se calcula la cobertura por ambas métricas para la vacuna DTP1 en 2023 usando los datos de ejemplo.
 
 ```{r cov-analysis-example, message=FALSE}
 
@@ -168,7 +168,7 @@ Esta salida puede pasarse directamente a la función `roc_barplot()` como se mue
 
 ```{r cov-viz-example, message=FALSE, fig.width=12, fig.height=6}
 
-# visualizar la salida de roc_coverage()
+# visualizar el resultado de roc_coverage()
 coverage_plot <- roc_barplot(
   data = coverage_df,
   year = 2023,
@@ -179,21 +179,21 @@ coverage_plot <- roc_barplot(
 coverage_plot
 ```
 
-Este gráfico muestra la cobertura de vacunación alcanzada por cada nivel administrativo subnacional, considerando tanto el lugar de ocurrencia como el lugar de residencia. Las barras amarillas representan la cobertura por lugar de ocurrencia, es decir, que el numerador incluye todas las dosis administradas en esa ubicación. Los diamantes naranjas representan la cobertura por lugar de residencia, es decir, que el numerador incluye a las personas que residen en esa ubicación, independientemente de dónde recibieron la vacuna.
+Este gráfico muestra la cobertura de vacunación alcanzada por cada nivel administrativo subnacional, considerando tanto el lugar de vacunación como el lugar de residencia. Las barras amarillas representan la cobertura por lugar de vacunación; es decir, el numerador incluye todas las dosis administradas en esa ubicación. Los diamantes naranjas representan la cobertura por lugar de residencia; es decir, el numerador incluye a las personas que viven en esa ubicación, independientemente del lugar donde recibieron la vacuna.
 
-Podemos observar que la cobertura por **residencia y ocurrencia** en ADM1_1, ADM1_4 y ADM1_5 es similar. Sin embargo, en ADM1_2 y ADM1_3 hay diferencias entre los dos tipos de cobertura.
+La cobertura por **residencia y lugar de vacunación** es similar en ADM1_1, ADM1_4 y ADM1_5. Sin embargo, en ADM1_2 y ADM1_3 se observan diferencias entre los dos tipos de cobertura.
 
-En ADM1_2, la cobertura por ocurrencia alcanza el 141 %, mientras que la cobertura por residencia es del 95 %, resultando en una diferencia de 46 puntos porcentuales. En ADM1_3, la cobertura por ocurrencia es del 80 %, mientras que la cobertura por residencia es del 90 %, con una diferencia de 10 puntos porcentuales a favor de la cobertura por residencia.
+En ADM1_2, la cobertura por lugar de vacunación alcanza el 141 %, mientras que la cobertura por residencia es del 95 %, con una diferencia de 46 puntos porcentuales. En ADM1_3, la cobertura por lugar de vacunación es del 80 %, mientras que la cobertura por residencia es del 90 %, con una diferencia de 10 puntos porcentuales a favor de la cobertura por residencia.
 
-Estos patrones sugieren un flujo poblacional significativo entre áreas administrativas. Específicamente, en ADM1_2, la alta cobertura por ocurrencia junto con una menor cobertura por residencia indica que muchas personas vacunadas en esta área en realidad residen en otro lugar. Por el contrario, ADM1_3 muestra una mayor cobertura por residencia que por ocurrencia, lo que sugiere que un número significativo de sus residentes se desplaza a otras áreas para recibir sus vacunas.
+Estos patrones sugieren flujos poblacionales importantes entre áreas administrativas. En ADM1_2, la cobertura alta por lugar de vacunación y la cobertura menor por residencia indican que muchas personas vacunadas en esta área viven en otro lugar. En cambio, ADM1_3 muestra una cobertura por residencia mayor que por lugar de vacunación, lo que sugiere que una parte de sus residentes se desplaza a otras áreas para vacunarse.
 
 ## Análisis de distribución de dosis
 
-Las funciones de análisis de distribución de este paquete ayudan a analizar dónde se vacunan las personas según su lugar de residencia.
+Las funciones de distribución ayudan a analizar dónde se vacunan las personas según su lugar de residencia.
 
 ### Flujo de trabajo esperado
 
-Las funciones `roc_distribution()` y `roc_heatmap()` proporcionan una forma de analizar el flujo poblacional entre áreas administrativas. Por ejemplo, uno podría interesarse en observar dónde se vacunan las personas que residen en una sola región (p. ej., ¿se vacunan todas dentro de su propia región o se desplazan a otras regiones?).
+Las funciones `roc_distribution()` y `roc_heatmap()` permiten analizar los flujos poblacionales entre áreas administrativas. Por ejemplo, se puede observar dónde se vacunan las personas que viven en una región: si se vacunan dentro de su propia región o si se desplazan a otras.
 
 La figura a continuación muestra el flujo de trabajo esperado para estas funciones.
 
@@ -203,7 +203,7 @@ La figura a continuación muestra el flujo de trabajo esperado para estas funcio
 
 ### Ejemplo a nivel del primer nivel administrativo
 
-Este análisis solo requiere que usted proporcione su EIR junto con otros parámetros sencillos. Por ejemplo, calculemos cómo se distribuye la vacunación en el primer nivel administrativo para la vacuna DTP1 en 2023.
+Este análisis solo requiere el RNVe y algunos parámetros sencillos. Por ejemplo, se puede calcular cómo se distribuye la vacunación en el primer nivel administrativo para la vacuna DTP1 en 2023.
 
 ```{r dist-analysis-example, message=FALSE}
 
@@ -219,10 +219,10 @@ distribution_df <- roc_distribution(
 # mostrar los resultados en una tabla (ver solo un par de regiones por simplicidad)
 distribution_df %>%
   filter(ADM1_residence %in% c("ADM1_1", "ADM1_3")) %>%
-  kable(digits = 3, caption = "Distribución de vacunación para cada lugar de residencia por lugar de ocurrencia")
+  kable(digits = 3, caption = "Distribución de vacunación para cada lugar de residencia por lugar de vacunación")
 ```
 
-Por ejemplo, el 87 % de las personas que residen en ADM1_3 se vacunaron también allí contra DTP1. Pero un 13 % adicional recibió su vacuna de DTP1 en otro lugar (en concreto, en ADM1_2). Si desea profundizar en las personas que se vacunaron en un lugar diferente a su lugar de residencia, puede establecer el parámetro `include_self_matches` en `FALSE`.
+Por ejemplo, el 87 % de las personas que viven en ADM1_3 también se vacunó allí contra DTP1. Otro 13 % recibió su vacuna DTP1 en otro lugar, específicamente en ADM1_2. Para analizar solo a las personas que se vacunaron fuera de su lugar de residencia, use el parámetro `include_self_matches = FALSE`.
 
 ```{r dist-analysis-example-2, message=FALSE}
 
@@ -232,7 +232,7 @@ distribution_df2 <- roc_distribution(
   vaccine = "DTP1",
   geo_level = "ADM1",
   birth_cohort = 2023,
-  # establecer esto en FALSE para excluir los casos en que las personas se vacunan en su lugar de residencia
+  # establecer en FALSE para excluir los casos en que las personas se vacunan en su lugar de residencia
   include_self_matches = FALSE
 )
 
@@ -242,12 +242,12 @@ distribution_df2 %>%
   kable(digits = 3, caption = "¿Dónde se vacunan los residentes de ADM1_3?")
 ```
 
-Esto muestra que el 96 % de las personas de ADM1_3 **que no se vacunan en su lugar de residencia** se vacunan en ADM1_2.
+Esto muestra que el 96 % de las personas de ADM1_3 **que no se vacunan en su lugar de residencia** lo hacen en ADM1_2.
 
-La función `roc_heatmap()` puede ofrecer una imagen más clara de esto.
+La función `roc_heatmap()` muestra este patrón con mayor claridad.
 
 ```{r dist-viz-example, message=FALSE, fig.width=12, fig.height=6}
-library(patchwork) # para mostrarlos lado a lado
+library(patchwork) # para mostrar los gráficos lado a lado
 
 # generar los gráficos
 distribution_plot <- roc_heatmap(distribution_df) # con coincidencias propias
@@ -257,7 +257,7 @@ distribution_plot2 <- roc_heatmap(distribution_df2) # sin coincidencias propias
 distribution_plot <- distribution_plot + labs(subtitle = "Con coincidencias propias")
 distribution_plot2 <- distribution_plot2 + labs(subtitle = "Sin coincidencias propias")
 
-# mostrarlos lado a lado
+# mostrar los gráficos lado a lado
 distribution_plot + distribution_plot2
 ```
 
@@ -265,13 +265,13 @@ distribution_plot + distribution_plot2
 >
 > El gráfico de la derecha muestra la proporción de dosis administradas en un lugar **diferente a su lugar de residencia**. Por eso la diagonal está vacía.
 
-Estos gráficos pueden leerse de forma vertical u horizontal. Al leer el gráfico verticalmente, las columnas sumarán 100 % (salvo un error de redondeo). Es decir, cada columna representa la población de, por ejemplo, ADM1_1 y dónde se vacunan. Por ejemplo, si nos concentramos en el gráfico de la derecha y lo leemos verticalmente, podemos decir que, del total de personas que residen en ADM1_1 y se vacunan en un lugar diferente a su lugar de residencia, el 54 % lo hace en ADM1_3, el 31 % en ADM1_2 y un 16 % restante en ADM1_4 y ADM1_5.
+Estos gráficos pueden leerse de forma vertical u horizontal. Al leer el gráfico verticalmente, las columnas suman 100 % (salvo diferencias por redondeo). Cada columna representa la población de un área, por ejemplo ADM1_1, y muestra dónde se vacuna. En el gráfico de la derecha, del total de personas que viven en ADM1_1 y se vacunan fuera de su lugar de residencia, el 54 % lo hace en ADM1_3, el 31 % en ADM1_2 y el 16 % restante en ADM1_4 y ADM1_5.
 
-Al leer horizontalmente, las filas **no** sumarán 100 %, pero siguen siendo indicativas de las residencias de las personas que se vacunan en una determinada región. Por ejemplo, leyendo el gráfico de la izquierda de forma horizontal podemos notar que el 92 % de los residentes de ADM1_2 se vacunan también allí, pero esta región también vacuna a una proporción significativa de residentes de ADM1_3 (13 %).
+Al leer el gráfico horizontalmente, las filas **no** suman 100 %, pero indican de dónde provienen las personas que se vacunan en una región. Por ejemplo, en el gráfico de la izquierda se observa que el 92 % de los residentes de ADM1_2 se vacuna también allí, pero esta región también vacuna a una proporción importante de residentes de ADM1_3 (13 %).
 
 ### Ejemplo a nivel del segundo nivel administrativo
 
-Un análisis a un nivel más granular es beneficioso en este caso. Repitamos el proceso anterior, pero al segundo nivel administrativo (p. ej., distritos dentro de una determinada región).
+En este caso, puede ser útil realizar el análisis a un nivel más detallado. A continuación se repite el proceso en el segundo nivel administrativo, por ejemplo, distritos dentro de una región.
 
 ```{r dist-analysis-example-3, message=FALSE, fig.width=12, fig.height=6}
 
@@ -283,7 +283,7 @@ distribution_df3 <- roc_distribution(
   geo_level = "ADM2",
   birth_cohort = 2023,
   include_self_matches = FALSE,
-  within_ADM1 = "ADM1_3" # establecer la región en la que profundizar
+  within_ADM1 = "ADM1_3" # establecer la región que se quiere analizar
 )
 
 # mostrar los resultados en un gráfico
@@ -295,18 +295,18 @@ distribution_plot3 <- roc_heatmap(
 distribution_plot3
 ```
 
-En este mapa de calor observamos la proporción de eventos de vacunación que ocurren en una ubicación diferente al lugar de residencia, desglosada por el segundo nivel administrativo.
+En este mapa de calor se observa la proporción de eventos de vacunación que ocurren en un lugar diferente al lugar de residencia, desagregada por el segundo nivel administrativo.
 
-Como ejemplo, es notable que, entre todas las personas que residen en ADM2_3_10 y se vacunan fuera de su área de residencia, el 72 % recibe su vacuna en ADM2_3_11. De manera similar, el 23 % de las personas de ADM2_3_23 que se vacunan en otro lugar lo hacen en ADM2_3_11.
+Por ejemplo, entre las personas que viven en ADM2_3_10 y se vacunan fuera de su área de residencia, el 72 % recibe la vacuna en ADM2_3_11. De manera similar, el 23 % de las personas de ADM2_3_23 que se vacunan en otro lugar lo hacen en ADM2_3_11.
 
-Mirando el mapa de calor horizontalmente, podemos ver que ADM2_3_20 provee vacunación a un gran número de personas provenientes de otras áreas: el 35 % de las de ADM2_3_7, el 18 % de ADM2_3_15, el 17 % de ADM2_3_12, el 14 % de ADM2_3_17, etc.
+Al leer el mapa de calor horizontalmente, se observa que ADM2_3_20 vacuna a muchas personas provenientes de otras áreas: el 35 % de las de ADM2_3_7, el 18 % de ADM2_3_15, el 17 % de ADM2_3_12, el 14 % de ADM2_3_17, etc.
 
-La fila superior también es interesante, ya que indica a las personas que se vacunan completamente fuera de ADM1_3. Por ejemplo, en la columna 4, el 85 % de los residentes de ADM2_3_13 se vacunan fuera de ADM1_3, lo que sugiere un fuerte flujo poblacional.
+La fila superior indica a las personas que se vacunan fuera de ADM1_3. Por ejemplo, en la columna 4, el 85 % de los residentes de ADM2_3_13 se vacuna fuera de ADM1_3, lo que sugiere un flujo poblacional importante.
 
 # Resumen
 
-Esta viñeta mostró cómo puede usar el paquete PAHOabc para comparar la cobertura de vacunación por lugar de residencia y por lugar de ocurrencia, y para explorar cómo se desplazan las personas entre áreas para vacunarse.
+Esta viñeta mostró cómo usar PAHOabc para comparar la cobertura de vacunación por lugar de residencia y por lugar de vacunación, y para explorar cómo se desplazan las personas entre áreas para vacunarse.
 
-Vimos que la cobertura puede variar mucho dependiendo de qué ubicación se utilice y, en algunos casos, la cobertura por ocurrencia puede superar el 100 % —una señal de que personas de otros lugares vienen a vacunarse—. Las funciones de distribución y mapa de calor ayudan a visualizar estos patrones y pueden revelar qué áreas actúan como centros de servicio o hacia dónde se dirigen las personas para vacunarse.
+La cobertura puede variar mucho según la ubicación que se use para el cálculo. En algunos casos, la cobertura por lugar de vacunación puede superar el 100 %, lo que puede indicar que personas de otras áreas acuden a vacunarse allí. Las funciones de distribución y mapa de calor ayudan a visualizar estos patrones y pueden mostrar qué áreas funcionan como centros de servicio o hacia dónde se desplazan las personas para vacunarse.
 
 En general, este tipo de análisis ayuda a comprender los flujos poblacionales y apoya una mejor planificación de los programas de inmunización.

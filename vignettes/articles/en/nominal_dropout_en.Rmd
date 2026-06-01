@@ -138,7 +138,7 @@ example_dropout %>%
 -   `vaccine_init`: The name (string) of the vaccine to use as the start point of the analysis as stored in the **dose** column of the dataframe.\
 -   `vaccine_end`: The name (string) of the vaccine to use as the end point of the analysis as stored in the **dose** column of the dataframe.\
 -   `geo_level`: Administrative level to use, this is an optional parameter. Can be "ADM0", "ADM1" or "ADM2" as strings. Defaults to "ADM0" if ignored.
--   `birth_cohorts` (years): Parameter to segment the analysis based on the year of birth of the persons in the dataframe. This function uses the `date_birth` column in the dataframe and can be a single year or a vector of years.
+-   `birth_cohorts`: Parameter to segment the analysis based on the year of birth of the persons in the dataframe. It is based on the `date_birth` column in the dataframe and can be a single year or a vector of years.
 
 The `data.EIR`, `vaccine_init`, `vaccine_end` parameters are mandatory. `geo_level` and `birth_cohorts` are optional and help to segment the data for more precise analyses.
 
