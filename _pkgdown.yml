@@ -22,6 +22,8 @@ navbar:
         href: articles/en/complete_schedule_en.html
       - text: Birth Cohort Coverage
         href: articles/en/birth_cohort_coverage_en.html
+      - text: Date Consistency Comparison
+        href: articles/date_consistency_comparison_en.html
       - text: -------
       - text: Other guides
       - text: Using our Example Datasets
@@ -33,6 +35,14 @@ authors:
      href: "https://www.paho.org/en"
 
 reference:
+  - title: Date Consistency Comparison
+    desc: Functions for identifying and visualizing date inconsistencies in the EIR.
+    contents:
+      - dcc_rate
+      - dcc_barplot
+      - dcc_inconsistent
+      - dcc_inconsistent_plot
+
   - title: Nominal Dropout Rate
     desc: Functions for calculating and visualizing nominal dropout rate.
     contents:

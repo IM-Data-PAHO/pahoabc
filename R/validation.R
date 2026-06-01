@@ -203,6 +203,24 @@
   }
 }
 
+#' Validate input data to dcc_barplot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_dcc_barplot_data <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  minimum_columns <- c(
+    "consistency", "n", "total", "rate"
+  )
+
+  if(!all(minimum_columns %in% names(data))) {
+    stop("Error: data should be the output from dcc_rate")
+  }
+}
+
 #' Validate input data to roc_heatmap.
 #'
 #' @keywords internal
@@ -262,11 +280,18 @@
 #'
 #' @keywords internal
 #' @noRd
-.validate_data.EIR <- function(data.EIR, data.schedule = NULL) {
+.validate_data.EIR <- function(data.EIR, data.schedule = NULL, indicator = NULL) {
   if(!is.data.frame(data.EIR)) {
     stop("Error: data.EIR should be a data frame.")
   }
-
+  if(!is.null(indicator) && indicator == "dcc"){
+    required_columns <- c(
+    "ID",
+    "ADM1_residence",
+    "ADM2_residence",
+    "dose"
+    )
+  } else {
   required_columns <- c(
     "ID",
     "date_birth",
@@ -276,11 +301,15 @@
     "ADM1_occurrence",
     "ADM2_occurrence",
     "dose"
-  )
+    )
+  }
 
   if(!all(required_columns %in% names(data.EIR))) {
-    stop("Error: data.EIR should contain the following columns: ID, date_birth, date_vax, ADM1_residence, ADM2_residence, ADM1_occurrence, ADM2_occurrence, dose.")
-  }
+    stop(paste0(
+      "Error: data.EIR should contain the following columns: ",
+      paste(required_columns, collapse = ", "), "."
+    ))
+  } 
 
   if(!is.null(data.schedule)) {
     missing_in_schedule <- setdiff(unique(data.EIR$dose), unique(data.schedule$dose))
