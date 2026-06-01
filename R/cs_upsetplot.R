@@ -49,9 +49,11 @@ cs_upsetplot <- function(data.EIR, data.schedule, birth_cohort, denominator = NU
   # Step 2: Create empty columns and fill them if the child has the vaccine
   #         in dose_list
   line_list[doses_in_schedule] <- FALSE
+  # pad the whole list with commas so we can search for the ",dose," string
+  # explicitly
+  padded_dose_list <- paste0(",", line_list$dose_list, ",")
   for (dose in doses_in_schedule) {
-    # NOTE: Use \\b to detect word boundaries
-    line_list[[dose]] <- str_detect(line_list$dose_list, paste0("\\b", dose, "\\b"))
+    line_list[[dose]] <- str_detect(padded_dose_list, fixed(paste0(",", dose, ",")))
   }
 
   # check if anyone has a complete schedule to know if we have to highlight
