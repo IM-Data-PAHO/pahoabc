@@ -11,7 +11,6 @@
 #' 
 #' @import dplyr
 #' @import lubridate
-#' @import janitor
 #' 
 #' @export
 dcc_rate <- function(data.EIR, date_1, date_2, geo_level = "ADM0") {
