@@ -19,10 +19,10 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 Actualmente, PAHOabc contiene cuatro módulos principales. Siga los enlaces a continuación para explorar viñetas detalladas con ejemplos prácticos y orientación sobre cómo usar cada módulo:
 
-1. [**Tasa de abandono nominal**](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.html)
+1. [**Tasa de abandono nominal**](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.html)  
    Calcula las tasas de abandono entre cualquier par de dosis de vacunas utilizando datos nominales. Este módulo permite dar seguimiento a la continuidad de las personas dentro de un esquema de vacunación.
 
-2. [**Análisis de residencia vs. lugar de vacunación**](https://im-data-paho.github.io/pahoabc/articles/es/residence_occurrence_es.html)
+2. [**Análisis de residencia vs. lugar de vacunación**](https://im-data-paho.github.io/pahoabc/articles/es/residence_occurrence_es.html)  
    Funciones para comparar la cobertura de vacunación y la distribución de dosis según el lugar donde viven las personas y el lugar donde fueron vacunadas. Este módulo ayuda a identificar flujos poblacionales y posibles brechas en la cobertura de los servicios entre áreas geográficas.
 
 3. [**Cobertura de esquema completo**](https://im-data-paho.github.io/pahoabc/articles/es/complete_schedule_es.html)  
