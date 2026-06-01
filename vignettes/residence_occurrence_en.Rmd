@@ -299,7 +299,7 @@ As an example, it is notable that among all individuals residing in ADM2_3_10 wh
 
 Looking at the heatmap horizontally, we can see that ADM2_3_20 provides vaccinations to a large number of people coming from other areas: 35% of those from ADM2_3_7, 18% from ADM2_3_15, 17% from ADM2_3_12, 14% from ADM2_3_17, etc.
 
-The top row is also interesting, since it indicates people getting vaccinated outside of ADM1_3 entirely. For example, in column 4, 85% of the residents of ADM3_3_13 get vaccinated outside of ADM1_3, suggesting a strong population flow.
+The top row is also interesting, since it indicates people getting vaccinated outside of ADM1_3 entirely. For example, in column 4, 85% of the residents of ADM2_3_13 get vaccinated outside of ADM1_3, suggesting a strong population flow.
 
 # Summary
 

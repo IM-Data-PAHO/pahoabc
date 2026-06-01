@@ -15,7 +15,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Usage
 
-Currently, PAHOabc contains three main modules. Follow the links below to explore detailed vignettes with practical examples and guidance on how to use each module:
+Currently, PAHOabc contains four main modules. Follow the links below to explore detailed vignettes with practical examples and guidance on how to use each module:
 
 1. [**Nominal Dropout Rate**](https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html)  
    Calculates dropout rates between any two vaccine doses using nominal data. This module ensures accurate follow-up tracking across a vaccination schedule.
