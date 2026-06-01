@@ -43,11 +43,10 @@ dcc_inconsistent_plot <- function(
 
   n_missing <- sum(plot_data$consistency == "DATE_MISSING")
 
+  interval_labels <- sapply(day_groups, function(g) paste0(g[1], "-", g[2] - 1))
+  interval_labels[length(interval_labels)] <- paste0(day_groups[[length(day_groups)]][1], "+")
   breaks <- c(sapply(day_groups, `[`, 1), Inf)
-  labels <- c(
-    sapply(day_groups, function(g) paste0(g[1], "-", g[2] - 1)),
-    paste0(day_groups[[length(day_groups)]][2], "+")
-  )
+  labels <- interval_labels
 
   plot_data <- plot_data %>%
     filter(consistency == "INCONSISTENT") %>%
