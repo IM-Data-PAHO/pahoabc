@@ -7,7 +7,7 @@
 #' @param date_2 Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking consistency against. Represents a date chronologically earlier than date_1.
 #' @param geo_level Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0". 
 #' 
-#' @return A data frame containing the consistency rate, and inconsistency rate (inverse roportion) in percentages for the specified \code{geo_level}.
+#' @return A data frame containing the consistency rate and inconsistency rate (inverse proportion) in percentages for the specified \code{geo_level}.
 #' 
 #' @import dplyr
 #' @import lubridate
@@ -51,5 +51,5 @@ dcc_rate <- function(data.EIR, date_1, date_2, geo_level = "ADM0") {
     )
 
   #Returns summary table
-  return(dcc_rate)  
+  return(dcc_rate)
 }
