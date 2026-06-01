@@ -13,6 +13,8 @@ output:
     toc_depth: 2
 ---
 
+<a href="../es/nominal_dropout_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(pahoabc)
@@ -23,9 +25,14 @@ library(knitr)
 
 # Rationale
 
-The dropout rate is an indicator used to evaluate the loss of follow-up in vaccination schedules. It reflects the percentage of individuals who did not receive a final dose (i.e, DTP3) among those who received an initial dose (i.e, DTP1). In aggregated systems, it is estimated using the following formula:
+The dropout rate is an indicator used to evaluate the loss of follow-up in vaccination schedules. It reflects the percentage of individuals who did not receive a final dose (i.e., DTP3) among those who received an initial dose (i.e., DTP1). In aggregated systems, it is estimated using the following formula:
 
-Performing the analysis with aggregated data does not guarantee that the individuals who received both doses are the same, as shown in Figure 1a. Electronic nominal vaccination records enable a person-to-person analysis, ensuring that the individuals who received both doses are indeed the same, as illustrated in Figure 1b.
+$$
+\text{Dropout rate (\%)} =
+\frac{\text{DTP1 doses administered} - \text{DTP3 doses administered}}{\text{DTP1 doses administered}} \times 100
+$$
+
+Performing the analysis with aggregated data does not guarantee that the individuals who received both doses are the same, as shown in Figure 1A. Electronic nominal vaccination records enable a person-to-person analysis, ensuring that the individuals who received both doses are indeed the same, as illustrated in Figure 1B.
 
 ![Figure 1. Visual representation of a nominal dropout analysis.](nod_rationale.png)
 
@@ -97,7 +104,7 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 
 ## Nominal Dropout Analysis
 
-PAHOabc includes the functionality to estimate the nominal dropout rate, on a per-person basis. This allows for the analysis of any pair of doses by specifying an initial dose and a final dose. For correct interpretation, the initial dose must precede the final dose in the vaccination schedule, for example: DTP1 – DTP3 or DTP1 – MCV. Additionally, it allows users to select the level of aggregation for the results, which can be at the national level or subnational levels (ADM1 or ADM2).
+PAHOabc includes the functionality to estimate the nominal dropout rate, on a per-person basis. This allows for the analysis of any pair of doses by specifying an initial dose and a final dose. For correct interpretation, the initial dose must precede the final dose in the vaccination schedule, for example: DTP1 – DTP3 or DTP1 – MCV1. Additionally, it allows users to select the level of aggregation for the results, which can be at the national level or subnational levels (ADM1 or ADM2).
 
 ### Expected workflow
 
@@ -127,13 +134,13 @@ example_dropout %>%
 
 #### Parameters accepted
 
--   `data`: R Structured dataframe with the variables listed above.\
+-   `data.EIR`: R Structured dataframe with the variables listed above.\
 -   `vaccine_init`: The name (string) of the vaccine to use as the start point of the analysis as stored in the **dose** column of the dataframe.\
 -   `vaccine_end`: The name (string) of the vaccine to use as the end point of the analysis as stored in the **dose** column of the dataframe.\
 -   `geo_level`: Administrative level to use, this is an optional parameter. Can be "ADM0", "ADM1" or "ADM2" as strings. Defaults to "ADM0" if ignored.
--   `birth_cohorts` (years): Parameter to segment the analysis based on the year of birth of the persons in the dataframe. This function uses the `date_birth` column in the dataframe and can be a single year or a vector of years.
+-   `birth_cohorts`: Parameter to segment the analysis based on the year of birth of the persons in the dataframe. It is based on the `date_birth` column in the dataframe and can be a single year or a vector of years.
 
-The `data`, `vaccine_init`, `vaccine_end` parameters are mandatory. `geo_level` and `birth_cohorts` are optional and help to segment the data for more precise analyses.
+The `data.EIR`, `vaccine_init`, `vaccine_end` parameters are mandatory. `geo_level` and `birth_cohorts` are optional and help to segment the data for more precise analyses.
 
 Check the documentation of the function using `?nod_dropout()` in R for additional information.
 
@@ -152,9 +159,9 @@ example_dropout_plot
 
 The function `nod_barplot()` accepts the following parameters:
 
--   `data`: Dataframe` formatted from the result of the `nod_dropout()` function.
+-   `data`: Dataframe formatted from the result of the `nod_dropout()` function.
 -   `order`: Organizes the bars based on three options: "alpha", "desc" or "asc", default is "alpha".
--   `within_ADM1`  Allows to filter within an ADM1 to filter and display only the ADM2 data corresponding to the specified ADM1.
+-   `within_ADM1`: Allows to filter within an ADM1 and display only the ADM2 data corresponding to the specified ADM1.
 
 #### Interpretation
 

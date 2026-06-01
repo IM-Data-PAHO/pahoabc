@@ -13,6 +13,8 @@ output:
     toc_depth: 2
 ---
 
+<a href="../es/birth_cohort_coverage_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
+
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
 library(pahoabc)
 library(dplyr)
@@ -23,16 +25,16 @@ library(knitr)
 
 The objective of this indicator is to monitor a specific birth cohort of newborns to determine their vaccination status and estimate the level of population protection against vaccine-preventable diseases. This analysis is essential for preventing the accumulation of susceptible individuals, maximizing herd immunity, and developing targeted vaccination strategies for those who have not received the necessary doses.
 
-Vaccination coverage by birth cohort is calculates using the following formula:
+Vaccination coverage by birth cohort is calculated using the following formula:
 
 $$
 \text{Coverage by birth cohort (\%)} =
-\frac{\text{# of vaccines administered to people in a specific birth cohort}}{\text{Total people in the specific birth cohort}} \times 100
+\frac{\text{# of people vaccinated in a specific birth cohort}}{\text{Total people in the specific birth cohort}} \times 100
 $$
 
 > **Note**
 > 
-> All functions used for complete schedule coverage analyses within PAHOabc begin with the `bc_` prefix.
+> All functions used for birth cohort coverage analyses within PAHOabc begin with the `bc_` prefix.
 
 # Glossary
 
@@ -92,7 +94,7 @@ pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
 
 ### Population Denominators
 
-While not mandatory, this module will lets you provide a population table to use as denominator for the coverage calculation. The geographic level of this table will be directly dependent on the geographic level of your analysis. For example, if you were to perform an analysis at ADM1 level, the required population denominator table must contain the following.
+While not mandatory, this module lets you provide a population table to use as denominator for the coverage calculation. The geographic level of this table will be directly dependent on the geographic level of your analysis. For example, if you were to perform an analysis at ADM1 level, the required population denominator table must contain the following.
 
 ```{r pahoabc-pop-ADM1, message=FALSE}
 pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
@@ -140,7 +142,7 @@ We can visually observe these results by calling the `bc_barplot()` function as 
 
 ```{r cov-viz-example, message=FALSE, fig.width=12, fig.height=6}
 
-# visualize output from cs_coverage()
+# visualize output from bc_coverage()
 coverage_plot <- bc_barplot(data = coverage_df, vaccine = "SRP1")
 
 # show

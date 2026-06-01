@@ -13,6 +13,8 @@ output:
     toc_depth: 2
 ---
 
+<a href="../es/example_datasets_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
+
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
 library(pahoabc)
 library(dplyr)
@@ -41,7 +43,7 @@ Namely, PAHOabc can distinguish three administrative levels, which listed from t
 
 Our example datasets use a specific naming convention for the vaccine doses. This might not match your own naming schemes, but it will not affect the usage of the package as long as you make sure to be consistent when naming vaccine doses.
 
-For example, the vaccine names used in the PAHOabc package are:
+For example, the vaccine names used in the PAHOabc example datasets are:
 
 | Abbreviation | Full Name                                                        |
 |--------------|------------------------------------------------------------------|

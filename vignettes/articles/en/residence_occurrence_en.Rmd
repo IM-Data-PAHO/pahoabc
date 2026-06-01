@@ -13,6 +13,8 @@ output:
     toc_depth: 2
 ---
 
+<a href="../es/residence_occurrence_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
+
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
 library(pahoabc)
 library(dplyr)
@@ -299,12 +301,12 @@ As an example, it is notable that among all individuals residing in ADM2_3_10 wh
 
 Looking at the heatmap horizontally, we can see that ADM2_3_20 provides vaccinations to a large number of people coming from other areas: 35% of those from ADM2_3_7, 18% from ADM2_3_15, 17% from ADM2_3_12, 14% from ADM2_3_17, etc.
 
-The top row is also interesting, since it indicates people getting vaccinated outside of ADM1_3 entirely. For example, in column 4, 85% of the residents of ADM3_3_13 get vaccinated outside of ADM1_3, suggesting a strong population flow.
+The top row is also interesting, since it indicates people getting vaccinated outside of ADM1_3 entirely. For example, in column 4, 85% of the residents of ADM2_3_13 get vaccinated outside of ADM1_3, suggesting a strong population flow.
 
 # Summary
 
 This vignette showed how you can use the PAHOabc package to compare vaccination coverage by place of residence and place of occurrence, and to explore how people move between areas to get vaccinated.
 
-We saw that coverage can vary a lot depending on which location you use, and in some cases, coverage by occurrence can go over 100% — a sign that people are coming from elsewhere to get vaccinated. The distribution and heatmap functions help visualize these patterns and can reveal which areas act as service hubs or where people are going for vaccines.
+We saw that coverage can vary a lot depending on which location you use, and in some cases, coverage by occurrence can go over 100% — a sign that people may be coming from elsewhere to get vaccinated. The distribution and heatmap functions help visualize these patterns and can reveal which areas act as service hubs or where people are going for vaccines.
 
 Overall, this kind of analysis helps make sense of population flows and supports better planning for immunization programs.
