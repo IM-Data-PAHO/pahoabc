@@ -1,6 +1,6 @@
 #' (D)ate (C)onsistency (C)omparison Rate
-#' 
-#' This function calculates the consistency comparison rate between two date variables, further disagreggating by geographic level, using data from the electronic immunization registry (EIR).
+#'
+#' This function calculates the rate of consistency between two date variables, further disaggregating by geographic level, using data from the electronic immunization registry (EIR).
 #'
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
 #' @param date_1 Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking for consistency.

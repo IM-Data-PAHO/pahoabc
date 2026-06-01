@@ -305,11 +305,10 @@
   }
 
   if(!all(required_columns %in% names(data.EIR))) {
-    if(!is.null(indicator) && indicator == "dcc"){
-      stop("Error: data.EIR should contain the following columns: ID, ADM1_residence, ADM2_residence, dose.")}
-    else{
-      stop("Error: data.EIR should contain the following columns: ID, date_birth, date_vax, ADM1_residence, ADM2_residence, ADM1_occurrence, ADM2_occurrence, dose.")
-    }
+    stop(paste0(
+      "Error: data.EIR should contain the following columns: ",
+      paste(required_columns, collapse = ", "), "."
+    ))
   } 
 
   if(!is.null(data.schedule)) {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dcc_inconsistent.R
 \name{dcc_inconsistent}
 \alias{dcc_inconsistent}
-\title{(D)ate (C)onsistency (C)omparison Inconsistent Registriest}
+\title{(D)ate (C)onsistency (C)omparison Inconsistent Records}
 \usage{
 dcc_inconsistent(data.EIR, date_1, date_2)
 }
@@ -17,5 +17,5 @@ dcc_inconsistent(data.EIR, date_1, date_2)
 A data frame containing the inconsistent records in the database and the time diferential between them.
 }
 \description{
-This function lists the inconsistent records between two date variables, further disagreggating by geographic level, using data from the electronic immunization registry (EIR).
+This function returns a record-level table of all inconsistent and "date missing" entries, including the day difference between the two dates.
 }

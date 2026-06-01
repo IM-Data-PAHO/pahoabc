@@ -1,6 +1,6 @@
-#' (D)ate (C)onsistency (C)omparison Inconsistent Registriest
-#' 
-#' This function lists the inconsistent records between two date variables, further disagreggating by geographic level, using data from the electronic immunization registry (EIR).
+#' (D)ate (C)onsistency (C)omparison Inconsistent Records
+#'
+#' This function returns a record-level table of all inconsistent and "date missing" entries, including the day difference between the two dates.
 #'
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
 #' @param date_1 Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking for consistency.

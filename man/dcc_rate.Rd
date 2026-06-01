@@ -19,5 +19,5 @@ dcc_rate(data.EIR, date_1, date_2, geo_level = "ADM0")
 A data frame containing the consistency rate and inconsistency rate (inverse proportion) in percentages for the specified \code{geo_level}.
 }
 \description{
-This function calculates the consistency comparison rate between two date variables, further disagreggating by geographic level, using data from the electronic immunization registry (EIR).
+This function calculates the rate of consistency between two date variables, further disaggregating by geographic level, using data from the electronic immunization registry (EIR).
 }

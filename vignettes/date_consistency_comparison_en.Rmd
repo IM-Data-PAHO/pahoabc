@@ -33,11 +33,13 @@ The date consistency comparison module allows users to systematically identify, 
 
 ## Political Geographic Boundaries
 
-PAHOabc can distinguish three administrative levels, listed from top to bottom:
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
 
-1. **ADM0**: The country — the top-most administrative level.
-2. **ADM1**: The first geographic subdivision within the country.
-3. **ADM2**: The second geographic subdivision. Each ADM1 contains several ADM2 subdivisions.
+Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+
+1. ADM0: The country. This is the top-most administrative level.
+2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
+3. ADM2: The second geographic subdivision in the country. Each ADM1 contains several ADM2 subdivisions.
 
 ## Consistency Categories
 
@@ -83,6 +85,10 @@ The `dcc_` suite contains four functions that work together:
 2. `dcc_barplot()` — visualizes the output of `dcc_rate()` as a stacked bar chart.
 3. `dcc_inconsistent()` — lists individual inconsistent and missing records with their day difference.
 4. `dcc_inconsistent_plot()` — visualizes the distribution of day differences for inconsistent records.
+
+The figure below shows the expected workflow.
+
+![Figure 1. Expected workflow for the date consistency comparison analysis.](dcc_workflow.svg)
 
 ### Step 1 — Compute consistency rates with `dcc_rate()`
 
@@ -192,7 +198,7 @@ dcc_inconsistent_plot(
 
 #### Interpretation
 
-The x-axis shows the absolute number of days between the two dates, regardless of direction (i.e., whether `date_1` precedes `date_2` or vice versa). Records concentrated in the first bins (0–9 days) are likely simple data entry errors, while records in the 100+ category may indicate systematic record linkage problems.
+The horizontal axis shows the number of days between inconsistent dates. An investigation into the most common causes for the inconsistencies in each bin should be performed. For example, records with large differences can be caused by typos during data entry (e.g. when a date is written as `2022-02-25` instead of `2022-12-25`). But, they can also point to more serious systematic problems.
 
 # Summary
 
