@@ -60,10 +60,10 @@ dcc_inconsistent_plot <- function(
     labs(
       title    = "Inconsistent records by day difference",
       subtitle = paste0(date_1_name, " vs ", date_2_name),
-      x        = "Absolute day difference (regardless of direction)",
+      x        = "Day difference",
       y        = "Number of records",
       caption  = paste0(
-        "Absolute value of days between dates — negative and positive differences treated equally.\n",
+        "Absolute value of days between dates shown.\n",
         "Number of records with at least one date missing: ", n_missing
       )
     ) +
