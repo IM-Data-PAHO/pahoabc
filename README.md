@@ -6,7 +6,9 @@ PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage.
 
 PAHOabc aims to support the Pan American Health Organization's (PAHO) Comprehensive Immunization Unit (CIM) mission by providing advanced data analysis tools for immunization programs in the Americas. Specifically, it facilitates the calculation of innovative indicators beyond basic coverage, supports evidence-based decision-making through in-depth data exploration and visualization, and contributes to strengthening data capabilities within immunization programs by empowering human resources to effectively leverage their data.
 
-For documentation and vignettes, see: [https://im-data-paho.github.io/pahoabc](https://im-data-paho.github.io/pahoabc).
+To learn more about PAHO's work on immunization, visit the [PAHO Immunization site](https://www.paho.org/en/topics/immunization).
+
+For documentation and vignettes for this R package, see: [https://im-data-paho.github.io/pahoabc](https://im-data-paho.github.io/pahoabc).
 
 ## Installation
 

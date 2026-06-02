@@ -6,7 +6,9 @@ PAHOabc es un paquete de R orientado a análisis de inmunización más allá de 
 
 PAHOabc busca apoyar la misión de la Unidad de Inmunización Integral (CIM) de la Organización Panamericana de la Salud (OPS) con herramientas de análisis de datos para los programas de inmunización en las Américas. En concreto, facilita el cálculo de indicadores más allá de la cobertura básica, apoya la toma de decisiones basada en evidencia mediante la exploración y visualización de datos, y contribuye a fortalecer las capacidades de los programas de inmunización para aprovechar mejor sus datos.
 
-Para la documentación y las viñetas, consulte: [https://im-data-paho.github.io/pahoabc](https://im-data-paho.github.io/pahoabc).
+Para conocer más sobre el trabajo de la OPS en inmunización, visite el [sitio de Inmunización de la OPS](https://www.paho.org/es/temas/inmunizacion).
+
+Para la documentación y las viñetas de este paquete de R, consulte: [https://im-data-paho.github.io/pahoabc](https://im-data-paho.github.io/pahoabc).
 
 ## Instalación
 
