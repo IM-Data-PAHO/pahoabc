@@ -23,7 +23,7 @@ navbar:
       - text: Birth Cohort Coverage
         href: articles/en/birth_cohort_coverage_en.html
       - text: Date Consistency Comparison
-        href: articles/date_consistency_comparison_en.html
+        href: articles/en/date_consistency_comparison_en.html
       - text: -------
       - text: Other guides
       - text: Using our Example Datasets
