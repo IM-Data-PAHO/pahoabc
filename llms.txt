@@ -1,5 +1,8 @@
 # PAHOabc
 
+> 🌐 [**Lea esto en
+> español**](https://im-data-paho.github.io/pahoabc/README.es.html)
+
 PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond
 (C)overage.
 
@@ -12,37 +15,41 @@ exploration and visualization, and contributes to strengthening data
 capabilities within immunization programs by empowering human resources
 to effectively leverage their data.
 
-For documentation and vignettes, see:
+To learn more about PAHO’s work on immunization, visit the [PAHO
+Immunization site](https://www.paho.org/en/topics/immunization).
+
+For documentation and vignettes for this R package, see:
 <https://im-data-paho.github.io/pahoabc>.
 
 ## Installation
 
 ``` r
+
 # Install from GitHub
 devtools::install_github("IM-Data-PAHO/pahoabc")
 ```
 
 ## Usage
 
-Currently, PAHOabc contains three main modules. Follow the links below
-to explore detailed vignettes with practical examples and guidance on
-how to use each module:
+Currently, PAHOabc contains five main modules. Follow the links below to
+explore detailed vignettes with practical examples and guidance on how
+to use each module:
 
 1.  [**Nominal Dropout
-    Rate**](https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html)  
+    Rate**](https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.html)  
     Calculates dropout rates between any two vaccine doses using nominal
     data. This module ensures accurate follow-up tracking across a
     vaccination schedule.
 
 2.  [**Residence vs. Occurrence
-    Analyses**](https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html)  
+    Analyses**](https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.html)  
     Functions for comparing vaccination coverage and dose distribution
     based on where people live versus where they were vaccinated. This
     module helps identify population movement and service coverage gaps
     across geographic areas.
 
 3.  [**Complete Schedule
-    Coverage**](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html)  
+    Coverage**](https://im-data-paho.github.io/pahoabc/articles/en/complete_schedule_en.html)  
     Evaluates whether individuals have received all required doses in a
     national immunization schedule (for a specific cohort up to a
     specified age). This module differs from standard coverage
@@ -50,16 +57,23 @@ how to use each module:
     national immunization schedule.
 
 4.  [**Birth Cohort
-    Coverage**](https://im-data-paho.github.io/pahoabc/articles/birth_cohort_coverage_en.html)  
+    Coverage**](https://im-data-paho.github.io/pahoabc/articles/en/birth_cohort_coverage_en.html)  
     Lets users track and visualize vaccination status among a specific
     cohort of newborns. Helps evaluate population-level protection
     against vaccine-preventable diseases.
+
+5.  [**Date Consistency
+    Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.html)  
+    Identifies and quantifies logical inconsistencies between any two
+    date variables in the EIR (e.g., vaccination date before date of
+    birth). Helps detect data entry errors and record linkage issues
+    before downstream analyses.
 
 Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and
 serve as a reference when preparing your own data. Learn more about
 these example datasets [in this
-vignette](https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.html).
+vignette](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.html).
 
 > **Note**
 >
@@ -74,6 +88,20 @@ you’d like to contribute code or fixes, feel free to open a [pull
 request](https://github.com/IM-Data-PAHO/pahoabc/pulls).
 
 # Package index
+
+## Date Consistency Comparison
+
+Functions for identifying and visualizing date inconsistencies in the
+EIR.
+
+- [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+  : (D)ate (C)onsistency (C)omparison Rate
+- [`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+  : (D)ate (C)onsistency (C)omparison Barplot
+- [`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+  : (D)ate (C)onsistency (C)omparison Inconsistent Records
+- [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+  : (D)ate (C)onsistency (C)omparison Inconsistent Records Plot
 
 ## Nominal Dropout Rate
 
@@ -145,12 +173,26 @@ expects.
 ### All vignettes
 
 - [Birth Cohort
-  Coverage](https://im-data-paho.github.io/pahoabc/articles/birth_cohort_coverage_en.md):
+  Coverage](https://im-data-paho.github.io/pahoabc/articles/en/birth_cohort_coverage_en.md):
+- [Cobertura por cohorte de
+  nacimiento](https://im-data-paho.github.io/pahoabc/articles/es/birth_cohort_coverage_es.md):
 - [Complete Schedule
-  Coverage](https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.md):
+  Coverage](https://im-data-paho.github.io/pahoabc/articles/en/complete_schedule_en.md):
+- [Cobertura de esquema
+  completo](https://im-data-paho.github.io/pahoabc/articles/es/complete_schedule_es.md):
+- [Date Consistency
+  Comparison](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.md):
+- [Comparación de consistencia de
+  fechas](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.md):
 - [Using our Example
-  Datasets](https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.md):
+  Datasets](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.md):
+- [Uso de los datos de
+  ejemplo](https://im-data-paho.github.io/pahoabc/articles/es/example_datasets_es.md):
 - [Nominal Dropout
-  Rate](https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.md):
+  Rate](https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.md):
+- [Tasa de abandono
+  nominal](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.md):
 - [Residence vs. Occurrence
-  Analyses](https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.md):
+  Analyses](https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.md):
+- [Análisis de residencia vs. lugar de
+  vacunación](https://im-data-paho.github.io/pahoabc/articles/es/residence_occurrence_es.md):

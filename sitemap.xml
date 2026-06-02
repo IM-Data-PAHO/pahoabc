@@ -1,12 +1,20 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://im-data-paho.github.io/pahoabc/404.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/LICENSE.html</loc></url>
-<url><loc>https://im-data-paho.github.io/pahoabc/articles/birth_cohort_coverage_en.html</loc></url>
-<url><loc>https://im-data-paho.github.io/pahoabc/articles/complete_schedule_en.html</loc></url>
-<url><loc>https://im-data-paho.github.io/pahoabc/articles/example_datasets_en.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/README.es.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/en/birth_cohort_coverage_en.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/en/complete_schedule_en.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/es/birth_cohort_coverage_es.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/es/complete_schedule_es.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/es/example_datasets_es.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/articles/es/residence_occurrence_es.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/articles/index.html</loc></url>
-<url><loc>https://im-data-paho.github.io/pahoabc/articles/nominal_dropout_en.html</loc></url>
-<url><loc>https://im-data-paho.github.io/pahoabc/articles/residence_occurrence_en.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/authors.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/index.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/reference/bc_barplot.html</loc></url>
@@ -14,6 +22,10 @@
 <url><loc>https://im-data-paho.github.io/pahoabc/reference/cs_barplot.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/reference/cs_coverage.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.html</loc></url>
+<url><loc>https://im-data-paho.github.io/pahoabc/reference/dcc_rate.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/reference/index.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/reference/nod_barplot.html</loc></url>
 <url><loc>https://im-data-paho.github.io/pahoabc/reference/nod_dropout.html</loc></url>

@@ -1,5 +1,19 @@
 # Package index
 
+## Date Consistency Comparison
+
+Functions for identifying and visualizing date inconsistencies in the
+EIR.
+
+- [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+  : (D)ate (C)onsistency (C)omparison Rate
+- [`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+  : (D)ate (C)onsistency (C)omparison Barplot
+- [`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+  : (D)ate (C)onsistency (C)omparison Inconsistent Records
+- [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+  : (D)ate (C)onsistency (C)omparison Inconsistent Records Plot
+
 ## Nominal Dropout Rate
 
 Functions for calculating and visualizing nominal dropout rate.
