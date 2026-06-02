@@ -38,6 +38,35 @@ $$
 
 # Glossary
 
+## Birth Cohort
+
+A birth cohort is the group of all individuals born within the same period of time, typically a single calendar year. For example, the 2022 birth cohort comprises everyone born during the year 2022.
+
+## Political Geographic Boundaries
+
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+
+Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+
+1. ADM0: The country. This is the top-most administrative level.
+2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
+3. ADM2: The second geographic subdivision in the country. Each ADM1 contains several ADM2 subdivisions.
+
+## Vaccine Names
+
+Our example datasets use a specific naming convention for the vaccine doses. This might not match your own naming schemes, but it will not affect the usage of the package as long as you make sure to be consistent when naming vaccine doses.
+
+For example, the vaccine names used in the PAHOabc package are:
+
+| Abbreviation | Full Name                                                        |
+|--------------|------------------------------------------------------------------|
+| SRP1         | Measles, Rubella, and Mumps Vaccine (1st dose)                   |
+| DTP1         | Diphtheria, Tetanus, and Pertussis Vaccine (1st dose)            |
+| DTP2         | Diphtheria, Tetanus, and Pertussis Vaccine (2nd dose)            |
+| DTP3         | Diphtheria, Tetanus, and Pertussis Vaccine (3rd dose)            |
+| BCG RN       | Bacillus Calmette–Guérin Vaccine (at birth)                      |
+| YFV1         | Yellow Fever Vaccine (1st dose)                                  |
+
 # Usage
 
 ## Install Package

@@ -38,6 +38,35 @@ $$
 
 # Glosario
 
+## Cohorte de nacimiento
+
+Una cohorte de nacimiento es el grupo de todas las personas nacidas dentro de un mismo período de tiempo, normalmente un único año calendario. Por ejemplo, la cohorte de nacimiento de 2022 comprende a todas las personas nacidas durante el año 2022.
+
+## Divisiones político-geográficas
+
+A lo largo de esta viñeta se hace referencia a distintos niveles de división político-geográfica. Estos niveles son definidos por cada país o territorio y pueden recibir nombres diferentes. PAHOabc no depende de esos nombres locales; por eso, el usuario debe recodificar sus variables para ajustarlas a la estructura que utiliza el paquete.
+
+En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
+
+1. ADM0: El país. Este es el nivel administrativo más alto.
+2. ADM1: La primera subdivisión geográfica del país. ADM0 contiene varias subdivisiones ADM1.
+3. ADM2: La segunda subdivisión geográfica del país. Cada ADM1 contiene varias subdivisiones ADM2.
+
+## Nombres de vacunas
+
+Los conjuntos de datos de ejemplo utilizan una convención específica para nombrar las dosis de vacunas. Es posible que esta convención no coincida con la que usa su país o institución, pero esto no afecta el uso del paquete si los nombres se aplican de manera consistente.
+
+Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc son:
+
+| Abreviatura  | Nombre completo                                                  |
+|--------------|------------------------------------------------------------------|
+| SRP1         | Vacuna contra sarampión, rubéola y paperas (1.ª dosis)           |
+| DTP1         | Vacuna contra difteria, tétanos y tos ferina (1.ª dosis)         |
+| DTP2         | Vacuna contra difteria, tétanos y tos ferina (2.ª dosis)         |
+| DTP3         | Vacuna contra difteria, tétanos y tos ferina (3.ª dosis)         |
+| BCG RN       | Vacuna Bacillus Calmette–Guérin (al nacer)                       |
+| YFV1         | Vacuna contra la fiebre amarilla (1.ª dosis)                     |
+
 # Uso
 
 ## Instalar el paquete
