@@ -92,6 +92,8 @@ La figura a continuación muestra el flujo de trabajo esperado.
 
 ![Figura 1. Flujo de trabajo esperado para el análisis de comparación de consistencia de fechas.](dcc_workflow.svg)
 
+<br>
+
 ### Paso 1 — Calcular las tasas de consistencia con `dcc_rate()`
 
 `dcc_rate()` compara dos variables de fecha en el RNVe y devuelve, para cada unidad geográfica, el conteo y el porcentaje de registros clasificados como `CONSISTENT`, `INCONSISTENT` o `DATE_MISSING`.

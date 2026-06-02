@@ -92,6 +92,8 @@ The figure below shows the expected workflow.
 
 ![Figure 1. Expected workflow for the date consistency comparison analysis.](dcc_workflow.svg)
 
+<br>
+
 ### Step 1 — Compute consistency rates with `dcc_rate()`
 
 `dcc_rate()` compares two date variables in the EIR and returns, for each geographic unit, the count and percentage of records that are `CONSISTENT`, `INCONSISTENT`, or `DATE_MISSING`.
