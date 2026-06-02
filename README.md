@@ -17,7 +17,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Usage
 
-Currently, PAHOabc contains four main modules. Follow the links below to explore detailed vignettes with practical examples and guidance on how to use each module:
+Currently, PAHOabc contains five main modules. Follow the links below to explore detailed vignettes with practical examples and guidance on how to use each module:
 
 1. [**Nominal Dropout Rate**](https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.html)  
    Calculates dropout rates between any two vaccine doses using nominal data. This module ensures accurate follow-up tracking across a vaccination schedule.
@@ -30,6 +30,9 @@ Currently, PAHOabc contains four main modules. Follow the links below to explore
 
 4. [**Birth Cohort Coverage**](https://im-data-paho.github.io/pahoabc/articles/en/birth_cohort_coverage_en.html)  
    Lets users track and visualize vaccination status among a specific cohort of newborns. Helps evaluate population-level protection against vaccine-preventable diseases.
+
+5. [**Date Consistency Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.html)  
+   Identifies and quantifies logical inconsistencies between any two date variables in the EIR (e.g., vaccination date before date of birth). Helps detect data entry errors and record linkage issues before downstream analyses.
 
 Each module works seamlessly with the example datasets provided in the package. These examples make it easy to test out the functionality and serve as a reference when preparing your own data. Learn more about these example datasets [in this vignette](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.html).
 

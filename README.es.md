@@ -17,7 +17,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Uso
 
-Actualmente, PAHOabc contiene cuatro módulos principales. Siga los enlaces a continuación para explorar viñetas detalladas con ejemplos prácticos y orientación sobre cómo usar cada módulo:
+Actualmente, PAHOabc contiene cinco módulos principales. Siga los enlaces a continuación para explorar viñetas detalladas con ejemplos prácticos y orientación sobre cómo usar cada módulo:
 
 1. [**Tasa de abandono nominal**](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.html)  
    Calcula las tasas de abandono entre cualquier par de dosis de vacunas utilizando datos nominales. Este módulo permite dar seguimiento a la continuidad de las personas dentro de un esquema de vacunación.
@@ -30,6 +30,9 @@ Actualmente, PAHOabc contiene cuatro módulos principales. Siga los enlaces a co
 
 4. [**Cobertura por cohorte de nacimiento**](https://im-data-paho.github.io/pahoabc/articles/es/birth_cohort_coverage_es.html)  
    Permite dar seguimiento y visualizar el estado de vacunación de una cohorte específica de recién nacidos. Ayuda a evaluar la protección de la población frente a las enfermedades prevenibles por vacunación.
+
+5. [**Comparación de consistencia de fechas**](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.html)  
+   Identifica y cuantifica inconsistencias lógicas entre cualquier par de variables de fecha en el RNVe (p. ej., fecha de vacunación anterior a la fecha de nacimiento). Ayuda a detectar errores de captura y problemas de vinculación de registros antes de los análisis posteriores.
 
 Cada módulo funciona con los conjuntos de datos de ejemplo incluidos en el paquete. Estos datos facilitan probar las funciones y sirven de referencia al preparar sus propios datos. Conozca más sobre estos conjuntos de datos de ejemplo [en esta viñeta](https://im-data-paho.github.io/pahoabc/articles/es/example_datasets_es.html).
 
