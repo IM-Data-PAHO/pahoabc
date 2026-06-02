@@ -24,8 +24,6 @@ navbar:
         href: articles/en/birth_cohort_coverage_en.html
       - text: Date Consistency Comparison
         href: articles/en/date_consistency_comparison_en.html
-      - text: Comparación de consistencia de fechas
-        href: articles/es/date_consistency_comparison_es.html
       - text: -------
       - text: Other guides
       - text: Using our Example Datasets
