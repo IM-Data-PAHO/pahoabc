@@ -221,6 +221,24 @@
   }
 }
 
+#' Validate input data to ecc_barplot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_ecc_barplot_data <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  minimum_columns <- c(
+    "eligibility", "n", "total", "rate"
+  )
+
+  if(!all(minimum_columns %in% names(data))) {
+    stop("Error: data should be the output from ecc_rate")
+  }
+}
+
 #' Validate input data to roc_heatmap.
 #'
 #' @keywords internal
@@ -237,6 +255,25 @@
   }
 }
 
+
+#' Validate age at vaccination for negative values (vaccinated before birth).
+#'
+#' @keywords internal
+#' @noRd
+.validate_age_at_vax <- function(data) {
+  n_negative <- data %>%
+    filter(age_at_vax < 0) %>%
+    nrow()
+
+  if(n_negative > 0) {
+    warning(
+      paste0(
+        "Warning: ", n_negative, " record(s) show a negative age at vaccination, meaning they were vaccinated before they were born. ",
+        "This indicates date consistency errors in data.EIR. Please check the (D)ate (C)onsistency (C)omparison dcc_ module (dcc_rate, dcc_inconsistent) to identify and resolve these records."
+      )
+    )
+  }
+}
 
 #' Validate EIR duplicates.
 #'

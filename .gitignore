@@ -50,3 +50,9 @@ rsconnect/
 inst/doc
 /Meta/
 docs
+
+#Claude
+CLAUDE.md
+
+# scratch dir for local checks
+/tmp/
