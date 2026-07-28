@@ -1,0 +1,240 @@
+---
+title: "Comparación de consistencia de elegibilidad"
+author: "OPS/CIM"
+date: "28 de julio de 2026"
+output:
+  html_document:
+    self_contained: true
+    theme: cosmo
+    highlight: tango
+    code_folding: show
+    code_download: true
+    toc: true
+    toc_depth: 2
+---
+
+<a href="../en/eligibility_consistency_comparison_en.html" class="btn btn-outline-primary" role="button">🌐 Read this in English</a>
+
+```{r setup, include = FALSE, message = FALSE, warning = FALSE}
+library(pahoabc)
+library(dplyr)
+library(knitr)
+```
+
+# Fundamento
+
+Los esquemas nacionales de vacunación definen, para cada dosis, una ventana de edad objetivo durante la cual se espera que la persona sea vacunada (p. ej., la DTP1 debería administrarse entre los 54 y los 90 días de edad). Un evento de vacunación que ocurre fuera de esa ventana — demasiado temprano o demasiado tarde — indica un problema de calidad de datos o una brecha programática en la oportunidad de la prestación del servicio.
+
+El módulo de comparación de consistencia de elegibilidad permite identificar, cuantificar y visualizar de forma sistemática si la edad al momento de la vacunación (`date_vax - date_birth`) se encuentra dentro de la ventana de edad definida por el esquema de vacunación (`age_schedule_low`, `age_schedule_high`).
+
+> **Nota**
+>
+> Todas las funciones utilizadas para los análisis de comparación de consistencia de elegibilidad dentro de PAHOabc comienzan con el prefijo `ecc_`.
+
+> **Advertencia**
+>
+> Las funciones `ecc_` calculan la edad al momento de la vacunación como `date_vax - date_birth`. Si `data.EIR` contiene registros donde `date_vax` ocurre antes que `date_birth` (es decir, una edad de vacunación negativa), esto señala un error de **consistencia de fechas**, no de elegibilidad. Cuando esto ocurre, las funciones `ecc_` emiten una advertencia que remite al [módulo `dcc_` de comparación de consistencia de fechas](date_consistency_comparison_es.html) para identificar y resolver esos registros primero.
+
+# Glosario
+
+## Divisiones político-geográficas
+
+A lo largo de esta viñeta se hace referencia a distintos niveles de división político-geográfica. Estos niveles son definidos por cada país o territorio y pueden recibir nombres diferentes. PAHOabc no depende de esos nombres locales; por eso, el usuario debe recodificar sus variables para ajustarlas a la estructura que utiliza el paquete.
+
+En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
+
+1. ADM0: El país. Este es el nivel administrativo más alto.
+2. ADM1: La primera subdivisión geográfica del país. ADM0 contiene varias subdivisiones ADM1.
+3. ADM2: La segunda subdivisión geográfica del país. Cada ADM1 contiene varias subdivisiones ADM2.
+
+## Categorías de elegibilidad
+
+| Categoría | Significado |
+|---|---|
+| `ELIGIBLE` | La edad al momento de la vacunación está dentro de `[age_schedule_low, age_schedule_high]`. |
+| `INELIGIBLE` | La edad al momento de la vacunación está fuera de `[age_schedule_low, age_schedule_high]` — vacunación demasiado temprana o demasiado tardía. |
+| `DATE_MISSING` | `date_vax` o `date_birth` es `NA`. |
+
+# Uso
+
+## Instalar el paquete
+
+```{r install_package, eval=FALSE}
+devtools::install_github("IM-Data-PAHO/pahoabc")
+```
+
+## Cargar los datos
+
+Las funciones de este módulo requieren su **RNVe** y un **esquema de vacunación**, ambos en el formato estándar de PAHOabc.
+
+### RNVe
+
+El conjunto de datos `pahoabc::pahoabc.EIR` proporciona una tabla nominal simulada con eventos individuales de vacunación de un Registro Nominal de Vacunación electrónico (RNVe). Cada fila corresponde a una vacunación de una persona.
+
+```{r pahoabc-EIR, message=FALSE}
+pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+```
+
+- `ID`: Número único de identificación de la persona.
+- Fecha de nacimiento (`date_birth`): Fecha de nacimiento de la persona.
+- Fecha de vacunación (`date_vax`): Fecha del evento de vacunación.
+- `ADM1_residence` / `ADM2_residence`: Primer y segundo nivel administrativo geográfico de residencia.
+- Dosis (`dose`): Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente (p. ej., DTP1).
+
+### Esquema de vacunación
+
+El conjunto de datos `pahoabc::pahoabc.schedule` define el esquema nacional de vacunación, indicando para cada dosis la ventana de edad objetivo para su administración, en días.
+
+```{r pahoabc-schedule, message=FALSE}
+pahoabc.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
+```
+
+- Dosis (`dose`): Variable combinada que representa el tipo de vacuna y su número de dosis.
+- `age_schedule`: La edad recomendada de administración de la `dose` correspondiente, en días.
+- `age_schedule_low`: El límite inferior de la ventana de edad objetivo, en días.
+- `age_schedule_high`: El límite superior de la ventana de edad objetivo, en días.
+
+## Análisis de comparación de consistencia de elegibilidad
+
+### Flujo de trabajo esperado
+
+El conjunto de funciones `ecc_` contiene cuatro funciones que trabajan en conjunto:
+
+1. `ecc_rate()` — calcula las tasas de elegibilidad, opcionalmente desagregadas por dosis y nivel geográfico.
+2. `ecc_barplot()` — visualiza el resultado de `ecc_rate()` como un gráfico de barras apiladas.
+3. `ecc_inconsistent()` — lista los registros inelegibles e incompletos de forma individual, con su diferencia en días respecto a la ventana programada.
+4. `ecc_inconsistent_plot()` — visualiza la distribución de esas diferencias en días como un gráfico de líneas divergente (*lollipop*).
+
+La figura a continuación muestra el flujo de trabajo esperado.
+
+![Figura 1. Flujo de trabajo esperado para el análisis de comparación de consistencia de elegibilidad.](ecc_workflow.svg)
+
+<br>
+
+### Paso 1 — Calcular las tasas de elegibilidad con `ecc_rate()`
+
+`ecc_rate()` compara la edad al momento de la vacunación con la ventana de edad programada y devuelve el conteo y el porcentaje de registros clasificados como `ELIGIBLE`, `INELIGIBLE` o `DATE_MISSING`.
+
+Por defecto, `vaccines = NULL` agrupa todas las dosis de `data.schedule` en conjunto. Aquí calculamos las tasas agrupadas a nivel ADM1.
+
+```{r ecc-rate, message=FALSE}
+rate_df <- ecc_rate(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  geo_level     = "ADM1"
+)
+
+rate_df %>% kable(digits = 2, caption = "Tasas de elegibilidad agrupadas por ADM1")
+```
+
+Al especificar `vaccines`, los resultados se desagregan por `dose`, un conjunto de filas por vacuna:
+
+```{r ecc-rate-by-dose, message=FALSE}
+rate_by_dose_df <- ecc_rate(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  geo_level     = "ADM1",
+  vaccines      = c("DTP1", "DTP2", "DTP3")
+)
+
+rate_by_dose_df %>% head(10) %>% kable(digits = 2, caption = "Tasas de elegibilidad por dosis y ADM1")
+```
+
+#### Parámetros aceptados
+
+- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
+- `geo_level`: `"ADM0"` (predeterminado), `"ADM1"` o `"ADM2"`.
+- `vaccines`: Vector de caracteres con las dosis a incluir, desagregando por `dose`. El valor predeterminado `NULL` agrupa todas las dosis de `data.schedule`.
+
+### Paso 2 — Visualizar las tasas con `ecc_barplot()`
+
+El resultado de `ecc_rate()` puede pasarse directamente a `ecc_barplot()` para producir un gráfico de barras apiladas. Si `data` está desagregado por `dose`, el gráfico se organiza automáticamente en paneles (*facets*) por dosis.
+
+```{r ecc-barplot, message=FALSE, fig.width=10, fig.height=5}
+ecc_barplot(data = rate_df)
+```
+
+```{r ecc-barplot-facet, message=FALSE, fig.width=10, fig.height=6}
+ecc_barplot(data = rate_by_dose_df)
+```
+
+#### Parámetros aceptados
+
+- `data`: Resultado de `ecc_rate()`.
+- `within_ADM1`: Vector de caracteres para filtrar unidades ADM1 específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
+- `plot_missing`: Booleano. Si es `TRUE` (predeterminado), los registros `DATE_MISSING` se muestran como un segmento separado para que todas las barras sumen 100 %.
+
+#### Interpretación
+
+Cada barra representa una unidad geográfica y se divide en segmentos: `ELIGIBLE` (azul), `INELIGIBLE` (naranja) y `DATE_MISSING` (gris). Las barras con predominio de naranja indican unidades donde una parte importante de las dosis se administran fuera de la ventana de edad recomendada — una señal que amerita investigar la oportunidad en la prestación del servicio.
+
+### Paso 3 — Inspeccionar los registros inelegibles con `ecc_inconsistent()`
+
+`ecc_inconsistent()` devuelve una tabla a nivel de registro con todas las entradas `INELIGIBLE` y `DATE_MISSING`, incluyendo el número de días fuera de la ventana programada.
+
+```{r ecc-inconsistent, message=FALSE}
+inconsistent_df <- ecc_inconsistent(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = "DTP1"
+)
+
+inconsistent_df %>% head(10) %>% kable(caption = "Muestra de registros inelegibles e incompletos de DTP1")
+```
+
+#### Parámetros aceptados
+
+- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
+- `vaccines`: Vector de caracteres con las dosis a incluir. El valor predeterminado `NULL` incluye todas las dosis de `data.schedule`.
+
+La columna `days_outside_range` es negativa cuando la persona fue vacunada antes de `age_schedule_low`, y positiva cuando fue vacunada después de `age_schedule_high` (`NA` cuando falta una fecha). Esta tabla puede exportarse para flujos de corrección a nivel de registro.
+
+### Paso 4 — Visualizar la distribución de las diferencias en días con `ecc_inconsistent_plot()`
+
+`ecc_inconsistent_plot()` produce un gráfico de líneas divergente (*lollipop*) de los registros inelegibles, agrupados por la **magnitud** de los días fuera de la ventana programada. Los mismos intervalos se comparten entre ambas direcciones: los registros vacunados demasiado temprano se grafican debajo de cero, y los vacunados demasiado tarde se grafican encima de cero.
+
+```{r ecc-inconsistent-plot, message=FALSE, fig.width=10, fig.height=5}
+ecc_inconsistent_plot(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = "DTP1"
+)
+```
+
+Cuando se especifica más de una vacuna, el gráfico se organiza automáticamente en paneles por dosis:
+
+```{r ecc-inconsistent-plot-facet, message=FALSE, fig.width=12, fig.height=7}
+ecc_inconsistent_plot(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = c("DTP1", "DTP2", "DTP3")
+)
+```
+
+#### Parámetros aceptados
+
+- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
+- `vaccines`: Vector de caracteres con las dosis a incluir, organizando el gráfico en paneles por `dose` cuando se especifica más de una. El valor predeterminado `NULL` agrupa todas las dosis de `data.schedule` (sin paneles).
+- `day_groups`: Lista de pares numéricos `c(inferior, superior)` que definen los intervalos de magnitud compartidos por ambas direcciones. El último intervalo siempre se extiende hasta `Inf` y se etiqueta como `"X+"`. Valor predeterminado: intervalos de 10 días de 0 a 100.
+
+Para usar intervalos personalizados — por ejemplo, mayor resolución para diferencias pequeñas:
+
+```{r ecc-inconsistent-plot-custom, message=FALSE, fig.width=10, fig.height=5}
+ecc_inconsistent_plot(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = "DTP1",
+  day_groups    = list(c(0, 5), c(5, 15), c(15, 30), c(30, 60), c(60, 120))
+)
+```
+
+#### Interpretación
+
+El eje horizontal muestra la magnitud de los días fuera de la ventana programada, compartida por ambas direcciones. Los puntos debajo de cero representan registros vacunados demasiado temprano (antes de `age_schedule_low`); los puntos encima de cero representan registros vacunados demasiado tarde (después de `age_schedule_high`). Los intervalos con grandes conteos de vacunación tardía suelen señalar retrasos programáticos en la prestación del servicio, mientras que los conteos de vacunación temprana pueden señalar errores de captura de datos o campañas de vacunación fuera de calendario.
+
+# Resumen
+
+El módulo `ecc_` ofrece una cadena completa de análisis para evaluar la consistencia de elegibilidad en datos del RNVe. Partiendo de `ecc_rate()` para una visión general geográfica y por dosis, pasando por `ecc_barplot()` para la visualización, hasta `ecc_inconsistent()` para la inspección a nivel de registro y `ecc_inconsistent_plot()` para caracterizar la magnitud y dirección de los errores de oportunidad, el conjunto de funciones provee a los gestores de datos y analistas de salud pública las herramientas necesarias para detectar, cuantificar y priorizar problemas de oportunidad en la prestación del servicio.
