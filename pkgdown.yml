@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   articles/en/birth_cohort_coverage_en: en/birth_cohort_coverage_en.html
@@ -8,13 +8,15 @@ articles:
   articles/es/complete_schedule_es: es/complete_schedule_es.html
   articles/en/date_consistency_comparison_en: en/date_consistency_comparison_en.html
   articles/es/date_consistency_comparison_es: es/date_consistency_comparison_es.html
+  articles/en/eligibility_consistency_comparison_en: en/eligibility_consistency_comparison_en.html
+  articles/es/eligibility_consistency_comparison_es: es/eligibility_consistency_comparison_es.html
   articles/en/example_datasets_en: en/example_datasets_en.html
   articles/es/example_datasets_es: es/example_datasets_es.html
   articles/en/nominal_dropout_en: en/nominal_dropout_en.html
   articles/es/nominal_dropout_es: es/nominal_dropout_es.html
   articles/en/residence_occurrence_en: en/residence_occurrence_en.html
   articles/es/residence_occurrence_es: es/residence_occurrence_es.html
-last_built: 2026-06-02T18:00Z
+last_built: 2026-07-28T20:57Z
 urls:
   reference: https://im-data-paho.github.io/pahoabc/reference
   article: https://im-data-paho.github.io/pahoabc/articles

@@ -14,6 +14,20 @@ EIR.
 - [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
   : (D)ate (C)onsistency (C)omparison Inconsistent Records Plot
 
+## Eligibility Consistency Comparison
+
+Functions for identifying and visualizing eligibility inconsistencies
+(age at vaccination vs. scheduled age window) in the EIR.
+
+- [`ecc_rate()`](https://im-data-paho.github.io/pahoabc/reference/ecc_rate.md)
+  : (E)ligibility (C)onsistency (C)omparison Rate
+- [`ecc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_barplot.md)
+  : (E)ligibility (C)onsistency (C)omparison Barplot
+- [`ecc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent.md)
+  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records
+- [`ecc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent_plot.md)
+  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records Plot
+
 ## Nominal Dropout Rate
 
 Functions for calculating and visualizing nominal dropout rate.

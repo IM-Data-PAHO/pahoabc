@@ -31,7 +31,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Usage
 
-Currently, PAHOabc contains five main modules. Follow the links below to
+Currently, PAHOabc contains six main modules. Follow the links below to
 explore detailed vignettes with practical examples and guidance on how
 to use each module:
 
@@ -68,6 +68,13 @@ to use each module:
     date variables in the EIR (e.g., vaccination date before date of
     birth). Helps detect data entry errors and record linkage issues
     before downstream analyses.
+
+6.  [**Eligibility Consistency
+    Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/eligibility_consistency_comparison_en.html)  
+    Identifies and quantifies whether vaccination events occurred within
+    the age window defined by the national immunization schedule. Helps
+    detect ineligible doses administered too early or too late, pointing
+    to service delivery timeliness issues.
 
 Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and

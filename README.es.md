@@ -32,9 +32,9 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Uso
 
-Actualmente, PAHOabc contiene cinco módulos principales. Siga los
-enlaces a continuación para explorar viñetas detalladas con ejemplos
-prácticos y orientación sobre cómo usar cada módulo:
+Actualmente, PAHOabc contiene seis módulos principales. Siga los enlaces
+a continuación para explorar viñetas detalladas con ejemplos prácticos y
+orientación sobre cómo usar cada módulo:
 
 1.  [**Tasa de abandono
     nominal**](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.html)  
@@ -73,6 +73,14 @@ prácticos y orientación sobre cómo usar cada módulo:
     anterior a la fecha de nacimiento). Ayuda a detectar errores de
     captura y problemas de vinculación de registros antes de los
     análisis posteriores.
+
+6.  [**Comparación de consistencia de
+    elegibilidad**](https://im-data-paho.github.io/pahoabc/articles/es/eligibility_consistency_comparison_es.html)  
+    Identifica y cuantifica si los eventos de vacunación ocurrieron
+    dentro de la ventana de edad definida por el esquema nacional de
+    vacunación. Ayuda a detectar dosis inelegibles administradas
+    demasiado temprano o demasiado tarde, señalando posibles problemas
+    de oportunidad en la prestación del servicio.
 
 Cada módulo funciona con los conjuntos de datos de ejemplo incluidos en
 el paquete. Estos datos facilitan probar las funciones y sirven de

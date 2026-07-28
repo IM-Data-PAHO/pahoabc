@@ -31,7 +31,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Usage
 
-Currently, PAHOabc contains five main modules. Follow the links below to
+Currently, PAHOabc contains six main modules. Follow the links below to
 explore detailed vignettes with practical examples and guidance on how
 to use each module:
 
@@ -69,6 +69,13 @@ to use each module:
     birth). Helps detect data entry errors and record linkage issues
     before downstream analyses.
 
+6.  [**Eligibility Consistency
+    Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/eligibility_consistency_comparison_en.html)  
+    Identifies and quantifies whether vaccination events occurred within
+    the age window defined by the national immunization schedule. Helps
+    detect ineligible doses administered too early or too late, pointing
+    to service delivery timeliness issues.
+
 Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and
 serve as a reference when preparing your own data. Learn more about
@@ -102,6 +109,20 @@ EIR.
   : (D)ate (C)onsistency (C)omparison Inconsistent Records
 - [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
   : (D)ate (C)onsistency (C)omparison Inconsistent Records Plot
+
+## Eligibility Consistency Comparison
+
+Functions for identifying and visualizing eligibility inconsistencies
+(age at vaccination vs. scheduled age window) in the EIR.
+
+- [`ecc_rate()`](https://im-data-paho.github.io/pahoabc/reference/ecc_rate.md)
+  : (E)ligibility (C)onsistency (C)omparison Rate
+- [`ecc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_barplot.md)
+  : (E)ligibility (C)onsistency (C)omparison Barplot
+- [`ecc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent.md)
+  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records
+- [`ecc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent_plot.md)
+  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records Plot
 
 ## Nominal Dropout Rate
 
@@ -184,6 +205,10 @@ expects.
   Comparison](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.md):
 - [Comparación de consistencia de
   fechas](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.md):
+- [Eligibility Consistency
+  Comparison](https://im-data-paho.github.io/pahoabc/articles/en/eligibility_consistency_comparison_en.md):
+- [Comparación de consistencia de
+  elegibilidad](https://im-data-paho.github.io/pahoabc/articles/es/eligibility_consistency_comparison_es.md):
 - [Using our Example
   Datasets](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.md):
 - [Uso de los datos de
