@@ -146,6 +146,7 @@ rate_by_dose_df %>% head(10) %>% kable(digits = 2, caption = "Tasas de elegibili
 - `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
 - `geo_level`: `"ADM0"` (predeterminado), `"ADM1"` o `"ADM2"`.
 - `vaccines`: Vector de caracteres con las dosis a incluir, desagregando por `dose`. El valor predeterminado `NULL` agrupa todas las dosis de `data.schedule`.
+- `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a filtrar. El valor predeterminado `NULL` usa todas las cohortes disponibles.
 
 ### Paso 2 — Visualizar las tasas con `ecc_barplot()`
 
@@ -188,6 +189,7 @@ inconsistent_df %>% head(10) %>% kable(caption = "Muestra de registros inelegibl
 - `data.EIR`: Tabla del RNVe en formato PAHOabc.
 - `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
 - `vaccines`: Vector de caracteres con las dosis a incluir. El valor predeterminado `NULL` incluye todas las dosis de `data.schedule`.
+- `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a filtrar. El valor predeterminado `NULL` usa todas las cohortes disponibles.
 
 La columna `days_outside_range` es negativa cuando la persona fue vacunada antes de `age_schedule_low`, y positiva cuando fue vacunada después de `age_schedule_high` (`NA` cuando falta una fecha). Esta tabla puede exportarse para flujos de corrección a nivel de registro.
 

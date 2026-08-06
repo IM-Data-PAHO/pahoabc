@@ -4,7 +4,13 @@
 \alias{ecc_rate}
 \title{(E)ligibility (C)onsistency (C)omparison Rate}
 \usage{
-ecc_rate(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL)
+ecc_rate(
+  data.EIR,
+  data.schedule,
+  geo_level = "ADM0",
+  vaccines = NULL,
+  birth_cohorts = NULL
+)
 }
 \arguments{
 \item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
@@ -14,6 +20,8 @@ ecc_rate(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL)
 \item{geo_level}{Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".}
 
 \item{vaccines}{Character (optional). A character vector specifying the doses to include in the analysis, disaggregating results by \code{dose}. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together (no \code{dose} column in the output).}
+
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which the rate should be calculated. If \code{NULL} (default), all available cohorts are used.}
 }
 \value{
 A data frame containing the eligibility rate (doses administered within the scheduled age window) and ineligibility rate (inverse proportion, including missing dates) in percentages for the specified \code{geo_level}.

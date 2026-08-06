@@ -5,19 +5,27 @@
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
 #' @param date_1 Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking for consistency.
 #' @param date_2 Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking consistency against. Represents a date chronologically earlier than date_1.
-#' 
-#' @return A data frame containing the inconsistent records in the database and the time diferential between them. 
-#' 
+#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which inconsistent records should be returned. If \code{NULL} (default), all available cohorts are used.
+#'
+#' @return A data frame containing the inconsistent records in the database and the time diferential between them.
+#'
 #' @import dplyr
 #' @import lubridate
-#' 
+#'
 #' @export
-dcc_inconsistent <- function(data.EIR, date_1, date_2) {
+dcc_inconsistent <- function(data.EIR, date_1, date_2, birth_cohorts = NULL) {
 
-  # validations 
+  # validations
   .validate_data.EIR(data.EIR, indicator = "dcc")
+  .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1)
   .validate_date(data.EIR[[date_1]], date_1)
   .validate_date(data.EIR[[date_2]], date_2)
+
+  # Checks if the birth_cohorts variable is used
+  if (!is.null(birth_cohorts)) {
+    data.EIR <- data.EIR %>%
+      filter(year(date_birth) %in% birth_cohorts)
+  }
 
   # Calculates the dcc_inconsistent
   dcc_inconsistent <- data.EIR %>%
