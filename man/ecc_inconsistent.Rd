@@ -4,7 +4,12 @@
 \alias{ecc_inconsistent}
 \title{(E)ligibility (C)onsistency (C)omparison Inconsistent Records}
 \usage{
-ecc_inconsistent(data.EIR, data.schedule, vaccines = NULL)
+ecc_inconsistent(
+  data.EIR,
+  data.schedule,
+  vaccines = NULL,
+  birth_cohorts = NULL
+)
 }
 \arguments{
 \item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
@@ -12,6 +17,8 @@ ecc_inconsistent(data.EIR, data.schedule, vaccines = NULL)
 \item{data.schedule}{Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
 
 \item{vaccines}{Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included.}
+
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which inconsistent records should be returned. If \code{NULL} (default), all available cohorts are used.}
 }
 \value{
 A data frame containing the ineligible and date-missing records, with \code{ID}, \code{dose}, \code{date_birth}, \code{date_vax}, age at vaccination in days, the scheduled age window (\code{age_schedule_low}, \code{age_schedule_high}), and \code{days_outside_range}: the number of days outside that window, negative if vaccinated before \code{age_schedule_low}, positive if after \code{age_schedule_high} (\code{NA} when a date is missing).
