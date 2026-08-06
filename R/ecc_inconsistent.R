@@ -5,6 +5,7 @@
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
 #' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included.
+#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which inconsistent records should be returned. If \code{NULL} (default), all available cohorts are used.
 #'
 #' @return A data frame containing the ineligible and date-missing records, with \code{ID}, \code{dose}, \code{date_birth}, \code{date_vax}, age at vaccination in days, the scheduled age window (\code{age_schedule_low}, \code{age_schedule_high}), and \code{days_outside_range}: the number of days outside that window, negative if vaccinated before \code{age_schedule_low}, positive if after \code{age_schedule_high} (\code{NA} when a date is missing).
 #'
@@ -12,7 +13,7 @@
 #' @import lubridate
 #'
 #' @export
-ecc_inconsistent <- function(data.EIR, data.schedule, vaccines = NULL) {
+ecc_inconsistent <- function(data.EIR, data.schedule, vaccines = NULL, birth_cohorts = NULL) {
 
   # validations
   .validate_data.schedule(data.schedule)
@@ -21,6 +22,13 @@ ecc_inconsistent <- function(data.EIR, data.schedule, vaccines = NULL) {
   .validate_date(data.EIR$date_vax, "date_vax")
   .validate_vaccines(vaccines, data.EIR, "data.EIR")
   .validate_vaccines(vaccines, data.schedule, "data.schedule")
+  .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1)
+
+  # Checks if the birth_cohorts variable is used
+  if (!is.null(birth_cohorts)) {
+    data.EIR <- data.EIR %>%
+      filter(year(date_birth) %in% birth_cohorts)
+  }
 
   # determine doses to evaluate
   doses_to_use <- data.schedule %>%

@@ -4,7 +4,7 @@
 \alias{dcc_inconsistent}
 \title{(D)ate (C)onsistency (C)omparison Inconsistent Records}
 \usage{
-dcc_inconsistent(data.EIR, date_1, date_2)
+dcc_inconsistent(data.EIR, date_1, date_2, birth_cohorts = NULL)
 }
 \arguments{
 \item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
@@ -12,6 +12,8 @@ dcc_inconsistent(data.EIR, date_1, date_2)
 \item{date_1}{Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking for consistency.}
 
 \item{date_2}{Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking consistency against. Represents a date chronologically earlier than date_1.}
+
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which inconsistent records should be returned. If \code{NULL} (default), all available cohorts are used.}
 }
 \value{
 A data frame containing the inconsistent records in the database and the time diferential between them.

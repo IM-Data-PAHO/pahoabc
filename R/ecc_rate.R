@@ -6,6 +6,7 @@
 #' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
 #' @param geo_level Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis, disaggregating results by \code{dose}. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together (no \code{dose} column in the output).
+#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which the rate should be calculated. If \code{NULL} (default), all available cohorts are used.
 #'
 #' @return A data frame containing the eligibility rate (doses administered within the scheduled age window) and ineligibility rate (inverse proportion, including missing dates) in percentages for the specified \code{geo_level}.
 #'
@@ -13,7 +14,7 @@
 #' @import lubridate
 #'
 #' @export
-ecc_rate <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL) {
+ecc_rate <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL, birth_cohorts = NULL) {
 
   # validations
   .validate_geo_level(geo_level)
@@ -23,6 +24,13 @@ ecc_rate <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NUL
   .validate_date(data.EIR$date_vax, "date_vax")
   .validate_vaccines(vaccines, data.EIR, "data.EIR")
   .validate_vaccines(vaccines, data.schedule, "data.schedule")
+  .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1)
+
+  # Checks if the birth_cohorts variable is used
+  if (!is.null(birth_cohorts)) {
+    data.EIR <- data.EIR %>%
+      filter(year(date_birth) %in% birth_cohorts)
+  }
 
   # Prepare EIR
   data.EIR <- data.EIR %>%
