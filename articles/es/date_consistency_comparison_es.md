@@ -176,6 +176,9 @@ Tasas de consistencia de fechas por ADM1 {.table}
 - `date_2`: Nombre de la variable de fecha de referencia (la fecha
   cronológicamente más temprana).
 - `geo_level`: `"ADM0"` (predeterminado), `"ADM1"` o `"ADM2"`.
+- `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a
+  filtrar. El valor predeterminado `NULL` usa todas las cohortes
+  disponibles.
 
 #### Paso 2 — Visualizar las tasas con `dcc_barplot()`
 
@@ -257,6 +260,9 @@ Muestra de registros inconsistentes e incompletos {.table}
 - `data.EIR`: Tabla del RNVe en formato PAHOabc.
 - `date_1`: Nombre de la variable de fecha que se verifica.
 - `date_2`: Nombre de la variable de fecha de referencia.
+- `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a
+  filtrar. El valor predeterminado `NULL` usa todas las cohortes
+  disponibles.
 
 La columna `diff` reporta `date_1 - date_2` en días. Los valores
 negativos indican que `date_1` precede a `date_2` (es decir, la

@@ -260,6 +260,8 @@ Eligibility rates by dose and ADM1 {.table}
 - `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
 - `vaccines`: Character vector of doses to include, disaggregating by
   `dose`. Default `NULL` pools all doses in `data.schedule`.
+- `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to.
+  Default `NULL` uses all available cohorts.
 
 #### Step 2 — Visualize rates with `ecc_barplot()`
 
@@ -348,6 +350,8 @@ Sample of ineligible and missing DTP1 records {.table}
 - `data.schedule`: Vaccination schedule data frame in PAHOabc format.
 - `vaccines`: Character vector of doses to include. Default `NULL`
   includes all doses in `data.schedule`.
+- `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to.
+  Default `NULL` uses all available cohorts.
 
 The `days_outside_range` column is negative when a person was vaccinated
 before `age_schedule_low`, and positive when vaccinated after

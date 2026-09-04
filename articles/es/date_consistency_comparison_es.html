@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
             
             <h4 data-toc-skip class="date">2 de junio de 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.10.0/vignettes/articles/es/date_consistency_comparison_es.Rmd" class="external-link"><code>vignettes/articles/es/date_consistency_comparison_es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v.0.10.2/vignettes/articles/es/date_consistency_comparison_es.Rmd" class="external-link"><code>vignettes/articles/es/date_consistency_comparison_es.Rmd</code></a></small>
       <div class="d-none name"><code>date_consistency_comparison_es.Rmd</code></div>
     </div>
 
@@ -447,6 +447,10 @@ la fecha más temprana) a nivel ADM1.</p>
 <li>
 <code>geo_level</code>: <code>"ADM0"</code> (predeterminado),
 <code>"ADM1"</code> o <code>"ADM2"</code>.</li>
+<li>
+<code>birth_cohorts</code>: Vector numérico con la(s) cohorte(s) de
+nacimiento a filtrar. El valor predeterminado <code>NULL</code> usa
+todas las cohortes disponibles.</li>
 </ul>
 </div>
 </div>
@@ -616,6 +620,10 @@ verifica.</li>
 <li>
 <code>date_2</code>: Nombre de la variable de fecha de
 referencia.</li>
+<li>
+<code>birth_cohorts</code>: Vector numérico con la(s) cohorte(s) de
+nacimiento a filtrar. El valor predeterminado <code>NULL</code> usa
+todas las cohortes disponibles.</li>
 </ul>
 <p>La columna <code>diff</code> reporta <code>date_1 - date_2</code> en
 días. Los valores negativos indican que <code>date_1</code> precede a

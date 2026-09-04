@@ -7,7 +7,7 @@ the electronic immunization registry (EIR).
 ## Usage
 
 ``` r
-dcc_rate(data.EIR, date_1, date_2, geo_level = "ADM0")
+dcc_rate(data.EIR, date_1, date_2, geo_level = "ADM0", birth_cohorts = NULL)
 ```
 
 ## Arguments
@@ -32,6 +32,12 @@ dcc_rate(data.EIR, date_1, date_2, geo_level = "ADM0")
 
   Character. The geographic level to aggregate results by. Must be
   "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".
+
+- birth_cohorts:
+
+  Numeric (optional). A vector specifying the birth cohort(s) for which
+  the rate should be calculated. If `NULL` (default), all available
+  cohorts are used.
 
 ## Value
 

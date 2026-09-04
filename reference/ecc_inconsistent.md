@@ -8,7 +8,12 @@ scheduled age window defined in the vaccination schedule
 ## Usage
 
 ``` r
-ecc_inconsistent(data.EIR, data.schedule, vaccines = NULL)
+ecc_inconsistent(
+  data.EIR,
+  data.schedule,
+  vaccines = NULL,
+  birth_cohorts = NULL
+)
 ```
 
 ## Arguments
@@ -28,6 +33,12 @@ ecc_inconsistent(data.EIR, data.schedule, vaccines = NULL)
   Character (optional). A character vector specifying the doses to
   include in the analysis. If `NULL` (default), all doses in
   `data.schedule` are included.
+
+- birth_cohorts:
+
+  Numeric (optional). A vector specifying the birth cohort(s) for which
+  inconsistent records should be returned. If `NULL` (default), all
+  available cohorts are used.
 
 ## Value
 

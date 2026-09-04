@@ -9,7 +9,13 @@ data from the electronic immunization registry (EIR).
 ## Usage
 
 ``` r
-ecc_rate(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL)
+ecc_rate(
+  data.EIR,
+  data.schedule,
+  geo_level = "ADM0",
+  vaccines = NULL,
+  birth_cohorts = NULL
+)
 ```
 
 ## Arguments
@@ -35,6 +41,12 @@ ecc_rate(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL)
   include in the analysis, disaggregating results by `dose`. If `NULL`
   (default), all doses in `data.schedule` are included and pooled
   together (no `dose` column in the output).
+
+- birth_cohorts:
+
+  Numeric (optional). A vector specifying the birth cohort(s) for which
+  the rate should be calculated. If `NULL` (default), all available
+  cohorts are used.
 
 ## Value
 

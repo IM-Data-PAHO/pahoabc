@@ -6,7 +6,7 @@ missing" entries, including the day difference between the two dates.
 ## Usage
 
 ``` r
-dcc_inconsistent(data.EIR, date_1, date_2)
+dcc_inconsistent(data.EIR, date_1, date_2, birth_cohorts = NULL)
 ```
 
 ## Arguments
@@ -26,6 +26,12 @@ dcc_inconsistent(data.EIR, date_1, date_2)
   Character. The name of a DATE formatted variable present in the EIR.
   This variable is the date we are checking consistency against.
   Represents a date chronologically earlier than date_1.
+
+- birth_cohorts:
+
+  Numeric (optional). A vector specifying the birth cohort(s) for which
+  inconsistent records should be returned. If `NULL` (default), all
+  available cohorts are used.
 
 ## Value
 

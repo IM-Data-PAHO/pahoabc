@@ -269,6 +269,9 @@ Tasas de elegibilidad por dosis y ADM1 {.table}
 - `vaccines`: Vector de caracteres con las dosis a incluir, desagregando
   por `dose`. El valor predeterminado `NULL` agrupa todas las dosis de
   `data.schedule`.
+- `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a
+  filtrar. El valor predeterminado `NULL` usa todas las cohortes
+  disponibles.
 
 #### Paso 2 — Visualizar las tasas con `ecc_barplot()`
 
@@ -361,6 +364,9 @@ Muestra de registros inelegibles e incompletos de DTP1 {.table}
 - `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
 - `vaccines`: Vector de caracteres con las dosis a incluir. El valor
   predeterminado `NULL` incluye todas las dosis de `data.schedule`.
+- `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a
+  filtrar. El valor predeterminado `NULL` usa todas las cohortes
+  disponibles.
 
 La columna `days_outside_range` es negativa cuando la persona fue
 vacunada antes de `age_schedule_low`, y positiva cuando fue vacunada

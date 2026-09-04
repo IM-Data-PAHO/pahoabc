@@ -171,6 +171,8 @@ Date consistency rates by ADM1 {.table}
 - `date_2`: Name of the date variable checked against (the
   chronologically earlier date).
 - `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
+- `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to.
+  Default `NULL` uses all available cohorts.
 
 #### Step 2 — Visualize rates with `dcc_barplot()`
 
@@ -249,6 +251,8 @@ Sample of inconsistent and missing records {.table}
 - `data.EIR`: EIR data frame in PAHOabc format.
 - `date_1`: Name of the date variable being checked.
 - `date_2`: Name of the date variable checked against.
+- `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to.
+  Default `NULL` uses all available cohorts.
 
 The `diff` column reports `date_1 - date_2` in days. Negative values
 indicate `date_1` precedes `date_2` (i.e., the inconsistency). This

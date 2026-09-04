@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
             
             <h4 data-toc-skip class="date">July 28, 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.10.0/vignettes/articles/en/eligibility_consistency_comparison_en.Rmd" class="external-link"><code>vignettes/articles/en/eligibility_consistency_comparison_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v.0.10.2/vignettes/articles/en/eligibility_consistency_comparison_en.Rmd" class="external-link"><code>vignettes/articles/en/eligibility_consistency_comparison_en.Rmd</code></a></small>
       <div class="d-none name"><code>eligibility_consistency_comparison_en.Rmd</code></div>
     </div>
 
@@ -644,6 +644,9 @@ PAHOabc format.</li>
 <code>vaccines</code>: Character vector of doses to include,
 disaggregating by <code>dose</code>. Default <code>NULL</code> pools all
 doses in <code>data.schedule</code>.</li>
+<li>
+<code>birth_cohorts</code>: Numeric vector of birth cohort year(s)
+to filter to. Default <code>NULL</code> uses all available cohorts.</li>
 </ul>
 </div>
 </div>
@@ -856,6 +859,9 @@ PAHOabc format.</li>
 <li>
 <code>vaccines</code>: Character vector of doses to include. Default
 <code>NULL</code> includes all doses in <code>data.schedule</code>.</li>
+<li>
+<code>birth_cohorts</code>: Numeric vector of birth cohort year(s)
+to filter to. Default <code>NULL</code> uses all available cohorts.</li>
 </ul>
 <p>The <code>days_outside_range</code> column is negative when a person
 was vaccinated before <code>age_schedule_low</code>, and positive when
