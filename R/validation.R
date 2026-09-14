@@ -275,6 +275,33 @@
   }
 }
 
+#' Validate residence consistency per ID.
+#'
+#' @import dplyr
+#'
+#' @keywords internal
+#' @noRd
+.validate_residence <- function(data.EIR) {
+  residence_cols <- intersect(c("ADM1_residence", "ADM2_residence"), names(data.EIR))
+
+  n_inconsistent <- data.EIR %>%
+    distinct(across(all_of(c("ID", residence_cols)))) %>%
+    count(ID) %>%
+    filter(n > 1) %>%
+    nrow()
+
+  if(n_inconsistent > 0) {
+    warning(
+      paste0(
+        n_inconsistent, " ID(s) have inconsistent ", paste(residence_cols, collapse = "/"),
+        " across records, meaning residence is not updated to the person's most recent residence."
+      )
+    )
+  }
+
+  invisible(n_inconsistent)
+}
+
 #' Validate EIR duplicates.
 #'
 #' @keywords internal

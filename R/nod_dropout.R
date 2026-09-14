@@ -5,6 +5,7 @@
 #' @param vaccine_end Final vaccine to use in nominal dropout calculation.
 #' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".
 #' @param birth_cohorts Birth cohorts to calculate for. As a vector of years.
+#' @param fix_residence Logical. When geo_level is "ADM1" or "ADM2" and a person's residence differs across their records, whether to correct all of that person's records to the residence of their most recent vaccination (TRUE, default) or leave the data as-is (FALSE), which may cause inaccurate dropout results.
 #'
 #' @return A data frame with the calculated coverage for the administrative level selected. Includes the nominal dropout rate, numerator, denominator and completeness rate. based on the administrative level, birth cohorts and vaccines selected.
 #'
@@ -15,12 +16,13 @@
 #' @export
 #'
 #'
-nod_dropout <- function(data.EIR, vaccine_init, vaccine_end, geo_level = "ADM0", birth_cohorts = NULL) {
+nod_dropout <- function(data.EIR, vaccine_init, vaccine_end, geo_level = "ADM0", birth_cohorts = NULL, fix_residence = TRUE) {
 
   .validate_character(vaccine_init, "vaccine_init", exp_len = 1)
   .validate_character(vaccine_end, "vaccine_end", exp_len = 1)
   .validate_geo_level(geo_level)
   .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1)
+  .validate_logical(fix_residence, "fix_residence")
   .validate_vaccines(c(vaccine_init, vaccine_end), data.EIR, "data.EIR")
   .validate_date(data.EIR$date_birth, "date_birth")
 
@@ -28,6 +30,20 @@ nod_dropout <- function(data.EIR, vaccine_init, vaccine_end, geo_level = "ADM0",
   if (!is.null(birth_cohorts)) {
     data.EIR <- data.EIR %>%
       filter(year(date_birth) %in% birth_cohorts)
+  }
+
+  # Checks residence consistency per ID, since it affects pivoting at ADM1/ADM2 level
+  if(geo_level != "ADM0") {
+    n_inconsistent <- .validate_residence(data.EIR)
+
+    if(fix_residence) {
+      data.EIR <- .fix_residence(data.EIR)
+    } else if(n_inconsistent > 0) {
+      warning(
+        "Residence inconsistencies were not corrected (fix_residence = FALSE). ",
+        "Please resolve them manually before trusting nod_dropout results, or set fix_residence = TRUE."
+      )
+    }
   }
 
   # Groups based on the admin level used

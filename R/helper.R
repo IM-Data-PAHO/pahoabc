@@ -28,6 +28,42 @@
 
 }
 
+#' Correct residence per ID to the residence of the most recent vaccination record.
+#'
+#' @import dplyr
+#'
+#' @keywords internal
+#' @noRd
+.fix_residence <- function(data.EIR) {
+
+  residence_cols <- intersect(c("ADM1_residence", "ADM2_residence"), names(data.EIR))
+  latest_cols <- paste0(residence_cols, "_latest")
+
+  latest_residence <- data.EIR %>%
+    group_by(ID) %>%
+    slice_max(date_vax, n = 1, with_ties = FALSE) %>%
+    ungroup() %>%
+    select(all_of(c("ID", residence_cols))) %>%
+    rename_with(~ latest_cols, all_of(residence_cols))
+
+  data.EIR <- data.EIR %>%
+    left_join(latest_residence, by = "ID")
+
+  changed <- rep(FALSE, nrow(data.EIR))
+  for(i in seq_along(residence_cols)) {
+    changed <- changed | (data.EIR[[residence_cols[i]]] != data.EIR[[latest_cols[i]]])
+    data.EIR[[residence_cols[i]]] <- data.EIR[[latest_cols[i]]]
+  }
+
+  n_modified <- sum(changed)
+  message(paste0(n_modified, " record(s) had residence updated to the most recent vaccination residence."))
+
+  data.EIR <- data.EIR %>%
+    select(-all_of(latest_cols))
+
+  return(data.EIR)
+}
+
 #' Convert the vaccination schedule from days to years. Automatically rounds down to lowest whole year.
 #'
 #' @keywords internal
