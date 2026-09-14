@@ -139,10 +139,65 @@ example_dropout %>%
 -   `vaccine_end`: Nombre de la vacuna que se usará como punto final del análisis, tal como aparece en la columna de dosis (**dose**).\
 -   `geo_level`: Nivel administrativo que se usará en el análisis. Es un parámetro opcional y puede tomar los valores "ADM0", "ADM1" o "ADM2". Si se omite, el valor predeterminado es "ADM0".
 -   `birth_cohorts`: Parámetro para segmentar el análisis según el año de nacimiento de las personas. Se basa en la columna de fecha de nacimiento (`date_birth`) y puede recibir un año o un vector de años.
+-   `fix_residence`: Lógico, con valor predeterminado `TRUE`. Solo aplica cuando `geo_level` es "ADM1" o "ADM2". Controla qué ocurre cuando la residencia (`ADM1_residence`/`ADM2_residence`) de una persona no es la misma en todos sus registros (por ejemplo, si se mudó entre dosis). Vea [Manejo de inconsistencias de residencia] más abajo.
 
-Los parámetros `data.EIR`, `vaccine_init` y `vaccine_end` son obligatorios. `geo_level` y `birth_cohorts` son opcionales y permiten segmentar los datos para análisis más precisos.
+Los parámetros `data.EIR`, `vaccine_init` y `vaccine_end` son obligatorios. `geo_level`, `birth_cohorts` y `fix_residence` son opcionales y permiten segmentar los datos o garantizar la precisión para análisis más precisos.
 
 Consulte la documentación de la función con `?nod_dropout()` en R para obtener más información.
+
+### Manejo de inconsistencias de residencia
+
+A nivel ADM1 o ADM2, `nod_dropout()` necesita agrupar la dosis inicial y final de una persona bajo un mismo grupo de residencia. Si la residencia registrada de una persona no es la misma en todos sus registros (por ejemplo, se mudó entre su dosis de DTP1 y DTP3, y el registro anterior nunca se actualizó), sus dosis quedarían divididas entre dos grupos de residencia distintos, y cada una aparecería incorrectamente como un esquema incompleto.
+
+El parámetro `fix_residence` controla cómo maneja esto `nod_dropout()`:
+
+- `fix_residence = TRUE` (predeterminado): antes de calcular el abandono, todos los registros de una persona se corrigen para usar el `ADM1_residence`/`ADM2_residence` de su **vacunación más reciente**, de modo que sus dosis queden agrupadas correctamente.
+- `fix_residence = FALSE`: los valores de residencia se dejan tal como fueron registrados. Si se detectan inconsistencias, `nod_dropout()` mostrará una advertencia indicando que los resultados podrían ser inexactos, y que deben resolverse manualmente de antemano o volver a establecer `fix_residence` en `TRUE`.
+
+El siguiente ejemplo construye un pequeño RNVe donde la persona `ID 1` se mudó de `ADM1_1` a `ADM1_2` entre dosis, para ilustrar ambos casos.
+
+```{r fix-residence-data, message=FALSE}
+residence_example <- tibble::tibble(
+  ID = c(1, 1, 2, 2),
+  dose = c("DTP1", "DTP3", "DTP1", "DTP3"),
+  date_vax = as.Date(c("2020-01-01", "2020-06-01", "2020-01-01", "2020-06-01")),
+  date_birth = as.Date(c("2019-12-01", "2019-12-01", "2019-11-01", "2019-11-01")),
+  ADM1_residence = c("ADM1_1", "ADM1_2", "ADM1_1", "ADM1_1"),
+  ADM2_residence = c("ADM2_1", "ADM2_2", "ADM2_1", "ADM2_1"),
+  ADM1_occurrence = c("ADM1_1", "ADM1_2", "ADM1_1", "ADM1_1"),
+  ADM2_occurrence = c("ADM2_1", "ADM2_2", "ADM2_1", "ADM2_1")
+)
+
+residence_example %>% kable(caption = "Ejemplo de RNVe: ID 1 se mudó de ADM1_1 a ADM1_2 entre dosis")
+```
+
+Con `fix_residence = TRUE`, ambos registros de `ID 1` se reasignan a `ADM1_2` (su residencia más reciente), por lo que se cuentan correctamente como completos:
+
+```{r fix-residence-true, warning=TRUE, message=TRUE}
+fixed_result <- nod_dropout(
+  data.EIR = residence_example,
+  vaccine_init = "DTP1",
+  vaccine_end = "DTP3",
+  geo_level = "ADM1",
+  fix_residence = TRUE
+)
+
+fixed_result %>% kable(digits = 3, caption = "Resultado con fix_residence = TRUE")
+```
+
+Con `fix_residence = FALSE`, las dos dosis de `ID 1` permanecen divididas entre `ADM1_1` y `ADM1_2`, por lo que `nod_dropout()` reporta incorrectamente un abandono en ambos grupos, y advierte que la inconsistencia de residencia no fue corregida:
+
+```{r fix-residence-false, warning=TRUE, message=TRUE}
+unfixed_result <- nod_dropout(
+  data.EIR = residence_example,
+  vaccine_init = "DTP1",
+  vaccine_end = "DTP3",
+  geo_level = "ADM1",
+  fix_residence = FALSE
+)
+
+unfixed_result %>% kable(digits = 3, caption = "Resultado con fix_residence = FALSE")
+```
 
 Esta salida puede pasarse directamente a la función `nod_barplot()` como se muestra a continuación.
 
