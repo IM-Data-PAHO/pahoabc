@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
             
             <h4 data-toc-skip class="date">April 22, 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v.0.10.2/vignettes/articles/en/nominal_dropout_en.Rmd" class="external-link"><code>vignettes/articles/en/nominal_dropout_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.10.3/vignettes/articles/en/nominal_dropout_en.Rmd" class="external-link"><code>vignettes/articles/en/nominal_dropout_en.Rmd</code></a></small>
       <div class="d-none name"><code>nominal_dropout_en.Rmd</code></div>
     </div>
 
@@ -472,23 +472,231 @@ to “ADM0” if ignored.</li>
 on the year of birth of the persons in the dataframe. It is based on the
 <code>date_birth</code> column in the dataframe and can be a single year
 or a vector of years.</li>
+<li>
+<code>fix_residence</code>: Logical, defaults to <code>TRUE</code>.
+Only relevant when <code>geo_level</code> is “ADM1” or “ADM2”. Controls
+what happens when a person’s
+<code>ADM1_residence</code>/<code>ADM2_residence</code> is not the same
+across all of their records (for example, if they moved between doses).
+See <a href="#handling-residence-inconsistencies">Handling residence
+inconsistencies</a> below.</li>
 </ul>
 <p>The <code>data.EIR</code>, <code>vaccine_init</code>,
 <code>vaccine_end</code> parameters are mandatory.
-<code>geo_level</code> and <code>birth_cohorts</code> are optional and
-help to segment the data for more precise analyses.</p>
+<code>geo_level</code>, <code>birth_cohorts</code> and
+<code>fix_residence</code> are optional and help to segment the data or
+ensure accuracy for more precise analyses.</p>
 <p>Check the documentation of the function using
 <code>?nod_dropout()</code> in R for additional information.</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="handling-residence-inconsistencies">Handling residence inconsistencies<a class="anchor" aria-label="anchor" href="#handling-residence-inconsistencies"></a>
+</h4>
+<p>At the ADM1 or ADM2 level, <code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code> needs to match
+a person’s initial and final doses under a single residence group. If a
+person’s registered residence is not the same on every record (e.g.,
+they moved between their DTP1 and DTP3 doses, and the older record was
+never updated), their doses would otherwise be split across two
+different residence groups and each dose would incorrectly appear as an
+incomplete schedule.</p>
+<p>The <code>fix_residence</code> parameter controls how
+<code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code> handles this:</p>
+<ul>
+<li>
+<code>fix_residence = TRUE</code> (default): before computing
+dropout, all of a person’s records are corrected to the
+<code>ADM1_residence</code>/<code>ADM2_residence</code> tied to their
+<strong>most recent vaccination</strong>, so their doses are correctly
+grouped together.</li>
+<li>
+<code>fix_residence = FALSE</code>: residence values are left as
+recorded. If inconsistencies are found, <code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code> will
+warn you that results may be inaccurate, and that they should either be
+resolved manually beforehand or <code>fix_residence</code> should be set
+back to <code>TRUE</code>.</li>
+</ul>
+<p>The example below constructs a small EIR where person
+<code>ID 1</code> moved from <code>ADM1_1</code> to <code>ADM1_2</code>
+between doses, to illustrate both cases.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">residence_example</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  dose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP3"</span>, <span class="st">"DTP1"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
+<span>  date_vax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-01"</span>, <span class="st">"2020-06-01"</span>, <span class="st">"2020-01-01"</span>, <span class="st">"2020-06-01"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  date_birth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-12-01"</span>, <span class="st">"2019-12-01"</span>, <span class="st">"2019-11-01"</span>, <span class="st">"2019-11-01"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  ADM1_residence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM1_1"</span>, <span class="st">"ADM1_2"</span>, <span class="st">"ADM1_1"</span>, <span class="st">"ADM1_1"</span><span class="op">)</span>,</span>
+<span>  ADM2_residence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM2_1"</span>, <span class="st">"ADM2_2"</span>, <span class="st">"ADM2_1"</span>, <span class="st">"ADM2_1"</span><span class="op">)</span>,</span>
+<span>  ADM1_occurrence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM1_1"</span>, <span class="st">"ADM1_2"</span>, <span class="st">"ADM1_1"</span>, <span class="st">"ADM1_1"</span><span class="op">)</span>,</span>
+<span>  ADM2_occurrence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM2_1"</span>, <span class="st">"ADM2_2"</span>, <span class="st">"ADM2_1"</span>, <span class="st">"ADM2_1"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">residence_example</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example EIR: ID 1 moved from ADM1_1 to ADM1_2 between doses"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Example EIR: ID 1 moved from ADM1_1 to ADM1_2 between
+doses</caption>
+<colgroup>
+<col width="3%">
+<col width="5%">
+<col width="11%">
+<col width="11%">
+<col width="16%">
+<col width="16%">
+<col width="17%">
+<col width="17%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">ID</th>
+<th align="left">dose</th>
+<th align="left">date_vax</th>
+<th align="left">date_birth</th>
+<th align="left">ADM1_residence</th>
+<th align="left">ADM2_residence</th>
+<th align="left">ADM1_occurrence</th>
+<th align="left">ADM2_occurrence</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">DTP1</td>
+<td align="left">2020-01-01</td>
+<td align="left">2019-12-01</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">DTP3</td>
+<td align="left">2020-06-01</td>
+<td align="left">2019-12-01</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">DTP1</td>
+<td align="left">2020-01-01</td>
+<td align="left">2019-11-01</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">DTP3</td>
+<td align="left">2020-06-01</td>
+<td align="left">2019-11-01</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+</tr>
+</tbody>
+</table>
+<p>With <code>fix_residence = TRUE</code>, <code>ID 1</code>’s records
+are both reassigned to <code>ADM1_2</code> (their most recent
+residence), so they are correctly counted as complete:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixed_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_dropout.html">nod_dropout</a></span><span class="op">(</span></span>
+<span>  data.EIR <span class="op">=</span> <span class="va">residence_example</span>,</span>
+<span>  vaccine_init <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
+<span>  vaccine_end <span class="op">=</span> <span class="st">"DTP3"</span>,</span>
+<span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
+<span>  fix_residence <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in .validate_residence(data.EIR): 1 ID(s) have inconsistent</span></span>
+<span><span class="co">## ADM1_residence/ADM2_residence across records, meaning residence is not updated</span></span>
+<span><span class="co">## to the person's most recent residence.</span></span></code></pre>
+<pre><code><span><span class="co">## 1 record(s) had residence updated to the most recent vaccination residence.</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixed_result</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span>, caption <span class="op">=</span> <span class="st">"Result with fix_residence = TRUE"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Result with fix_residence = TRUE</caption>
+<thead><tr class="header">
+<th align="left">ADM1_residence</th>
+<th align="left">indicator</th>
+<th align="right">num</th>
+<th align="right">denom</th>
+<th align="right">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="left">complete</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_2</td>
+<td align="left">complete</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">100</td>
+</tr>
+</tbody>
+</table>
+<p>With <code>fix_residence = FALSE</code>, <code>ID 1</code>’s two
+doses stay split between <code>ADM1_1</code> and <code>ADM1_2</code>, so
+<code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code> incorrectly reports a dropout in both groups,
+and warns that the residence inconsistency was not corrected:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">unfixed_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_dropout.html">nod_dropout</a></span><span class="op">(</span></span>
+<span>  data.EIR <span class="op">=</span> <span class="va">residence_example</span>,</span>
+<span>  vaccine_init <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
+<span>  vaccine_end <span class="op">=</span> <span class="st">"DTP3"</span>,</span>
+<span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
+<span>  fix_residence <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in .validate_residence(data.EIR): 1 ID(s) have inconsistent</span></span>
+<span><span class="co">## ADM1_residence/ADM2_residence across records, meaning residence is not updated</span></span>
+<span><span class="co">## to the person's most recent residence.</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in nod_dropout(data.EIR = residence_example, vaccine_init = "DTP1", :</span></span>
+<span><span class="co">## Residence inconsistencies were not corrected (fix_residence = FALSE). Please</span></span>
+<span><span class="co">## resolve them manually before trusting nod_dropout results, or set fix_residence</span></span>
+<span><span class="co">## = TRUE.</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">unfixed_result</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span>, caption <span class="op">=</span> <span class="st">"Result with fix_residence = FALSE"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Result with fix_residence = FALSE</caption>
+<thead><tr class="header">
+<th align="left">ADM1_residence</th>
+<th align="left">indicator</th>
+<th align="right">num</th>
+<th align="right">denom</th>
+<th align="right">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="left">complete</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="left">dropout</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
 <p>This output may be fed directly into the <code><a href="../../reference/nod_barplot.html">nod_barplot()</a></code>
 function as shown below.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Runs the nod_barplot function</span></span>
 <span><span class="va">example_dropout_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_barplot.html">nod_barplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">example_dropout</span>, order<span class="op">=</span><span class="st">"alpha"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#show plot</span></span>
 <span><span class="va">example_dropout_plot</span></span></code></pre></div>
 <p><img src="nominal_dropout_en_files/figure-html/nominal_dropout_plot-1.png" class="r-plt" alt="" width="700"></p>
-</div>
 <div class="section level5">
 <h5 id="parameters-accepted-1">Parameters accepted<a class="anchor" aria-label="anchor" href="#parameters-accepted-1"></a>
 </h5>

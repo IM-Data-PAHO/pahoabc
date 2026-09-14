@@ -219,13 +219,143 @@ Nominal dropout rate between DTP1 and DTP3 by ADM1 level {.table}
   of birth of the persons in the dataframe. It is based on the
   `date_birth` column in the dataframe and can be a single year or a
   vector of years.
+- `fix_residence`: Logical, defaults to `TRUE`. Only relevant when
+  `geo_level` is “ADM1” or “ADM2”. Controls what happens when a person’s
+  `ADM1_residence`/`ADM2_residence` is not the same across all of their
+  records (for example, if they moved between doses). See [Handling
+  residence inconsistencies](#handling-residence-inconsistencies) below.
 
 The `data.EIR`, `vaccine_init`, `vaccine_end` parameters are mandatory.
-`geo_level` and `birth_cohorts` are optional and help to segment the
-data for more precise analyses.
+`geo_level`, `birth_cohorts` and `fix_residence` are optional and help
+to segment the data or ensure accuracy for more precise analyses.
 
 Check the documentation of the function using `?nod_dropout()` in R for
 additional information.
+
+#### Handling residence inconsistencies
+
+At the ADM1 or ADM2 level,
+[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+needs to match a person’s initial and final doses under a single
+residence group. If a person’s registered residence is not the same on
+every record (e.g., they moved between their DTP1 and DTP3 doses, and
+the older record was never updated), their doses would otherwise be
+split across two different residence groups and each dose would
+incorrectly appear as an incomplete schedule.
+
+The `fix_residence` parameter controls how
+[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+handles this:
+
+- `fix_residence = TRUE` (default): before computing dropout, all of a
+  person’s records are corrected to the
+  `ADM1_residence`/`ADM2_residence` tied to their **most recent
+  vaccination**, so their doses are correctly grouped together.
+- `fix_residence = FALSE`: residence values are left as recorded. If
+  inconsistencies are found,
+  [`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+  will warn you that results may be inaccurate, and that they should
+  either be resolved manually beforehand or `fix_residence` should be
+  set back to `TRUE`.
+
+The example below constructs a small EIR where person `ID 1` moved from
+`ADM1_1` to `ADM1_2` between doses, to illustrate both cases.
+
+``` r
+
+residence_example <- tibble::tibble(
+  ID = c(1, 1, 2, 2),
+  dose = c("DTP1", "DTP3", "DTP1", "DTP3"),
+  date_vax = as.Date(c("2020-01-01", "2020-06-01", "2020-01-01", "2020-06-01")),
+  date_birth = as.Date(c("2019-12-01", "2019-12-01", "2019-11-01", "2019-11-01")),
+  ADM1_residence = c("ADM1_1", "ADM1_2", "ADM1_1", "ADM1_1"),
+  ADM2_residence = c("ADM2_1", "ADM2_2", "ADM2_1", "ADM2_1"),
+  ADM1_occurrence = c("ADM1_1", "ADM1_2", "ADM1_1", "ADM1_1"),
+  ADM2_occurrence = c("ADM2_1", "ADM2_2", "ADM2_1", "ADM2_1")
+)
+
+residence_example %>% kable(caption = "Example EIR: ID 1 moved from ADM1_1 to ADM1_2 between doses")
+```
+
+| ID | dose | date_vax | date_birth | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence |
+|---:|:---|:---|:---|:---|:---|:---|:---|
+| 1 | DTP1 | 2020-01-01 | 2019-12-01 | ADM1_1 | ADM2_1 | ADM1_1 | ADM2_1 |
+| 1 | DTP3 | 2020-06-01 | 2019-12-01 | ADM1_2 | ADM2_2 | ADM1_2 | ADM2_2 |
+| 2 | DTP1 | 2020-01-01 | 2019-11-01 | ADM1_1 | ADM2_1 | ADM1_1 | ADM2_1 |
+| 2 | DTP3 | 2020-06-01 | 2019-11-01 | ADM1_1 | ADM2_1 | ADM1_1 | ADM2_1 |
+
+Example EIR: ID 1 moved from ADM1_1 to ADM1_2 between doses {.table}
+
+With `fix_residence = TRUE`, `ID 1`’s records are both reassigned to
+`ADM1_2` (their most recent residence), so they are correctly counted as
+complete:
+
+``` r
+
+fixed_result <- nod_dropout(
+  data.EIR = residence_example,
+  vaccine_init = "DTP1",
+  vaccine_end = "DTP3",
+  geo_level = "ADM1",
+  fix_residence = TRUE
+)
+```
+
+    ## Warning in .validate_residence(data.EIR): 1 ID(s) have inconsistent
+    ## ADM1_residence/ADM2_residence across records, meaning residence is not updated
+    ## to the person's most recent residence.
+
+    ## 1 record(s) had residence updated to the most recent vaccination residence.
+
+``` r
+
+fixed_result %>% kable(digits = 3, caption = "Result with fix_residence = TRUE")
+```
+
+| ADM1_residence | indicator | num | denom | percent |
+|:---------------|:----------|----:|------:|--------:|
+| ADM1_1         | complete  |   1 |     1 |     100 |
+| ADM1_2         | complete  |   1 |     1 |     100 |
+
+Result with fix_residence = TRUE {.table}
+
+With `fix_residence = FALSE`, `ID 1`’s two doses stay split between
+`ADM1_1` and `ADM1_2`, so
+[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+incorrectly reports a dropout in both groups, and warns that the
+residence inconsistency was not corrected:
+
+``` r
+
+unfixed_result <- nod_dropout(
+  data.EIR = residence_example,
+  vaccine_init = "DTP1",
+  vaccine_end = "DTP3",
+  geo_level = "ADM1",
+  fix_residence = FALSE
+)
+```
+
+    ## Warning in .validate_residence(data.EIR): 1 ID(s) have inconsistent
+    ## ADM1_residence/ADM2_residence across records, meaning residence is not updated
+    ## to the person's most recent residence.
+
+    ## Warning in nod_dropout(data.EIR = residence_example, vaccine_init = "DTP1", :
+    ## Residence inconsistencies were not corrected (fix_residence = FALSE). Please
+    ## resolve them manually before trusting nod_dropout results, or set fix_residence
+    ## = TRUE.
+
+``` r
+
+unfixed_result %>% kable(digits = 3, caption = "Result with fix_residence = FALSE")
+```
+
+| ADM1_residence | indicator | num | denom | percent |
+|:---------------|:----------|----:|------:|--------:|
+| ADM1_1         | complete  |   1 |     2 |      50 |
+| ADM1_1         | dropout   |   1 |     2 |      50 |
+
+Result with fix_residence = FALSE {.table}
 
 This output may be fed directly into the
 [`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)

@@ -10,7 +10,8 @@ nod_dropout(
   vaccine_init,
   vaccine_end,
   geo_level = "ADM0",
-  birth_cohorts = NULL
+  birth_cohorts = NULL,
+  fix_residence = TRUE
 )
 ```
 
@@ -37,6 +38,14 @@ nod_dropout(
 - birth_cohorts:
 
   Birth cohorts to calculate for. As a vector of years.
+
+- fix_residence:
+
+  Logical. When geo_level is "ADM1" or "ADM2" and a person's residence
+  differs across their records, whether to correct all of that person's
+  records to the residence of their most recent vaccination (TRUE,
+  default) or leave the data as-is (FALSE), which may cause inaccurate
+  dropout results.
 
 ## Value
 

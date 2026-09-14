@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
             
             <h4 data-toc-skip class="date">22 de abril de 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v.0.10.2/vignettes/articles/es/nominal_dropout_es.Rmd" class="external-link"><code>vignettes/articles/es/nominal_dropout_es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.10.3/vignettes/articles/es/nominal_dropout_es.Rmd" class="external-link"><code>vignettes/articles/es/nominal_dropout_es.Rmd</code></a></small>
       <div class="d-none name"><code>nominal_dropout_es.Rmd</code></div>
     </div>
 
@@ -470,23 +470,233 @@ análisis. Es un parámetro opcional y puede tomar los valores “ADM0”,
 según el año de nacimiento de las personas. Se basa en la columna de
 fecha de nacimiento (<code>date_birth</code>) y puede recibir un año o
 un vector de años.</li>
+<li>
+<code>fix_residence</code>: Lógico, con valor predeterminado
+<code>TRUE</code>. Solo aplica cuando <code>geo_level</code> es “ADM1” o
+“ADM2”. Controla qué ocurre cuando la residencia
+(<code>ADM1_residence</code>/<code>ADM2_residence</code>) de una persona
+no es la misma en todos sus registros (por ejemplo, si se mudó entre
+dosis). Vea <a href="#manejo-de-inconsistencias-de-residencia">Manejo de
+inconsistencias de residencia</a> más abajo.</li>
 </ul>
 <p>Los parámetros <code>data.EIR</code>, <code>vaccine_init</code> y
-<code>vaccine_end</code> son obligatorios. <code>geo_level</code> y
-<code>birth_cohorts</code> son opcionales y permiten segmentar los datos
-para análisis más precisos.</p>
+<code>vaccine_end</code> son obligatorios. <code>geo_level</code>,
+<code>birth_cohorts</code> y <code>fix_residence</code> son opcionales y
+permiten segmentar los datos o garantizar la precisión para análisis más
+precisos.</p>
 <p>Consulte la documentación de la función con
 <code>?nod_dropout()</code> en R para obtener más información.</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="manejo-de-inconsistencias-de-residencia">Manejo de inconsistencias de residencia<a class="anchor" aria-label="anchor" href="#manejo-de-inconsistencias-de-residencia"></a>
+</h4>
+<p>A nivel ADM1 o ADM2, <code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code> necesita agrupar la
+dosis inicial y final de una persona bajo un mismo grupo de residencia.
+Si la residencia registrada de una persona no es la misma en todos sus
+registros (por ejemplo, se mudó entre su dosis de DTP1 y DTP3, y el
+registro anterior nunca se actualizó), sus dosis quedarían divididas
+entre dos grupos de residencia distintos, y cada una aparecería
+incorrectamente como un esquema incompleto.</p>
+<p>El parámetro <code>fix_residence</code> controla cómo maneja esto
+<code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code>:</p>
+<ul>
+<li>
+<code>fix_residence = TRUE</code> (predeterminado): antes de
+calcular el abandono, todos los registros de una persona se corrigen
+para usar el <code>ADM1_residence</code>/<code>ADM2_residence</code> de
+su <strong>vacunación más reciente</strong>, de modo que sus dosis
+queden agrupadas correctamente.</li>
+<li>
+<code>fix_residence = FALSE</code>: los valores de residencia se
+dejan tal como fueron registrados. Si se detectan inconsistencias,
+<code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code> mostrará una advertencia indicando que los
+resultados podrían ser inexactos, y que deben resolverse manualmente de
+antemano o volver a establecer <code>fix_residence</code> en
+<code>TRUE</code>.</li>
+</ul>
+<p>El siguiente ejemplo construye un pequeño RNVe donde la persona
+<code>ID 1</code> se mudó de <code>ADM1_1</code> a <code>ADM1_2</code>
+entre dosis, para ilustrar ambos casos.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">residence_example</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  dose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP3"</span>, <span class="st">"DTP1"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
+<span>  date_vax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-01"</span>, <span class="st">"2020-06-01"</span>, <span class="st">"2020-01-01"</span>, <span class="st">"2020-06-01"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  date_birth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2019-12-01"</span>, <span class="st">"2019-12-01"</span>, <span class="st">"2019-11-01"</span>, <span class="st">"2019-11-01"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  ADM1_residence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM1_1"</span>, <span class="st">"ADM1_2"</span>, <span class="st">"ADM1_1"</span>, <span class="st">"ADM1_1"</span><span class="op">)</span>,</span>
+<span>  ADM2_residence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM2_1"</span>, <span class="st">"ADM2_2"</span>, <span class="st">"ADM2_1"</span>, <span class="st">"ADM2_1"</span><span class="op">)</span>,</span>
+<span>  ADM1_occurrence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM1_1"</span>, <span class="st">"ADM1_2"</span>, <span class="st">"ADM1_1"</span>, <span class="st">"ADM1_1"</span><span class="op">)</span>,</span>
+<span>  ADM2_occurrence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM2_1"</span>, <span class="st">"ADM2_2"</span>, <span class="st">"ADM2_1"</span>, <span class="st">"ADM2_1"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">residence_example</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de RNVe: ID 1 se mudó de ADM1_1 a ADM1_2 entre dosis"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Ejemplo de RNVe: ID 1 se mudó de ADM1_1 a ADM1_2 entre
+dosis</caption>
+<colgroup>
+<col width="3%">
+<col width="5%">
+<col width="11%">
+<col width="11%">
+<col width="16%">
+<col width="16%">
+<col width="17%">
+<col width="17%">
+</colgroup>
+<thead><tr class="header">
+<th align="right">ID</th>
+<th align="left">dose</th>
+<th align="left">date_vax</th>
+<th align="left">date_birth</th>
+<th align="left">ADM1_residence</th>
+<th align="left">ADM2_residence</th>
+<th align="left">ADM1_occurrence</th>
+<th align="left">ADM2_occurrence</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">DTP1</td>
+<td align="left">2020-01-01</td>
+<td align="left">2019-12-01</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">DTP3</td>
+<td align="left">2020-06-01</td>
+<td align="left">2019-12-01</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2</td>
+<td align="left">ADM1_2</td>
+<td align="left">ADM2_2</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">DTP1</td>
+<td align="left">2020-01-01</td>
+<td align="left">2019-11-01</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">DTP3</td>
+<td align="left">2020-06-01</td>
+<td align="left">2019-11-01</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+<td align="left">ADM1_1</td>
+<td align="left">ADM2_1</td>
+</tr>
+</tbody>
+</table>
+<p>Con <code>fix_residence = TRUE</code>, ambos registros de
+<code>ID 1</code> se reasignan a <code>ADM1_2</code> (su residencia más
+reciente), por lo que se cuentan correctamente como completos:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixed_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_dropout.html">nod_dropout</a></span><span class="op">(</span></span>
+<span>  data.EIR <span class="op">=</span> <span class="va">residence_example</span>,</span>
+<span>  vaccine_init <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
+<span>  vaccine_end <span class="op">=</span> <span class="st">"DTP3"</span>,</span>
+<span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
+<span>  fix_residence <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in .validate_residence(data.EIR): 1 ID(s) have inconsistent</span></span>
+<span><span class="co">## ADM1_residence/ADM2_residence across records, meaning residence is not updated</span></span>
+<span><span class="co">## to the person's most recent residence.</span></span></code></pre>
+<pre><code><span><span class="co">## 1 record(s) had residence updated to the most recent vaccination residence.</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixed_result</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span>, caption <span class="op">=</span> <span class="st">"Resultado con fix_residence = TRUE"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Resultado con fix_residence = TRUE</caption>
+<thead><tr class="header">
+<th align="left">ADM1_residence</th>
+<th align="left">indicator</th>
+<th align="right">num</th>
+<th align="right">denom</th>
+<th align="right">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="left">complete</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">100</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_2</td>
+<td align="left">complete</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">100</td>
+</tr>
+</tbody>
+</table>
+<p>Con <code>fix_residence = FALSE</code>, las dos dosis de
+<code>ID 1</code> permanecen divididas entre <code>ADM1_1</code> y
+<code>ADM1_2</code>, por lo que <code><a href="../../reference/nod_dropout.html">nod_dropout()</a></code> reporta
+incorrectamente un abandono en ambos grupos, y advierte que la
+inconsistencia de residencia no fue corregida:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">unfixed_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_dropout.html">nod_dropout</a></span><span class="op">(</span></span>
+<span>  data.EIR <span class="op">=</span> <span class="va">residence_example</span>,</span>
+<span>  vaccine_init <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
+<span>  vaccine_end <span class="op">=</span> <span class="st">"DTP3"</span>,</span>
+<span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
+<span>  fix_residence <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in .validate_residence(data.EIR): 1 ID(s) have inconsistent</span></span>
+<span><span class="co">## ADM1_residence/ADM2_residence across records, meaning residence is not updated</span></span>
+<span><span class="co">## to the person's most recent residence.</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in nod_dropout(data.EIR = residence_example, vaccine_init = "DTP1", :</span></span>
+<span><span class="co">## Residence inconsistencies were not corrected (fix_residence = FALSE). Please</span></span>
+<span><span class="co">## resolve them manually before trusting nod_dropout results, or set fix_residence</span></span>
+<span><span class="co">## = TRUE.</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">unfixed_result</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span>, caption <span class="op">=</span> <span class="st">"Resultado con fix_residence = FALSE"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>Resultado con fix_residence = FALSE</caption>
+<thead><tr class="header">
+<th align="left">ADM1_residence</th>
+<th align="left">indicator</th>
+<th align="right">num</th>
+<th align="right">denom</th>
+<th align="right">percent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="left">complete</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">ADM1_1</td>
+<td align="left">dropout</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
 <p>Esta salida puede pasarse directamente a la función
 <code><a href="../../reference/nod_barplot.html">nod_barplot()</a></code> como se muestra a continuación.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ejecuta la función nod_barplot</span></span>
 <span><span class="va">example_dropout_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_barplot.html">nod_barplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">example_dropout</span>, order<span class="op">=</span><span class="st">"alpha"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#mostrar el gráfico</span></span>
 <span><span class="va">example_dropout_plot</span></span></code></pre></div>
 <p><img src="nominal_dropout_es_files/figure-html/nominal_dropout_plot-1.png" class="r-plt" alt="" width="700"></p>
-</div>
 <div class="section level5">
 <h5 id="parámetros-aceptados-1">Parámetros aceptados<a class="anchor" aria-label="anchor" href="#par%C3%A1metros-aceptados-1"></a>
 </h5>
