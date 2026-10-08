@@ -31,7 +31,7 @@
 #' @keywords internal
 #' @noRd
 .validate_logical <- function(value, value_name) {
-  if(!is.logical(value) | is.na(value)) {
+  if(!is.logical(value) || length(value) != 1 || is.na(value)) {
     stop(paste0("Error: ", value_name, " should be a logical value."))
   }
 }
@@ -351,7 +351,7 @@
   ## class check
   if (!inherits(date_var, "Date")) {
     stop(
-      paste0("Error: `%s` must be of class Date (got <%s>).",
+      sprintf("Error: `%s` must be of class Date (got <%s>).",
               param_name, paste(class(date_var), collapse = ", ")),
       call. = FALSE
     )
