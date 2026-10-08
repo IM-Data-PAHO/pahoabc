@@ -75,3 +75,54 @@
 
   return(converted)
 }
+
+#' Classify each EIR record as TIMELY, UNTIMELY or DATE_MISSING according to the timeliness window in data.schedule, and compute its days_outside_range.
+#'
+#' NOTE: Does not validate its inputs (it only warns about negative ages at vaccination). Callers must validate data.EIR, data.schedule, vaccines and birth_cohorts before calling it.
+#'
+#' @import dplyr
+#' @import lubridate
+#'
+#' @keywords internal
+#' @noRd
+.vt_classify <- function(data.EIR, data.schedule, vaccines = NULL, birth_cohorts = NULL) {
+
+  # Checks if the birth_cohorts variable is used
+  if(!is.null(birth_cohorts)) {
+    data.EIR <- data.EIR %>%
+      filter(year(date_birth) %in% birth_cohorts)
+  }
+
+  # determine doses to evaluate
+  doses_to_use <- data.schedule %>%
+    pull(dose) %>%
+    unique()
+  if(!is.null(vaccines)) {
+    doses_to_use <- vaccines
+  }
+
+  # prepare EIR with age at vaccination
+  prepare_EIR <- data.EIR %>%
+    filter(dose %in% doses_to_use) %>%
+    mutate(age_at_vax = as.numeric(date_vax - date_birth))
+
+  # Warns if any records were vaccinated before birth (points to dcc_ module)
+  .validate_age_at_vax(prepare_EIR)
+
+  classified <- prepare_EIR %>%
+    left_join(data.schedule, by = "dose") %>%
+    # Clasify timely, untimely and date missing
+    mutate(timeliness = case_when(
+      is.na(date_vax) | is.na(date_birth) ~ "DATE_MISSING",
+      age_at_vax < age_schedule_low | age_at_vax > age_schedule_high ~ "UNTIMELY",
+      TRUE ~ "TIMELY"
+    )) %>%
+    # Days outside the timeliness window: negative if before age_schedule_low,
+    # positive if after age_schedule_high, NA for TIMELY and DATE_MISSING records
+    mutate(days_outside_range = case_when(
+      age_at_vax < age_schedule_low ~ age_at_vax - age_schedule_low,
+      age_at_vax > age_schedule_high ~ age_at_vax - age_schedule_high
+    ))
+
+  return(classified)
+}

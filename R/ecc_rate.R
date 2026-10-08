@@ -1,5 +1,7 @@
 #' (E)ligibility (C)onsistency (C)omparison Rate
 #'
+#' NOTE: Not exported. The eligibility criteria are currently being redefined, so this function should not be used for the time being.
+#'
 #' This function calculates the rate of eligibility consistency between the age at vaccination (\code{date_vax - date_birth}) and the expected age window defined in the vaccination schedule (\code{age_schedule_low}, \code{age_schedule_high}), further disaggregating by geographic level, using data from the electronic immunization registry (EIR).
 #'
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
@@ -13,7 +15,8 @@
 #' @import dplyr
 #' @import lubridate
 #'
-#' @export
+#' @keywords internal
+#' @noRd
 ecc_rate <- function(data.EIR, data.schedule, geo_level = "ADM0", vaccines = NULL, birth_cohorts = NULL) {
 
   # validations

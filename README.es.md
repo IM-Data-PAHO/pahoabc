@@ -36,8 +36,8 @@ Actualmente, PAHOabc contiene seis módulos principales. Siga los enlaces a cont
 5. [**Comparación de consistencia de fechas**](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.html)  
    Identifica y cuantifica inconsistencias lógicas entre cualquier par de variables de fecha en el RNVe (p. ej., fecha de vacunación anterior a la fecha de nacimiento). Ayuda a detectar errores de captura y problemas de vinculación de registros antes de los análisis posteriores.
 
-6. [**Comparación de consistencia de elegibilidad**](https://im-data-paho.github.io/pahoabc/articles/es/eligibility_consistency_comparison_es.html)  
-   Identifica y cuantifica si los eventos de vacunación ocurrieron dentro de la ventana de edad definida por el esquema nacional de vacunación. Ayuda a detectar dosis inelegibles administradas demasiado temprano o demasiado tarde, señalando posibles problemas de oportunidad en la prestación del servicio.
+6. [**Oportunidad de vacunación**](https://im-data-paho.github.io/pahoabc/reference/index.html#vaccination-timeliness)  
+   Analiza la oportunidad de vacunación de la población, es decir, el tiempo que transcurre entre la edad de elegibilidad para cada dosis y su administración, usando datos nominales del registro electrónico de vacunación. Vacunar a tiempo, y no solo completar el esquema, es clave para proteger a cada individuo antes de que alcance el periodo de mayor riesgo de la enfermedad. Además, conocer la oportunidad de vacunación nos permite entender las coberturas y su impacto en la epidemiología de la enfermedad, monitorear la cadena de suministro de vacunas e insumos, pesquisar problemas de acceso o de disposición a vacunar de ciertas comunidades y, a través de acciones a distintos niveles, prevenir futuros abandonos.
 
 Cada módulo funciona con los conjuntos de datos de ejemplo incluidos en el paquete. Estos datos facilitan probar las funciones y sirven de referencia al preparar sus propios datos. Conozca más sobre estos conjuntos de datos de ejemplo [en esta viñeta](https://im-data-paho.github.io/pahoabc/articles/es/example_datasets_es.html).
 

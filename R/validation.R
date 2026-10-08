@@ -223,6 +223,8 @@
 
 #' Validate input data to ecc_barplot.
 #'
+#' NOTE: The eligibility criteria are currently being redefined. Review the expected columns once ecc_rate is redefined, as its output structure may change.
+#'
 #' @keywords internal
 #' @noRd
 .validate_ecc_barplot_data <- function(data) {
@@ -236,6 +238,24 @@
 
   if(!all(minimum_columns %in% names(data))) {
     stop("Error: data should be the output from ecc_rate")
+  }
+}
+
+#' Validate input data to vt_barplot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_vt_barplot_data <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  minimum_columns <- c(
+    "timeliness", "n", "total", "rate"
+  )
+
+  if(!all(minimum_columns %in% names(data))) {
+    stop("Error: data should be the output from vt_rate")
   }
 }
 
@@ -338,6 +358,36 @@
   }
 
   invisible(TRUE)  # silent success
+}
+
+#' Validate day_groups bins.
+#'
+#' @keywords internal
+#' @noRd
+.validate_day_groups <- function(day_groups) {
+  if(!is.list(day_groups) || length(day_groups) == 0 ||
+     !all(sapply(day_groups, function(g) is.numeric(g) && length(g) == 2 && !anyNA(g)))) {
+    stop("Error: day_groups should be a list of numeric vectors of length 2, e.g. list(c(0, 10), c(10, 20)).")
+  }
+
+  lowers <- sapply(day_groups, function(g) g[1])
+  uppers <- sapply(day_groups, function(g) g[2])
+
+  if(lowers[1] != 0) {
+    stop("Error: The first bin in day_groups should start at 0.")
+  }
+
+  if(any(lowers >= uppers)) {
+    stop("Error: Each bin in day_groups should have its lower value smaller than its upper value.")
+  }
+
+  # Make sure the bins are contigous (the end of one has to be the start of the next)
+  # NOTES:
+  #   1. uppers[-length(uppers)] keeps bins 1 to n-1
+  #   2. lowers[-1] keeps bins 2 to n
+  if(any(uppers[-length(uppers)] != lowers[-1])) {
+    stop("Error: Bins in day_groups should be contiguous: each bin should start where the previous one ends.")
+  }
 }
 
 #' Validate data.EIR structure and (optionally) schedule compatibility.

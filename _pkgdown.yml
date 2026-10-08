@@ -24,8 +24,6 @@ navbar:
         href: articles/en/birth_cohort_coverage_en.html
       - text: Date Consistency Comparison
         href: articles/en/date_consistency_comparison_en.html
-      - text: Eligibility Consistency Comparison
-        href: articles/en/eligibility_consistency_comparison_en.html
       - text: -------
       - text: Other guides
       - text: Using our Example Datasets
@@ -45,13 +43,13 @@ reference:
       - dcc_inconsistent
       - dcc_inconsistent_plot
 
-  - title: Eligibility Consistency Comparison
-    desc: Functions for identifying and visualizing eligibility inconsistencies (age at vaccination vs. scheduled age window) in the EIR.
+  - title: Vaccination Timeliness
+    desc: Functions for calculating and visualizing vaccination timeliness in the EIR.
     contents:
-      - ecc_rate
-      - ecc_barplot
-      - ecc_inconsistent
-      - ecc_inconsistent_plot
+      - vt_rate
+      - vt_barplot
+      - vt_inconsistent
+      - vt_inconsistent_plot
 
   - title: Nominal Dropout Rate
     desc: Functions for calculating and visualizing nominal dropout rate.

@@ -1,5 +1,7 @@
 #' (E)ligibility (C)onsistency (C)omparison Inconsistent Records Plot
 #'
+#' NOTE: Not exported. The eligibility criteria are currently being redefined, so this function should not be used for the time being.
+#'
 #' Generates a diverging lollipop plot of ineligible records by the magnitude of days outside the scheduled age window, binned into customizable intervals with a final open-ended category. The same magnitude bins are shared by both directions on the x axis: records vaccinated too early (before \code{age_schedule_low}) are plotted below zero, and records vaccinated too late (after \code{age_schedule_high}) are plotted above zero.
 #'
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
@@ -12,7 +14,8 @@
 #' @import dplyr
 #' @import ggplot2
 #'
-#' @export
+#' @keywords internal
+#' @noRd
 ecc_inconsistent_plot <- function(
     data.EIR,
     data.schedule,

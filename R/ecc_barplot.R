@@ -1,5 +1,7 @@
 #' (E)ligibility (C)onsistency (C)omparison Barplot
 #'
+#' NOTE: Not exported. The eligibility criteria are currently being redefined, so this function should not be used for the time being.
+#'
 #' Generates a bar plot of eligibility rates (doses administered within vs outside the scheduled age window), grouped by geographic area and colored by eligibility result. If \code{data} is disaggregated by \code{dose} (i.e. \code{ecc_rate} was run with \code{vaccines} specified), the plot is faceted by dose.
 #'
 #' @param data The output from the \code{pahoabc::ecc_rate} function.
@@ -11,7 +13,8 @@
 #' @import dplyr
 #' @import ggplot2
 #'
-#' @export
+#' @keywords internal
+#' @noRd
 ecc_barplot <- function(data, within_ADM1 = NULL, plot_missing = TRUE) {
 
   .validate_ecc_barplot_data(data)

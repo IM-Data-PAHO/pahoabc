@@ -1,5 +1,7 @@
 #' (E)ligibility (C)onsistency (C)omparison Inconsistent Records
 #'
+#' NOTE: Not exported. The eligibility criteria are currently being redefined, so this function should not be used for the time being.
+#'
 #' This function returns a record-level table of all ineligible and "date missing" vaccination records, including the number of days outside the scheduled age window defined in the vaccination schedule (\code{age_schedule_low}, \code{age_schedule_high}).
 #'
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
@@ -12,7 +14,8 @@
 #' @import dplyr
 #' @import lubridate
 #'
-#' @export
+#' @keywords internal
+#' @noRd
 ecc_inconsistent <- function(data.EIR, data.schedule, vaccines = NULL, birth_cohorts = NULL) {
 
   # validations
