@@ -40,11 +40,8 @@ Therefore, **the objective of this indicator** is to analyze vaccination timelin
 
 > **Note**
 >
-> All functions used for vaccination timeliness analyses within PAHOabc begin with the `vt_` prefix.
-
-> **Note**
->
-> This vignette only covers the **non-probabilistic analysis** of vaccination timeliness. The **probabilistic analysis** will be added later.
+> 1. All functions used for vaccination timeliness analyses within PAHOabc begin with the `vt_` prefix.
+> 2. This vignette only covers the **non-probabilistic analysis** of vaccination timeliness. The **probabilistic analysis** will be added later.
 
 ## Non-probabilistic Analysis
 

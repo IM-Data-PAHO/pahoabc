@@ -40,11 +40,8 @@ Por tanto, **el objetivo de este indicador** es analizar la oportunidad de vacun
 
 > **Nota**
 >
-> Todas las funciones utilizadas para el análisis de oportunidad de vacunación dentro de PAHOabc comienzan con el prefijo `vt_` (del inglés *vaccination timeliness*).
-
-> **Nota**
->
-> Esta viñeta cubre solamente el **análisis no probabilístico** de la oportunidad de vacunación. Posteriormente se agregará el **análisis probabilístico**.
+> 1. Todas las funciones utilizadas para el análisis de oportunidad de vacunación dentro de PAHOabc comienzan con el prefijo `vt_` (del inglés *vaccination timeliness*).
+> 2. Esta viñeta cubre solamente el **análisis no probabilístico** de la oportunidad de vacunación. Posteriormente se agregará el **análisis probabilístico**.
 
 ## Análisis no probabilístico
 
