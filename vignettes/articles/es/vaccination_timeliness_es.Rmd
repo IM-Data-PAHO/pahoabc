@@ -25,11 +25,11 @@ opts_chunk$set(warning = FALSE)
 
 # Fundamento
 
-El calendario de vacunación de un país se establece considerando las características de cada vacuna, la historia natural de la enfermedad que se busca prevenir, las características de la persona que la va a recibir, el acceso de la población a los vacunatorios y su disposición a acudir para ser vacunada (o para vacunar a sus hijos).
+El calendario de vacunación de un país se establece considerando las características de cada vacuna, la historia natural de la enfermedad que se busca prevenir, las características de la persona que la va a recibir, el acceso de la población a los vacunatorios y su disposición a vacunarse (o a vacunar a sus hijos).
 
 Con la vacunación se intenta disminuir la mayor cantidad posible de carga de enfermedad, adelantándose al periodo de la vida en que el riesgo de gravedad y muerte por dicha enfermedad es mayor. Al mismo tiempo, el calendario debe considerar la capacidad de la vacuna de generar inmunidad y la duración de esta, condicionada (sobre todo en el primer año de vida) por la madurez del sistema inmunológico. Estos factores determinan, por ejemplo, la necesidad de más de una dosis, los refuerzos a lo largo del curso de vida, la compatibilidad entre vacunas administradas simultáneamente y los tiempos mínimos entre una dosis y otra.
 
-Para obtener el mayor beneficio del calendario establecido por las autoridades sanitarias, el cumplimiento por parte de la población es fundamental, no solo completando el esquema, sino haciéndolo de manera **oportuna**. Conocer la oportunidad de vacunación, es decir, cuán ajustada al calendario se administran las vacunas, permite:
+Para obtener el mayor beneficio del calendario establecido por las autoridades sanitarias, el cumplimiento por parte de la población es fundamental, no solo completando el esquema, sino haciéndolo de manera **oportuna**. Conocer la oportunidad de vacunación, es decir, cuán ajustadas al calendario se administran las vacunas, permite:
 
 - entender las coberturas y su impacto en la epidemiología de la enfermedad,
 - monitorear la cadena de suministro de vacunas e insumos,
@@ -83,22 +83,14 @@ Antes de realizar el análisis, el país debe definir:
 El indicador de vacunación oportuna se calcula como:
 
 $$
-\text{Vacunación oportuna (\%)} = \frac{\text{Dosis de la vacuna X administradas de forma oportuna}}{\text{Total de dosis de la vacuna X administradas en un periodo y lugar determinado}} \times 100
+\text{Vacunación oportuna (\%)} = \frac{\text{Dosis de la vacuna X administradas de forma oportuna}}{\text{Total de dosis de la vacuna X administradas en un periodo y lugar determinados}} \times 100
 $$
 
 La distribución de las dosis no oportunas por rango de tiempo se calcula como:
 
 $$
-\text{Dosis no oportunas en el rango A (\%)} = \frac{\text{Dosis no oportunas en el rango A}}{\text{Total de dosis no oportunas en un periodo y lugar determinado}} \times 100
+\text{Dosis no oportunas en el rango A (\%)} = \frac{\text{Dosis no oportunas en el rango A}}{\text{Total de dosis no oportunas en un periodo y lugar determinados}} \times 100
 $$
-
-> **Nota**
->
-> En PAHOabc, los registros a los que les falta la fecha de nacimiento o la fecha de vacunación se clasifican en una categoría aparte (`DATE_MISSING`) y se incluyen en el denominador del indicador, de modo que las tres categorías suman 100%. El gráfico de distribución por rango de tiempo muestra el **número** de dosis no oportunas en cada rango.
-
-> **Advertencia**
->
-> Las funciones `vt_` calculan la edad al momento de la vacunación como `date_vax - date_birth`. Si `data.EIR` contiene registros donde `date_vax` ocurre antes que `date_birth` (es decir, una edad de vacunación negativa), esto señala un error de **consistencia de fechas**. Cuando esto ocurre, las funciones `vt_` emiten una advertencia que remite al [módulo `dcc_` de comparación de consistencia de fechas](date_consistency_comparison_es.html) para identificar y resolver esos registros primero.
 
 # Glosario
 
@@ -146,6 +138,11 @@ pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacun
 - `ADM1_residence` / `ADM2_residence`: Primer y segundo nivel administrativo geográfico de residencia.
 - Dosis (`dose`): Variable combinada que representa el tipo de vacuna y su número de dosis correspondiente (p. ej., DTP1).
 
+> **Advertencia**
+>
+> 1. Las funciones de este módulo calculan la edad al momento de la vacunación como `date_vax - date_birth`. Si `data.EIR` contiene registros donde `date_vax` ocurre antes que `date_birth` (es decir, una edad de vacunación negativa), esto señala un error de **consistencia de fechas**. Cuando esto ocurre, las funciones `vt_` emiten una advertencia que remite al [módulo de comparación de consistencia de fechas](date_consistency_comparison_es.html) para identificar y resolver esos registros primero.
+> 2. Las funciones de este módulo cuentan registros de vacunación, no individuos. Si `data.EIR` contiene registros duplicados (el mismo `ID` y `dose` registrados más de una vez), ese individuo se cuenta más de una vez tanto en el numerador como en el denominador. PAHOabc no elimina duplicados, por lo que usted debe eliminarlos antes de realizar el análisis. Tenga en cuenta que queda a su criterio decidir qué registro conservar para cada `ID` y `dose` (p. ej., el de fecha de vacunación más temprana).
+
 ### Esquema de vacunación
 
 El conjunto de datos `pahoabc::pahoabc.schedule` define el esquema nacional de vacunación, indicando para cada dosis la edad de administración y el periodo de oportunidad, en días.
@@ -178,7 +175,8 @@ Las funciones correspondientes al análisis no probabilístico son:
 
 > **Nota**
 >
-> En los ejemplos a continuación se analiza la cohorte de nacimiento 2022. Los datos de ejemplo incluyen vacunaciones hasta el 31 de diciembre de 2023, por lo que esta cohorte ha completado el periodo de oportunidad de las dosis administradas durante el primer año de edad.
+> 1. En los ejemplos a continuación se analiza la cohorte de nacimiento 2022. Los datos de ejemplo incluyen vacunaciones hasta el 31 de diciembre de 2023, por lo que esta cohorte ha completado el periodo de oportunidad de las dosis administradas durante el primer año de edad.
+> 2. Al filtrar por `birth_cohorts` se excluyen los registros sin fecha de nacimiento, por lo que en ese caso `DATE_MISSING` solo cuenta los registros sin fecha de vacunación.
 
 ### Paso 1 — Calcular el indicador con `vt_rate()`
 
@@ -240,6 +238,10 @@ vt_barplot(data = rate_by_dose_df)
 #### Interpretación
 
 Cada barra representa una unidad geográfica y se divide en segmentos: `TIMELY` (azul), `UNTIMELY` (naranja) y `DATE_MISSING` (gris). Las barras con una mayor proporción en naranja indican unidades donde una parte importante de las dosis se administra fuera del periodo de oportunidad, lo que amerita investigar posibles problemas de acceso, de disposición a vacunar o de abastecimiento en esas unidades.
+
+> **Nota**
+>
+> No aparece el segmento gris porque el filtro por la cohorte 2022 excluyó los registros sin fecha de nacimiento, y ningún registro de esta cohorte carece de fecha de vacunación.
 
 ### Paso 3 — Inspeccionar los registros no oportunos con `vt_inconsistent()`
 
@@ -303,9 +305,9 @@ vt_inconsistent_plot(
 - `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
 - `vaccines`: Vector de caracteres con las dosis a incluir, agregando una columna por cada `dose`. El valor predeterminado `NULL` suma los resultados de todas las dosis en una única columna.
 - `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a incluir. El valor predeterminado `NULL` usa todas las cohortes disponibles.
-- `day_groups`: Define las categorías para el eje horizontal. Es un lista de pares numéricos `c(inferior, superior)` que definen los límites inferior y superior para cada categoría en días. Las categorías deben comenzar en 0 y ser contiguas (cada una comienza donde termina la anterior). La última categoría siempre se extiende hasta el valor máximo de los datos y se etiqueta como `"X+"`. El valor predeterminado es una agrupación de 10 en 10 días desde 0 hasta 90+ días.
+- `day_groups`: Define las categorías para el eje horizontal. Es una lista de pares numéricos `c(inferior, superior)` que definen los límites inferior y superior para cada categoría en días. Las categorías deben comenzar en 0 y ser contiguas (cada una comienza donde termina la anterior). La última categoría siempre se extiende hasta el valor máximo de los datos y se etiqueta como `"X+"`. El valor predeterminado es una agrupación de 10 en 10 días desde 0 hasta 90+ días.
 
-Las categorías de tiempo las define cada país. Por ejemplo, para usar las categorías de 0 a 40 días, 40 a 49 días, 50 a 59 días, 60 a 89 días y 90 días o más:
+Las categorías de tiempo las define cada país. Por ejemplo, para usar las categorías de 0 a 39 días, 40 a 49 días, 50 a 59 días, 60 a 89 días y 90 días o más:
 
 ```{r vt-inconsistent-plot-custom, message=FALSE, fig.width=12, fig.height=6}
 vt_inconsistent_plot(
@@ -319,7 +321,7 @@ vt_inconsistent_plot(
 
 #### Interpretación
 
-La fila superior representa las dosis administradas después del periodo de oportunidad (demora), mientras que la fila inferior muestra las dosis administradas antes de la edad mínima. Como cada fila tiene su propia escala, compare solamente entre columnas que pertenezcan a una misma fila, y use el resumen en el pie del gráfico para comparar entre filas. La distribución de los datos le permitirá evaluar en dónde se concentran las demoras, por ejemplo: ¿Son demoras de solamente algunos días o la mayoría se concentra en demoras de varios meses? Así mismo, las dosis administradas antes de la edad mínima pueden indicar errores de registro o problemas en la aplicación del calendario.
+La fila superior representa las dosis administradas después del periodo de oportunidad (demora), mientras que la fila inferior muestra las dosis administradas antes de la edad mínima. Como cada fila tiene su propia escala, compare solamente entre columnas que pertenezcan a una misma fila, y use el resumen en el pie del gráfico para comparar entre filas. La distribución de los datos le permitirá evaluar en dónde se concentran las demoras, por ejemplo: ¿Son demoras de solamente algunos días o la mayoría se concentra en demoras de varios meses? Asimismo, las dosis administradas antes de la edad mínima pueden indicar errores de registro o problemas en la aplicación del calendario.
 
 # Resumen
 

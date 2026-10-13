@@ -22,7 +22,7 @@ vt_inconsistent_plot(
 
 \item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) to include in the plot. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.}
 
-\item{day_groups}{List of numeric vectors of length 2. Each element is a \code{c(lower, upper)} pair defining a magnitude bin, shared by both the "before" and "after" direction. Bins must start at 0 and be contiguous (each bin starts where the previous one ends). The last bin is extended to \code{Inf}. Default is 10-day bins from 0 to 100.}
+\item{day_groups}{List of numeric vectors of length 2. Each element is a \code{c(lower, upper)} pair defining each bin's lower and upper limit in days. Bins must start at 0 and be contiguous (each bin starts where the previous one ends). The last bin is extended to \code{Inf}, so its upper value is ignored (e.g. \code{c(90, 120)} and \code{c(90, 100)} both produce a "90+" bin). Default is 10-day bins from 0 to 100.}
 }
 \value{
 A ggplot object representing the lollipop plot.

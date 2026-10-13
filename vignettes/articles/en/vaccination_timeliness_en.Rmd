@@ -25,7 +25,7 @@ opts_chunk$set(warning = FALSE)
 
 # Rationale
 
-A country's immunization schedule is established taking into account the characteristics of each vaccine, the natural history of the disease it aims to prevent, the characteristics of the person who will receive it, the population's access to vaccination sites, and their willingness to attend to be vaccinated (or to have their children vaccinated).
+A country's immunization schedule is established taking into account the characteristics of each vaccine, the natural history of the disease it aims to prevent, the characteristics of the person who will receive it, the population's access to vaccination sites, and their willingness to get vaccinated (or to have their children vaccinated).
 
 Vaccination aims to reduce the greatest possible burden of disease by acting ahead of the period of life in which the risk of severe illness and death from that disease is highest. At the same time, the schedule must consider the vaccine's capacity to generate immunity and the duration of that immunity, which is conditioned (especially during the first year of life) by the maturity of the immune system. These factors determine, for example, the need for more than one dose, booster doses throughout the life course, the compatibility of vaccines administered simultaneously, and the minimum intervals between doses.
 
@@ -92,14 +92,6 @@ $$
 \text{Untimely doses in range A (\%)} = \frac{\text{Untimely doses in range A}}{\text{Total untimely doses in a given period and place}} \times 100
 $$
 
-> **Note**
->
-> In PAHOabc, records missing the date of birth or the date of vaccination are classified into a separate category (`DATE_MISSING`) and are included in the denominator of the indicator, so that the three categories add up to 100%. The plot of the distribution by time range shows the **number** of untimely doses in each range.
-
-> **Warning**
->
-> The `vt_` functions calculate age at vaccination as `date_vax - date_birth`. If `data.EIR` contains records where `date_vax` occurs before `date_birth` (i.e., a negative age at vaccination), this points to a **date consistency** error. When this happens, `vt_` functions will emit a warning directing you to the [(D)ate (C)onsistency (C)omparison `dcc_` module](date_consistency_comparison_en.html) to identify and resolve those records first.
-
 # Glossary
 
 ## Political Geographic Boundaries
@@ -146,6 +138,11 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 - `ADM1_residence` / `ADM2_residence`: First and second geographic administrative levels of residence.
 - `dose`: Combined variable representing vaccine type and dose number (e.g., DTP1).
 
+> **Warning**
+>
+> 1. The functions in this module calculate age at vaccination as `date_vax - date_birth`. If `data.EIR` contains records where `date_vax` occurs before `date_birth` (i.e., a negative age at vaccination), this points to a **date consistency** error. When this happens, `vt_` functions will emit a warning directing you to the [Date Consistency Comparison module](date_consistency_comparison_en.html) to identify and resolve those records first.
+> 2. The functions in this module count vaccination records, not individuals. If `data.EIR` contains duplicate records (the same `ID` and `dose` registered more than once), that individual is counted more than once in both the numerator and the denominator. PAHOabc does not remove duplicates, so make sure to remove them before running the analysis. Note that it is up to you to decide which record to keep for each `ID` and `dose` (e.g., the one with the earliest `date_vax`).
+
 ### Vaccination Schedule
 
 The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing for each vaccine dose its age of administration and its timeliness window, in days.
@@ -178,7 +175,8 @@ The functions for the non-probabilistic analysis are:
 
 > **Note**
 >
-> The examples below analyze the 2022 birth cohort. The example data includes vaccinations up to December 31, 2023, so this cohort has completed the timeliness window of the doses administered during the first year of life.
+> 1. The examples below analyze the 2022 birth cohort. The example data includes vaccinations up to December 31, 2023, so this cohort has completed the timeliness window of the doses administered during the first year of life.
+> 2. Filtering by `birth_cohorts` excludes records with no date of birth, so in that case `DATE_MISSING` only counts records missing the date of vaccination.
 
 ### Step 1 — Compute the indicator with `vt_rate()`
 
@@ -240,6 +238,10 @@ vt_barplot(data = rate_by_dose_df)
 #### Interpretation
 
 Each bar represents a geographic unit and is divided into segments: `TIMELY` (blue), `UNTIMELY` (orange), and `DATE_MISSING` (grey). Bars with a larger orange share indicate units where a large share of doses are administered outside the timeliness window, a signal worth investigating for possible access, willingness to vaccinate, or supply issues in those units.
+
+> **Note**
+>
+> No grey segment appears because filtering by the 2022 cohort excluded records with no date of birth, and no records in this cohort are missing the date of vaccination.
 
 ### Step 3 — Inspect individual untimely records with `vt_inconsistent()`
 
