@@ -8,6 +8,7 @@ vt_inconsistent_plot(
   data.EIR,
   data.schedule,
   vaccines = NULL,
+  birth_cohorts = NULL,
   day_groups = list(c(0, 10), c(10, 20), c(20, 30), c(30, 40), c(40, 50), c(50, 60),
     c(60, 70), c(70, 80), c(80, 90), c(90, 100))
 )
@@ -17,13 +18,15 @@ vt_inconsistent_plot(
 
 \item{data.schedule}{Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
 
-\item{vaccines}{Character (optional). A character vector specifying the doses to include in the analysis, faceting the plot by \code{dose}. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together (no facet).}
+\item{vaccines}{Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together.}
+
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) to include in the plot. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.}
 
 \item{day_groups}{List of numeric vectors of length 2. Each element is a \code{c(lower, upper)} pair defining a magnitude bin, shared by both the "before" and "after" direction. Bins must start at 0 and be contiguous (each bin starts where the previous one ends). The last bin is extended to \code{Inf}. Default is 10-day bins from 0 to 100.}
 }
 \value{
-A ggplot object representing the diverging lollipop plot.
+A ggplot object representing the lollipop plot.
 }
 \description{
-Generates a diverging lollipop plot of untimely records by the absolute value of days outside the timeliness window, binned into customizable intervals with a final open-ended category. The same magnitude bins are shared by both directions on the x axis: records vaccinated too early (before \code{age_schedule_low}) are plotted below zero, and records vaccinated too late (after \code{age_schedule_high}) are plotted above zero.
+Generates a lollipop plot of untimely records by the absolute value of days outside the timeliness window, binned into customizable intervals. Records vaccinated too late (after \code{age_schedule_high}) and too early (before \code{age_schedule_low}) are shown in separate rows.
 }

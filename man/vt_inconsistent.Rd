@@ -13,7 +13,7 @@ vt_inconsistent(data.EIR, data.schedule, vaccines = NULL, birth_cohorts = NULL)
 
 \item{vaccines}{Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included.}
 
-\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which inconsistent records should be returned. If \code{NULL} (default), all available cohorts are used.}
+\item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which inconsistent records should be returned. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.}
 }
 \value{
 A data frame containing the untimely and date-missing records, with \code{ID}, \code{dose}, \code{date_birth}, \code{date_vax}, age at vaccination in days, the timeliness window (\code{age_schedule_low}, \code{age_schedule_high}), and \code{days_outside_range}: the number of days outside that window, negative if vaccinated before \code{age_schedule_low} (\code{NA} when a date is missing).

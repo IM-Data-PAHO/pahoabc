@@ -1,13 +1,14 @@
 #' (V)accination (T)imeliness Inconsistent Records Plot
 #'
-#' Generates a diverging lollipop plot of untimely records by the absolute value of days outside the timeliness window, binned into customizable intervals with a final open-ended category. The same magnitude bins are shared by both directions on the x axis: records vaccinated too early (before \code{age_schedule_low}) are plotted below zero, and records vaccinated too late (after \code{age_schedule_high}) are plotted above zero.
+#' Generates a lollipop plot of untimely records by the absolute value of days outside the timeliness window, binned into customizable intervals. Records vaccinated too late (after \code{age_schedule_high}) and too early (before \code{age_schedule_low}) are shown in separate rows.
 #'
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
 #' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
-#' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis, faceting the plot by \code{dose}. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together (no facet).
+#' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together.
+#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) to include in the plot. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.
 #' @param day_groups List of numeric vectors of length 2. Each element is a \code{c(lower, upper)} pair defining a magnitude bin, shared by both the "before" and "after" direction. Bins must start at 0 and be contiguous (each bin starts where the previous one ends). The last bin is extended to \code{Inf}. Default is 10-day bins from 0 to 100.
 #'
-#' @return A ggplot object representing the diverging lollipop plot.
+#' @return A ggplot object representing the lollipop plot.
 #'
 #' @import dplyr
 #' @import ggplot2
@@ -17,6 +18,7 @@ vt_inconsistent_plot <- function(
     data.EIR,
     data.schedule,
     vaccines = NULL,
+    birth_cohorts = NULL,
     day_groups = list(
       c(0, 10), c(10, 20), c(20, 30), c(30, 40), c(40, 50),
       c(50, 60), c(60, 70), c(70, 80), c(80, 90), c(90, 100)
@@ -30,9 +32,10 @@ vt_inconsistent_plot <- function(
   .validate_date(data.EIR$date_vax, "date_vax")
   .validate_vaccines(vaccines, data.EIR, "data.EIR")
   .validate_vaccines(vaccines, data.schedule, "data.schedule")
+  .validate_numeric(birth_cohorts, "birth_cohorts", min_len = 1)
   .validate_day_groups(day_groups)
 
-  plot_data <- .vt_classify(data.EIR, data.schedule, vaccines)
+  plot_data <- .vt_classify(data.EIR, data.schedule, vaccines, birth_cohorts)
 
   n_missing <- sum(plot_data$timeliness == "DATE_MISSING")
 
@@ -67,32 +70,49 @@ vt_inconsistent_plot <- function(
     ) %>%
     # counts records per direction and bin (and dose, if vaccines is specified)
     count(direction, bin_label, across(all_of(dose_group))) %>%
-    # Show the counts as negative when administered before the eligibility window, positive when after
-    mutate(n_signed = ifelse(direction == "BEFORE", -n, n))
+    # shows "after" (late) above "before" (early) in the facet rows
+    mutate(direction = factor(direction, levels = c("AFTER", "BEFORE")))
+
+  # total untimely records per direction, for the caption
+  n_before <- sum(plot_counts$n[plot_counts$direction == "BEFORE"])
+  n_after <- sum(plot_counts$n[plot_counts$direction == "AFTER"])
 
   # do plot
-  p <- ggplot(plot_counts, aes(x = bin_label, y = n_signed, color = direction)) +
-    geom_segment(aes(x = bin_label, xend = bin_label, y = 0, yend = n_signed), linewidth = 1) +
+  p <- ggplot(plot_counts, aes(x = bin_label, y = n, color = direction)) +
+    geom_segment(aes(x = bin_label, xend = bin_label, y = 0, yend = n), linewidth = 1) +
     geom_point(size = 3) +
-    geom_hline(yintercept = 0, color = "black") +
     labs(
       title = "Untimely records by day difference outside the timeliness window",
-      subtitle = "Below zero: vaccinated before age_schedule_low. Above zero: vaccinated after age_schedule_high.",
-      x = "Days outside timeliness window (magnitude)",
+      x = "Days outside timeliness window (absolute value)",
       y = "Number of records",
-      caption = paste0("Number of records with at least one date missing: ", n_missing)
+      caption = paste0(
+        "Vaccinated before the timeliness window: ", n_before,
+        ". Vaccinated after the timeliness window: ", n_after, ".\n",
+        "Number of records with at least one date missing: ", n_missing
+      )
     ) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.05)), limits = c(0, NA)) +
     scale_color_manual(values = c("BEFORE" = "#9cdbf4", "AFTER" = "#fabf7b")) +
     theme_classic() +
     theme(
       axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
       panel.border = element_rect(fill = NA),
-      legend.title = element_blank()
+      # facet is already specifying the same thing the legend would
+      legend.position = "none"
     )
 
-  # facets by dose when vaccines is specified (also for a single dose, so its name is shown)
+  # NOTE: direction refers to whether its a positive value (days after
+  #       age_schedule_high) or a negative value (days before age_schedule_low)
+  direction_labels <- labeller(direction = c(
+    "AFTER" = "After age_schedule_high",
+    "BEFORE" = "Before age_schedule_low"
+  ))
   if(!is.null(vaccines)) {
-    p <- p + facet_wrap(~dose)
+    # facet both by direction and dose
+    p <- p + facet_grid(rows = vars(direction), cols = vars(dose), scales = "free_y", labeller = direction_labels)
+  } else {
+    # since all doses are pooled together, facet only by direction
+    p <- p + facet_grid(rows = vars(direction), scales = "free_y", labeller = direction_labels)
   }
 
   return(p)

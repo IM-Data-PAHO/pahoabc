@@ -6,7 +6,7 @@
 #' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
 #' @param geo_level Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis, disaggregating results by \code{dose}. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together (no \code{dose} column in the output).
-#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which the rate should be calculated. If \code{NULL} (default), all available cohorts are used.
+#' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which the rate should be calculated. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.
 #'
 #' @return A data frame with one row per \code{timeliness} category for the specified \code{geo_level}. Records are classified as \code{TIMELY} (administered within the timeliness window), \code{UNTIMELY} (administered outside it) or \code{DATE_MISSING} (missing \code{date_birth} or \code{date_vax}). Includes the number of records for each category (\code{n}), a corresponding \code{rate}, and a \code{total}.
 #'
