@@ -1,0 +1,326 @@
+---
+title: "Vaccination Timeliness"
+author: "PAHO/CIM"
+date: "October 8, 2026"
+output:
+  html_document:
+    self_contained: true
+    theme: cosmo
+    highlight: tango
+    code_folding: show
+    code_download: true
+    toc: true
+    toc_depth: 2
+---
+
+<a href="../es/vaccination_timeliness_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
+
+```{r setup, include = FALSE, message = FALSE, warning = FALSE}
+library(pahoabc)
+library(dplyr)
+library(knitr)
+
+opts_chunk$set(warning = FALSE)
+```
+
+# Rationale
+
+A country's immunization schedule is established taking into account the characteristics of each vaccine, the natural history of the disease it aims to prevent, the characteristics of the person who will receive it, the population's access to vaccination sites, and their willingness to attend to be vaccinated (or to have their children vaccinated).
+
+Vaccination aims to reduce the greatest possible burden of disease by acting ahead of the period of life in which the risk of severe illness and death from that disease is highest. At the same time, the schedule must consider the vaccine's capacity to generate immunity and the duration of that immunity, which is conditioned (especially during the first year of life) by the maturity of the immune system. These factors determine, for example, the need for more than one dose, booster doses throughout the life course, the compatibility of vaccines administered simultaneously, and the minimum intervals between doses.
+
+To obtain the greatest benefit from the schedule established by the health authorities, compliance by the population is essential, not only by completing the schedule, but by doing so in a **timely** manner. Knowing vaccination timeliness, that is, how closely vaccines are administered according to the schedule, allows us to:
+
+- understand coverage and its impact on the epidemiology of the disease,
+- monitor the supply chain of vaccines and supplies,
+- investigate access problems or willingness to vaccinate in certain communities, and
+- through actions at different levels, prevent future dropouts.
+
+Therefore, **the objective of this indicator** is to analyze vaccination timeliness in the population, that is, the time that elapses between the age of eligibility for a given vaccine dose and the occurrence of the vaccination, using nominal data from Electronic Immunization Registries (EIR).
+
+> **Note**
+>
+> All functions used for vaccination timeliness analyses within PAHOabc begin with the `vt_` prefix.
+
+> **Note**
+>
+> This vignette only covers the **non-probabilistic analysis** of vaccination timeliness. The **probabilistic analysis** will be added later.
+
+## Non-probabilistic Analysis
+
+The non-probabilistic analysis measures the time that elapses between the age indicated for a given dose and its administration. It is based on the database of vaccinated individuals in the EIR, so it is measured retrospectively over the total number of individuals who received the dose. It estimates the proportion of individuals who receive the vaccine in a timely manner and the proportion who receive it in an untimely manner. Those who did not receive the vaccine in a timely manner are then stratified according to the time elapsed outside the timeliness window.
+
+### Operational Definitions
+
+- **Timely vaccination**: vaccination administered within the time range defined by the country as the timeliness standard for each dose of a vaccine.
+- **Percentage of timely vaccination**: proportion of the population that received a dose within its timeliness window, out of the total population that received that dose.
+- **Distribution by time elapsed (delay)**: stratification of the individuals who did not receive the dose in a timely manner, distributed into time categories defined by the country.
+
+### Required Definitions
+
+Before carrying out the analysis, the country must define:
+
+- **Vaccines to evaluate**: each vaccine dose is analyzed individually. An aggregated analysis of several doses can then be carried out.
+- **Timeliness per vaccine**: for each dose, the period considered timely is defined, with a minimum and a maximum age, according to the country's guidelines. In PAHOabc, this period corresponds to the `age_schedule_low` and `age_schedule_high` columns of the vaccination schedule.
+- **Time categories**: ranges of days used to distribute untimely vaccinations. The country defines the ranges, although the package includes predefined ranges.
+- **Year to evaluate**: it is up to the country to analyze by birth cohort or by calendar year. The `vt_` functions allow filtering by birth cohort with the `birth_cohorts` parameter.
+- **Level of geographic disaggregation**: national (ADM0), first subnational level (ADM1), or second subnational level (ADM2).
+- **Minimum observation period**: each individual included in the analysis must have at least completed the timeliness window of the dose being evaluated.
+
+> **Warning**
+>
+> PAHOabc does not verify the minimum observation period. If birth cohorts that have not yet completed the timeliness window by the date the data were extracted are included, only those already vaccinated will appear in the EIR, which overestimates timeliness. Choose `birth_cohorts` that have had enough time to complete the timeliness window of the doses analyzed.
+
+### Characteristics of the Analysis
+
+- It is a cross-sectional analysis: the number of days between the date of birth and the date of administration of the dose is measured and compared with the timeliness standard defined by the country. If the age at vaccination falls within the timeliness window, the dose is classified as timely; if it falls before or after it, it is classified as untimely.
+- It is independent of the size of the target population: the denominator is all individuals who received the dose being evaluated.
+- It requires the vaccination schedule with the specification of the timeliness standard.
+- It uses the place of **residence** for subnational analyses.
+
+### Calculation of the Indicator
+
+The timely vaccination indicator is calculated as:
+
+$$
+\text{Timely vaccination (\%)} = \frac{\text{Doses of vaccine X administered in a timely manner}}{\text{Total doses of vaccine X administered in a given period and place}} \times 100
+$$
+
+The distribution of untimely doses by time range is calculated as:
+
+$$
+\text{Untimely doses in range A (\%)} = \frac{\text{Untimely doses in range A}}{\text{Total untimely doses in a given period and place}} \times 100
+$$
+
+> **Note**
+>
+> In PAHOabc, records missing the date of birth or the date of vaccination are classified into a separate category (`DATE_MISSING`) and are included in the denominator of the indicator, so that the three categories add up to 100%. The plot of the distribution by time range shows the **number** of untimely doses in each range.
+
+> **Warning**
+>
+> The `vt_` functions calculate age at vaccination as `date_vax - date_birth`. If `data.EIR` contains records where `date_vax` occurs before `date_birth` (i.e., a negative age at vaccination), this points to a **date consistency** error. When this happens, `vt_` functions will emit a warning directing you to the [(D)ate (C)onsistency (C)omparison `dcc_` module](date_consistency_comparison_en.html) to identify and resolve those records first.
+
+# Glossary
+
+## Political Geographic Boundaries
+
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+
+Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+
+1. ADM0: The country. This is the top-most administrative level.
+2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
+3. ADM2: The second geographic subdivision in the country. Each ADM1 contains several ADM2 subdivisions.
+
+## Timeliness Categories
+
+| Category | Meaning |
+|---|---|
+| `TIMELY` | The age at vaccination falls within `[age_schedule_low, age_schedule_high]`. |
+| `UNTIMELY` | The age at vaccination falls outside `[age_schedule_low, age_schedule_high]`, either before or after the timeliness window. |
+| `DATE_MISSING` | `date_vax` or `date_birth` is `NA`. |
+
+# Usage
+
+## Install Package
+
+```{r install_package, eval=FALSE}
+devtools::install_github("IM-Data-PAHO/pahoabc")
+```
+
+## Load Data
+
+The functions in this module require your **EIR dataset** and a **vaccination schedule** with the timeliness windows, both in the standard PAHOabc format.
+
+### EIR
+
+The `pahoabc::pahoabc.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an EIR. Each row corresponds to a single vaccination act for a person.
+
+```{r pahoabc-EIR, message=FALSE}
+pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+```
+
+- `ID`: Unique person identification number.
+- `date_birth`: Date of birth of person.
+- `date_vax`: Date of vaccination event.
+- `ADM1_residence` / `ADM2_residence`: First and second geographic administrative levels of residence.
+- `dose`: Combined variable representing vaccine type and dose number (e.g., DTP1).
+
+### Vaccination Schedule
+
+The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing for each vaccine dose its age of administration and its timeliness window, in days.
+
+```{r pahoabc-schedule, message=FALSE}
+pahoabc.schedule %>% kable(caption = "Example Immunization Schedule with timeliness windows")
+```
+
+- `dose`: Combined variable representing vaccine type and dose number.
+- `age_schedule`: The age of administration of the corresponding `dose`, in days.
+- `age_schedule_low`: The minimum age of the timeliness window, in days.
+- `age_schedule_high`: The maximum age of the timeliness window, in days.
+
+For example, in this schedule DTP1 is indicated at 60 days of age and is considered timely if administered between 54 and 90 days of age.
+
+## Non-probabilistic Analysis
+
+### Expected Workflow
+
+The functions for the non-probabilistic analysis are:
+
+1. `vt_rate()`: computes the percentage of timely vaccination, pooled across several doses or disaggregated by dose, and by geographic level.
+2. `vt_barplot()`: visualizes the output of `vt_rate()` as a stacked bar chart.
+3. `vt_inconsistent()`: lists individual untimely and missing-date records, also indicating the number of days outside the timeliness window.
+4. `vt_inconsistent_plot()`: visualizes the distribution of untimely doses by the number of days outside the timeliness window.
+
+![Figura 2. Expected workflow for the vaccination timeliness analysis.](vt_workflow.svg)
+
+<br>
+
+> **Note**
+>
+> The examples below analyze the 2022 birth cohort. The example data includes vaccinations up to December 31, 2023, so this cohort has completed the timeliness window of the doses administered during the first year of life.
+
+### Step 1 — Compute the indicator with `vt_rate()`
+
+`vt_rate()` compares the age at vaccination against the timeliness window of each dose and returns the number (`n`) and percentage (`rate`) of records that are `TIMELY`, `UNTIMELY`, or `DATE_MISSING`, out of the total number of records (`total`).
+
+By default, `vaccines = NULL` pools all doses in `data.schedule` into a single indicator. Here we compute the pooled indicator at the ADM1 level:
+
+```{r vt-rate, message=FALSE}
+rate_df <- vt_rate(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  geo_level     = "ADM1",
+  birth_cohorts = 2022
+)
+
+rate_df %>% kable(digits = 2, caption = "Vaccination timeliness pooled by ADM1, 2022 cohort")
+```
+
+Specifying `vaccines` disaggregates the results by `dose`:
+
+```{r vt-rate-by-dose, message=FALSE}
+rate_by_dose_df <- vt_rate(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  geo_level     = "ADM1",
+  vaccines      = c("DTP1", "DTP2", "DTP3"),
+  birth_cohorts = 2022
+)
+
+rate_by_dose_df %>% head(10) %>% kable(digits = 2, caption = "Vaccination timeliness by dose and ADM1, 2022 cohort")
+```
+
+#### Parameters accepted
+
+- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
+- `vaccines`: Character vector of doses to include, disaggregating results by `dose`. Default `NULL` pools all doses in `data.schedule`.
+- `birth_cohorts`: Numeric vector of birth cohort year(s) to include. Default `NULL` uses all available cohorts.
+
+### Step 2 — Visualize the indicator with `vt_barplot()`
+
+The output of `vt_rate()` can be passed directly to `vt_barplot()` to produce a stacked bar chart. If the data is disaggregated by `dose`, the plot is automatically faceted by dose.
+
+```{r vt-barplot, message=FALSE, fig.width=10, fig.height=5}
+vt_barplot(data = rate_df)
+```
+
+```{r vt-barplot-facet, message=FALSE, fig.width=10, fig.height=6}
+vt_barplot(data = rate_by_dose_df)
+```
+
+#### Parameters accepted
+
+- `data`: Output of `vt_rate()`.
+- `within_ADM1`: Character vector to filter to specific ADM1 units when `geo_level = "ADM2"`. Default: `NULL`.
+- `plot_missing`: Boolean. If `TRUE` (default), `DATE_MISSING` records are shown as a separate bar segment so all bars sum to 100%.
+
+#### Interpretation
+
+Each bar represents a geographic unit and is divided into segments: `TIMELY` (blue), `UNTIMELY` (orange), and `DATE_MISSING` (grey). Bars with a larger orange share indicate units where a large share of doses are administered outside the timeliness window, a signal worth investigating for possible access, willingness to vaccinate, or supply issues in those units.
+
+### Step 3 — Inspect individual untimely records with `vt_inconsistent()`
+
+`vt_inconsistent()` returns a record-level table of all `UNTIMELY` and `DATE_MISSING` doses, including the number of days outside the timeliness window.
+
+> **Note**
+>
+> In this example we do not filter by birth cohort, because doing so would exclude records with no date of birth.
+
+```{r vt-inconsistent, message=FALSE}
+inconsistent_df <- vt_inconsistent(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = "DTP1"
+)
+
+inconsistent_df %>%
+  # shows up to 3 UNTIMELY and up to 3 DATE_MISSING records
+  group_by(timeliness) %>%
+  slice_head(n = 3) %>%
+  ungroup() %>%
+  kable(caption = "Sample of untimely and missing-date DTP1 records")
+```
+
+#### Parameters accepted
+
+- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `vaccines`: Character vector of doses to include. Default `NULL` includes all doses in `data.schedule`.
+- `birth_cohorts`: Numeric vector of birth cohort year(s) to include. Default `NULL` uses all available cohorts.
+
+The `days_outside_range` column is negative when a person was vaccinated before `age_schedule_low`, and positive when vaccinated after `age_schedule_high` (`NA` when a date is missing). This table can be exported for record-level follow-up.
+
+### Step 4 — Visualize the distribution by time elapsed with `vt_inconsistent_plot()`
+
+`vt_inconsistent_plot()` produces a plot of untimely doses, grouped by the number of days outside the timeliness window. Doses administered after the timeliness window and before it are shown in separate rows, each with its own y-axis scale.
+
+```{r vt-inconsistent-plot, message=FALSE, fig.width=10, fig.height=6}
+vt_inconsistent_plot(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = "DTP1",
+  birth_cohorts = 2022
+)
+```
+
+When more than one vaccine is specified, the plot adds one column per dose. Within each row, all doses share the same scale, so they can be compared with each other:
+
+```{r vt-inconsistent-plot-facet, message=FALSE, fig.width=12, fig.height=6}
+vt_inconsistent_plot(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = c("DTP1", "DTP2", "DTP3"),
+  birth_cohorts = 2022
+)
+```
+
+#### Parameters accepted
+
+- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `vaccines`: Character vector of doses to include, adding one column per `dose`. Default `NULL` pools the results of all doses into a single column.
+- `birth_cohorts`: Numeric vector of birth cohort year(s) to include. Default `NULL` uses all available cohorts.
+- `day_groups`: Defines the categories on the horizontal axis. It is a list of `c(lower, upper)` numeric pairs defining the lower and upper limits of each category, in days. Categories must start at 0 and be contiguous (each one starts where the previous one ends). The last category always extends to the maximum value in the data and is labelled `"X+"`. Default: 10-day groups from 0 up to 90+ days.
+
+Time categories are defined by each country. For example, to use the categories 0 to 39 days, 40 to 49 days, 50 to 59 days, 60 to 89 days, and 90 days or more:
+
+```{r vt-inconsistent-plot-custom, message=FALSE, fig.width=12, fig.height=6}
+vt_inconsistent_plot(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = c("DTP1", "DTP2", "DTP3"),
+  birth_cohorts = 2022,
+  day_groups    = list(c(0, 40), c(40, 50), c(50, 60), c(60, 90), c(90, 120))
+)
+```
+
+#### Interpretation
+
+The top row represents doses administered after the timeliness window (delay), while the bottom row shows doses administered before the minimum age. Since each row has its own scale, only compare columns within the same row, and use the summary in the plot caption to compare between rows. The distribution of the data will let you assess where delays are concentrated, for example: are the delays only a few days long, or are most of them concentrated in delays of several months? Likewise, doses administered before the minimum age can point to data entry errors or problems in how the schedule is applied.
+
+# Summary
+
+This module allows you to estimate the vaccination timeliness indicator from EIR data. `vt_rate()` and `vt_barplot()` return the percentage of timely vaccination with different geographic or dose-level disaggregations; `vt_inconsistent()` lets you generate a list of the records detected as untimely or missing vaccination/birth dates; and `vt_inconsistent_plot()` characterizes the distribution of untimely records by days outside the timeliness window. Together, these tools help immunization programs understand their coverage, identify communities with access problems or low willingness to vaccinate, and guide actions to prevent future dropouts.

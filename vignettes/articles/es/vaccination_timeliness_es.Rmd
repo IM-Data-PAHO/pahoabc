@@ -172,7 +172,13 @@ Las funciones correspondientes al análisis no probabilístico son:
 3. `vt_inconsistent()`: lista de forma individual los registros no oportunos y con fechas faltantes, indicando además el número de días fuera del periodo de oportunidad.
 4. `vt_inconsistent_plot()`: visualiza la distribución de las dosis no oportunas según el número de días fuera del periodo de oportunidad.
 
-En los ejemplos a continuación se analiza la cohorte de nacimiento 2022. Los datos de ejemplo incluyen vacunaciones hasta el 31 de diciembre de 2023, por lo que esta cohorte ha completado el periodo de oportunidad de las dosis de administradas durante el primer año de edad.
+![Figura 2. Flujo de trabajo esperado para el análisis de oportunidad de vacunación.](vt_workflow.svg)
+
+<br>
+
+> **Nota**
+>
+> En los ejemplos a continuación se analiza la cohorte de nacimiento 2022. Los datos de ejemplo incluyen vacunaciones hasta el 31 de diciembre de 2023, por lo que esta cohorte ha completado el periodo de oportunidad de las dosis administradas durante el primer año de edad.
 
 ### Paso 1 — Calcular el indicador con `vt_rate()`
 
