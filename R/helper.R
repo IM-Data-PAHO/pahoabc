@@ -289,6 +289,7 @@
     dose_detected = dose_detected,
     dose_col = dose_col,
     series_data = series_data,
+    combined_label = combined_label,
     series_colors = series_colors,
     area_data = area_data,
     window_data = window_data,

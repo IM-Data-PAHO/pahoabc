@@ -378,7 +378,7 @@ La fila superior representa las dosis administradas después del periodo de opor
 Las funciones correspondientes al análisis probabilístico son:
 
 1. `vt_distribution()`: calcula, para cada día desde el inicio del periodo de oportunidad, el porcentaje de registros vacunados ese día y el porcentaje acumulado (incidencia acumulada). Permite desagregar por dosis y nivel geográfico.
-2. `vt_cdf_plot()` y `vt_pdf_plot()`: visualizan el resultado de `vt_distribution()` como una curva de incidencia acumulada (similar a una curva de Kaplan-Meier) o como un histograma de vacunaciones por día, respectivamente.
+2. `vt_cdf_plot()` y `vt_pdf_plot()`: visualizan el resultado de `vt_distribution()` como una curva de incidencia acumulada (similar a una curva de Kaplan-Meier) o como una curva del porcentaje de vacunados por día, respectivamente.
 3. `vt_percentile()`: a partir del resultado de `vt_distribution()`, calcula el número de días necesario para vacunar a distintos percentiles de la población.
 4. `vt_percentile_plot()`: genera visualizaciones a partir de los resultados de `vt_percentile()`.
 
@@ -461,7 +461,7 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, highlight = c("ADM1_1"
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1 específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
 - `max_days`: Número máximo de días a mostrar en el eje horizontal. El valor predeterminado `NULL` muestra hasta el día en que el 95 % de los registros se ha vacunado (en el conjunto de todas las unidades y en cada unidad destacada), para que unas pocas vacunaciones muy tardías (o con errores de fecha) no estiren el eje.
 
-`vt_pdf_plot()` grafica el porcentaje de registros vacunados en cada día (o en un grupo de días determinado por el parámetro `binwidth`), lo que permite ver en qué momento se concentran las vacunaciones:
+`vt_pdf_plot()` grafica el porcentaje de registros vacunados en cada día (o en un grupo de días, determinado por el parámetro `binwidth`), lo que permite ver en qué momento se concentran las vacunaciones:
 
 ```{r vt-distribution-plot-pdf, message=FALSE, fig.width=12, fig.height=5}
 dist_by_dose_ADM0_df <- vt_distribution(
@@ -480,7 +480,7 @@ vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max
 
 > **Nota**
 >
-> En este último histograma con unidades geográficas, las unidades con pocos registros pueden mostrar porcentajes diarios muy altos. Por eso, el eje vertical se limita a las líneas destacadas, y las líneas grises que superan ese límite se cortan.
+> En este último gráfico con unidades geográficas, las unidades con pocos registros pueden mostrar porcentajes diarios muy altos. Por eso, el eje vertical se limita a las líneas destacadas, y las líneas grises que superan ese límite se cortan.
 
 #### Parámetros aceptados en `vt_pdf_plot()`
 
@@ -489,11 +489,11 @@ vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max
 - `highlight`: Vector de caracteres con hasta 5 unidades geográficas a destacar en color. Solo disponible si los datos están desagregados por ADM1 o ADM2. Valor predeterminado: `NULL` (ninguna).
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1 específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
 - `max_days`: Número máximo de días a mostrar en el eje horizontal. El valor predeterminado `NULL` muestra hasta el día en que el 95% de los registros se ha vacunado, para que unas pocas vacunaciones muy tardías (o con errores de fecha) no estiren el eje.
-- `binwidth`: Número de días que cada barra representa (por ejemplo, 7 para agrupar por semana). Valor predeterminado: 1.
+- `binwidth`: Número de días que cada punto de la curva representa (por ejemplo, 7 para agrupar por semana). En el caso de unidades geográficas con pocos registros, valores más grandes pueden producir curvas más suaves. Valor predeterminado: 1.
 
 #### Interpretación
 
-Ambos gráficos son complementarios: en la curva de incidencia acumulada (`cdf`), curvas que suben rápidamente indican una vacunación cercana al inicio del periodo de oportunidad, mientras que curvas que suben lentamente, o que tienen un tramo importante a la derecha del área sombreada, indican demoras. Lo mismo se observa en el histograma (`pdf`), que directamente muestra la distribución de las vacunaciones a lo largo del tiempo.
+Ambos gráficos son complementarios: en la curva de incidencia acumulada (`cdf`), curvas que suben rápidamente indican una vacunación cercana al inicio del periodo de oportunidad, mientras que curvas que suben lentamente, o que tienen un tramo importante a la derecha del área sombreada, indican demoras. Lo mismo se observa en la curva del porcentaje de vacunados por día (`pdf`), que directamente muestra la distribución de las vacunaciones a lo largo del tiempo.
 
 El pie de ambos gráficos indica cuántos registros fueron excluidos por haberse vacunado antes del periodo de oportunidad o por tener alguna fecha faltante. Un número importante de vacunaciones antes del periodo puede indicar errores de registro o problemas en la aplicación del calendario; para revisarlas, use `vt_inconsistent()` y `vt_inconsistent_plot()`.
 

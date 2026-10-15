@@ -378,7 +378,7 @@ The top row represents doses administered after the timeliness window (delay), w
 The functions for the probabilistic analysis are:
 
 1. `vt_distribution()`: computes, for each day since the start of the timeliness window, the percentage of records vaccinated on that day and the cumulative percentage (cumulative incidence). It allows disaggregating by dose and geographic level.
-2. `vt_cdf_plot()` and `vt_pdf_plot()`: visualize the output of `vt_distribution()` as a cumulative incidence curve (similar to a Kaplan-Meier curve) or as a histogram of vaccinations per day, respectively.
+2. `vt_cdf_plot()` and `vt_pdf_plot()`: visualize the output of `vt_distribution()` as a cumulative incidence curve (similar to a Kaplan-Meier curve) or as a curve of the percentage vaccinated per day, respectively.
 3. `vt_percentile()`: from the output of `vt_distribution()`, computes the number of days needed to vaccinate different percentiles of the population.
 4. `vt_percentile_plot()`: generates visualizations from the output of `vt_percentile()`.
 
@@ -461,7 +461,7 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, highlight = c("ADM1_1"
 - `within_ADM1`: Character vector to filter specific ADM1 units when `geo_level = "ADM2"`. Default: `NULL`.
 - `max_days`: Maximum number of days to show on the x-axis. The default `NULL` shows up to the day by which 95% of the records have been vaccinated (for all areas combined and for each highlighted area), so that a few very late vaccinations (or vaccinations with date errors) do not stretch the axis.
 
-`vt_pdf_plot()` plots the percentage of records vaccinated on each day (or in a group of days set by the `binwidth` parameter), which lets you see when vaccinations are concentrated:
+`vt_pdf_plot()` plots the percentage of records vaccinated on each day (or in a group of days, set by the `binwidth` parameter), which lets you see when vaccinations are concentrated:
 
 ```{r vt-distribution-plot-pdf, message=FALSE, fig.width=12, fig.height=5}
 dist_by_dose_ADM0_df <- vt_distribution(
@@ -480,7 +480,7 @@ vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max
 
 > **Note**
 >
-> In this last histogram with geographic areas, areas with few records can show very high daily percentages. That is why the y-axis is limited to the highlighted lines, and grey lines that exceed that limit are cut.
+> In this last plot with geographic areas, areas with few records can show very high daily percentages. That is why the y-axis is limited to the highlighted lines, and grey lines that exceed that limit are cut.
 
 #### Parameters accepted by `vt_pdf_plot()`
 
@@ -489,11 +489,11 @@ vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max
 - `highlight`: Character vector with up to 5 geographic areas to highlight in color. Only available if the data is disaggregated by ADM1 or ADM2. Default: `NULL` (none).
 - `within_ADM1`: Character vector to filter specific ADM1 units when `geo_level = "ADM2"`. Default: `NULL`.
 - `max_days`: Maximum number of days to show on the x-axis. The default `NULL` shows up to the day by which 95% of the records have been vaccinated, so that a few very late vaccinations (or vaccinations with date errors) do not stretch the axis.
-- `binwidth`: Number of days each bar represents (for example, 7 to group by week). Default: 1.
+- `binwidth`: Number of days represented by each point of the curve (for example, 7 to group by week). In the case of geographic areas with few records, larger values could lead to smoother curves. Default: 1.
 
 #### Interpretation
 
-Both plots are complementary: in the cumulative incidence curve (`cdf`), curves that rise quickly indicate vaccination close to the start of the timeliness window, while curves that rise slowly, or that have an important stretch to the right of the shaded area, indicate delays. The same can be seen in the histogram (`pdf`), which directly shows the distribution of vaccinations over time.
+Both plots are complementary: in the cumulative incidence curve (`cdf`), curves that rise quickly indicate vaccination close to the start of the timeliness window, while curves that rise slowly, or that have an important stretch to the right of the shaded area, indicate delays. The same can be seen in the curve of the percentage vaccinated per day (`pdf`), which directly shows the distribution of vaccinations over time.
 
 The caption of both plots indicates how many records were excluded for having been vaccinated before the timeliness window or for having a missing date. A large number of vaccinations before the window can point to data entry errors or problems in how the schedule is applied; to review them, use `vt_inconsistent()` and `vt_inconsistent_plot()`.
 

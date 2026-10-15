@@ -9,7 +9,7 @@
 #' @param highlight Character (optional). Up to 5 geographic areas to highlight in color. Only available when \code{data} is disaggregated by "ADM1" or "ADM2". Default is \code{NULL}, which highlights nothing.
 #' @param within_ADM1 Character (optional). When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
 #' @param max_days Numeric (optional). Maximum number of days to show on the x-axis, useful to trim long tails of late vaccinations. Default is \code{NULL}, which shows up to the day at which 95\% of records are vaccinated.
-#' @param binwidth Numeric (optional). Number of days grouped in each bar. Default is 1.
+#' @param binwidth Numeric (optional). Provide a number of days to be grouped for each data point in the graph. Default is 1.
 #'
 #' @return A ggplot object representing the probability distribution plot.
 #'
@@ -65,11 +65,10 @@ vt_pdf_plot <- function(data, percentile = NULL, highlight = NULL, within_ADM1 =
   p <- ggplot()
 
   # shade the timeliness window of each dose (not possible when doses are pooled)
-  # NOTE: each bar covers half a day on each side of its day
   if(plot_data$dose_detected) {
     p <- p + geom_rect(
       data = plot_data$window_data,
-      aes(xmin = -0.5, xmax = window_end + 0.5, ymin = -Inf, ymax = Inf, fill = "Timeliness window"),
+      aes(xmin = 0, xmax = window_end, ymin = -Inf, ymax = Inf, fill = "Timeliness window"),
       alpha = 0.4
     ) +
       scale_fill_manual(values = c("Timeliness window" = "#9cdbf4"))
@@ -77,26 +76,24 @@ vt_pdf_plot <- function(data, percentile = NULL, highlight = NULL, within_ADM1 =
 
   # each geographic area as a thin grey line, for context
   if(plot_data$subnational_detected) {
-    p <- p + geom_step(
+    p <- p + geom_line(
       data = bin_values(plot_data$area_data), aes(x = day, y = value, group = series),
-      direction = "mid", color = "grey80", linewidth = 0.3
+      color = "grey80", linewidth = 0.3
     )
   }
 
-  # colored series:
-  # 1. bars when there is a single series (ADM0), or
-  # 2. lines when there are several geographic levels to be drawn together
-  if(plot_data$subnational_detected) {
-    p <- p + geom_step(
+  # draws an area for the main series (the ADM0 or "All areas combined") and
+  # then draws lines for everything (including the main series)
+  combined_values <- series_values %>% filter(series == plot_data$combined_label)
+  p <- p +
+    geom_area(
+      data = combined_values, aes(x = day, y = value),
+      fill = plot_data$series_colors[[plot_data$combined_label]], alpha = 0.3, position = "identity"
+    ) +
+    geom_line(
       data = series_values, aes(x = day, y = value, color = series),
-      direction = "mid", linewidth = 0.9
+      linewidth = 0.9
     )
-  } else {
-    p <- p + geom_col(
-      data = series_values, aes(x = day, y = value),
-      fill = plot_data$series_colors[[1]], width = binwidth
-    )
-  }
 
   # highlight the days needed to reach the percentile
   if(!is.null(percentile)) {
