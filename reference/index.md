@@ -14,19 +14,29 @@ EIR.
 - [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
   : (D)ate (C)onsistency (C)omparison Inconsistent Records Plot
 
-## Eligibility Consistency Comparison
+## Vaccination Timeliness
 
-Functions for identifying and visualizing eligibility inconsistencies
-(age at vaccination vs. scheduled age window) in the EIR.
+Functions for calculating and visualizing vaccination timeliness in the
+EIR.
 
-- [`ecc_rate()`](https://im-data-paho.github.io/pahoabc/reference/ecc_rate.md)
-  : (E)ligibility (C)onsistency (C)omparison Rate
-- [`ecc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_barplot.md)
-  : (E)ligibility (C)onsistency (C)omparison Barplot
-- [`ecc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent.md)
-  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records
-- [`ecc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent_plot.md)
-  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records Plot
+- [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+  : (V)accination (T)imeliness Rate
+- [`vt_barplot()`](https://im-data-paho.github.io/pahoabc/reference/vt_barplot.md)
+  : (V)accination (T)imeliness Barplot
+- [`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md)
+  : (V)accination (T)imeliness Inconsistent Records
+- [`vt_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent_plot.md)
+  : (V)accination (T)imeliness Inconsistent Records Plot
+- [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+  : (V)accination (T)imeliness Distribution
+- [`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md)
+  : (V)accination (T)imeliness Cumulative Distribution Plot
+- [`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md)
+  : (V)accination (T)imeliness Probability Distribution Plot
+- [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md)
+  : (V)accination (T)imeliness Percentiles
+- [`vt_percentile_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile_plot.md)
+  : (V)accination (T)imeliness Percentile Plot
 
 ## Nominal Dropout Rate
 

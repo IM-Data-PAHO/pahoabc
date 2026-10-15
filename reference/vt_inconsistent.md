@@ -1,0 +1,46 @@
+# (V)accination (T)imeliness Inconsistent Records
+
+This function returns a record-level table of all untimely and "date
+missing" vaccination records, including the number of days outside the
+timeliness window defined in the vaccination schedule
+(`age_schedule_low`, `age_schedule_high`).
+
+## Usage
+
+``` r
+vt_inconsistent(data.EIR, data.schedule, vaccines = NULL, birth_cohorts = NULL)
+```
+
+## Arguments
+
+- data.EIR:
+
+  Data frame. A data frame containing individual vaccination records.
+  See `pahoabc.EIR` for expected structure.
+
+- data.schedule:
+
+  Data frame. A data frame defining the vaccination schedule. See
+  `pahoabc.schedule` for expected structure.
+
+- vaccines:
+
+  Character (optional). A character vector specifying the doses to
+  include in the analysis. If `NULL` (default), all doses in
+  `data.schedule` are included.
+
+- birth_cohorts:
+
+  Numeric (optional). A vector specifying the birth cohort(s) for which
+  inconsistent records should be returned. If `NULL` (default), all
+  available cohorts are used. Note that specifying cohorts excludes
+  records with no `date_birth`, so the `DATE_MISSING` category may be
+  undercounted.
+
+## Value
+
+A data frame containing the untimely and date-missing records, with
+`ID`, `dose`, `date_birth`, `date_vax`, age at vaccination in days, the
+timeliness window (`age_schedule_low`, `age_schedule_high`), and
+`days_outside_range`: the number of days outside that window, negative
+if vaccinated before `age_schedule_low` (`NA` when a date is missing).

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,7 @@
     <li><a class="dropdown-item" href="../articles/en/complete_schedule_en.html">Complete Schedule Coverage</a></li>
     <li><a class="dropdown-item" href="../articles/en/birth_cohort_coverage_en.html">Birth Cohort Coverage</a></li>
     <li><a class="dropdown-item" href="../articles/en/date_consistency_comparison_en.html">Date Consistency Comparison</a></li>
-    <li><a class="dropdown-item" href="../articles/en/eligibility_consistency_comparison_en.html">Eligibility Consistency Comparison</a></li>
+    <li><a class="dropdown-item" href="../articles/en/vaccination_timeliness_en.html">Vaccination Timeliness</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other guides</h6></li>
     <li><a class="dropdown-item" href="../articles/en/example_datasets_en.html">Using our Example Datasets</a></li>
@@ -80,9 +80,9 @@
         </dt>
         <dd>(D)ate (C)onsistency (C)omparison Inconsistent Records Plot</dd>
       </dl></div><div class="section level2">
-      <h2 id="eligibility-consistency-comparison">Eligibility Consistency Comparison<a class="anchor" aria-label="anchor" href="#eligibility-consistency-comparison"></a></h2>
+      <h2 id="vaccination-timeliness">Vaccination Timeliness<a class="anchor" aria-label="anchor" href="#vaccination-timeliness"></a></h2>
 
-      <div class="section-desc"><p>Functions for identifying and visualizing eligibility inconsistencies (age at vaccination vs. scheduled age window) in the EIR.</p></div>
+      <div class="section-desc"><p>Functions for calculating and visualizing vaccination timeliness in the EIR.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -91,31 +91,66 @@
 
       <dl><dt>
 
-          <code><a href="ecc_rate.html">ecc_rate()</a></code>
+          <code><a href="vt_rate.html">vt_rate()</a></code>
 
         </dt>
-        <dd>(E)ligibility (C)onsistency (C)omparison Rate</dd>
+        <dd>(V)accination (T)imeliness Rate</dd>
 
         <dt>
 
-          <code><a href="ecc_barplot.html">ecc_barplot()</a></code>
+          <code><a href="vt_barplot.html">vt_barplot()</a></code>
 
         </dt>
-        <dd>(E)ligibility (C)onsistency (C)omparison Barplot</dd>
+        <dd>(V)accination (T)imeliness Barplot</dd>
 
         <dt>
 
-          <code><a href="ecc_inconsistent.html">ecc_inconsistent()</a></code>
+          <code><a href="vt_inconsistent.html">vt_inconsistent()</a></code>
 
         </dt>
-        <dd>(E)ligibility (C)onsistency (C)omparison Inconsistent Records</dd>
+        <dd>(V)accination (T)imeliness Inconsistent Records</dd>
 
         <dt>
 
-          <code><a href="ecc_inconsistent_plot.html">ecc_inconsistent_plot()</a></code>
+          <code><a href="vt_inconsistent_plot.html">vt_inconsistent_plot()</a></code>
 
         </dt>
-        <dd>(E)ligibility (C)onsistency (C)omparison Inconsistent Records Plot</dd>
+        <dd>(V)accination (T)imeliness Inconsistent Records Plot</dd>
+
+        <dt>
+
+          <code><a href="vt_distribution.html">vt_distribution()</a></code>
+
+        </dt>
+        <dd>(V)accination (T)imeliness Distribution</dd>
+
+        <dt>
+
+          <code><a href="vt_cdf_plot.html">vt_cdf_plot()</a></code>
+
+        </dt>
+        <dd>(V)accination (T)imeliness Cumulative Distribution Plot</dd>
+
+        <dt>
+
+          <code><a href="vt_pdf_plot.html">vt_pdf_plot()</a></code>
+
+        </dt>
+        <dd>(V)accination (T)imeliness Probability Distribution Plot</dd>
+
+        <dt>
+
+          <code><a href="vt_percentile.html">vt_percentile()</a></code>
+
+        </dt>
+        <dd>(V)accination (T)imeliness Percentiles</dd>
+
+        <dt>
+
+          <code><a href="vt_percentile_plot.html">vt_percentile_plot()</a></code>
+
+        </dt>
+        <dd>(V)accination (T)imeliness Percentile Plot</dd>
       </dl></div><div class="section level2">
       <h2 id="nominal-dropout-rate">Nominal Dropout Rate<a class="anchor" aria-label="anchor" href="#nominal-dropout-rate"></a></h2>
 

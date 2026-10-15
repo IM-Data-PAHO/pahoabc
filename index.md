@@ -69,12 +69,19 @@ to use each module:
     birth). Helps detect data entry errors and record linkage issues
     before downstream analyses.
 
-6.  [**Eligibility Consistency
-    Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/eligibility_consistency_comparison_en.html)  
-    Identifies and quantifies whether vaccination events occurred within
-    the age window defined by the national immunization schedule. Helps
-    detect ineligible doses administered too early or too late, pointing
-    to service delivery timeliness issues.
+6.  [**Vaccination
+    Timeliness**](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.html)  
+    Analyzes the vaccination timeliness of the population, that is, the
+    time that elapses between the age of eligibility for each dose and
+    its administration, using nominal data from the electronic
+    immunization registry. Vaccinating on time, and not only completing
+    the schedule, is key to protecting each individual before they reach
+    the period of highest risk for the disease. Furthermore, analyzing
+    vaccination timeliness allows us to understand coverage and its
+    impact on the epidemiology of the disease, monitor the vaccine
+    supply chain, investigate access problems or vaccination willingness
+    in certain communities and, through actions at different levels,
+    prevent future dropouts.
 
 Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and

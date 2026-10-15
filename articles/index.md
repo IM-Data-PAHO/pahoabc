@@ -14,10 +14,6 @@
   Comparison](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.md):
 - [Comparación de consistencia de
   fechas](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.md):
-- [Eligibility Consistency
-  Comparison](https://im-data-paho.github.io/pahoabc/articles/en/eligibility_consistency_comparison_en.md):
-- [Comparación de consistencia de
-  elegibilidad](https://im-data-paho.github.io/pahoabc/articles/es/eligibility_consistency_comparison_es.md):
 - [Using our Example
   Datasets](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.md):
 - [Uso de los datos de
@@ -30,3 +26,7 @@
   Analyses](https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.md):
 - [Análisis de residencia vs. lugar de
   vacunación](https://im-data-paho.github.io/pahoabc/articles/es/residence_occurrence_es.md):
+- [Vaccination
+  Timeliness](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.md):
+- [Oportunidad de
+  vacunación](https://im-data-paho.github.io/pahoabc/articles/es/vaccination_timeliness_es.md):

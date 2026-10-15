@@ -69,12 +69,19 @@ to use each module:
     birth). Helps detect data entry errors and record linkage issues
     before downstream analyses.
 
-6.  [**Eligibility Consistency
-    Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/eligibility_consistency_comparison_en.html)  
-    Identifies and quantifies whether vaccination events occurred within
-    the age window defined by the national immunization schedule. Helps
-    detect ineligible doses administered too early or too late, pointing
-    to service delivery timeliness issues.
+6.  [**Vaccination
+    Timeliness**](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.html)  
+    Analyzes the vaccination timeliness of the population, that is, the
+    time that elapses between the age of eligibility for each dose and
+    its administration, using nominal data from the electronic
+    immunization registry. Vaccinating on time, and not only completing
+    the schedule, is key to protecting each individual before they reach
+    the period of highest risk for the disease. Furthermore, analyzing
+    vaccination timeliness allows us to understand coverage and its
+    impact on the epidemiology of the disease, monitor the vaccine
+    supply chain, investigate access problems or vaccination willingness
+    in certain communities and, through actions at different levels,
+    prevent future dropouts.
 
 Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and
@@ -110,19 +117,29 @@ EIR.
 - [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
   : (D)ate (C)onsistency (C)omparison Inconsistent Records Plot
 
-## Eligibility Consistency Comparison
+## Vaccination Timeliness
 
-Functions for identifying and visualizing eligibility inconsistencies
-(age at vaccination vs. scheduled age window) in the EIR.
+Functions for calculating and visualizing vaccination timeliness in the
+EIR.
 
-- [`ecc_rate()`](https://im-data-paho.github.io/pahoabc/reference/ecc_rate.md)
-  : (E)ligibility (C)onsistency (C)omparison Rate
-- [`ecc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_barplot.md)
-  : (E)ligibility (C)onsistency (C)omparison Barplot
-- [`ecc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent.md)
-  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records
-- [`ecc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/ecc_inconsistent_plot.md)
-  : (E)ligibility (C)onsistency (C)omparison Inconsistent Records Plot
+- [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+  : (V)accination (T)imeliness Rate
+- [`vt_barplot()`](https://im-data-paho.github.io/pahoabc/reference/vt_barplot.md)
+  : (V)accination (T)imeliness Barplot
+- [`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md)
+  : (V)accination (T)imeliness Inconsistent Records
+- [`vt_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent_plot.md)
+  : (V)accination (T)imeliness Inconsistent Records Plot
+- [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+  : (V)accination (T)imeliness Distribution
+- [`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md)
+  : (V)accination (T)imeliness Cumulative Distribution Plot
+- [`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md)
+  : (V)accination (T)imeliness Probability Distribution Plot
+- [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md)
+  : (V)accination (T)imeliness Percentiles
+- [`vt_percentile_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile_plot.md)
+  : (V)accination (T)imeliness Percentile Plot
 
 ## Nominal Dropout Rate
 
@@ -205,10 +222,6 @@ expects.
   Comparison](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.md):
 - [Comparación de consistencia de
   fechas](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.md):
-- [Eligibility Consistency
-  Comparison](https://im-data-paho.github.io/pahoabc/articles/en/eligibility_consistency_comparison_en.md):
-- [Comparación de consistencia de
-  elegibilidad](https://im-data-paho.github.io/pahoabc/articles/es/eligibility_consistency_comparison_es.md):
 - [Using our Example
   Datasets](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.md):
 - [Uso de los datos de
@@ -221,3 +234,7 @@ expects.
   Analyses](https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.md):
 - [Análisis de residencia vs. lugar de
   vacunación](https://im-data-paho.github.io/pahoabc/articles/es/residence_occurrence_es.md):
+- [Vaccination
+  Timeliness](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.md):
+- [Oportunidad de
+  vacunación](https://im-data-paho.github.io/pahoabc/articles/es/vaccination_timeliness_es.md):
