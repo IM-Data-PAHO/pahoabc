@@ -24,7 +24,7 @@ vt_pdf_plot(
 
 \item{max_days}{Numeric (optional). Maximum number of days to show on the x-axis, useful to trim long tails of late vaccinations. Default is \code{NULL}, which shows up to the day at which 95\% of records are vaccinated.}
 
-\item{binwidth}{Numeric (optional). Number of days grouped in each bar. Default is 1.}
+\item{binwidth}{Numeric (optional). Provide a number of days to be grouped for each data point in the graph. Default is 1.}
 }
 \value{
 A ggplot object representing the probability distribution plot.
