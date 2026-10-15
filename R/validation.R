@@ -144,22 +144,35 @@
 }
 
 
+#' Validate that data is the output of a function, checking it is a data frame with the expected columns.
+#'
+#' @keywords internal
+#' @noRd
+.validate_output_data <- function(data, minimum_columns, source_function) {
+  if(!is.data.frame(data)) {
+    stop("Error: data should be a data frame.")
+  }
+
+  missing_columns <- setdiff(minimum_columns, names(data))
+
+  if(length(missing_columns) > 0) {
+    stop(paste0(
+      "Error: data should be the output from ", source_function,
+      " (missing columns: ", paste(missing_columns, collapse = ", "), ")."
+    ))
+  }
+}
+
 #' Validate input data to roc_barplot.
 #'
 #' @keywords internal
 #' @noRd
 .validate_roc_barplot_data <- function(data) {
-  if(!is.data.frame(data)) {
-    stop("Error: data should be a data frame.")
-  }
-
-  minimum_columns <- c(
-    "year", "dose", "doses_applied", "population", "coverage", "coverage_type"
+  .validate_output_data(
+    data,
+    c("year", "dose", "doses_applied", "population", "coverage", "coverage_type"),
+    "roc_coverage"
   )
-
-  if(!all(minimum_columns %in% names(data))) {
-    stop("Error: data should be the output from roc_coverage.")
-  }
 }
 
 #' Validate input data to bc_barplot.
@@ -167,17 +180,11 @@
 #' @keywords internal
 #' @noRd
 .validate_bc_barplot_data <- function(data) {
-  if(!is.data.frame(data)) {
-    stop("Error: data should be a data frame.")
-  }
-
-  minimum_columns <- c(
-    "dose", "year_cohort", "numerator", "population", "coverage"
+  .validate_output_data(
+    data,
+    c("dose", "year_cohort", "numerator", "population", "coverage"),
+    "bc_coverage"
   )
-
-  if(!all(minimum_columns %in% names(data))) {
-    stop("Error: data should be the output from bc_coverage.")
-  }
 }
 
 #' Validate input data to cs_barplot.
@@ -185,15 +192,11 @@
 #' @keywords internal
 #' @noRd
 .validate_cs_barplot_data <- function(data) {
-  if(!is.data.frame(data)) {
-    stop("Error: data should be a data frame.")
-  }
-
-  minimum_columns <- c("year", "numerator", "population", "coverage")
-
-  if(!all(minimum_columns %in% names(data))) {
-    stop("Error: data should be the output from cs_coverage.")
-  }
+  .validate_output_data(
+    data,
+    c("year", "numerator", "population", "coverage"),
+    "cs_coverage"
+  )
 
   # limit number of years so palette works in plot
   number_of_years <- data %>% pull(year) %>% unique() %>% length()
@@ -208,17 +211,11 @@
 #' @keywords internal
 #' @noRd
 .validate_dcc_barplot_data <- function(data) {
-  if(!is.data.frame(data)) {
-    stop("Error: data should be a data frame.")
-  }
-
-  minimum_columns <- c(
-    "consistency", "n", "total", "rate"
+  .validate_output_data(
+    data,
+    c("consistency", "n", "total", "rate"),
+    "dcc_rate"
   )
-
-  if(!all(minimum_columns %in% names(data))) {
-    stop("Error: data should be the output from dcc_rate")
-  }
 }
 
 #' Validate input data to ecc_barplot.
@@ -228,17 +225,11 @@
 #' @keywords internal
 #' @noRd
 .validate_ecc_barplot_data <- function(data) {
-  if(!is.data.frame(data)) {
-    stop("Error: data should be a data frame.")
-  }
-
-  minimum_columns <- c(
-    "eligibility", "n", "total", "rate"
+  .validate_output_data(
+    data,
+    c("eligibility", "n", "total", "rate"),
+    "ecc_rate"
   )
-
-  if(!all(minimum_columns %in% names(data))) {
-    stop("Error: data should be the output from ecc_rate")
-  }
 }
 
 #' Validate input data to vt_barplot.
@@ -246,16 +237,48 @@
 #' @keywords internal
 #' @noRd
 .validate_vt_barplot_data <- function(data) {
-  if(!is.data.frame(data)) {
-    stop("Error: data should be a data frame.")
-  }
-
-  minimum_columns <- c(
-    "timeliness", "n", "total", "rate"
+  .validate_output_data(
+    data,
+    c("timeliness", "n", "total", "rate"),
+    "vt_rate"
   )
+}
 
-  if(!all(minimum_columns %in% names(data))) {
-    stop("Error: data should be the output from vt_rate")
+#' Validate input data to vt_percentile, vt_cdf_plot and vt_pdf_plot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_vt_distribution_data <- function(data) {
+  .validate_output_data(
+    data,
+    c("day", "n", "pdf", "cdf", "total", "n_early", "n_missing", "window_end"),
+    "vt_distribution"
+  )
+}
+
+#' Validate input data to vt_percentile_plot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_vt_percentile_data <- function(data) {
+  .validate_output_data(
+    data,
+    c("percentile", "day", "within_window", "window_end", "total"),
+    "vt_percentile"
+  )
+}
+
+#' Validate percentiles (numeric, between 0 and 100, 0 excluded).
+#'
+#' @keywords internal
+#' @noRd
+.validate_percentiles <- function(value, value_name, min_len = NULL, exp_len = NULL, max_len = NULL) {
+  .validate_numeric(value, value_name, min_len, exp_len, max_len)
+
+  if(!is.null(value)) {
+    if(anyNA(value) || any(value <= 0 | value > 100)) {
+      stop(paste0("Error: ", value_name, " should be greater than 0 and at most 100."))
+    }
   }
 }
 
@@ -264,15 +287,11 @@
 #' @keywords internal
 #' @noRd
 .validate_roc_heatmap_data <- function(data) {
-  if(!is.data.frame(data)) {
-    stop("Error: data should be a data frame.")
-  }
-
-  minimum_columns <- c("frequency", "proportion")
-
-  if(!all(minimum_columns %in% names(data))) {
-    stop("Error: data should be the output from roc_distribution.")
-  }
+  .validate_output_data(
+    data,
+    c("frequency", "proportion"),
+    "roc_distribution"
+  )
 }
 
 

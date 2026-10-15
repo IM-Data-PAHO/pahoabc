@@ -52,6 +52,11 @@ reference:
       - vt_barplot
       - vt_inconsistent
       - vt_inconsistent_plot
+      - vt_distribution
+      - vt_cdf_plot
+      - vt_pdf_plot
+      - vt_percentile
+      - vt_percentile_plot
 
   - title: Nominal Dropout Rate
     desc: Functions for calculating and visualizing nominal dropout rate.
