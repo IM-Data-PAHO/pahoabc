@@ -217,7 +217,7 @@ Las funciones correspondientes al análisis no probabilístico son:
 3. `vt_inconsistent()`: lista de forma individual los registros no oportunos y con fechas faltantes, indicando además el número de días fuera del periodo de oportunidad.
 4. `vt_inconsistent_plot()`: visualiza la distribución de las dosis no oportunas según el número de días fuera del periodo de oportunidad.
 
-![Figura 2. Flujo de trabajo esperado para el análisis de oportunidad de vacunación.](vt_workflow.svg)
+![Figura 1. Flujo de trabajo esperado para el análisis no probabilístico de oportunidad de vacunación.](vt_workflow_1.svg)
 
 <br>
 
@@ -381,6 +381,10 @@ Las funciones correspondientes al análisis probabilístico son:
 2. `vt_cdf_plot()` y `vt_pdf_plot()`: visualizan el resultado de `vt_distribution()` como una curva de incidencia acumulada (similar a una curva de Kaplan-Meier) o como una curva del porcentaje de vacunados por día, respectivamente.
 3. `vt_percentile()`: a partir del resultado de `vt_distribution()`, calcula el número de días necesario para vacunar a distintos percentiles de la población.
 4. `vt_percentile_plot()`: genera visualizaciones a partir de los resultados de `vt_percentile()`.
+
+![Figura 1. Flujo de trabajo esperado para el análisis probabilístico de oportunidad de vacunación.](vt_workflow_2.svg)
+
+<br>
 
 > **Nota**
 >

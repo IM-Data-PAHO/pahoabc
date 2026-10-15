@@ -217,7 +217,7 @@ The functions for the non-probabilistic analysis are:
 3. `vt_inconsistent()`: lists individual untimely and missing-date records, also indicating the number of days outside the timeliness window.
 4. `vt_inconsistent_plot()`: visualizes the distribution of untimely doses by the number of days outside the timeliness window.
 
-![Figura 2. Expected workflow for the vaccination timeliness analysis.](vt_workflow.svg)
+![Figure 1. Expected workflow for the non-probabilistic section of the vaccination timeliness analysis.](vt_workflow_1.svg)
 
 <br>
 
@@ -381,6 +381,10 @@ The functions for the probabilistic analysis are:
 2. `vt_cdf_plot()` and `vt_pdf_plot()`: visualize the output of `vt_distribution()` as a cumulative incidence curve (similar to a Kaplan-Meier curve) or as a curve of the percentage vaccinated per day, respectively.
 3. `vt_percentile()`: from the output of `vt_distribution()`, computes the number of days needed to vaccinate different percentiles of the population.
 4. `vt_percentile_plot()`: generates visualizations from the output of `vt_percentile()`.
+
+![Figure 2. Expected workflow for the probabilistic section of the vaccination timeliness analysis.](vt_workflow_2.svg)
+
+<br>
 
 > **Note**
 >
