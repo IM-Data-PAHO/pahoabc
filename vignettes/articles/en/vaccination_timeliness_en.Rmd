@@ -41,7 +41,6 @@ Therefore, **the objective of this indicator** is to analyze vaccination timelin
 > **Note**
 >
 > 1. All functions used for vaccination timeliness analyses within PAHOabc begin with the `vt_` prefix.
-> 2. This vignette only covers the **non-probabilistic analysis** of vaccination timeliness. The **probabilistic analysis** will be added later.
 
 ## Non-probabilistic Analysis
 
@@ -88,6 +87,58 @@ The distribution of untimely doses by time range is calculated as:
 $$
 \text{Untimely doses in range A (\%)} = \frac{\text{Untimely doses in range A}}{\text{Total untimely doses in a given period and place}} \times 100
 $$
+
+## Probabilistic Analysis
+
+The probabilistic analysis estimates the **cumulative incidence** of the event "administration of a vaccine dose", that is, the probability that a given population receives the dose as time goes by (from the moment it becomes eligible to receive it). From this curve, the probability of being vaccinated in a timely manner and the time needed to vaccinate different percentiles of the population are estimated.
+
+> **Note**
+>
+> Ideally, this analysis considers the entire population that should receive the vaccine (for example, from the live birth registry). PAHOabc works with the database of vaccinated individuals in the EIR, that is, only with the individuals who received the dose analyzed. In this case, the final probability will always be 100%, which **overestimates** the real probability of vaccination of the population.
+
+### Operational Definitions
+
+- **Timely vaccination**: as in the non-probabilistic analysis, vaccination administered within the timeliness window defined by the country for each dose. In this analysis, **day 0** (start of the observation period) corresponds to the lower limit of the timeliness window (`age_schedule_low`), and doses administered before that day are not included.
+- **Probability of being vaccinated by day t**: cumulative incidence of vaccination by day t. When t corresponds to the upper limit of the timeliness window, the probability of the population being vaccinated in a timely manner is obtained.
+- **Time needed to vaccinate a percentage of the population**: number of days from the start of the timeliness window that it takes to vaccinate a given percentile of the population (for example, 25%, 50% and 75%).
+
+### Required Definitions
+
+- **Vaccines to evaluate**: each dose is analyzed individually. PAHOabc also allows combining several doses into a single curve (aligned according to the day 0 of each one), but in that case it is not possible to show a single timeliness window, since each dose has its own.
+- **Timeliness per vaccine**: same as in the non-probabilistic analysis (between `age_schedule_low` and `age_schedule_high`).
+- **Population percentiles**: it is recommended to estimate at least the times for 25%, 50% and 75%.
+- **Year to evaluate**: using a birth cohort is suggested. PAHOabc also allows combining several cohorts (see the warning below).
+- **Level of geographic disaggregation**: ADM0, ADM1 or ADM2.
+
+> **Warning**
+>
+> This analysis follows the vaccination curve well beyond the timeliness window, so the observation period needed is longer. If birth cohorts that have not completed that observation period by the date the data were extracted are included, only those vaccinated before that date will appear in the EIR. Those vaccinated afterwards do not appear yet, so the curve may show faster vaccination than is really the case. To mitigate this, choose birth cohorts that have completed the observation period, or exclude incomplete cohorts.
+
+### Characteristics of the Analysis
+
+- It is a cumulative incidence analysis, which corresponds to the complement of the Kaplan-Meier survival function. Kaplan-Meier estimates the probability that an event does **not** happen over time; its complement gives the probability that it **does** happen, in this case, vaccination.
+- Time is counted from the moment the individual becomes eligible for the dose (from `age_schedule_low`). All those vaccinated up to the upper limit of the timeliness window are considered timely.
+- It is independent of the size of the population: the denominator is the total number of records included in the analysis.
+- It requires the vaccination schedule with the definition of the timeliness window of each dose.
+- It uses the place of **residence** for subnational analyses.
+
+### Calculation of the Indicator
+
+The cumulative incidence of vaccination by day t is the complement of the Kaplan-Meier survival function:
+
+$$
+F(t) = 1 - S(t)
+$$
+
+where $F(t)$ is the probability of having been vaccinated by day t and $S(t)$ is the probability of not having been vaccinated by day t. Since the EIR only contains vaccinated individuals (there is no censoring), $F(t)$ is simply the cumulative percentage of records vaccinated by day t:
+
+$$
+F(t) \;(\%) = \frac{\text{Records vaccinated between day 0 and day t}}{\text{Total records vaccinated from day 0 onwards}} \times 100
+$$
+
+> **Note**
+>
+> Records vaccinated before the timeliness window (before day 0) and those with a missing date are excluded from both the numerator and the denominator, and are reported separately. Therefore, $F(t)$ evaluated on the last day of the timeliness window is **not equal** to the `TIMELY` percentage of `vt_rate()`, which does include those vaccinated before the window in its denominator.
 
 # Glossary
 
@@ -320,6 +371,211 @@ vt_inconsistent_plot(
 
 The top row represents doses administered after the timeliness window (delay), while the bottom row shows doses administered before the minimum age. Since each row has its own scale, only compare columns within the same row, and use the summary in the plot caption to compare between rows. The distribution of the data will let you assess where delays are concentrated, for example: are the delays only a few days long, or are most of them concentrated in delays of several months? Likewise, doses administered before the minimum age can point to data entry errors or problems in how the schedule is applied.
 
+## Probabilistic Analysis
+
+### Expected Workflow
+
+The functions for the probabilistic analysis are:
+
+1. `vt_distribution()`: computes, for each day since the start of the timeliness window, the percentage of records vaccinated on that day and the cumulative percentage (cumulative incidence). It allows disaggregating by dose and geographic level.
+2. `vt_cdf_plot()` and `vt_pdf_plot()`: visualize the output of `vt_distribution()` as a cumulative incidence curve (similar to a Kaplan-Meier curve) or as a histogram of vaccinations per day, respectively.
+3. `vt_percentile()`: from the output of `vt_distribution()`, computes the number of days needed to vaccinate different percentiles of the population.
+4. `vt_percentile_plot()`: generates visualizations from the output of `vt_percentile()`.
+
+> **Note**
+>
+> As in the non-probabilistic analysis, the examples below analyze the 2022 birth cohort. Since the example data only include vaccinations up to December 31, 2023, very late vaccinations of this cohort are not observed yet.
+
+### Step 1 — Compute the distribution with `vt_distribution()`
+
+`vt_distribution()` computes the age at vaccination and expresses it as days since the start of the timeliness window (where day 0 corresponds to `age_schedule_low`). By default, `vaccines = NULL` sums all doses in `data.schedule` into a single distribution:
+
+```{r vt-distribution, message=FALSE}
+dist_df <- vt_distribution(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  birth_cohorts = 2022
+)
+
+dist_df %>% head(10) %>% kable(digits = 2, caption = "Distribution of vaccinations by day, all doses combined, 2022 cohort")
+```
+
+When `vaccines` is specified, results are disaggregated by dose, and each dose includes the last day of its timeliness window in the `window_end` column:
+
+```{r vt-distribution-by-dose, message=FALSE}
+dist_by_dose_ADM1_df <- vt_distribution(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  geo_level     = "ADM1",
+  vaccines      = c("DTP1", "DTP2", "DTP3"),
+  birth_cohorts = 2022
+)
+
+dist_by_dose_ADM1_df %>% head(10) %>% kable(digits = 2, caption = "Distribution of vaccinations by day, dose and ADM1, 2022 cohort")
+```
+
+The table contains one row per day (as long as at least one vaccination occurred), with the following columns:
+
+- `day`: days since the start of the timeliness window (from `age_schedule_low`).
+- `n` and `pdf`: number and percentage of records vaccinated on that day.
+- `cum_n` and `cdf`: cumulative number and percentage of records vaccinated up to that day (cumulative incidence).
+- `n_at_risk`: number of records not yet vaccinated at the start of that day (population "at risk").
+- `total`: denominator, that is, all records vaccinated from day 0 onwards.
+- `n_early`: records vaccinated before the timeliness window, excluded from the analysis.
+- `n_missing`: records with a missing date, excluded from the analysis.
+- `window_end`: last day of the timeliness window (`age_schedule_high - age_schedule_low`). It is `NA` when doses are combined.
+
+#### Parameters accepted
+
+- `data.EIR`: EIR table in PAHOabc format.
+- `data.schedule`: Vaccination schedule table in PAHOabc format.
+- `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
+- `vaccines`: Character vector with the doses to include.
+- `birth_cohorts`: Numeric vector with the birth cohort(s) to include. The default `NULL` uses all available cohorts.
+
+### Step 2 — Visualize the distribution with `vt_cdf_plot()` and `vt_pdf_plot()`
+
+The output of `vt_distribution()` can be passed directly to `vt_cdf_plot()`, which plots the cumulative incidence curve. The `percentile` parameter adds a line and a label with the number of days needed to reach that percentile:
+
+```{r vt-distribution-plot, message=FALSE, fig.width=10, fig.height=5}
+vt_cdf_plot(data = dist_df, percentile = 50)
+```
+
+If the data is disaggregated by `dose`, the plot is organized in panels by dose and the timeliness window of each one is shaded. If it is also disaggregated geographically, each geographic area is shown as a thin grey line, which serves as context, and all areas together are shown as a single highlighted line. This way, the plot remains readable even with tens or hundreds of geographic areas:
+
+```{r vt-distribution-plot-by-dose, message=FALSE, fig.width=12, fig.height=5}
+vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80)
+```
+
+With the `highlight` parameter you can highlight up to 5 geographic areas in color to compare them with all areas combined:
+
+```{r vt-distribution-plot-highlight, message=FALSE, fig.width=12, fig.height=5}
+vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, highlight = c("ADM1_1", "ADM1_4"))
+```
+
+#### Parameters accepted by `vt_cdf_plot()`
+
+- `data`: Output of `vt_distribution()`.
+- `percentile`: A single percentile (greater than 0 and at most 100) to highlight in the plot, for all areas combined and for each area in `highlight`. Default: `NULL` (none).
+- `highlight`: Character vector with up to 5 geographic areas (at the geographic level of `data`) to highlight in color. Only available if the data is disaggregated by ADM1 or ADM2. Default: `NULL` (none).
+- `within_ADM1`: Character vector to filter specific ADM1 units when `geo_level = "ADM2"`. Default: `NULL`.
+- `max_days`: Maximum number of days to show on the x-axis. The default `NULL` shows up to the day by which 95% of the records have been vaccinated (for all areas combined and for each highlighted area), so that a few very late vaccinations (or vaccinations with date errors) do not stretch the axis.
+
+`vt_pdf_plot()` plots the percentage of records vaccinated on each day (or in a group of days set by the `binwidth` parameter), which lets you see when vaccinations are concentrated:
+
+```{r vt-distribution-plot-pdf, message=FALSE, fig.width=12, fig.height=5}
+dist_by_dose_ADM0_df <- vt_distribution(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  vaccines      = c("DTP1", "DTP2", "DTP3"),
+  birth_cohorts = 2022
+)
+
+vt_pdf_plot(data = dist_by_dose_ADM0_df, percentile = 50, max_days = 150)
+```
+
+```{r vt-distribution-plot-pdf-geo, message=FALSE, fig.width=12, fig.height=5}
+vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max_days = 200)
+```
+
+> **Note**
+>
+> In this last histogram with geographic areas, areas with few records can show very high daily percentages. That is why the y-axis is limited to the highlighted lines, and grey lines that exceed that limit are cut.
+
+#### Parameters accepted by `vt_pdf_plot()`
+
+- `data`: Output of `vt_distribution()`.
+- `percentile`: A single percentile (greater than 0 and at most 100) to highlight in the plot. Default: `NULL` (none).
+- `highlight`: Character vector with up to 5 geographic areas to highlight in color. Only available if the data is disaggregated by ADM1 or ADM2. Default: `NULL` (none).
+- `within_ADM1`: Character vector to filter specific ADM1 units when `geo_level = "ADM2"`. Default: `NULL`.
+- `max_days`: Maximum number of days to show on the x-axis. The default `NULL` shows up to the day by which 95% of the records have been vaccinated, so that a few very late vaccinations (or vaccinations with date errors) do not stretch the axis.
+- `binwidth`: Number of days each bar represents (for example, 7 to group by week). Default: 1.
+
+#### Interpretation
+
+Both plots are complementary: in the cumulative incidence curve (`cdf`), curves that rise quickly indicate vaccination close to the start of the timeliness window, while curves that rise slowly, or that have an important stretch to the right of the shaded area, indicate delays. The same can be seen in the histogram (`pdf`), which directly shows the distribution of vaccinations over time.
+
+The caption of both plots indicates how many records were excluded for having been vaccinated before the timeliness window or for having a missing date. A large number of vaccinations before the window can point to data entry errors or problems in how the schedule is applied; to review them, use `vt_inconsistent()` and `vt_inconsistent_plot()`.
+
+> **Warning**
+>
+> Remember that, when working only with vaccinated individuals, all curves end at 100%. This does not mean that the entire target population has been vaccinated, but that the analysis was carried out only with records of vaccinated individuals.
+
+### Step 3 — Compute the percentiles with `vt_percentile()`
+
+`vt_percentile()` takes the output of `vt_distribution()` and computes, for each percentile, the number of days needed to reach it. The results keep the same disaggregation as `vt_distribution()` (by dose and/or geographic level):
+
+```{r vt-percentile, message=FALSE}
+vt_percentile(data = dist_df) %>%
+  kable(caption = "Days needed to vaccinate 25%, 50% and 75%, all doses combined, 2022 cohort")
+```
+
+```{r vt-percentile-by-dose, message=FALSE}
+vt_percentile(data = dist_by_dose_ADM1_df, percentiles = c(50, 80)) %>%
+  head(10) %>%
+  kable(caption = "Days needed to vaccinate 50% and 80%, by dose and ADM1, 2022 cohort")
+```
+
+The `within_window` column indicates whether the percentile is reached within the timeliness window of the dose (it shows `NA` when doses are combined).
+
+#### Parameters accepted
+
+- `data`: Output of `vt_distribution()`.
+- `percentiles`: Numeric vector with the percentiles to compute. Default: `c(25, 50, 75)`.
+
+#### Interpretation
+
+A larger number of days to reach the same percentile indicates later vaccination. For example, if in one geographic area 50% of the records are vaccinated within the first 10 days and in another it takes 40 days, the second one shows delays that warrant investigating possible problems of access, willingness to vaccinate, or supply.
+
+### Step 4 — Compare percentiles between geographic areas with `vt_percentile_plot()`
+
+The output of `vt_percentile()` can be passed directly to `vt_percentile_plot()`, which shows one row per geographic area (or per dose, if the data is not disaggregated geographically). Each percentile is drawn as a point, joined by a line from the lowest to the highest percentile. Rows are sorted according to the median (or the closest percentile). Finally, when the results are disaggregated by dose, the timeliness window of each one is shaded.
+
+```{r vt-percentile-plot, message=FALSE, fig.width=12, fig.height=5}
+vt_percentile(data = dist_by_dose_ADM1_df, percentiles = c(25, 50, 75, 90)) %>%
+  vt_percentile_plot()
+```
+
+Without geographic disaggregation, one row per dose is shown:
+
+```{r vt-percentile-plot-dose, message=FALSE, fig.width=10, fig.height=4}
+vt_percentile(data = dist_by_dose_ADM0_df, percentiles = c(25, 50, 75, 90)) %>%
+  vt_percentile_plot()
+```
+
+When there are many geographic areas (for example, at the ADM2 level), the `n_slowest` parameter lets you show only the slowest areas:
+
+```{r vt-percentile-plot-adm2, message=FALSE, fig.width=10, fig.height=6}
+vt_distribution(
+  data.EIR      = pahoabc.EIR,
+  data.schedule = pahoabc.schedule,
+  # at the ADM2 level there are many geographic areas
+  geo_level     = "ADM2",
+  birth_cohorts = 2022
+) %>%
+  vt_percentile() %>%
+  # show only the 15 slowest
+  vt_percentile_plot(n_slowest = 15)
+```
+
+#### Parameters accepted
+
+- `data`: Output of `vt_percentile()`.
+- `within_ADM1`: Character vector to filter specific ADM1 units when `geo_level = "ADM2"`. Default: `NULL`.
+- `n_slowest`: Number of geographic areas to show, starting with the slowest. Default: `NULL` (that is, all).
+
+#### Interpretation
+
+The areas at the top of the plot are the ones that take the longest to vaccinate half of their records. In plots disaggregated by dose, points to the right of the shaded area indicate that the percentile is reached outside the timeliness window, and a long line between the lowest and the highest percentile indicates that vaccination is very spread out over time.
+
+> **Warning**
+>
+> Geographic areas with few records can show extreme percentiles just by chance. Before concluding that a certain geographic area is vaccinating slowly, check its number of records in the `total` column of `vt_percentile()`.
+
 # Summary
 
-This module allows you to estimate the vaccination timeliness indicator from EIR data. `vt_rate()` and `vt_barplot()` return the percentage of timely vaccination with different geographic or dose-level disaggregations; `vt_inconsistent()` lets you generate a list of the records detected as untimely or missing vaccination/birth dates; and `vt_inconsistent_plot()` characterizes the distribution of untimely records by days outside the timeliness window. Together, these tools help immunization programs understand their coverage, identify communities with access problems or low willingness to vaccinate, and guide actions to prevent future dropouts.
+This module allows you to estimate the vaccination timeliness indicator from EIR data. In the **non-probabilistic** analysis, `vt_rate()` and `vt_barplot()` return the percentage of timely vaccination with different geographic or dose-level disaggregations; `vt_inconsistent()` lets you generate a list of the records detected as untimely or missing vaccination/birth dates; and `vt_inconsistent_plot()` characterizes the distribution of untimely records by days outside the timeliness window.
+
+In the **probabilistic analysis**, `vt_distribution()`, `vt_cdf_plot()` and `vt_pdf_plot()` describe how vaccinations accumulate as days go by since the start of the timeliness window, `vt_percentile()` estimates how many days are needed to vaccinate different percentiles of the population, and `vt_percentile_plot()` lets you visually compare those times between geographic areas.
+
+Together, these tools help immunization programs understand their coverage, identify communities with access problems or low willingness to vaccinate, and guide actions to prevent future dropouts.
