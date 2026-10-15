@@ -36,7 +36,7 @@ Currently, PAHOabc contains six main modules. Follow the links below to explore 
 5. [**Date Consistency Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.html)  
    Identifies and quantifies logical inconsistencies between any two date variables in the EIR (e.g., vaccination date before date of birth). Helps detect data entry errors and record linkage issues before downstream analyses.
 
-6. [**Vaccination Timeliness**](https://im-data-paho.github.io/pahoabc/reference/index.html#vaccination-timeliness)  
+6. [**Vaccination Timeliness**](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.html)  
    Analyzes the vaccination timeliness of the population, that is, the time that elapses between the age of eligibility for each dose and its administration, using nominal data from the electronic immunization registry. Vaccinating on time, and not only completing the schedule, is key to protecting each individual before they reach the period of highest risk for the disease. Furthermore, analyzing vaccination timeliness allows us to understand coverage and its impact on the epidemiology of the disease, monitor the vaccine supply chain, investigate access problems or vaccination willingness in certain communities and, through actions at different levels, prevent future dropouts.
 
 Each module works seamlessly with the example datasets provided in the package. These examples make it easy to test out the functionality and serve as a reference when preparing your own data. Learn more about these example datasets [in this vignette](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.html).
