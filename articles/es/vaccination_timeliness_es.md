@@ -147,7 +147,7 @@ tiempo necesario para vacunar a distintos percentiles de la población.
 > recibir la vacuna (por ejemplo, a partir del registro de nacidos
 > vivos). En PAHOabc se trabaja con la base de vacunados del RNVe, es
 > decir, solo con los individuos que recibieron la dosis analizada. En
-> este caso, la probabilidad final siempre será del 100 %, lo que
+> este caso, la probabilidad final siempre será del 100%, lo que
 > **sobreestima** la probabilidad real de vacunación de la población.
 
 #### Definiciones operativas
@@ -169,10 +169,8 @@ tiempo necesario para vacunar a distintos percentiles de la población.
 
 #### Definiciones requeridas
 
-- **Vacunas a evaluar**: cada dosis se analiza individualmente. PAHOabc
-  también permite combinar varias dosis en una sola curva (alineadas
-  según el día 0 de cada una), pero en ese caso no es posible mostrar un
-  único periodo de oportunidad, ya que cada dosis tiene el suyo.
+- **Vacunas a evaluar**: cada dosis se analiza individualmente, ya que
+  cada una tiene su propio periodo de oportunidad.
 - **Oportunidad por vacuna**: igual que en el análisis no probabilístico
   (entre `age_schedule_low` y `age_schedule_high`).
 - **Percentiles de la población**: se recomienda estimar al menos los
@@ -263,7 +261,8 @@ listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 | Categoría | Significado |
 |----|----|
 | `TIMELY` | Oportuna: la edad al momento de la vacunación está dentro de `[age_schedule_low, age_schedule_high]`. |
-| `UNTIMELY` | No oportuna: la edad al momento de la vacunación está fuera de `[age_schedule_low, age_schedule_high]`, ya sea antes o después del periodo de oportunidad. |
+| `UNTIMELY_EARLY` | No oportuna (temprana): la edad al momento de la vacunación es menor que `age_schedule_low` (antes del periodo de oportunidad). |
+| `UNTIMELY_LATE` | No oportuna (tardía): la edad al momento de la vacunación es mayor que `age_schedule_high` (después del periodo de oportunidad). |
 | `DATE_MISSING` | `date_vax` o `date_birth` es `NA`. |
 
 ## Uso
@@ -415,8 +414,8 @@ de oportunidad de vacunación.
 [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
 compara la edad al momento de la vacunación con el periodo de
 oportunidad de cada dosis y devuelve el número (`n`) y el porcentaje
-(`rate`) de registros clasificados como `TIMELY`, `UNTIMELY` o
-`DATE_MISSING`, sobre el total de registros (`total`).
+(`rate`) de registros clasificados como `TIMELY`, `UNTIMELY_EARLY`,
+`UNTIMELY_LATE` o `DATE_MISSING`, sobre el total de registros (`total`).
 
 Por defecto, `vaccines = NULL` agrega todas las dosis de `data.schedule`
 en un único indicador. Aquí calculamos el indicador agregado a nivel
@@ -434,18 +433,23 @@ rate_df <- vt_rate(
 rate_df %>% kable(digits = 2, caption = "Oportunidad de vacunación agregada por ADM1, cohorte 2022")
 ```
 
-| ADM1   | timeliness |      n |  total |  rate |
-|:-------|:-----------|-------:|-------:|------:|
-| ADM1_1 | TIMELY     |   3710 |   6167 | 60.16 |
-| ADM1_1 | UNTIMELY   |   2457 |   6167 | 39.84 |
-| ADM1_2 | TIMELY     |  23955 |  32632 | 73.41 |
-| ADM1_2 | UNTIMELY   |   8677 |  32632 | 26.59 |
-| ADM1_3 | TIMELY     | 103604 | 144709 | 71.59 |
-| ADM1_3 | UNTIMELY   |  41105 | 144709 | 28.41 |
-| ADM1_4 | TIMELY     |  18769 |  21712 | 86.45 |
-| ADM1_4 | UNTIMELY   |   2943 |  21712 | 13.55 |
-| ADM1_5 | TIMELY     |   9014 |  11323 | 79.61 |
-| ADM1_5 | UNTIMELY   |   2309 |  11323 | 20.39 |
+| ADM1   | timeliness     |      n |  total |  rate |
+|:-------|:---------------|-------:|-------:|------:|
+| ADM1_1 | TIMELY         |   3710 |   6167 | 60.16 |
+| ADM1_1 | UNTIMELY_EARLY |     31 |   6167 |  0.50 |
+| ADM1_1 | UNTIMELY_LATE  |   2426 |   6167 | 39.34 |
+| ADM1_2 | TIMELY         |  23955 |  32632 | 73.41 |
+| ADM1_2 | UNTIMELY_EARLY |     81 |  32632 |  0.25 |
+| ADM1_2 | UNTIMELY_LATE  |   8596 |  32632 | 26.34 |
+| ADM1_3 | TIMELY         | 103604 | 144709 | 71.59 |
+| ADM1_3 | UNTIMELY_EARLY |    281 | 144709 |  0.19 |
+| ADM1_3 | UNTIMELY_LATE  |  40824 | 144709 | 28.21 |
+| ADM1_4 | TIMELY         |  18769 |  21712 | 86.45 |
+| ADM1_4 | UNTIMELY_EARLY |     85 |  21712 |  0.39 |
+| ADM1_4 | UNTIMELY_LATE  |   2858 |  21712 | 13.16 |
+| ADM1_5 | TIMELY         |   9014 |  11323 | 79.61 |
+| ADM1_5 | UNTIMELY_EARLY |     23 |  11323 |  0.20 |
+| ADM1_5 | UNTIMELY_LATE  |   2286 |  11323 | 20.19 |
 
 Oportunidad de vacunación agregada por ADM1, cohorte 2022 {.table}
 
@@ -465,18 +469,18 @@ rate_by_dose_df <- vt_rate(
 rate_by_dose_df %>% head(10) %>% kable(digits = 2, caption = "Oportunidad de vacunación por dosis y ADM1, cohorte 2022")
 ```
 
-| dose | ADM1   | timeliness |     n | total |  rate |
-|:-----|:-------|:-----------|------:|------:|------:|
-| DTP1 | ADM1_1 | TIMELY     |   767 |  1187 | 64.62 |
-| DTP1 | ADM1_1 | UNTIMELY   |   420 |  1187 | 35.38 |
-| DTP1 | ADM1_2 | TIMELY     |  4963 |  6065 | 81.83 |
-| DTP1 | ADM1_2 | UNTIMELY   |  1102 |  6065 | 18.17 |
-| DTP1 | ADM1_3 | TIMELY     | 22380 | 27587 | 81.13 |
-| DTP1 | ADM1_3 | UNTIMELY   |  5207 | 27587 | 18.87 |
-| DTP1 | ADM1_4 | TIMELY     |  3418 |  3818 | 89.52 |
-| DTP1 | ADM1_4 | UNTIMELY   |   400 |  3818 | 10.48 |
-| DTP1 | ADM1_5 | TIMELY     |  1712 |  2004 | 85.43 |
-| DTP1 | ADM1_5 | UNTIMELY   |   292 |  2004 | 14.57 |
+| dose | ADM1   | timeliness     |     n | total |  rate |
+|:-----|:-------|:---------------|------:|------:|------:|
+| DTP1 | ADM1_1 | TIMELY         |   767 |  1187 | 64.62 |
+| DTP1 | ADM1_1 | UNTIMELY_EARLY |     5 |  1187 |  0.42 |
+| DTP1 | ADM1_1 | UNTIMELY_LATE  |   415 |  1187 | 34.96 |
+| DTP1 | ADM1_2 | TIMELY         |  4963 |  6065 | 81.83 |
+| DTP1 | ADM1_2 | UNTIMELY_EARLY |    16 |  6065 |  0.26 |
+| DTP1 | ADM1_2 | UNTIMELY_LATE  |  1086 |  6065 | 17.91 |
+| DTP1 | ADM1_3 | TIMELY         | 22380 | 27587 | 81.13 |
+| DTP1 | ADM1_3 | UNTIMELY_EARLY |    53 | 27587 |  0.19 |
+| DTP1 | ADM1_3 | UNTIMELY_LATE  |  5154 | 27587 | 18.68 |
+| DTP1 | ADM1_4 | TIMELY         |  3418 |  3818 | 89.52 |
 
 Oportunidad de vacunación por dosis y ADM1, cohorte 2022 {.table}
 
@@ -524,16 +528,18 @@ vt_barplot(data = rate_by_dose_df)
   específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
 - `plot_missing`: Booleano. Si es `TRUE` (predeterminado), los registros
   `DATE_MISSING` se muestran como un segmento separado para que todas
-  las barras sumen 100 %.
+  las barras sumen 100%.
 
 ##### Interpretación
 
 Cada barra representa una unidad geográfica y se divide en segmentos:
-`TIMELY` (azul), `UNTIMELY` (naranja) y `DATE_MISSING` (gris). Las
-barras con una mayor proporción en naranja indican unidades donde una
-parte importante de las dosis se administra fuera del periodo de
-oportunidad, lo que amerita investigar posibles problemas de acceso, de
-disposición a vacunar o de abastecimiento en esas unidades.
+`TIMELY` (azul), `UNTIMELY_LATE` (naranja), `UNTIMELY_EARLY` (morado) y
+`DATE_MISSING` (gris). Las barras con una mayor proporción en naranja
+indican unidades donde una parte importante de las dosis se administra
+después del periodo de oportunidad, lo que amerita investigar posibles
+problemas de acceso, de disposición a vacunar o de abastecimiento en
+esas unidades. Por otro lado, una proporción importante en morado puede
+indicar errores de registro o problemas en la aplicación del calendario.
 
 > **Nota**
 >
@@ -544,9 +550,9 @@ disposición a vacunar o de abastecimiento en esas unidades.
 #### Paso 3 — Inspeccionar los registros no oportunos con `vt_inconsistent()`
 
 [`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md)
-devuelve una tabla a nivel de registro con todas las dosis `UNTIMELY` y
-`DATE_MISSING`, incluyendo el número de días fuera del periodo de
-oportunidad.
+devuelve una tabla a nivel de registro con todas las dosis
+`UNTIMELY_EARLY`, `UNTIMELY_LATE` y `DATE_MISSING`, incluyendo el número
+de días fuera del periodo de oportunidad.
 
 > **Nota**
 >
@@ -562,9 +568,9 @@ inconsistent_df <- vt_inconsistent(
 )
 
 inconsistent_df %>%
-  # muestra hasta 3 registros UNTIMELY y hasta 3 DATE_MISSING
+  # muestra hasta 2 registros de cada tipo: UNTIMELY_EARLY, UNTIMELY_LATE y DATE_MISSING
   group_by(timeliness) %>%
-  slice_head(n = 3) %>%
+  slice_head(n = 2) %>%
   ungroup() %>%
   kable(caption = "Muestra de registros no oportunos y con fechas faltantes de DTP1")
 ```
@@ -573,12 +579,13 @@ inconsistent_df %>%
 |---:|:---|:---|:---|---:|---:|---:|---:|:---|
 | 71494 | DTP1 | NA | 2022-04-11 | NA | 54 | 90 | NA | DATE_MISSING |
 | 86449 | DTP1 | NA | 2022-06-08 | NA | 54 | 90 | NA | DATE_MISSING |
-| 118063 | DTP1 | 2022-09-15 | 2023-12-26 | 467 | 54 | 90 | 377 | UNTIMELY |
-| 187807 | DTP1 | 2023-07-19 | 2023-12-26 | 160 | 54 | 90 | 70 | UNTIMELY |
-| 212197 | DTP1 | 2022-10-23 | 2023-12-19 | 422 | 54 | 90 | 332 | UNTIMELY |
+| 90277 | DTP1 | 2022-02-28 | 2022-03-29 | 29 | 54 | 90 | -25 | UNTIMELY_EARLY |
+| 91058 | DTP1 | 2022-03-13 | 2022-05-03 | 51 | 54 | 90 | -3 | UNTIMELY_EARLY |
+| 118063 | DTP1 | 2022-09-15 | 2023-12-26 | 467 | 54 | 90 | 377 | UNTIMELY_LATE |
+| 187807 | DTP1 | 2023-07-19 | 2023-12-26 | 160 | 54 | 90 | 70 | UNTIMELY_LATE |
 
-Muestra de registros no oportunos y con fechas faltantes de DTP1
-{.table}
+Muestra de registros no oportunos y con fechas faltantes de DTP1 {.table
+style="width:100%;"}
 
 ##### Parámetros aceptados
 
@@ -689,8 +696,8 @@ Las funciones correspondientes al análisis probabilístico son:
 1.  [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md):
     calcula, para cada día desde el inicio del periodo de oportunidad,
     el porcentaje de registros vacunados ese día y el porcentaje
-    acumulado (incidencia acumulada). Permite desagregar por dosis y
-    nivel geográfico.
+    acumulado (incidencia acumulada). Los resultados se desagregan por
+    dosis y, opcionalmente, por nivel geográfico.
 2.  [`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md)
     y
     [`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md):
@@ -708,10 +715,10 @@ Las funciones correspondientes al análisis probabilístico son:
     genera visualizaciones a partir de los resultados de
     [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md).
 
-![Figura 1. Flujo de trabajo esperado para el análisis probabilístico de
+![Figura 2. Flujo de trabajo esperado para el análisis probabilístico de
 oportunidad de vacunación.](vt_workflow_2.svg)
 
-Figura 1. Flujo de trabajo esperado para el análisis probabilístico de
+Figura 2. Flujo de trabajo esperado para el análisis probabilístico de
 oportunidad de vacunación.
 
   
@@ -728,8 +735,8 @@ oportunidad de vacunación.
 [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
 calcula la edad al momento de la vacunación y la expresa como días desde
 el inicio del periodo de oportunidad (donde el día 0 corresponde a
-`age_schedule_low`). Por defecto, `vaccines = NULL` suma todas las dosis
-de `data.schedule` en una única distribución:
+`age_schedule_low`). Por defecto, `vaccines = NULL` incluye todas las
+dosis de `data.schedule`:
 
 ``` r
 
@@ -739,28 +746,26 @@ dist_df <- vt_distribution(
   birth_cohorts = 2022
 )
 
-dist_df %>% head(10) %>% kable(digits = 2, caption = "Distribución de vacunaciones por día, todas las dosis combinadas, cohorte 2022")
+dist_df %>% head(10) %>% kable(digits = 2, caption = "Distribución de vacunaciones por día y dosis, cohorte 2022")
 ```
 
-| day |     n |  pdf | cum_n |   cdf | n_at_risk |  total | n_early | n_missing | window_end |
-|----:|------:|-----:|------:|------:|----------:|-------:|--------:|----------:|-----------:|
-|   0 |  3977 | 1.84 |  3977 |  1.84 |    216042 | 216042 |     501 |         0 |         NA |
-|   1 | 15893 | 7.36 | 19870 |  9.20 |    212065 | 216042 |     501 |         0 |         NA |
-|   2 |  6315 | 2.92 | 26185 | 12.12 |    196172 | 216042 |     501 |         0 |         NA |
-|   3 |  2473 | 1.14 | 28658 | 13.27 |    189857 | 216042 |     501 |         0 |         NA |
-|   4 |  2455 | 1.14 | 31113 | 14.40 |    187384 | 216042 |     501 |         0 |         NA |
-|   5 |  4185 | 1.94 | 35298 | 16.34 |    184929 | 216042 |     501 |         0 |         NA |
-|   6 |  5221 | 2.42 | 40519 | 18.76 |    180744 | 216042 |     501 |         0 |         NA |
-|   7 |  9053 | 4.19 | 49572 | 22.95 |    175523 | 216042 |     501 |         0 |         NA |
-|   8 |  9097 | 4.21 | 58669 | 27.16 |    166470 | 216042 |     501 |         0 |         NA |
-|   9 |  7941 | 3.68 | 66610 | 30.83 |    157373 | 216042 |     501 |         0 |         NA |
+| dose | day | age | n | pdf | cum_n | cdf | n_at_risk | total | n_early | n_missing | window_end | age_schedule_low |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| BCG RN | 0 | 0 | 3953 | 9.43 | 3953 | 9.43 | 41899 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 1 | 1 | 15851 | 37.83 | 19804 | 47.27 | 37946 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 2 | 2 | 6254 | 14.93 | 26058 | 62.19 | 22095 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 3 | 3 | 2360 | 5.63 | 28418 | 67.83 | 15841 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 4 | 4 | 1602 | 3.82 | 30020 | 71.65 | 13481 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 5 | 5 | 1341 | 3.20 | 31361 | 74.85 | 11879 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 6 | 6 | 1145 | 2.73 | 32506 | 77.58 | 10538 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 7 | 7 | 1009 | 2.41 | 33515 | 79.99 | 9393 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 8 | 8 | 610 | 1.46 | 34125 | 81.45 | 8384 | 41899 | 158 | 0 | 28 | 0 |
+| BCG RN | 9 | 9 | 634 | 1.51 | 34759 | 82.96 | 7774 | 41899 | 158 | 0 | 28 | 0 |
 
-Distribución de vacunaciones por día, todas las dosis combinadas,
-cohorte 2022 {.table}
+Distribución de vacunaciones por día y dosis, cohorte 2022 {.table}
 
-Al especificar `vaccines`, los resultados se desagregan por dosis, y
-cada dosis incluye el último día de su periodo de oportunidad en la
-columna `window_end`:
+Con `vaccines` puede seleccionar las dosis a analizar, y con `geo_level`
+desagregarlas geográficamente:
 
 ``` r
 
@@ -775,25 +780,26 @@ dist_by_dose_ADM1_df <- vt_distribution(
 dist_by_dose_ADM1_df %>% head(10) %>% kable(digits = 2, caption = "Distribución de vacunaciones por día, dosis y ADM1, cohorte 2022")
 ```
 
-| dose | ADM1   | day |   n |  pdf | cum_n |   cdf | n_at_risk | total | n_early | n_missing | window_end |
-|:-----|:-------|----:|----:|-----:|------:|------:|----------:|------:|--------:|----------:|-----------:|
-| DTP1 | ADM1_1 |   0 |   1 | 0.08 |     1 |  0.08 |      1182 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   2 |   1 | 0.08 |     2 |  0.17 |      1181 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   3 |   2 | 0.17 |     4 |  0.34 |      1180 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   4 |   3 | 0.25 |     7 |  0.59 |      1178 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   5 |  26 | 2.20 |    33 |  2.79 |      1175 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   6 |  16 | 1.35 |    49 |  4.15 |      1149 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   7 |  53 | 4.48 |   102 |  8.63 |      1133 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   8 |  54 | 4.57 |   156 | 13.20 |      1080 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |   9 |  40 | 3.38 |   196 | 16.58 |      1026 |  1182 |       5 |         0 |         36 |
-| DTP1 | ADM1_1 |  10 |  45 | 3.81 |   241 | 20.39 |       986 |  1182 |       5 |         0 |         36 |
+| dose | ADM1 | day | age | n | pdf | cum_n | cdf | n_at_risk | total | n_early | n_missing | window_end | age_schedule_low |
+|:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| DTP1 | ADM1_1 | 0 | 54 | 1 | 0.08 | 1 | 0.08 | 1182 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 2 | 56 | 1 | 0.08 | 2 | 0.17 | 1181 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 3 | 57 | 2 | 0.17 | 4 | 0.34 | 1180 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 4 | 58 | 3 | 0.25 | 7 | 0.59 | 1178 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 5 | 59 | 26 | 2.20 | 33 | 2.79 | 1175 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 6 | 60 | 16 | 1.35 | 49 | 4.15 | 1149 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 7 | 61 | 53 | 4.48 | 102 | 8.63 | 1133 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 8 | 62 | 54 | 4.57 | 156 | 13.20 | 1080 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 9 | 63 | 40 | 3.38 | 196 | 16.58 | 1026 | 1182 | 5 | 0 | 36 | 54 |
+| DTP1 | ADM1_1 | 10 | 64 | 45 | 3.81 | 241 | 20.39 | 986 | 1182 | 5 | 0 | 36 | 54 |
 
-Distribución de vacunaciones por día, dosis y ADM1, cohorte 2022
-{.table}
+Distribución de vacunaciones por día, dosis y ADM1, cohorte 2022 {.table
+style="width:100%;"}
 
-La tabla contiene una fila por cada día (siempre y cuando haya ocurrido
-al menos una vacunación), con las siguientes columnas:
+La tabla contiene una fila por cada dosis y día (siempre y cuando haya
+ocurrido al menos una vacunación), con las siguientes columnas:
 
+- `dose`: la dosis.
 - `day`: días desde el inicio del periodo de oportunidad (desde
   `age_schedule_low`).
 - `n` y `pdf`: número y porcentaje de registros vacunados ese día.
@@ -808,8 +814,10 @@ al menos una vacunación), con las siguientes columnas:
 - `n_missing`: registros con alguna fecha faltante, excluidos del
   análisis.
 - `window_end`: último día del periodo de oportunidad
-  (`age_schedule_high - age_schedule_low`). Es `NA` cuando las dosis
-  están combinadas.
+  (`age_schedule_high - age_schedule_low`).
+- `age`: edad al momento de la vacunación (en días).
+- `age_schedule_low`: límite inferior del periodo de oportunidad de
+  acuerdo a `data.schedule` (en días).
 
 ##### Parámetros aceptados
 
@@ -838,13 +846,14 @@ vt_cdf_plot(data = dist_df, percentile = 50)
 
 ![](vaccination_timeliness_es_files/figure-html/vt-distribution-plot-1.png)
 
-Si los datos están desagregados por `dose`, el gráfico se organiza en
-paneles por dosis y se sombrea el periodo de oportunidad de cada una. Si
-además están desagregados por geografía, cada unidad geográfica se
-muestra como una línea gris delgada, que sirve de contexto, y el
-conjunto de todas las unidades se muestra como una única línea
-destacada. De esta forma, el gráfico sigue siendo legible aun con
-decenas o cientos de unidades geográficas:
+El gráfico se organiza en paneles por dosis y se sombrea el periodo de
+oportunidad de cada una. Por defecto, `x_axis = "absolute"`, lo que
+significa que el eje horizontal muestra la edad al momento de la
+vacunación (en días). Si los datos están desagregados por niveles
+subnacionales, cada unidad geográfica se muestra como una línea gris
+delgada, que sirve de contexto, y el conjunto de todas las unidades se
+muestra como una única línea destacada. De esta forma, el gráfico sigue
+siendo legible aun con decenas o cientos de unidades geográficas:
 
 ``` r
 
@@ -863,6 +872,17 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, highlight = c("ADM1_1"
 
 ![](vaccination_timeliness_es_files/figure-html/vt-distribution-plot-highlight-1.png)
 
+Con `x_axis = "relative"`, el eje horizontal muestra en cambio los días
+desde el inicio del periodo de oportunidad, por lo que todos los paneles
+comienzan en 0, lo que facilita comparar las dosis entre sí:
+
+``` r
+
+vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, x_axis = "relative")
+```
+
+![](vaccination_timeliness_es_files/figure-html/vt-distribution-plot-relative-1.png)
+
 ##### Parámetros aceptados en `vt_cdf_plot()`
 
 - `data`: Resultado de
@@ -876,11 +896,14 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, highlight = c("ADM1_1"
   `NULL` (ninguna).
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1
   específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
-- `max_days`: Número máximo de días a mostrar en el eje horizontal. El
-  valor predeterminado `NULL` muestra hasta el día en que el 95 % de los
-  registros se ha vacunado (en el conjunto de todas las unidades y en
-  cada unidad destacada), para que unas pocas vacunaciones muy tardías
-  (o con errores de fecha) no estiren el eje.
+- `max_days`: Número máximo de días desde el inicio del periodo de
+  oportunidad a mostrar en el eje horizontal. El valor predeterminado
+  (`NULL`) muestra hasta el día en que el 95% de los registros se ha
+  vacunado, para que unas pocas vacunaciones muy tardías (o con errores
+  de fecha) no estiren el eje.
+- `x_axis`: `"absolute"` (predeterminado) muestra la edad al momento de
+  la vacunación (en días); `"relative"` muestra, para cada dosis, los
+  días que han transcurrido desde el inicio del periodo de oportunidad.
 
 [`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md)
 grafica el porcentaje de registros vacunados en cada día (o en un grupo
@@ -917,19 +940,10 @@ vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max
 
 ##### Parámetros aceptados en `vt_pdf_plot()`
 
-- `data`: Resultado de
-  [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md).
-- `percentile`: Un único percentil (mayor que 0 y hasta 100) a destacar
-  en el gráfico. Valor predeterminado: `NULL` (ninguno).
-- `highlight`: Vector de caracteres con hasta 5 unidades geográficas a
-  destacar en color. Solo disponible si los datos están desagregados por
-  ADM1 o ADM2. Valor predeterminado: `NULL` (ninguna).
-- `within_ADM1`: Vector de caracteres para filtrar unidades ADM1
-  específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
-- `max_days`: Número máximo de días a mostrar en el eje horizontal. El
-  valor predeterminado `NULL` muestra hasta el día en que el 95% de los
-  registros se ha vacunado, para que unas pocas vacunaciones muy tardías
-  (o con errores de fecha) no estiren el eje.
+Acepta los mismos parámetros que
+[`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md),
+pero adicionalmente acepta:
+
 - `binwidth`: Número de días que cada punto de la curva representa (por
   ejemplo, 7 para agrupar por semana). En el caso de unidades
   geográficas con pocos registros, valores más grandes pueden producir
@@ -969,49 +983,63 @@ recibe el resultado de
 y calcula, para cada percentil, la cantidad de días necesarios para
 alcanzarlo. Los resultados mantienen la misma desagregación que
 [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
-(por dosis y/o nivel geográfico):
+(por dosis y nivel geográfico):
 
 ``` r
 
 vt_percentile(data = dist_df) %>%
-  kable(caption = "Días necesarios para vacunar al 25 %, 50 % y 75 %, todas las dosis combinadas, cohorte 2022")
+  kable(caption = "Días necesarios para vacunar al 25%, 50% y 75%, por dosis, cohorte 2022")
 ```
 
-| percentile | day | within_window | window_end |  total |
-|-----------:|----:|:--------------|-----------:|-------:|
-|         25 |   8 | NA            |         NA | 216042 |
-|         50 |  18 | NA            |         NA | 216042 |
-|         75 |  45 | NA            |         NA | 216042 |
+| dose   | percentile | day | age | within_window | window_end | total |
+|:-------|-----------:|----:|----:|:--------------|-----------:|------:|
+| BCG RN |         25 |   1 |   1 | TRUE          |         28 | 41899 |
+| BCG RN |         50 |   2 |   2 | TRUE          |         28 | 41899 |
+| BCG RN |         75 |   6 |   6 | TRUE          |         28 | 41899 |
+| DTP1   |         25 |   9 |  63 | TRUE          |         36 | 40556 |
+| DTP1   |         50 |  14 |  68 | TRUE          |         36 | 40556 |
+| DTP1   |         75 |  28 |  82 | TRUE          |         36 | 40556 |
+| DTP2   |         25 |  10 | 126 | TRUE          |         34 | 38393 |
+| DTP2   |         50 |  21 | 137 | TRUE          |         34 | 38393 |
+| DTP2   |         75 |  45 | 161 | FALSE         |         34 | 38393 |
+| DTP3   |         25 |  13 | 189 | TRUE          |         34 | 36727 |
+| DTP3   |         50 |  29 | 205 | TRUE          |         34 | 36727 |
+| DTP3   |         75 |  70 | 246 | FALSE         |         34 | 36727 |
+| SRP1   |         25 |  17 | 377 | TRUE          |         60 | 31047 |
+| SRP1   |         50 |  33 | 393 | TRUE          |         60 | 31047 |
+| SRP1   |         75 |  69 | 429 | FALSE         |         60 | 31047 |
+| YFV1   |         25 |  18 | 378 | TRUE          |         60 | 27420 |
+| YFV1   |         50 |  37 | 397 | TRUE          |         60 | 27420 |
+| YFV1   |         75 |  78 | 438 | FALSE         |         60 | 27420 |
 
-Días necesarios para vacunar al 25 %, 50 % y 75 %, todas las dosis
-combinadas, cohorte 2022 {.table}
+Días necesarios para vacunar al 25%, 50% y 75%, por dosis, cohorte 2022
+{.table}
 
 ``` r
 
 vt_percentile(data = dist_by_dose_ADM1_df, percentiles = c(50, 80)) %>%
   head(10) %>%
-  kable(caption = "Días necesarios para vacunar al 50 % y 80 %, por dosis y ADM1, cohorte 2022")
+  kable(caption = "Días necesarios para vacunar al 50% y 80%, por dosis y ADM1, cohorte 2022")
 ```
 
-| dose | ADM1   | percentile | day | within_window | window_end | total |
-|:-----|:-------|-----------:|----:|:--------------|-----------:|------:|
-| DTP1 | ADM1_1 |         50 |  24 | TRUE          |         36 |  1182 |
-| DTP1 | ADM1_1 |         80 |  63 | FALSE         |         36 |  1182 |
-| DTP1 | ADM1_2 |         50 |  14 | TRUE          |         36 |  6049 |
-| DTP1 | ADM1_2 |         80 |  34 | TRUE          |         36 |  6049 |
-| DTP1 | ADM1_3 |         50 |  14 | TRUE          |         36 | 27534 |
-| DTP1 | ADM1_3 |         80 |  35 | TRUE          |         36 | 27534 |
-| DTP1 | ADM1_4 |         50 |  11 | TRUE          |         36 |  3792 |
-| DTP1 | ADM1_4 |         80 |  23 | TRUE          |         36 |  3792 |
-| DTP1 | ADM1_5 |         50 |  13 | TRUE          |         36 |  1999 |
-| DTP1 | ADM1_5 |         80 |  29 | TRUE          |         36 |  1999 |
+| dose | ADM1   | percentile | day | age | within_window | window_end | total |
+|:-----|:-------|-----------:|----:|----:|:--------------|-----------:|------:|
+| DTP1 | ADM1_1 |         50 |  24 |  78 | TRUE          |         36 |  1182 |
+| DTP1 | ADM1_1 |         80 |  63 | 117 | FALSE         |         36 |  1182 |
+| DTP1 | ADM1_2 |         50 |  14 |  68 | TRUE          |         36 |  6049 |
+| DTP1 | ADM1_2 |         80 |  34 |  88 | TRUE          |         36 |  6049 |
+| DTP1 | ADM1_3 |         50 |  14 |  68 | TRUE          |         36 | 27534 |
+| DTP1 | ADM1_3 |         80 |  35 |  89 | TRUE          |         36 | 27534 |
+| DTP1 | ADM1_4 |         50 |  11 |  65 | TRUE          |         36 |  3792 |
+| DTP1 | ADM1_4 |         80 |  23 |  77 | TRUE          |         36 |  3792 |
+| DTP1 | ADM1_5 |         50 |  13 |  67 | TRUE          |         36 |  1999 |
+| DTP1 | ADM1_5 |         80 |  29 |  83 | TRUE          |         36 |  1999 |
 
-Días necesarios para vacunar al 50 % y 80 %, por dosis y ADM1, cohorte
+Días necesarios para vacunar al 50% y 80%, por dosis y ADM1, cohorte
 2022 {.table}
 
 La columna `within_window` indica si el percentil se alcanza dentro del
-periodo de oportunidad de la dosis (muestra `NA` cuando las dosis están
-combinadas).
+periodo de oportunidad de la dosis.
 
 ##### Parámetros aceptados
 
@@ -1039,8 +1067,8 @@ que muestra una fila por unidad geográfica (o por dosis, si los datos no
 están desagregados geográficamente). Cada percentil se dibuja como un
 punto, unidos por una línea desde el percentil más bajo hasta el más
 alto. Las filas se ordenan de acuerdo a la mediana (o el percentil más
-cercano). Por último, cuando los resultados se desagregan por dosis, se
-sombrea el periodo de oportunidad de cada una.
+cercano). Por último, se sombrea el periodo de oportunidad de cada
+dosis.
 
 ``` r
 
@@ -1070,6 +1098,7 @@ vt_distribution(
   data.schedule = pahoabc.schedule,
   # a nivel ADM2 hay muchas unidades geográficas
   geo_level     = "ADM2",
+  vaccines      = c("DTP1", "DTP3"),
   birth_cohorts = 2022
 ) %>%
   vt_percentile() %>%
@@ -1091,11 +1120,10 @@ vt_distribution(
 ##### Interpretación
 
 Las unidades en la parte superior del gráfico son las que más tardan en
-vacunar a la mitad de sus registros. En las gráficas desagregadas por
-dosis, los puntos a la derecha del área sombreada indican que ese
-percentil se alcanza fuera del periodo de oportunidad, y una línea larga
-entre el percentil más bajo y el más alto indica que la vacunación está
-muy dispersa en el tiempo.
+vacunar a la mitad de sus registros. Los puntos a la derecha del área
+sombreada indican que ese percentil se alcanza fuera del periodo de
+oportunidad, y una línea larga entre el percentil más bajo y el más alto
+indica que la vacunación está muy dispersa en el tiempo.
 
 > **Advertencia**
 >

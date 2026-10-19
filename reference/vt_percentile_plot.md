@@ -6,9 +6,9 @@ geographic area (or per dose, when `data` is not disaggregated by
 geographic area). Each percentile is drawn as a point, joined by a line
 from the lowest to the highest percentile. Rows are sorted by the
 percentile closest to the median (P50), with the slowest areas at the
-top, so the plot remains readable with many geographic areas. If `data`
-is disaggregated by `dose`, the timeliness window of each dose is
-shaded.
+top, so the plot remains readable with many geographic areas. When
+`data` is disaggregated by geographic area, the plot is faceted by
+`dose`. The timeliness window of each dose is shaded.
 
 ## Usage
 

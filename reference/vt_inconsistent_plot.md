@@ -1,9 +1,9 @@
 # (V)accination (T)imeliness Inconsistent Records Plot
 
-Generates a lollipop plot of untimely records by the absolute value of
-days outside the timeliness window, binned into customizable intervals.
-Records vaccinated too late (after `age_schedule_high`) and too early
-(before `age_schedule_low`) are shown in separate rows.
+Generates a lollipop plot showing the distribution of untimely records,
+grouping them in bins of days outside of the timeliness window. The
+`UNTIMELY_LATE` records and the `UNTIMELY_EARLY` records are shown in
+separate rows.
 
 ## Usage
 

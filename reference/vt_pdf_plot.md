@@ -1,7 +1,7 @@
 # (V)accination (T)imeliness Probability Distribution Plot
 
 Generates a plot of the percentage vaccinated on each day since the
-start of the timeliness window.
+start of the timeliness window, faceted by `dose`.
 
 ## Usage
 
@@ -12,7 +12,8 @@ vt_pdf_plot(
   highlight = NULL,
   within_ADM1 = NULL,
   max_days = NULL,
-  binwidth = 1
+  binwidth = 1,
+  x_axis = "absolute"
 )
 ```
 
@@ -45,14 +46,22 @@ vt_pdf_plot(
 
 - max_days:
 
-  Numeric (optional). Maximum number of days to show on the x-axis,
-  useful to trim long tails of late vaccinations. Default is `NULL`,
-  which shows up to the day at which 95% of records are vaccinated.
+  Numeric (optional). Maximum number of days since the start of the
+  timeliness window to show on the x-axis, useful to trim long tails of
+  late vaccinations. Default is `NULL`, which shows up to the day at
+  which 95% of records are vaccinated.
 
 - binwidth:
 
   Numeric (optional). Provide a number of days to be grouped for each
   data point in the graph. Default is 1.
+
+- x_axis:
+
+  Character. Either "absolute" (default), where the x-axis shows the age
+  at vaccination in days, starting at the `age_schedule_low` of each
+  dose; or "relative", where the x-axis shows the days since the start
+  of the timeliness window, starting at 0 for every dose.
 
 ## Value
 
@@ -60,13 +69,12 @@ A ggplot object representing the probability distribution plot.
 
 ## Details
 
-If `data` is disaggregated by geographic area, each area is drawn as a
-thin grey line for context, and all areas combined are drawn as a single
-highlighted line. Specific areas can be highlighted in color with
-`highlight`. If `data` is disaggregated by `dose`, the plot is faceted
-by dose and the timeliness window of each dose is shaded. Records
-vaccinated before the timeliness window and records with a missing date
-are excluded from the distribution and reported in the caption.
+The timeliness window of each dose is shaded. If `data` is disaggregated
+by geographic area, each area is drawn as a thin grey line for context,
+and all areas combined are drawn as a single highlighted line. Specific
+areas can be highlighted in color with `highlight`. Records vaccinated
+before the timeliness window and records with a missing date are
+excluded from the distribution and reported in the caption.
 
 When showing several subnational areas, the y-axis is limited to the
 range of the highlighted lines, so any gray lines outside those limits

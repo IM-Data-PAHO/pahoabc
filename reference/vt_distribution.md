@@ -3,11 +3,13 @@
 This function calculates the probabilistic version of the vaccination
 timeliness analysis: the distribution of vaccinations by number of days
 elapsed since the start of the timeliness window (`age_schedule_low`),
-further disaggregating by geographic level, using data from the
-electronic immunization registry (EIR). It returns, for each day, the
-empirical probability density (`pdf`), i.e. the percentage of records
-vaccinated on that day, and the empirical cumulative distribution
-(`cdf`), i.e. the percentage of records vaccinated up to that day.
+for each `dose` and further disaggregating by geographic level, using
+data from the electronic immunization registry (EIR). Doses are never
+pooled together, since each dose has its own timeliness window. It
+returns, for each day, the empirical probability density (`pdf`), i.e.
+the percentage of records vaccinated on that day, and the empirical
+cumulative distribution (`cdf`), i.e. the percentage of records
+vaccinated up to that day.
 
 ## Usage
 
@@ -41,9 +43,8 @@ vt_distribution(
 - vaccines:
 
   Character (optional). A character vector specifying the doses to
-  include in the analysis, disaggregating results by `dose`. If `NULL`
-  (default), all doses in `data.schedule` are included and pooled
-  together.
+  include in the analysis. If `NULL` (default), all doses in
+  `data.schedule` are included.
 
 - birth_cohorts:
 
@@ -57,11 +58,16 @@ vt_distribution(
 
 ## Value
 
-A data frame with one row per day since the start of the timeliness
-window, with the following columns:
+A data frame with one row per `dose` (and geographic area, if any) and
+day since the start of the timeliness window, with the following
+columns:
+
+- `dose`: the dose.
 
 - `day`: days since the start of the timeliness window
   (`age_schedule_low`).
+
+- `age`: age at vaccination in days (`day + age_schedule_low`).
 
 - `n`: number of records vaccinated on that day.
 
@@ -74,7 +80,7 @@ window, with the following columns:
 - `n_at_risk`: number of records not yet vaccinated at the start of that
   day (population "at risk").
 
-- `total`: number of vaccinations in the EIR for that `dose` and/or
+- `total`: number of vaccinations in the EIR for that `dose` and
   geographic area, excluding `n_early` and `n_missing`.
 
 - `n_early`: number of records vaccinated before the timeliness window,
@@ -84,7 +90,10 @@ window, with the following columns:
   `total`.
 
 - `window_end`: last timely day
-  (`age_schedule_high - age_schedule_low`); `NA` when doses are pooled.
+  (`age_schedule_high - age_schedule_low`).
+
+- `age_schedule_low`: age in days for the lower limit of the timeliness
+  window for that `dose`, comes from `data.schedule`.
 
 ## Details
 

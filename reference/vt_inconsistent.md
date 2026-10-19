@@ -1,9 +1,8 @@
 # (V)accination (T)imeliness Inconsistent Records
 
-This function returns a record-level table of all untimely and "date
-missing" vaccination records, including the number of days outside the
-timeliness window defined in the vaccination schedule
-(`age_schedule_low`, `age_schedule_high`).
+This function returns a record-level table of all untimely (early or
+late) and "date missing" vaccination records, including the number of
+days outside the timeliness window defined in the vaccination schedule.
 
 ## Usage
 
@@ -39,8 +38,25 @@ vt_inconsistent(data.EIR, data.schedule, vaccines = NULL, birth_cohorts = NULL)
 
 ## Value
 
-A data frame containing the untimely and date-missing records, with
-`ID`, `dose`, `date_birth`, `date_vax`, age at vaccination in days, the
-timeliness window (`age_schedule_low`, `age_schedule_high`), and
-`days_outside_range`: the number of days outside that window, negative
-if vaccinated before `age_schedule_low` (`NA` when a date is missing).
+A data frame containing the untimely and date-missing records, with the
+following columns:
+
+- `ID`: unique person identification number.
+
+- `dose`: the dose.
+
+- `date_birth`: date of birth.
+
+- `date_vax`: date of vaccination.
+
+- `age_at_vax`: age at vaccination in days.
+
+- `age_schedule_low`, `age_schedule_high`: the timeliness window, from
+  `data.schedule`.
+
+- `days_outside_range`: the number of days outside of the timeliness
+  window, negative if vaccinated before `age_schedule_low` and `NA` when
+  a date is missing.
+
+- `timeliness`: `UNTIMELY_EARLY` (before `age_schedule_low`),
+  `UNTIMELY_LATE` (after `age_schedule_high`) or `DATE_MISSING`.

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>(V)accination (T)imeliness Rate</h1>
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.0/R/vt_rate.R" class="external-link"><code>R/vt_rate.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/R/vt_rate.R" class="external-link"><code>R/vt_rate.R</code></a></small>
       <div class="d-none name"><code>vt_rate.Rd</code></div>
     </div>
 
@@ -85,8 +85,15 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with one row per <code>timeliness</code> category for the specified <code>geo_level</code>. Records are classified as <code>TIMELY</code> (administered within the timeliness window), <code>UNTIMELY</code> (administered outside it) or <code>DATE_MISSING</code> (missing <code>date_birth</code> or <code>date_vax</code>). Includes the number of records for each category (<code>n</code>), a corresponding <code>rate</code>, and a <code>total</code>.</p>
-    </div>
+    <p>A data frame with one row per <code>timeliness</code> category for the specified <code>geo_level</code> (and <code>dose</code>, if <code>vaccines</code> is specified), with the following columns:</p><ul><li><p><code>timeliness</code>: the category of each record, one of:</p><ul><li><p><code>TIMELY</code>: administered within the timeliness window.</p></li>
+<li><p><code>UNTIMELY_EARLY</code>: administered before the timeliness window, i.e. before <code>age_schedule_low</code>.</p></li>
+<li><p><code>UNTIMELY_LATE</code>: administered after the timeliness window, i.e. after <code>age_schedule_high</code>.</p></li>
+<li><p><code>DATE_MISSING</code>: missing <code>date_birth</code> or <code>date_vax</code>.</p></li>
+</ul></li>
+<li><p><code>n</code>: number of records in that category.</p></li>
+<li><p><code>total</code>: total number of records.</p></li>
+<li><p><code>rate</code>: percentage of records in that category (<code>n / total * 100</code>).</p></li>
+</ul></div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

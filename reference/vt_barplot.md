@@ -1,9 +1,8 @@
 # (V)accination (T)imeliness Barplot
 
-Generates a bar plot of timeliness rates (doses administered within vs
-outside the timeliness window), grouped by geographic area and colored
-by timeliness result. If `data` is disaggregated by `dose` (i.e.
-`vt_rate` was run with `vaccines` specified), the plot is faceted by
+Generates a bar plot showing percentage of doses administered within,
+before or after the timeliness window, grouped by geographic area. If
+`vt_rate` was run with `vaccines` specified, the plot is faceted by
 dose.
 
 ## Usage

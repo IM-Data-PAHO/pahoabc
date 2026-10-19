@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
             
             <h4 data-toc-skip class="date">October 8, 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.0/vignettes/articles/en/vaccination_timeliness_en.Rmd" class="external-link"><code>vignettes/articles/en/vaccination_timeliness_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/vignettes/articles/en/vaccination_timeliness_en.Rmd" class="external-link"><code>vignettes/articles/en/vaccination_timeliness_en.Rmd</code></a></small>
       <div class="d-none name"><code>vaccination_timeliness_en.Rmd</code></div>
     </div>
 
@@ -279,10 +279,7 @@ window that it takes to vaccinate a given percentile of the population
 <ul>
 <li>
 <strong>Vaccines to evaluate</strong>: each dose is analyzed
-individually. PAHOabc also allows combining several doses into a single
-curve (aligned according to the day 0 of each one), but in that case it
-is not possible to show a single timeliness window, since each dose has
-its own.</li>
+individually, since each one has its own timeliness window.</li>
 <li>
 <strong>Timeliness per vaccine</strong>: same as in the
 non-probabilistic analysis (between <code>age_schedule_low</code> and
@@ -403,12 +400,16 @@ contains several ADM2 subdivisions.</li>
 <code>[age_schedule_low, age_schedule_high]</code>.</td>
 </tr>
 <tr class="even">
-<td><code>UNTIMELY</code></td>
-<td>The age at vaccination falls outside
-<code>[age_schedule_low, age_schedule_high]</code>, either before or
-after the timeliness window.</td>
+<td><code>UNTIMELY_EARLY</code></td>
+<td>The age at vaccination is lower than <code>age_schedule_low</code>
+(before the timeliness window).</td>
 </tr>
 <tr class="odd">
+<td><code>UNTIMELY_LATE</code></td>
+<td>The age at vaccination is greater than
+<code>age_schedule_high</code> (after the timeliness window).</td>
+</tr>
+<tr class="even">
 <td><code>DATE_MISSING</code></td>
 <td>
 <code>date_vax</code> or <code>date_birth</code> is
@@ -682,9 +683,9 @@ records missing the date of vaccination.</li>
 <p><code><a href="../../reference/vt_rate.html">vt_rate()</a></code> compares the age at vaccination against the
 timeliness window of each dose and returns the number (<code>n</code>)
 and percentage (<code>rate</code>) of records that are
-<code>TIMELY</code>, <code>UNTIMELY</code>, or
-<code>DATE_MISSING</code>, out of the total number of records
-(<code>total</code>).</p>
+<code>TIMELY</code>, <code>UNTIMELY_EARLY</code>,
+<code>UNTIMELY_LATE</code>, or <code>DATE_MISSING</code>, out of the
+total number of records (<code>total</code>).</p>
 <p>By default, <code>vaccines = NULL</code> pools all doses in
 <code>data.schedule</code> into a single indicator. Here we compute the
 pooled indicator at the ADM1 level:</p>
@@ -716,24 +717,38 @@ pooled indicator at the ADM1 level:</p>
 </tr>
 <tr class="even">
 <td align="left">ADM1_1</td>
-<td align="left">UNTIMELY</td>
-<td align="right">2457</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">31</td>
 <td align="right">6167</td>
-<td align="right">39.84</td>
+<td align="right">0.50</td>
 </tr>
 <tr class="odd">
+<td align="left">ADM1_1</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">2426</td>
+<td align="right">6167</td>
+<td align="right">39.34</td>
+</tr>
+<tr class="even">
 <td align="left">ADM1_2</td>
 <td align="left">TIMELY</td>
 <td align="right">23955</td>
 <td align="right">32632</td>
 <td align="right">73.41</td>
 </tr>
+<tr class="odd">
+<td align="left">ADM1_2</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">81</td>
+<td align="right">32632</td>
+<td align="right">0.25</td>
+</tr>
 <tr class="even">
 <td align="left">ADM1_2</td>
-<td align="left">UNTIMELY</td>
-<td align="right">8677</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">8596</td>
 <td align="right">32632</td>
-<td align="right">26.59</td>
+<td align="right">26.34</td>
 </tr>
 <tr class="odd">
 <td align="left">ADM1_3</td>
@@ -744,24 +759,38 @@ pooled indicator at the ADM1 level:</p>
 </tr>
 <tr class="even">
 <td align="left">ADM1_3</td>
-<td align="left">UNTIMELY</td>
-<td align="right">41105</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">281</td>
 <td align="right">144709</td>
-<td align="right">28.41</td>
+<td align="right">0.19</td>
 </tr>
 <tr class="odd">
+<td align="left">ADM1_3</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">40824</td>
+<td align="right">144709</td>
+<td align="right">28.21</td>
+</tr>
+<tr class="even">
 <td align="left">ADM1_4</td>
 <td align="left">TIMELY</td>
 <td align="right">18769</td>
 <td align="right">21712</td>
 <td align="right">86.45</td>
 </tr>
+<tr class="odd">
+<td align="left">ADM1_4</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">85</td>
+<td align="right">21712</td>
+<td align="right">0.39</td>
+</tr>
 <tr class="even">
 <td align="left">ADM1_4</td>
-<td align="left">UNTIMELY</td>
-<td align="right">2943</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">2858</td>
 <td align="right">21712</td>
-<td align="right">13.55</td>
+<td align="right">13.16</td>
 </tr>
 <tr class="odd">
 <td align="left">ADM1_5</td>
@@ -772,10 +801,17 @@ pooled indicator at the ADM1 level:</p>
 </tr>
 <tr class="even">
 <td align="left">ADM1_5</td>
-<td align="left">UNTIMELY</td>
-<td align="right">2309</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">23</td>
 <td align="right">11323</td>
-<td align="right">20.39</td>
+<td align="right">0.20</td>
+</tr>
+<tr class="odd">
+<td align="left">ADM1_5</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">2286</td>
+<td align="right">11323</td>
+<td align="right">20.19</td>
 </tr>
 </tbody>
 </table>
@@ -813,12 +849,20 @@ pooled indicator at the ADM1 level:</p>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
-<td align="left">UNTIMELY</td>
-<td align="right">420</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">5</td>
 <td align="right">1187</td>
-<td align="right">35.38</td>
+<td align="right">0.42</td>
 </tr>
 <tr class="odd">
+<td align="left">DTP1</td>
+<td align="left">ADM1_1</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">415</td>
+<td align="right">1187</td>
+<td align="right">34.96</td>
+</tr>
+<tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_2</td>
 <td align="left">TIMELY</td>
@@ -826,13 +870,21 @@ pooled indicator at the ADM1 level:</p>
 <td align="right">6065</td>
 <td align="right">81.83</td>
 </tr>
+<tr class="odd">
+<td align="left">DTP1</td>
+<td align="left">ADM1_2</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">16</td>
+<td align="right">6065</td>
+<td align="right">0.26</td>
+</tr>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_2</td>
-<td align="left">UNTIMELY</td>
-<td align="right">1102</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">1086</td>
 <td align="right">6065</td>
-<td align="right">18.17</td>
+<td align="right">17.91</td>
 </tr>
 <tr class="odd">
 <td align="left">DTP1</td>
@@ -845,42 +897,26 @@ pooled indicator at the ADM1 level:</p>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_3</td>
-<td align="left">UNTIMELY</td>
-<td align="right">5207</td>
+<td align="left">UNTIMELY_EARLY</td>
+<td align="right">53</td>
 <td align="right">27587</td>
-<td align="right">18.87</td>
+<td align="right">0.19</td>
 </tr>
 <tr class="odd">
+<td align="left">DTP1</td>
+<td align="left">ADM1_3</td>
+<td align="left">UNTIMELY_LATE</td>
+<td align="right">5154</td>
+<td align="right">27587</td>
+<td align="right">18.68</td>
+</tr>
+<tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_4</td>
 <td align="left">TIMELY</td>
 <td align="right">3418</td>
 <td align="right">3818</td>
 <td align="right">89.52</td>
-</tr>
-<tr class="even">
-<td align="left">DTP1</td>
-<td align="left">ADM1_4</td>
-<td align="left">UNTIMELY</td>
-<td align="right">400</td>
-<td align="right">3818</td>
-<td align="right">10.48</td>
-</tr>
-<tr class="odd">
-<td align="left">DTP1</td>
-<td align="left">ADM1_5</td>
-<td align="left">TIMELY</td>
-<td align="right">1712</td>
-<td align="right">2004</td>
-<td align="right">85.43</td>
-</tr>
-<tr class="even">
-<td align="left">DTP1</td>
-<td align="left">ADM1_5</td>
-<td align="left">UNTIMELY</td>
-<td align="right">292</td>
-<td align="right">2004</td>
-<td align="right">14.57</td>
 </tr>
 </tbody>
 </table>
@@ -939,11 +975,14 @@ all bars sum to 100%.</li>
 <h5 id="interpretation">Interpretation<a class="anchor" aria-label="anchor" href="#interpretation"></a>
 </h5>
 <p>Each bar represents a geographic unit and is divided into segments:
-<code>TIMELY</code> (blue), <code>UNTIMELY</code> (orange), and
-<code>DATE_MISSING</code> (grey). Bars with a larger orange share
-indicate units where a large share of doses are administered outside the
-timeliness window, a signal worth investigating for possible access,
-willingness to vaccinate, or supply issues in those units.</p>
+<code>TIMELY</code> (blue), <code>UNTIMELY_LATE</code> (orange),
+<code>UNTIMELY_EARLY</code> (purple), and <code>DATE_MISSING</code>
+(grey). Bars with a larger orange share indicate units where a large
+share of doses are administered after the timeliness window, a signal
+worth investigating for possible access, willingness to vaccinate, or
+supply issues in those units. A large purple share, on the other hand,
+can point to data entry errors or problems in how the schedule is
+applied.</p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>No grey segment appears because filtering by the 2022 cohort excluded
@@ -957,8 +996,9 @@ the date of vaccination.</p>
 <code>vt_inconsistent()</code><a class="anchor" aria-label="anchor" href="#step-3-inspect-individual-untimely-records-with-vt_inconsistent"></a>
 </h4>
 <p><code><a href="../../reference/vt_inconsistent.html">vt_inconsistent()</a></code> returns a record-level table of all
-<code>UNTIMELY</code> and <code>DATE_MISSING</code> doses, including the
-number of days outside the timeliness window.</p>
+<code>UNTIMELY_EARLY</code>, <code>UNTIMELY_LATE</code> and
+<code>DATE_MISSING</code> doses, including the number of days outside
+the timeliness window.</p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>In this example we do not filter by birth cohort, because doing so
@@ -972,12 +1012,12 @@ would exclude records with no date of birth.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">inconsistent_df</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="co"># shows up to 3 UNTIMELY and up to 3 DATE_MISSING records</span></span>
+<span>  <span class="co"># shows up to 2 records of each type: UNTIMELY_EARLY, UNTIMELY_LATE and DATE_MISSING</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">timeliness</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">slice_head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Sample of untimely and missing-date DTP1 records"</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <caption>Sample of untimely and missing-date DTP1 records</caption>
 <colgroup>
 <col width="6%">
@@ -985,10 +1025,10 @@ would exclude records with no date of birth.</p>
 <col width="9%">
 <col width="9%">
 <col width="9%">
+<col width="14%">
 <col width="15%">
 <col width="16%">
-<col width="16%">
-<col width="11%">
+<col width="13%">
 </colgroup>
 <thead><tr class="header">
 <th align="right">ID</th>
@@ -1025,6 +1065,28 @@ would exclude records with no date of birth.</p>
 <td align="left">DATE_MISSING</td>
 </tr>
 <tr class="odd">
+<td align="right">90277</td>
+<td align="left">DTP1</td>
+<td align="left">2022-02-28</td>
+<td align="left">2022-03-29</td>
+<td align="right">29</td>
+<td align="right">54</td>
+<td align="right">90</td>
+<td align="right">-25</td>
+<td align="left">UNTIMELY_EARLY</td>
+</tr>
+<tr class="even">
+<td align="right">91058</td>
+<td align="left">DTP1</td>
+<td align="left">2022-03-13</td>
+<td align="left">2022-05-03</td>
+<td align="right">51</td>
+<td align="right">54</td>
+<td align="right">90</td>
+<td align="right">-3</td>
+<td align="left">UNTIMELY_EARLY</td>
+</tr>
+<tr class="odd">
 <td align="right">118063</td>
 <td align="left">DTP1</td>
 <td align="left">2022-09-15</td>
@@ -1033,7 +1095,7 @@ would exclude records with no date of birth.</p>
 <td align="right">54</td>
 <td align="right">90</td>
 <td align="right">377</td>
-<td align="left">UNTIMELY</td>
+<td align="left">UNTIMELY_LATE</td>
 </tr>
 <tr class="even">
 <td align="right">187807</td>
@@ -1044,18 +1106,7 @@ would exclude records with no date of birth.</p>
 <td align="right">54</td>
 <td align="right">90</td>
 <td align="right">70</td>
-<td align="left">UNTIMELY</td>
-</tr>
-<tr class="odd">
-<td align="right">212197</td>
-<td align="left">DTP1</td>
-<td align="left">2022-10-23</td>
-<td align="left">2023-12-19</td>
-<td align="right">422</td>
-<td align="right">54</td>
-<td align="right">90</td>
-<td align="right">332</td>
-<td align="left">UNTIMELY</td>
+<td align="left">UNTIMELY_LATE</td>
 </tr>
 </tbody>
 </table>
@@ -1131,7 +1182,7 @@ axis. It is a list of <code>c(lower, upper)</code> numeric pairs
 defining the lower and upper limits of each category, in days.
 Categories must start at 0 and be contiguous (each one starts where the
 previous one ends). The last category always extends to the maximum
-value in the data and is labelled <code>"X+"</code>. Default: 10-day
+value in the data and is labeled <code>"X+"</code>. Default: 10-day
 groups from 0 up to 90+ days.</li>
 </ul>
 <p>Time categories are defined by each country. For example, to use the
@@ -1173,8 +1224,8 @@ entry errors or problems in how the schedule is applied.</p>
 <li>
 <code><a href="../../reference/vt_distribution.html">vt_distribution()</a></code>: computes, for each day since the
 start of the timeliness window, the percentage of records vaccinated on
-that day and the cumulative percentage (cumulative incidence). It allows
-disaggregating by dose and geographic level.</li>
+that day and the cumulative percentage (cumulative incidence). Results
+are disaggregated by dose and, optionally, by geographic level.</li>
 <li>
 <code><a href="../../reference/vt_cdf_plot.html">vt_cdf_plot()</a></code> and <code><a href="../../reference/vt_pdf_plot.html">vt_pdf_plot()</a></code>: visualize
 the output of <code><a href="../../reference/vt_distribution.html">vt_distribution()</a></code> as a cumulative incidence
@@ -1208,8 +1259,8 @@ observed yet.</p>
 <p><code><a href="../../reference/vt_distribution.html">vt_distribution()</a></code> computes the age at vaccination and
 expresses it as days since the start of the timeliness window (where day
 0 corresponds to <code>age_schedule_low</code>). By default,
-<code>vaccines = NULL</code> sums all doses in
-<code>data.schedule</code> into a single distribution:</p>
+<code>vaccines = NULL</code> includes all doses in
+<code>data.schedule</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dist_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
 <span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
@@ -1217,24 +1268,29 @@ expresses it as days since the start of the timeliness window (where day
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dist_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Distribution of vaccinations by day, all doses combined, 2022 cohort"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">dist_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Distribution of vaccinations by day and dose, 2022 cohort"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Distribution of vaccinations by day, all doses combined, 2022
+<caption>Distribution of vaccinations by day and dose, 2022
 cohort</caption>
 <colgroup>
-<col width="5%">
-<col width="8%">
 <col width="6%">
-<col width="8%">
-<col width="8%">
-<col width="13%">
+<col width="3%">
+<col width="3%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="5%">
+<col width="9%">
+<col width="5%">
+<col width="7%">
 <col width="9%">
 <col width="10%">
-<col width="13%">
-<col width="15%">
+<col width="16%">
 </colgroup>
 <thead><tr class="header">
+<th align="left">dose</th>
 <th align="right">day</th>
+<th align="right">age</th>
 <th align="right">n</th>
 <th align="right">pdf</th>
 <th align="right">cum_n</th>
@@ -1244,133 +1300,163 @@ cohort</caption>
 <th align="right">n_early</th>
 <th align="right">n_missing</th>
 <th align="right">window_end</th>
+<th align="right">age_schedule_low</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left">BCG RN</td>
 <td align="right">0</td>
-<td align="right">3977</td>
-<td align="right">1.84</td>
-<td align="right">3977</td>
-<td align="right">1.84</td>
-<td align="right">216042</td>
-<td align="right">216042</td>
-<td align="right">501</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">3953</td>
+<td align="right">9.43</td>
+<td align="right">3953</td>
+<td align="right">9.43</td>
+<td align="right">41899</td>
+<td align="right">41899</td>
+<td align="right">158</td>
+<td align="right">0</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">BCG RN</td>
 <td align="right">1</td>
-<td align="right">15893</td>
-<td align="right">7.36</td>
-<td align="right">19870</td>
-<td align="right">9.20</td>
-<td align="right">212065</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">1</td>
+<td align="right">15851</td>
+<td align="right">37.83</td>
+<td align="right">19804</td>
+<td align="right">47.27</td>
+<td align="right">37946</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">BCG RN</td>
 <td align="right">2</td>
-<td align="right">6315</td>
-<td align="right">2.92</td>
-<td align="right">26185</td>
-<td align="right">12.12</td>
-<td align="right">196172</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">2</td>
+<td align="right">6254</td>
+<td align="right">14.93</td>
+<td align="right">26058</td>
+<td align="right">62.19</td>
+<td align="right">22095</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">BCG RN</td>
 <td align="right">3</td>
-<td align="right">2473</td>
-<td align="right">1.14</td>
-<td align="right">28658</td>
-<td align="right">13.27</td>
-<td align="right">189857</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">3</td>
+<td align="right">2360</td>
+<td align="right">5.63</td>
+<td align="right">28418</td>
+<td align="right">67.83</td>
+<td align="right">15841</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">BCG RN</td>
 <td align="right">4</td>
-<td align="right">2455</td>
-<td align="right">1.14</td>
-<td align="right">31113</td>
-<td align="right">14.40</td>
-<td align="right">187384</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">4</td>
+<td align="right">1602</td>
+<td align="right">3.82</td>
+<td align="right">30020</td>
+<td align="right">71.65</td>
+<td align="right">13481</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">BCG RN</td>
 <td align="right">5</td>
-<td align="right">4185</td>
-<td align="right">1.94</td>
-<td align="right">35298</td>
-<td align="right">16.34</td>
-<td align="right">184929</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">5</td>
+<td align="right">1341</td>
+<td align="right">3.20</td>
+<td align="right">31361</td>
+<td align="right">74.85</td>
+<td align="right">11879</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">BCG RN</td>
 <td align="right">6</td>
-<td align="right">5221</td>
-<td align="right">2.42</td>
-<td align="right">40519</td>
-<td align="right">18.76</td>
-<td align="right">180744</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">6</td>
+<td align="right">1145</td>
+<td align="right">2.73</td>
+<td align="right">32506</td>
+<td align="right">77.58</td>
+<td align="right">10538</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">BCG RN</td>
 <td align="right">7</td>
-<td align="right">9053</td>
-<td align="right">4.19</td>
-<td align="right">49572</td>
-<td align="right">22.95</td>
-<td align="right">175523</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">7</td>
+<td align="right">1009</td>
+<td align="right">2.41</td>
+<td align="right">33515</td>
+<td align="right">79.99</td>
+<td align="right">9393</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
+<td align="left">BCG RN</td>
 <td align="right">8</td>
-<td align="right">9097</td>
-<td align="right">4.21</td>
-<td align="right">58669</td>
-<td align="right">27.16</td>
-<td align="right">166470</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">8</td>
+<td align="right">610</td>
+<td align="right">1.46</td>
+<td align="right">34125</td>
+<td align="right">81.45</td>
+<td align="right">8384</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
+<td align="left">BCG RN</td>
 <td align="right">9</td>
-<td align="right">7941</td>
-<td align="right">3.68</td>
-<td align="right">66610</td>
-<td align="right">30.83</td>
-<td align="right">157373</td>
-<td align="right">216042</td>
-<td align="right">501</td>
+<td align="right">9</td>
+<td align="right">634</td>
+<td align="right">1.51</td>
+<td align="right">34759</td>
+<td align="right">82.96</td>
+<td align="right">7774</td>
+<td align="right">41899</td>
+<td align="right">158</td>
 <td align="right">0</td>
-<td align="right">NA</td>
+<td align="right">28</td>
+<td align="right">0</td>
 </tr>
 </tbody>
 </table>
-<p>When <code>vaccines</code> is specified, results are disaggregated by
-dose, and each dose includes the last day of its timeliness window in
-the <code>window_end</code> column:</p>
+<p>With <code>vaccines</code> you can select the doses to analyze, and
+with <code>geo_level</code> disaggregate them geographically:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dist_by_dose_ADM1_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
 <span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
@@ -1381,27 +1467,30 @@ the <code>window_end</code> column:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dist_by_dose_ADM1_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span>, caption <span class="op">=</span> <span class="st">"Distribution of vaccinations by day, dose and ADM1, 2022 cohort"</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <caption>Distribution of vaccinations by day, dose and ADM1, 2022
 cohort</caption>
 <colgroup>
-<col width="6%">
-<col width="8%">
 <col width="4%">
-<col width="3%">
 <col width="6%">
-<col width="7%">
-<col width="7%">
-<col width="12%">
+<col width="3%">
+<col width="3%">
+<col width="2%">
+<col width="4%">
+<col width="5%">
+<col width="5%">
+<col width="9%">
+<col width="5%">
 <col width="7%">
 <col width="9%">
-<col width="12%">
-<col width="13%">
+<col width="10%">
+<col width="16%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">dose</th>
 <th align="left">ADM1</th>
 <th align="right">day</th>
+<th align="right">age</th>
 <th align="right">n</th>
 <th align="right">pdf</th>
 <th align="right">cum_n</th>
@@ -1411,12 +1500,14 @@ cohort</caption>
 <th align="right">n_early</th>
 <th align="right">n_missing</th>
 <th align="right">window_end</th>
+<th align="right">age_schedule_low</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">0</td>
+<td align="right">54</td>
 <td align="right">1</td>
 <td align="right">0.08</td>
 <td align="right">1</td>
@@ -1426,11 +1517,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">2</td>
+<td align="right">56</td>
 <td align="right">1</td>
 <td align="right">0.08</td>
 <td align="right">2</td>
@@ -1440,11 +1533,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="odd">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">3</td>
+<td align="right">57</td>
 <td align="right">2</td>
 <td align="right">0.17</td>
 <td align="right">4</td>
@@ -1454,11 +1549,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">4</td>
+<td align="right">58</td>
 <td align="right">3</td>
 <td align="right">0.25</td>
 <td align="right">7</td>
@@ -1468,11 +1565,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="odd">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">5</td>
+<td align="right">59</td>
 <td align="right">26</td>
 <td align="right">2.20</td>
 <td align="right">33</td>
@@ -1482,11 +1581,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">6</td>
+<td align="right">60</td>
 <td align="right">16</td>
 <td align="right">1.35</td>
 <td align="right">49</td>
@@ -1496,11 +1597,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="odd">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">7</td>
+<td align="right">61</td>
 <td align="right">53</td>
 <td align="right">4.48</td>
 <td align="right">102</td>
@@ -1510,11 +1613,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">8</td>
+<td align="right">62</td>
 <td align="right">54</td>
 <td align="right">4.57</td>
 <td align="right">156</td>
@@ -1524,11 +1629,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="odd">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">9</td>
+<td align="right">63</td>
 <td align="right">40</td>
 <td align="right">3.38</td>
 <td align="right">196</td>
@@ -1538,11 +1645,13 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 <tr class="even">
 <td align="left">DTP1</td>
 <td align="left">ADM1_1</td>
 <td align="right">10</td>
+<td align="right">64</td>
 <td align="right">45</td>
 <td align="right">3.81</td>
 <td align="right">241</td>
@@ -1552,12 +1661,15 @@ cohort</caption>
 <td align="right">5</td>
 <td align="right">0</td>
 <td align="right">36</td>
+<td align="right">54</td>
 </tr>
 </tbody>
 </table>
-<p>The table contains one row per day (as long as at least one
+<p>The table contains one row per dose and day (as long as at least one
 vaccination occurred), with the following columns:</p>
 <ul>
+<li>
+<code>dose</code>: the dose.</li>
 <li>
 <code>day</code>: days since the start of the timeliness window
 (from <code>age_schedule_low</code>).</li>
@@ -1582,8 +1694,12 @@ window, excluded from the analysis.</li>
 the analysis.</li>
 <li>
 <code>window_end</code>: last day of the timeliness window
-(<code>age_schedule_high - age_schedule_low</code>). It is
-<code>NA</code> when doses are combined.</li>
+(<code>age_schedule_high - age_schedule_low</code>).</li>
+<li>
+<code>age</code>: age at vaccination (in days).</li>
+<li>
+<code>age_schedule_low</code>: lower limit of the timeliness window
+according to <code>data.schedule</code> (in days).</li>
 </ul>
 <div class="section level5">
 <h5 id="parameters-accepted-4">Parameters accepted<a class="anchor" aria-label="anchor" href="#parameters-accepted-4"></a>
@@ -1617,11 +1733,12 @@ curve. The <code>percentile</code> parameter adds a line and a label
 with the number of days needed to reach that percentile:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_cdf_plot.html">vt_cdf_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_df</span>, percentile <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></code></pre></div>
-<p><img src="vaccination_timeliness_en_files/figure-html/vt-distribution-plot-1.png" class="r-plt" alt="" width="960"></p>
-<p>If the data is disaggregated by <code>dose</code>, the plot is
-organized in panels by dose and the timeliness window of each one is
-shaded. If it is also disaggregated geographically, each geographic area
-is shown as a thin grey line, which serves as context, and all areas
+<p><img src="vaccination_timeliness_en_files/figure-html/vt-distribution-plot-1.png" class="r-plt" alt="" width="1152"></p>
+<p>The plot is organized in panels by dose and the timeliness window of
+each one is shaded. By default, <code>x_axis = "absolute"</code>, which
+means that the x-axis shows the age at vaccination (in days). If the
+data is disaggregated by subnational levels, each geographic area is
+shown as a thin grey line, which serves as context, and all areas
 together are shown as a single highlighted line. This way, the plot
 remains readable even with tens or hundreds of geographic areas:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -1632,6 +1749,12 @@ geographic areas in color to compare them with all areas combined:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_cdf_plot.html">vt_cdf_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_by_dose_ADM1_df</span>, percentile <span class="op">=</span> <span class="fl">80</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ADM1_1"</span>, <span class="st">"ADM1_4"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vaccination_timeliness_en_files/figure-html/vt-distribution-plot-highlight-1.png" class="r-plt" alt="" width="1152"></p>
+<p>With <code>x_axis = "relative"</code>, the x-axis shows the days
+since the start of the timeliness window instead, so all panels start at
+0, which makes it easier to compare doses with each other:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_cdf_plot.html">vt_cdf_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_by_dose_ADM1_df</span>, percentile <span class="op">=</span> <span class="fl">80</span>, x_axis <span class="op">=</span> <span class="st">"relative"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="vaccination_timeliness_en_files/figure-html/vt-distribution-plot-relative-1.png" class="r-plt" alt="" width="1152"></p>
 <div class="section level5">
 <h5 id="parameters-accepted-by-vt_cdf_plot">Parameters accepted by <code>vt_cdf_plot()</code><a class="anchor" aria-label="anchor" href="#parameters-accepted-by-vt_cdf_plot"></a>
 </h5>
@@ -1652,16 +1775,20 @@ Default: <code>NULL</code> (none).</li>
 units when <code>geo_level = "ADM2"</code>. Default:
 <code>NULL</code>.</li>
 <li>
-<code>max_days</code>: Maximum number of days to show on the x-axis.
-The default <code>NULL</code> shows up to the day by which 95% of the
-records have been vaccinated (for all areas combined and for each
-highlighted area), so that a few very late vaccinations (or vaccinations
-with date errors) do not stretch the axis.</li>
+<code>max_days</code>: Maximum number of days since the start of the
+timeliness window to show on the x-axis. The default (<code>NULL</code>)
+shows up to the day by which 95% of the records have been vaccinated, so
+that a few very late vaccinations (or vaccinations with date errors) do
+not stretch the axis.</li>
+<li>
+<code>x_axis</code>: <code>"absolute"</code> (default) shows the age
+at vaccination (in days); <code>"relative"</code> shows, for each dose,
+the days elapsed since the start of the timeliness window.</li>
 </ul>
 <p><code><a href="../../reference/vt_pdf_plot.html">vt_pdf_plot()</a></code> plots the percentage of records vaccinated
 on each day (or in a group of days, set by the <code>binwidth</code>
 parameter), which lets you see when vaccinations are concentrated:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dist_by_dose_ADM0_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
 <span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
@@ -1671,7 +1798,7 @@ parameter), which lets you see when vaccinations are concentrated:</p>
 <span></span>
 <span><span class="fu"><a href="../../reference/vt_pdf_plot.html">vt_pdf_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_by_dose_ADM0_df</span>, percentile <span class="op">=</span> <span class="fl">50</span>, max_days <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vaccination_timeliness_en_files/figure-html/vt-distribution-plot-pdf-1.png" class="r-plt" alt="" width="1152"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_pdf_plot.html">vt_pdf_plot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_by_dose_ADM1_df</span>, binwidth <span class="op">=</span> <span class="fl">7</span>, highlight <span class="op">=</span> <span class="st">"ADM1_1"</span>, max_days <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vaccination_timeliness_en_files/figure-html/vt-distribution-plot-pdf-geo-1.png" class="r-plt" alt="" width="1152"></p>
 <blockquote>
@@ -1685,26 +1812,9 @@ cut.</p>
 <div class="section level5">
 <h5 id="parameters-accepted-by-vt_pdf_plot">Parameters accepted by <code>vt_pdf_plot()</code><a class="anchor" aria-label="anchor" href="#parameters-accepted-by-vt_pdf_plot"></a>
 </h5>
+<p>It accepts the same parameters as <code><a href="../../reference/vt_cdf_plot.html">vt_cdf_plot()</a></code>, and
+additionally accepts:</p>
 <ul>
-<li>
-<code>data</code>: Output of <code><a href="../../reference/vt_distribution.html">vt_distribution()</a></code>.</li>
-<li>
-<code>percentile</code>: A single percentile (greater than 0 and at
-most 100) to highlight in the plot. Default: <code>NULL</code>
-(none).</li>
-<li>
-<code>highlight</code>: Character vector with up to 5 geographic
-areas to highlight in color. Only available if the data is disaggregated
-by ADM1 or ADM2. Default: <code>NULL</code> (none).</li>
-<li>
-<code>within_ADM1</code>: Character vector to filter specific ADM1
-units when <code>geo_level = "ADM2"</code>. Default:
-<code>NULL</code>.</li>
-<li>
-<code>max_days</code>: Maximum number of days to show on the x-axis.
-The default <code>NULL</code> shows up to the day by which 95% of the
-records have been vaccinated, so that a few very late vaccinations (or
-vaccinations with date errors) do not stretch the axis.</li>
 <li>
 <code>binwidth</code>: Number of days represented by each point of
 the curve (for example, 7 to group by week). In the case of geographic
@@ -1744,46 +1854,189 @@ records of vaccinated individuals.</p>
 <p><code><a href="../../reference/vt_percentile.html">vt_percentile()</a></code> takes the output of
 <code><a href="../../reference/vt_distribution.html">vt_distribution()</a></code> and computes, for each percentile, the
 number of days needed to reach it. The results keep the same
-disaggregation as <code><a href="../../reference/vt_distribution.html">vt_distribution()</a></code> (by dose and/or
-geographic level):</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+disaggregation as <code><a href="../../reference/vt_distribution.html">vt_distribution()</a></code> (by dose and geographic
+level):</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_percentile.html">vt_percentile</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_df</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Days needed to vaccinate 25%, 50% and 75%, all doses combined, 2022 cohort"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Days needed to vaccinate 25%, 50% and 75%, by dose, 2022 cohort"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Days needed to vaccinate 25%, 50% and 75%, all doses combined,
-2022 cohort</caption>
+<caption>Days needed to vaccinate 25%, 50% and 75%, by dose, 2022
+cohort</caption>
 <thead><tr class="header">
+<th align="left">dose</th>
 <th align="right">percentile</th>
 <th align="right">day</th>
+<th align="right">age</th>
 <th align="left">within_window</th>
 <th align="right">window_end</th>
 <th align="right">total</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left">BCG RN</td>
 <td align="right">25</td>
-<td align="right">8</td>
-<td align="left">NA</td>
-<td align="right">NA</td>
-<td align="right">216042</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left">TRUE</td>
+<td align="right">28</td>
+<td align="right">41899</td>
 </tr>
 <tr class="even">
+<td align="left">BCG RN</td>
 <td align="right">50</td>
-<td align="right">18</td>
-<td align="left">NA</td>
-<td align="right">NA</td>
-<td align="right">216042</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">TRUE</td>
+<td align="right">28</td>
+<td align="right">41899</td>
 </tr>
 <tr class="odd">
+<td align="left">BCG RN</td>
+<td align="right">75</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="left">TRUE</td>
+<td align="right">28</td>
+<td align="right">41899</td>
+</tr>
+<tr class="even">
+<td align="left">DTP1</td>
+<td align="right">25</td>
+<td align="right">9</td>
+<td align="right">63</td>
+<td align="left">TRUE</td>
+<td align="right">36</td>
+<td align="right">40556</td>
+</tr>
+<tr class="odd">
+<td align="left">DTP1</td>
+<td align="right">50</td>
+<td align="right">14</td>
+<td align="right">68</td>
+<td align="left">TRUE</td>
+<td align="right">36</td>
+<td align="right">40556</td>
+</tr>
+<tr class="even">
+<td align="left">DTP1</td>
+<td align="right">75</td>
+<td align="right">28</td>
+<td align="right">82</td>
+<td align="left">TRUE</td>
+<td align="right">36</td>
+<td align="right">40556</td>
+</tr>
+<tr class="odd">
+<td align="left">DTP2</td>
+<td align="right">25</td>
+<td align="right">10</td>
+<td align="right">126</td>
+<td align="left">TRUE</td>
+<td align="right">34</td>
+<td align="right">38393</td>
+</tr>
+<tr class="even">
+<td align="left">DTP2</td>
+<td align="right">50</td>
+<td align="right">21</td>
+<td align="right">137</td>
+<td align="left">TRUE</td>
+<td align="right">34</td>
+<td align="right">38393</td>
+</tr>
+<tr class="odd">
+<td align="left">DTP2</td>
 <td align="right">75</td>
 <td align="right">45</td>
-<td align="left">NA</td>
-<td align="right">NA</td>
-<td align="right">216042</td>
+<td align="right">161</td>
+<td align="left">FALSE</td>
+<td align="right">34</td>
+<td align="right">38393</td>
+</tr>
+<tr class="even">
+<td align="left">DTP3</td>
+<td align="right">25</td>
+<td align="right">13</td>
+<td align="right">189</td>
+<td align="left">TRUE</td>
+<td align="right">34</td>
+<td align="right">36727</td>
+</tr>
+<tr class="odd">
+<td align="left">DTP3</td>
+<td align="right">50</td>
+<td align="right">29</td>
+<td align="right">205</td>
+<td align="left">TRUE</td>
+<td align="right">34</td>
+<td align="right">36727</td>
+</tr>
+<tr class="even">
+<td align="left">DTP3</td>
+<td align="right">75</td>
+<td align="right">70</td>
+<td align="right">246</td>
+<td align="left">FALSE</td>
+<td align="right">34</td>
+<td align="right">36727</td>
+</tr>
+<tr class="odd">
+<td align="left">SRP1</td>
+<td align="right">25</td>
+<td align="right">17</td>
+<td align="right">377</td>
+<td align="left">TRUE</td>
+<td align="right">60</td>
+<td align="right">31047</td>
+</tr>
+<tr class="even">
+<td align="left">SRP1</td>
+<td align="right">50</td>
+<td align="right">33</td>
+<td align="right">393</td>
+<td align="left">TRUE</td>
+<td align="right">60</td>
+<td align="right">31047</td>
+</tr>
+<tr class="odd">
+<td align="left">SRP1</td>
+<td align="right">75</td>
+<td align="right">69</td>
+<td align="right">429</td>
+<td align="left">FALSE</td>
+<td align="right">60</td>
+<td align="right">31047</td>
+</tr>
+<tr class="even">
+<td align="left">YFV1</td>
+<td align="right">25</td>
+<td align="right">18</td>
+<td align="right">378</td>
+<td align="left">TRUE</td>
+<td align="right">60</td>
+<td align="right">27420</td>
+</tr>
+<tr class="odd">
+<td align="left">YFV1</td>
+<td align="right">50</td>
+<td align="right">37</td>
+<td align="right">397</td>
+<td align="left">TRUE</td>
+<td align="right">60</td>
+<td align="right">27420</td>
+</tr>
+<tr class="even">
+<td align="left">YFV1</td>
+<td align="right">75</td>
+<td align="right">78</td>
+<td align="right">438</td>
+<td align="left">FALSE</td>
+<td align="right">60</td>
+<td align="right">27420</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_percentile.html">vt_percentile</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_by_dose_ADM1_df</span>, percentiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">80</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Days needed to vaccinate 50% and 80%, by dose and ADM1, 2022 cohort"</span><span class="op">)</span></span></code></pre></div>
@@ -1795,6 +2048,7 @@ cohort</caption>
 <th align="left">ADM1</th>
 <th align="right">percentile</th>
 <th align="right">day</th>
+<th align="right">age</th>
 <th align="left">within_window</th>
 <th align="right">window_end</th>
 <th align="right">total</th>
@@ -1805,6 +2059,7 @@ cohort</caption>
 <td align="left">ADM1_1</td>
 <td align="right">50</td>
 <td align="right">24</td>
+<td align="right">78</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">1182</td>
@@ -1814,6 +2069,7 @@ cohort</caption>
 <td align="left">ADM1_1</td>
 <td align="right">80</td>
 <td align="right">63</td>
+<td align="right">117</td>
 <td align="left">FALSE</td>
 <td align="right">36</td>
 <td align="right">1182</td>
@@ -1823,6 +2079,7 @@ cohort</caption>
 <td align="left">ADM1_2</td>
 <td align="right">50</td>
 <td align="right">14</td>
+<td align="right">68</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">6049</td>
@@ -1832,6 +2089,7 @@ cohort</caption>
 <td align="left">ADM1_2</td>
 <td align="right">80</td>
 <td align="right">34</td>
+<td align="right">88</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">6049</td>
@@ -1841,6 +2099,7 @@ cohort</caption>
 <td align="left">ADM1_3</td>
 <td align="right">50</td>
 <td align="right">14</td>
+<td align="right">68</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">27534</td>
@@ -1850,6 +2109,7 @@ cohort</caption>
 <td align="left">ADM1_3</td>
 <td align="right">80</td>
 <td align="right">35</td>
+<td align="right">89</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">27534</td>
@@ -1859,6 +2119,7 @@ cohort</caption>
 <td align="left">ADM1_4</td>
 <td align="right">50</td>
 <td align="right">11</td>
+<td align="right">65</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">3792</td>
@@ -1868,6 +2129,7 @@ cohort</caption>
 <td align="left">ADM1_4</td>
 <td align="right">80</td>
 <td align="right">23</td>
+<td align="right">77</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">3792</td>
@@ -1877,6 +2139,7 @@ cohort</caption>
 <td align="left">ADM1_5</td>
 <td align="right">50</td>
 <td align="right">13</td>
+<td align="right">67</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">1999</td>
@@ -1886,6 +2149,7 @@ cohort</caption>
 <td align="left">ADM1_5</td>
 <td align="right">80</td>
 <td align="right">29</td>
+<td align="right">83</td>
 <td align="left">TRUE</td>
 <td align="right">36</td>
 <td align="right">1999</td>
@@ -1893,8 +2157,7 @@ cohort</caption>
 </tbody>
 </table>
 <p>The <code>within_window</code> column indicates whether the
-percentile is reached within the timeliness window of the dose (it shows
-<code>NA</code> when doses are combined).</p>
+percentile is reached within the timeliness window of the dose.</p>
 <div class="section level5">
 <h5 id="parameters-accepted-5">Parameters accepted<a class="anchor" aria-label="anchor" href="#parameters-accepted-5"></a>
 </h5>
@@ -1925,26 +2188,27 @@ of access, willingness to vaccinate, or supply.</p>
 area (or per dose, if the data is not disaggregated geographically).
 Each percentile is drawn as a point, joined by a line from the lowest to
 the highest percentile. Rows are sorted according to the median (or the
-closest percentile). Finally, when the results are disaggregated by
-dose, the timeliness window of each one is shaded.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+closest percentile). Finally, the timeliness window of each dose is
+shaded.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_percentile.html">vt_percentile</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_by_dose_ADM1_df</span>, percentiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">75</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../../reference/vt_percentile_plot.html">vt_percentile_plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vaccination_timeliness_en_files/figure-html/vt-percentile-plot-1.png" class="r-plt" alt="" width="1152"></p>
 <p>Without geographic disaggregation, one row per dose is shown:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_percentile.html">vt_percentile</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dist_by_dose_ADM0_df</span>, percentiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">75</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../../reference/vt_percentile_plot.html">vt_percentile_plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="vaccination_timeliness_en_files/figure-html/vt-percentile-plot-dose-1.png" class="r-plt" alt="" width="960"></p>
 <p>When there are many geographic areas (for example, at the ADM2
 level), the <code>n_slowest</code> parameter lets you show only the
 slowest areas:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
 <span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
 <span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
 <span>  <span class="co"># at the ADM2 level there are many geographic areas</span></span>
 <span>  geo_level     <span class="op">=</span> <span class="st">"ADM2"</span>,</span>
+<span>  vaccines      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
 <span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="../../reference/vt_percentile.html">vt_percentile</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -1970,11 +2234,10 @@ with the slowest. Default: <code>NULL</code> (that is, all).</li>
 <h5 id="interpretation-4">Interpretation<a class="anchor" aria-label="anchor" href="#interpretation-4"></a>
 </h5>
 <p>The areas at the top of the plot are the ones that take the longest
-to vaccinate half of their records. In plots disaggregated by dose,
-points to the right of the shaded area indicate that the percentile is
-reached outside the timeliness window, and a long line between the
-lowest and the highest percentile indicates that vaccination is very
-spread out over time.</p>
+to vaccinate half of their records. Points to the right of the shaded
+area indicate that the percentile is reached outside the timeliness
+window, and a long line between the lowest and the highest percentile
+indicates that vaccination is very spread out over time.</p>
 <blockquote>
 <p><strong>Warning</strong></p>
 <p>Geographic areas with few records can show extreme percentiles just

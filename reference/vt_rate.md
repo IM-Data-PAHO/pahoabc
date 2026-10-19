@@ -52,8 +52,23 @@ vt_rate(
 ## Value
 
 A data frame with one row per `timeliness` category for the specified
-`geo_level`. Records are classified as `TIMELY` (administered within the
-timeliness window), `UNTIMELY` (administered outside it) or
-`DATE_MISSING` (missing `date_birth` or `date_vax`). Includes the number
-of records for each category (`n`), a corresponding `rate`, and a
-`total`.
+`geo_level` (and `dose`, if `vaccines` is specified), with the following
+columns:
+
+- `timeliness`: the category of each record, one of:
+
+  - `TIMELY`: administered within the timeliness window.
+
+  - `UNTIMELY_EARLY`: administered before the timeliness window, i.e.
+    before `age_schedule_low`.
+
+  - `UNTIMELY_LATE`: administered after the timeliness window, i.e.
+    after `age_schedule_high`.
+
+  - `DATE_MISSING`: missing `date_birth` or `date_vax`.
+
+- `n`: number of records in that category.
+
+- `total`: total number of records.
+
+- `rate`: percentage of records in that category (`n / total * 100`).

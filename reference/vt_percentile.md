@@ -2,7 +2,7 @@
 
 This function calculates the number of days since the start of the
 timeliness window needed to vaccinate a given percentage of the analyzed
-records, for each `dose` and/or geographic area present in `data`.
+records, for each `dose` and geographic area present in `data`.
 
 ## Usage
 
@@ -25,7 +25,7 @@ vt_percentile(data, percentiles = c(25, 50, 75))
 
 ## Value
 
-A data frame with one row per `percentile` for each `dose` and/or
+A data frame with one row per `percentile` for each `dose` and
 geographic area, with the following columns:
 
 - `percentile`: the percentile.
@@ -33,13 +33,15 @@ geographic area, with the following columns:
 - `day`: first day since the start of the timeliness window at which the
   cumulative percentage vaccinated (`cdf`) reaches the percentile.
 
+- `age`: age in days at which the percentile is reached
+  (`day + age_schedule_low`).
+
 - `within_window`: whether `day` falls within the timeliness window for
-  that dose (`NA` when doses are pooled).
+  that dose.
 
-- `window_end`: last timely day for that dose (`NA` when doses are
-  pooled).
+- `window_end`: last timely day for that dose.
 
-- `total`: number of vaccinations in the EIR for that `dose` and/or
+- `total`: number of vaccinations in the EIR for that `dose` and
   geographic area, excluding those vaccinated before the timeliness
   window and those with a missing date.
 
