@@ -12,16 +12,17 @@ vt_percentile(data, percentiles = c(25, 50, 75))
 \item{percentiles}{Numeric. A vector of percentiles (greater than 0 and at most 100) to calculate. Default is \code{c(25, 50, 75)}.}
 }
 \value{
-A data frame with one row per \code{percentile} for each \code{dose} and/or geographic area, with the following columns:
+A data frame with one row per \code{percentile} for each \code{dose} and geographic area, with the following columns:
 \itemize{
   \item \code{percentile}: the percentile.
   \item \code{day}: first day since the start of the timeliness window at which the cumulative percentage vaccinated (\code{cdf}) reaches the percentile.
-  \item \code{within_window}: whether \code{day} falls within the timeliness window for that dose (\code{NA} when doses are pooled).
-  \item \code{window_end}: last timely day for that dose (\code{NA} when doses are pooled).
-  \item \code{total}: number of vaccinations in the EIR for that \code{dose} and/or geographic area, excluding those vaccinated before the timeliness window and those with a missing date.
+  \item \code{age}: age in days at which the percentile is reached (\code{day + age_schedule_low}).
+  \item \code{within_window}: whether \code{day} falls within the timeliness window for that dose.
+  \item \code{window_end}: last timely day for that dose.
+  \item \code{total}: number of vaccinations in the EIR for that \code{dose} and geographic area, excluding those vaccinated before the timeliness window and those with a missing date.
 }
 It can be passed to \code{vt_percentile_plot}.
 }
 \description{
-This function calculates the number of days since the start of the timeliness window needed to vaccinate a given percentage of the analyzed records, for each \code{dose} and/or geographic area present in \code{data}.
+This function calculates the number of days since the start of the timeliness window needed to vaccinate a given percentage of the analyzed records, for each \code{dose} and geographic area present in \code{data}.
 }

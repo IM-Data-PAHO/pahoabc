@@ -104,7 +104,7 @@ El análisis probabilístico estima la **incidencia acumulada** del evento "admi
 
 ### Definiciones requeridas
 
-- **Vacunas a evaluar**: cada dosis se analiza individualmente. PAHOabc también permite combinar varias dosis en una sola curva (alineadas según el día 0 de cada una), pero en ese caso no es posible mostrar un único periodo de oportunidad, ya que cada dosis tiene el suyo.
+- **Vacunas a evaluar**: cada dosis se analiza individualmente, ya que cada una tiene su propio periodo de oportunidad.
 - **Oportunidad por vacuna**: igual que en el análisis no probabilístico (entre `age_schedule_low` y `age_schedule_high`).
 - **Percentiles de la población**: se recomienda estimar al menos los tiempos para 25%, 50% y 75%.
 - **Año a evaluar**: se sugiere usar una cohorte de nacimiento. PAHOabc también permite combinar varias cohortes (ver la advertencia a continuación).
@@ -377,12 +377,12 @@ La fila superior representa las dosis administradas después del periodo de opor
 
 Las funciones correspondientes al análisis probabilístico son:
 
-1. `vt_distribution()`: calcula, para cada día desde el inicio del periodo de oportunidad, el porcentaje de registros vacunados ese día y el porcentaje acumulado (incidencia acumulada). Permite desagregar por dosis y nivel geográfico.
+1. `vt_distribution()`: calcula, para cada día desde el inicio del periodo de oportunidad, el porcentaje de registros vacunados ese día y el porcentaje acumulado (incidencia acumulada). Los resultados se desagregan por dosis y, opcionalmente, por nivel geográfico.
 2. `vt_cdf_plot()` y `vt_pdf_plot()`: visualizan el resultado de `vt_distribution()` como una curva de incidencia acumulada (similar a una curva de Kaplan-Meier) o como una curva del porcentaje de vacunados por día, respectivamente.
 3. `vt_percentile()`: a partir del resultado de `vt_distribution()`, calcula el número de días necesario para vacunar a distintos percentiles de la población.
 4. `vt_percentile_plot()`: genera visualizaciones a partir de los resultados de `vt_percentile()`.
 
-![Figura 1. Flujo de trabajo esperado para el análisis probabilístico de oportunidad de vacunación.](vt_workflow_2.svg)
+![Figura 2. Flujo de trabajo esperado para el análisis probabilístico de oportunidad de vacunación.](vt_workflow_2.svg)
 
 <br>
 
@@ -392,7 +392,7 @@ Las funciones correspondientes al análisis probabilístico son:
 
 ### Paso 1 — Calcular la distribución con `vt_distribution()`
 
-`vt_distribution()` calcula la edad al momento de la vacunación y la expresa como días desde el inicio del periodo de oportunidad (donde el día 0 corresponde a `age_schedule_low`). Por defecto, `vaccines = NULL` suma todas las dosis de `data.schedule` en una única distribución:
+`vt_distribution()` calcula la edad al momento de la vacunación y la expresa como días desde el inicio del periodo de oportunidad (donde el día 0 corresponde a `age_schedule_low`). Por defecto, `vaccines = NULL` incluye todas las dosis de `data.schedule`:
 
 ```{r vt-distribution, message=FALSE}
 dist_df <- vt_distribution(
@@ -401,10 +401,10 @@ dist_df <- vt_distribution(
   birth_cohorts = 2022
 )
 
-dist_df %>% head(10) %>% kable(digits = 2, caption = "Distribución de vacunaciones por día, todas las dosis combinadas, cohorte 2022")
+dist_df %>% head(10) %>% kable(digits = 2, caption = "Distribución de vacunaciones por día y dosis, cohorte 2022")
 ```
 
-Al especificar `vaccines`, los resultados se desagregan por dosis, y cada dosis incluye el último día de su periodo de oportunidad en la columna `window_end`:
+Con `vaccines` puede seleccionar las dosis a analizar, y con `geo_level` desagregarlas geográficamente:
 
 ```{r vt-distribution-by-dose, message=FALSE}
 dist_by_dose_ADM1_df <- vt_distribution(
@@ -418,8 +418,9 @@ dist_by_dose_ADM1_df <- vt_distribution(
 dist_by_dose_ADM1_df %>% head(10) %>% kable(digits = 2, caption = "Distribución de vacunaciones por día, dosis y ADM1, cohorte 2022")
 ```
 
-La tabla contiene una fila por cada día (siempre y cuando haya ocurrido al menos una vacunación), con las siguientes columnas:
+La tabla contiene una fila por cada dosis y día (siempre y cuando haya ocurrido al menos una vacunación), con las siguientes columnas:
 
+- `dose`: la dosis.
 - `day`: días desde el inicio del periodo de oportunidad (desde `age_schedule_low`).
 - `n` y `pdf`: número y porcentaje de registros vacunados ese día.
 - `cum_n` y `cdf`: número y porcentaje acumulado de registros vacunados hasta ese día (incidencia acumulada).
@@ -427,7 +428,9 @@ La tabla contiene una fila por cada día (siempre y cuando haya ocurrido al meno
 - `total`: denominador, es decir, todos los registros que fueron vacunados desde el día 0.
 - `n_early`: registros vacunados antes del periodo de oportunidad, excluidos del análisis.
 - `n_missing`: registros con alguna fecha faltante, excluidos del análisis.
-- `window_end`: último día del periodo de oportunidad (`age_schedule_high - age_schedule_low`). Es `NA` cuando las dosis están combinadas.
+- `window_end`: último día del periodo de oportunidad (`age_schedule_high - age_schedule_low`).
+- `age`: edad al momento de la vacunación (en días).
+- `age_schedule_low`: límite inferior del periodo de oportunidad de acuerdo a `data.schedule` (en días).
 
 #### Parámetros aceptados
 
@@ -441,11 +444,11 @@ La tabla contiene una fila por cada día (siempre y cuando haya ocurrido al meno
 
 El resultado de `vt_distribution()` puede pasarse directamente a `vt_cdf_plot()`, que grafica la curva de incidencia acumulada. El parámetro `percentile` agrega una línea y una etiqueta con el número de días necesario para alcanzar ese percentil:
 
-```{r vt-distribution-plot, message=FALSE, fig.width=10, fig.height=5}
+```{r vt-distribution-plot, message=FALSE, fig.width=12, fig.height=7}
 vt_cdf_plot(data = dist_df, percentile = 50)
 ```
 
-Si los datos están desagregados por `dose`, el gráfico se organiza en paneles por dosis y se sombrea el periodo de oportunidad de cada una. Si además están desagregados por geografía, cada unidad geográfica se muestra como una línea gris delgada, que sirve de contexto, y el conjunto de todas las unidades se muestra como una única línea destacada. De esta forma, el gráfico sigue siendo legible aun con decenas o cientos de unidades geográficas:
+El gráfico se organiza en paneles por dosis y se sombrea el periodo de oportunidad de cada una. Por defecto, `x_axis = "absolute"`, lo que significa que el eje horizontal muestra la edad al momento de la vacunación (en días). Si los datos están desagregados por niveles subnacionales, cada unidad geográfica se muestra como una línea gris delgada, que sirve de contexto, y el conjunto de todas las unidades se muestra como una única línea destacada. De esta forma, el gráfico sigue siendo legible aun con decenas o cientos de unidades geográficas:
 
 ```{r vt-distribution-plot-by-dose, message=FALSE, fig.width=12, fig.height=5}
 vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80)
@@ -457,13 +460,20 @@ Con el parámetro `highlight` puede destacar en color hasta 5 unidades geográfi
 vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, highlight = c("ADM1_1", "ADM1_4"))
 ```
 
+Con `x_axis = "relative"`, el eje horizontal muestra en cambio los días desde el inicio del periodo de oportunidad, por lo que todos los paneles comienzan en 0, lo que facilita comparar las dosis entre sí:
+
+```{r vt-distribution-plot-relative, message=FALSE, fig.width=12, fig.height=5}
+vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, x_axis = "relative")
+```
+
 #### Parámetros aceptados en `vt_cdf_plot()`
 
 - `data`: Resultado de `vt_distribution()`.
 - `percentile`: Un único percentil (mayor que 0 y hasta 100) a destacar en el gráfico, para el conjunto de todas las unidades y para cada unidad en `highlight`. Valor predeterminado: `NULL` (ninguno).
 - `highlight`: Vector de caracteres con hasta 5 unidades geográficas (del nivel geográfico de `data`) a destacar en color. Solo disponible si los datos están desagregados por ADM1 o ADM2. Valor predeterminado: `NULL` (ninguna).
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1 específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
-- `max_days`: Número máximo de días a mostrar en el eje horizontal. El valor predeterminado `NULL` muestra hasta el día en que el 95 % de los registros se ha vacunado (en el conjunto de todas las unidades y en cada unidad destacada), para que unas pocas vacunaciones muy tardías (o con errores de fecha) no estiren el eje.
+- `max_days`: Número máximo de días desde el inicio del periodo de oportunidad a mostrar en el eje horizontal. El valor predeterminado (`NULL`) muestra hasta el día en que el 95 % de los registros se ha vacunado, para que unas pocas vacunaciones muy tardías (o con errores de fecha) no estiren el eje.
+- `x_axis`: `"absolute"` (predeterminado) muestra la edad al momento de la vacunación (en días); `"relative"` muestra, para cada dosis, los días que han transcurrido desde el inicio del periodo de oportunidad.
 
 `vt_pdf_plot()` grafica el porcentaje de registros vacunados en cada día (o en un grupo de días, determinado por el parámetro `binwidth`), lo que permite ver en qué momento se concentran las vacunaciones:
 
@@ -488,11 +498,8 @@ vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max
 
 #### Parámetros aceptados en `vt_pdf_plot()`
 
-- `data`: Resultado de `vt_distribution()`.
-- `percentile`: Un único percentil (mayor que 0 y hasta 100) a destacar en el gráfico. Valor predeterminado: `NULL` (ninguno).
-- `highlight`: Vector de caracteres con hasta 5 unidades geográficas a destacar en color. Solo disponible si los datos están desagregados por ADM1 o ADM2. Valor predeterminado: `NULL` (ninguna).
-- `within_ADM1`: Vector de caracteres para filtrar unidades ADM1 específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
-- `max_days`: Número máximo de días a mostrar en el eje horizontal. El valor predeterminado `NULL` muestra hasta el día en que el 95% de los registros se ha vacunado, para que unas pocas vacunaciones muy tardías (o con errores de fecha) no estiren el eje.
+Acepta los mismos parámetros que `vt_cdf_plot()`, pero adicionalmente acepta:
+
 - `binwidth`: Número de días que cada punto de la curva representa (por ejemplo, 7 para agrupar por semana). En el caso de unidades geográficas con pocos registros, valores más grandes pueden producir curvas más suaves. Valor predeterminado: 1.
 
 #### Interpretación
@@ -507,20 +514,20 @@ El pie de ambos gráficos indica cuántos registros fueron excluidos por haberse
 
 ### Paso 3 — Calcular los percentiles con `vt_percentile()`
 
-`vt_percentile()` recibe el resultado de `vt_distribution()` y calcula, para cada percentil, la cantidad de días necesarios para alcanzarlo. Los resultados mantienen la misma desagregación que `vt_distribution()` (por dosis y/o nivel geográfico):
+`vt_percentile()` recibe el resultado de `vt_distribution()` y calcula, para cada percentil, la cantidad de días necesarios para alcanzarlo. Los resultados mantienen la misma desagregación que `vt_distribution()` (por dosis y nivel geográfico):
 
 ```{r vt-percentile, message=FALSE}
 vt_percentile(data = dist_df) %>%
-  kable(caption = "Días necesarios para vacunar al 25 %, 50 % y 75 %, todas las dosis combinadas, cohorte 2022")
+  kable(caption = "Días necesarios para vacunar al 25%, 50% y 75%, por dosis, cohorte 2022")
 ```
 
 ```{r vt-percentile-by-dose, message=FALSE}
 vt_percentile(data = dist_by_dose_ADM1_df, percentiles = c(50, 80)) %>%
   head(10) %>%
-  kable(caption = "Días necesarios para vacunar al 50 % y 80 %, por dosis y ADM1, cohorte 2022")
+  kable(caption = "Días necesarios para vacunar al 50% y 80%, por dosis y ADM1, cohorte 2022")
 ```
 
-La columna `within_window` indica si el percentil se alcanza dentro del periodo de oportunidad de la dosis (muestra `NA` cuando las dosis están combinadas).
+La columna `within_window` indica si el percentil se alcanza dentro del periodo de oportunidad de la dosis.
 
 #### Parámetros aceptados
 
@@ -533,7 +540,7 @@ Un mayor número de días para alcanzar un mismo percentil indica una vacunació
 
 ### Paso 4 — Comparar los percentiles entre unidades geográficas con `vt_percentile_plot()`
 
-El resultado de `vt_percentile()` puede pasarse directamente a `vt_percentile_plot()`, que muestra una fila por unidad geográfica (o por dosis, si los datos no están desagregados geográficamente). Cada percentil se dibuja como un punto, unidos por una línea desde el percentil más bajo hasta el más alto. Las filas se ordenan de acuerdo a la mediana (o el percentil más cercano). Por último, cuando los resultados se desagregan por dosis, se sombrea el periodo de oportunidad de cada una.
+El resultado de `vt_percentile()` puede pasarse directamente a `vt_percentile_plot()`, que muestra una fila por unidad geográfica (o por dosis, si los datos no están desagregados geográficamente). Cada percentil se dibuja como un punto, unidos por una línea desde el percentil más bajo hasta el más alto. Las filas se ordenan de acuerdo a la mediana (o el percentil más cercano). Por último, se sombrea el periodo de oportunidad de cada dosis.
 
 ```{r vt-percentile-plot, message=FALSE, fig.width=12, fig.height=5}
 vt_percentile(data = dist_by_dose_ADM1_df, percentiles = c(25, 50, 75, 90)) %>%
@@ -555,6 +562,7 @@ vt_distribution(
   data.schedule = pahoabc.schedule,
   # a nivel ADM2 hay muchas unidades geográficas
   geo_level     = "ADM2",
+  vaccines      = c("DTP1", "DTP3"),
   birth_cohorts = 2022
 ) %>%
   vt_percentile() %>%
@@ -570,7 +578,7 @@ vt_distribution(
 
 #### Interpretación
 
-Las unidades en la parte superior del gráfico son las que más tardan en vacunar a la mitad de sus registros. En las gráficas desagregadas por dosis, los puntos a la derecha del área sombreada indican que ese percentil se alcanza fuera del periodo de oportunidad, y una línea larga entre el percentil más bajo y el más alto indica que la vacunación está muy dispersa en el tiempo.
+Las unidades en la parte superior del gráfico son las que más tardan en vacunar a la mitad de sus registros. Los puntos a la derecha del área sombreada indican que ese percentil se alcanza fuera del periodo de oportunidad, y una línea larga entre el percentil más bajo y el más alto indica que la vacunación está muy dispersa en el tiempo.
 
 > **Advertencia**
 >

@@ -78,6 +78,18 @@
   }
 }
 
+#' Validate x_axis of vt_cdf_plot and vt_pdf_plot.
+#'
+#' @keywords internal
+#' @noRd
+.validate_x_axis <- function(x_axis) {
+  .validate_character(x_axis, "x_axis", exp_len = 1)
+
+  if(is.null(x_axis) || !(x_axis %in% c("absolute", "relative"))) {
+    stop("Error: The x_axis parameter should be one of: absolute, relative.")
+  }
+}
+
 #' Validate data.pop according to geo_level.
 #'
 #' @keywords internal
@@ -251,7 +263,7 @@
 .validate_vt_distribution_data <- function(data) {
   .validate_output_data(
     data,
-    c("day", "n", "pdf", "cdf", "total", "n_early", "n_missing", "window_end"),
+    c("dose", "day", "age", "n", "pdf", "cdf", "total", "n_early", "n_missing", "window_end", "age_schedule_low"),
     "vt_distribution"
   )
 }
@@ -263,7 +275,7 @@
 .validate_vt_percentile_data <- function(data) {
   .validate_output_data(
     data,
-    c("percentile", "day", "within_window", "window_end", "total"),
+    c("dose", "percentile", "day", "within_window", "window_end", "total"),
     "vt_percentile"
   )
 }

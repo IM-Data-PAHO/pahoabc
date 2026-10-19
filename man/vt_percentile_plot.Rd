@@ -17,5 +17,5 @@ vt_percentile_plot(data, within_ADM1 = NULL, n_slowest = NULL)
 A ggplot object representing the percentile plot.
 }
 \description{
-Generates a range plot of the number of days since the start of the timeliness window needed to vaccinate each percentile, with one row per geographic area (or per dose, when \code{data} is not disaggregated by geographic area). Each percentile is drawn as a point, joined by a line from the lowest to the highest percentile. Rows are sorted by the percentile closest to the median (P50), with the slowest areas at the top, so the plot remains readable with many geographic areas. If \code{data} is disaggregated by \code{dose}, the timeliness window of each dose is shaded.
+Generates a range plot of the number of days since the start of the timeliness window needed to vaccinate each percentile, with one row per geographic area (or per dose, when \code{data} is not disaggregated by geographic area). Each percentile is drawn as a point, joined by a line from the lowest to the highest percentile. Rows are sorted by the percentile closest to the median (P50), with the slowest areas at the top, so the plot remains readable with many geographic areas. When \code{data} is disaggregated by geographic area, the plot is faceted by \code{dose}. The timeliness window of each dose is shaded.
 }

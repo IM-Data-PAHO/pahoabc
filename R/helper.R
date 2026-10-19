@@ -155,7 +155,7 @@
 #' Prepare the data shared by vt_cdf_plot and vt_pdf_plot.
 #'
 #' Filters by within_ADM1, checks the areas in highlight, combines all areas into a single
-#' distribution, and computes the percentile labels, default max_days, subtitle and caption.
+#' distribution per dose, and computes the percentile labels, default max_days, subtitle and caption.
 #'
 #' NOTE: Does not validate its inputs. Callers must validate data, percentile, highlight,
 #'       within_ADM1 and max_days before calling it.
@@ -170,10 +170,6 @@
   ADM_detected <- .detect_geo_level(data)
   subnational_detected <- ADM_detected > 0
   geo_col <- if(subnational_detected) paste0("ADM", ADM_detected) else NULL
-
-  # detect if data is disaggregated by dose
-  dose_detected <- "dose" %in% names(data)
-  dose_col <- if(dose_detected) "dose" else character(0)
 
   group_cols <- intersect(c("dose", "ADM1", "ADM2"), names(data))
 
@@ -195,24 +191,21 @@
   # Combine all areas in the data and calculate some summary numbers
   combined_totals <- prepare_data %>%
     distinct(across(all_of(group_cols)), total, n_early, n_missing) %>%
-    group_by(across(all_of(dose_col))) %>%
+    group_by(dose) %>%
     summarise(total = sum(total), n_early = sum(n_early), n_missing = sum(n_missing), .groups = "drop")
 
-  # Sum together all areas in the data and get the combined distribution
+  # Sum together all areas in the data and get the combined distribution of each dose
   combined_data <- prepare_data %>%
-    group_by(across(all_of(c(dose_col, "day")))) %>%
-    summarise(n = sum(n), window_end = first(window_end), .groups = "drop") %>%
-    group_by(across(all_of(dose_col))) %>%
+    group_by(dose, day, age) %>%
+    summarise(
+      n = sum(n), window_end = first(window_end), age_schedule_low = first(age_schedule_low),
+      .groups = "drop"
+    ) %>%
+    group_by(dose) %>%
     .vt_compute_distribution() %>%
-    ungroup()
-
-  # adds the excluded records, so combined_data has the same structure as the output of vt_distribution
-  excluded_cols <- combined_totals %>% select(all_of(dose_col), n_early, n_missing)
-  if(dose_detected) {
-    combined_data <- combined_data %>% left_join(excluded_cols, by = "dose")
-  } else {
-    combined_data <- combined_data %>% bind_cols(excluded_cols)
-  }
+    ungroup() %>%
+    # adds the excluded records, so combined_data has the same structure as the output of vt_distribution
+    left_join(combined_totals %>% select(dose, n_early, n_missing), by = "dose")
 
   # Series drawn in color: all areas combined + the highlighted areas
   combined_label <- if(subnational_detected) "All areas combined" else "ADM0"
@@ -258,16 +251,12 @@
       mutate(series = !!sym(geo_col))
   }
 
-  # last timely day of each dose, for the shaded area (not possible when doses are pooled)
-  window_data <- NULL
-  if(dose_detected) {
-    window_data <- combined_data %>%
-      distinct(dose, window_end)
-  }
+  # start and last timely day of each dose, for the shaded area
+  window_data <- combined_data %>%
+    distinct(dose, window_end, age_schedule_low)
 
   # number of excluded records for the plot's caption
   excluded <- combined_totals %>%
-    # summarise again in case combined_totals was grouped by dose
     summarise(total = sum(total), n_early = sum(n_early), n_missing = sum(n_missing))
   pct_early <- excluded$n_early / (excluded$total + excluded$n_early) * 100
   caption <- paste0(
@@ -276,18 +265,12 @@
     "Number of records with at least one date missing (excluded): ", excluded$n_missing
   )
 
-  # subtitle explaining the grey lines and pooling (the shaded area is explained in the legend)
-  subtitle_parts <- c(
-    if(!dose_detected) "All doses pooled together",
-    if(subnational_detected) paste0("Grey lines: each ", geo_col, " area")
-  )
-  subtitle <- if(length(subtitle_parts) > 0) paste(subtitle_parts, collapse = ". ") else NULL
+  # subtitle explaining the grey lines (the shaded area is explained in the legend)
+  subtitle <- if(subnational_detected) paste0("Grey lines: each ", geo_col, " area") else NULL
 
   # return a list of several objects used by the vt_pdf_plot and vt_cdf_plot functions
   return(list(
     subnational_detected = subnational_detected,
-    dose_detected = dose_detected,
-    dose_col = dose_col,
     series_data = series_data,
     combined_label = combined_label,
     series_colors = series_colors,

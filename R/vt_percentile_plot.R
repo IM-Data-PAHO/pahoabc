@@ -1,6 +1,6 @@
 #' (V)accination (T)imeliness Percentile Plot
 #'
-#' Generates a range plot of the number of days since the start of the timeliness window needed to vaccinate each percentile, with one row per geographic area (or per dose, when \code{data} is not disaggregated by geographic area). Each percentile is drawn as a point, joined by a line from the lowest to the highest percentile. Rows are sorted by the percentile closest to the median (P50), with the slowest areas at the top, so the plot remains readable with many geographic areas. If \code{data} is disaggregated by \code{dose}, the timeliness window of each dose is shaded.
+#' Generates a range plot of the number of days since the start of the timeliness window needed to vaccinate each percentile, with one row per geographic area (or per dose, when \code{data} is not disaggregated by geographic area). Each percentile is drawn as a point, joined by a line from the lowest to the highest percentile. Rows are sorted by the percentile closest to the median (P50), with the slowest areas at the top, so the plot remains readable with many geographic areas. When \code{data} is disaggregated by geographic area, the plot is faceted by \code{dose}. The timeliness window of each dose is shaded.
 #'
 #' @param data The output from the \code{pahoabc::vt_percentile} function.
 #' @param within_ADM1 Character (optional). When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
@@ -27,23 +27,13 @@ vt_percentile_plot <- function(data, within_ADM1 = NULL, n_slowest = NULL) {
   subnational_detected <- ADM_detected > 0
   geo_col <- if(subnational_detected) paste0("ADM", ADM_detected) else NULL
 
-  # detect if data is disaggregated by dose
-  dose_detected <- "dose" %in% names(data)
-
   # prepare data for plot: one row per geographic area, or per dose when there is no geographic area
   prepare_data <- data %>%
     filter(if(!is.null(within_ADM1)) {ADM1 %in% within_ADM1} else {TRUE})
-  prepare_data$row <- if(subnational_detected) {
-    prepare_data[[geo_col]]
-  } else if(dose_detected) {
-    prepare_data$dose
-  } else {
-    "ADM0"
-  }
+  prepare_data$row <- if(subnational_detected) prepare_data[[geo_col]] else prepare_data$dose
 
   # facet by dose only when rows are geographic areas
-  facet_dose <- subnational_detected && dose_detected
-  facet_cols <- if(facet_dose) "dose" else character(0)
+  facet_cols <- if(subnational_detected) "dose" else character(0)
 
   # sorting percentile: the one closest to the median (the lowest, in case of a tie)
   percentiles <- sort(unique(prepare_data$percentile))
@@ -78,17 +68,15 @@ vt_percentile_plot <- function(data, within_ADM1 = NULL, n_slowest = NULL) {
 
   p <- ggplot()
 
-  # shade the timeliness window of each dose (not possible when doses are pooled)
-  if(dose_detected) {
-    window_data <- prepare_data %>%
-      distinct(across(all_of(c(facet_cols, "row"))), window_end)
-    p <- p + geom_tile(
-      data = window_data,
-      aes(x = window_end / 2, width = window_end, y = row, fill = "Timeliness window"),
-      height = 0.8, alpha = 0.6
-    ) +
-      scale_fill_manual(values = c("Timeliness window" = "#9cdbf4"))
-  }
+  # shade the timeliness window of each dose
+  window_data <- prepare_data %>%
+    distinct(across(all_of(c(facet_cols, "row"))), window_end)
+  p <- p + geom_tile(
+    data = window_data,
+    aes(x = window_end / 2, width = window_end, y = row, fill = "Timeliness window"),
+    height = 0.8, alpha = 0.6
+  ) +
+    scale_fill_manual(values = c("Timeliness window" = "#9cdbf4"))
 
   # do plot
   p <- p +
@@ -102,12 +90,9 @@ vt_percentile_plot <- function(data, within_ADM1 = NULL, n_slowest = NULL) {
     scale_x_continuous(expand = expansion(mult = c(0.01, 0.05))) +
     labs(
       title = "Days needed to vaccinate each percentile",
-      subtitle = paste0(
-        if(!dose_detected) "All doses pooled together. ",
-        "Sorted by P", sort_percentile
-      ),
+      subtitle = paste0("Sorted by P", sort_percentile),
       x = "Days since the start of the timeliness window (age_schedule_low)",
-      y = if(subnational_detected) geo_col else if(dose_detected) "Dose" else NULL,
+      y = if(subnational_detected) geo_col else "Dose",
       caption = if(!is.null(n_slowest) && n_slowest < n_rows) paste0("Showing the ", n_slowest, " slowest of ", n_rows, " areas.") else NULL
     ) +
     theme_classic() +
@@ -117,7 +102,7 @@ vt_percentile_plot <- function(data, within_ADM1 = NULL, n_slowest = NULL) {
       panel.grid.major.y = element_line(color = "grey92")
     )
 
-  if(facet_dose) {
+  if(subnational_detected) {
     p <- p + facet_wrap(~ dose)
   }
 
