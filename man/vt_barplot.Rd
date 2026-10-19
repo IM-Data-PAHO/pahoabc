@@ -17,5 +17,5 @@ vt_barplot(data, within_ADM1 = NULL, plot_missing = TRUE)
 A ggplot object representing the bar plot.
 }
 \description{
-Generates a bar plot of timeliness rates (doses administered within vs outside the timeliness window), grouped by geographic area and colored by timeliness result. If \code{data} is disaggregated by \code{dose} (i.e. \code{vt_rate} was run with \code{vaccines} specified), the plot is faceted by dose.
+Generates a bar plot showing percentage of doses administered within, before or after the timeliness window, grouped by geographic area. If \code{vt_rate} was run with \code{vaccines} specified, the plot is faceted by dose.
 }

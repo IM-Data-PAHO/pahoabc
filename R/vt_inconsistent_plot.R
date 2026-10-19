@@ -1,6 +1,6 @@
 #' (V)accination (T)imeliness Inconsistent Records Plot
 #'
-#' Generates a lollipop plot of untimely records by the absolute value of days outside the timeliness window, binned into customizable intervals. Records vaccinated too late (after \code{age_schedule_high}) and too early (before \code{age_schedule_low}) are shown in separate rows.
+#' Generates a lollipop plot showing the distribution of untimely records, grouping them in bins of days outside of the timeliness window. The \code{UNTIMELY_LATE} records and the \code{UNTIMELY_EARLY} records are shown in separate rows.
 #'
 #' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
 #' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
@@ -60,25 +60,24 @@ vt_inconsistent_plot <- function(
 
   # Calculates day difference outside the timeliness window, bins it by magnitude, and counts records
   plot_counts <- plot_data %>%
-    # keeps only untimely records
-    filter(timeliness == "UNTIMELY") %>%
-    # adds direction and bin labelling
+    # keeps only untimely (early or late) records
+    filter(timeliness %in% c("UNTIMELY_EARLY", "UNTIMELY_LATE")) %>%
+    # adds bin labelling
     mutate(
-      direction = ifelse(days_outside_range < 0, "BEFORE", "AFTER"),
       delta_abs = abs(days_outside_range),
       bin_label = cut(delta_abs, breaks = breaks, labels = magnitude_labels, right = FALSE, include.lowest = TRUE)
     ) %>%
-    # counts records per direction and bin (and dose, if vaccines is specified)
-    count(direction, bin_label, across(all_of(dose_group))) %>%
-    # shows "after" (late) above "before" (early) in the facet rows
-    mutate(direction = factor(direction, levels = c("AFTER", "BEFORE")))
+    # counts records per timeliness type and bin (and dose, if vaccines is specified)
+    count(timeliness, bin_label, across(all_of(dose_group))) %>%
+    # shows late above early in the facet rows
+    mutate(timeliness = factor(timeliness, levels = c("UNTIMELY_LATE", "UNTIMELY_EARLY")))
 
-  # total untimely records per direction, for the caption
-  n_before <- sum(plot_counts$n[plot_counts$direction == "BEFORE"])
-  n_after <- sum(plot_counts$n[plot_counts$direction == "AFTER"])
+  # total untimely records per timeliness type, for the caption
+  n_early <- sum(plot_counts$n[plot_counts$timeliness == "UNTIMELY_EARLY"])
+  n_late <- sum(plot_counts$n[plot_counts$timeliness == "UNTIMELY_LATE"])
 
   # do plot
-  p <- ggplot(plot_counts, aes(x = bin_label, y = n, color = direction)) +
+  p <- ggplot(plot_counts, aes(x = bin_label, y = n, color = timeliness)) +
     geom_segment(aes(x = bin_label, xend = bin_label, y = 0, yend = n), linewidth = 1) +
     geom_point(size = 3) +
     labs(
@@ -86,13 +85,13 @@ vt_inconsistent_plot <- function(
       x = "Days outside timeliness window (absolute value)",
       y = "Number of records",
       caption = paste0(
-        "Vaccinated before the timeliness window: ", n_before,
-        ". Vaccinated after the timeliness window: ", n_after, ".\n",
+        "Vaccinated before the timeliness window: ", n_early,
+        ". Vaccinated after the timeliness window: ", n_late, ".\n",
         "Number of records with at least one date missing: ", n_missing
       )
     ) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.05)), limits = c(0, NA)) +
-    scale_color_manual(values = c("BEFORE" = "#9cdbf4", "AFTER" = "#fabf7b")) +
+    scale_color_manual(values = c("UNTIMELY_EARLY" = "#c9a3dd", "UNTIMELY_LATE" = "#fabf7b")) +
     theme_classic() +
     theme(
       axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
@@ -101,18 +100,16 @@ vt_inconsistent_plot <- function(
       legend.position = "none"
     )
 
-  # NOTE: direction refers to whether its a positive value (days after
-  #       age_schedule_high) or a negative value (days before age_schedule_low)
-  direction_labels <- labeller(direction = c(
-    "AFTER" = "After age_schedule_high",
-    "BEFORE" = "Before age_schedule_low"
+  timeliness_labels <- labeller(timeliness = c(
+    "UNTIMELY_LATE" = "Late (after age_schedule_high)",
+    "UNTIMELY_EARLY" = "Early (before age_schedule_low)"
   ))
   if(!is.null(vaccines)) {
-    # facet both by direction and dose
-    p <- p + facet_grid(rows = vars(direction), cols = vars(dose), scales = "free_y", labeller = direction_labels)
+    # facet both by timeliness and dose
+    p <- p + facet_grid(rows = vars(timeliness), cols = vars(dose), scales = "free_y", labeller = timeliness_labels)
   } else {
-    # since all doses are pooled together, facet only by direction
-    p <- p + facet_grid(rows = vars(direction), scales = "free_y", labeller = direction_labels)
+    # since all doses are pooled together, facet only by timeliness
+    p <- p + facet_grid(rows = vars(timeliness), scales = "free_y", labeller = timeliness_labels)
   }
 
   return(p)

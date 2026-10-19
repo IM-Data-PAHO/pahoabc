@@ -157,7 +157,8 @@ En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados
 | Categoría | Significado |
 |---|---|
 | `TIMELY` | Oportuna: la edad al momento de la vacunación está dentro de `[age_schedule_low, age_schedule_high]`. |
-| `UNTIMELY` | No oportuna: la edad al momento de la vacunación está fuera de `[age_schedule_low, age_schedule_high]`, ya sea antes o después del periodo de oportunidad. |
+| `UNTIMELY_EARLY` | No oportuna (temprana): la edad al momento de la vacunación es menor que `age_schedule_low` (antes del periodo de oportunidad). |
+| `UNTIMELY_LATE` | No oportuna (tardía): la edad al momento de la vacunación es mayor que `age_schedule_high` (después del periodo de oportunidad). |
 | `DATE_MISSING` | `date_vax` o `date_birth` es `NA`. |
 
 # Uso
@@ -228,7 +229,7 @@ Las funciones correspondientes al análisis no probabilístico son:
 
 ### Paso 1 — Calcular el indicador con `vt_rate()`
 
-`vt_rate()` compara la edad al momento de la vacunación con el periodo de oportunidad de cada dosis y devuelve el número (`n`) y el porcentaje (`rate`) de registros clasificados como `TIMELY`, `UNTIMELY` o `DATE_MISSING`, sobre el total de registros (`total`).
+`vt_rate()` compara la edad al momento de la vacunación con el periodo de oportunidad de cada dosis y devuelve el número (`n`) y el porcentaje (`rate`) de registros clasificados como `TIMELY`, `UNTIMELY_EARLY`, `UNTIMELY_LATE` o `DATE_MISSING`, sobre el total de registros (`total`).
 
 Por defecto, `vaccines = NULL` agrega todas las dosis de `data.schedule` en un único indicador. Aquí calculamos el indicador agregado a nivel ADM1:
 
@@ -285,7 +286,7 @@ vt_barplot(data = rate_by_dose_df)
 
 #### Interpretación
 
-Cada barra representa una unidad geográfica y se divide en segmentos: `TIMELY` (azul), `UNTIMELY` (naranja) y `DATE_MISSING` (gris). Las barras con una mayor proporción en naranja indican unidades donde una parte importante de las dosis se administra fuera del periodo de oportunidad, lo que amerita investigar posibles problemas de acceso, de disposición a vacunar o de abastecimiento en esas unidades.
+Cada barra representa una unidad geográfica y se divide en segmentos: `TIMELY` (azul), `UNTIMELY_LATE` (naranja), `UNTIMELY_EARLY` (morado) y `DATE_MISSING` (gris). Las barras con una mayor proporción en naranja indican unidades donde una parte importante de las dosis se administra después del periodo de oportunidad, lo que amerita investigar posibles problemas de acceso, de disposición a vacunar o de abastecimiento en esas unidades. Por otro lado, una proporción importante en morado puede indicar errores de registro o problemas en la aplicación del calendario.
 
 > **Nota**
 >
@@ -293,7 +294,7 @@ Cada barra representa una unidad geográfica y se divide en segmentos: `TIMELY` 
 
 ### Paso 3 — Inspeccionar los registros no oportunos con `vt_inconsistent()`
 
-`vt_inconsistent()` devuelve una tabla a nivel de registro con todas las dosis `UNTIMELY` y `DATE_MISSING`, incluyendo el número de días fuera del periodo de oportunidad.
+`vt_inconsistent()` devuelve una tabla a nivel de registro con todas las dosis `UNTIMELY_EARLY`, `UNTIMELY_LATE` y `DATE_MISSING`, incluyendo el número de días fuera del periodo de oportunidad.
 
 > **Nota**
 >
@@ -307,9 +308,9 @@ inconsistent_df <- vt_inconsistent(
 )
 
 inconsistent_df %>%
-  # muestra hasta 3 registros UNTIMELY y hasta 3 DATE_MISSING
+  # muestra hasta 2 registros de dada tipo: UNTIMELY_EARLY, UNTIMELY_LATE y DATE_MISSING
   group_by(timeliness) %>%
-  slice_head(n = 3) %>%
+  slice_head(n = 2) %>%
   ungroup() %>%
   kable(caption = "Muestra de registros no oportunos y con fechas faltantes de DTP1")
 ```

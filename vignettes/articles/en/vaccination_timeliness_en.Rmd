@@ -157,7 +157,8 @@ Namely, PAHOabc can distinguish three administrative levels, which listed from t
 | Category | Meaning |
 |---|---|
 | `TIMELY` | The age at vaccination falls within `[age_schedule_low, age_schedule_high]`. |
-| `UNTIMELY` | The age at vaccination falls outside `[age_schedule_low, age_schedule_high]`, either before or after the timeliness window. |
+| `UNTIMELY_EARLY` | The age at vaccination is lower than `age_schedule_low` (before the timeliness window). |
+| `UNTIMELY_LATE` | The age at vaccination is greater than `age_schedule_high` (after the timeliness window). |
 | `DATE_MISSING` | `date_vax` or `date_birth` is `NA`. |
 
 # Usage
@@ -228,7 +229,7 @@ The functions for the non-probabilistic analysis are:
 
 ### Step 1 — Compute the indicator with `vt_rate()`
 
-`vt_rate()` compares the age at vaccination against the timeliness window of each dose and returns the number (`n`) and percentage (`rate`) of records that are `TIMELY`, `UNTIMELY`, or `DATE_MISSING`, out of the total number of records (`total`).
+`vt_rate()` compares the age at vaccination against the timeliness window of each dose and returns the number (`n`) and percentage (`rate`) of records that are `TIMELY`, `UNTIMELY_EARLY`, `UNTIMELY_LATE`, or `DATE_MISSING`, out of the total number of records (`total`).
 
 By default, `vaccines = NULL` pools all doses in `data.schedule` into a single indicator. Here we compute the pooled indicator at the ADM1 level:
 
@@ -285,7 +286,7 @@ vt_barplot(data = rate_by_dose_df)
 
 #### Interpretation
 
-Each bar represents a geographic unit and is divided into segments: `TIMELY` (blue), `UNTIMELY` (orange), and `DATE_MISSING` (grey). Bars with a larger orange share indicate units where a large share of doses are administered outside the timeliness window, a signal worth investigating for possible access, willingness to vaccinate, or supply issues in those units.
+Each bar represents a geographic unit and is divided into segments: `TIMELY` (blue), `UNTIMELY_LATE` (orange), `UNTIMELY_EARLY` (purple), and `DATE_MISSING` (grey). Bars with a larger orange share indicate units where a large share of doses are administered after the timeliness window, a signal worth investigating for possible access, willingness to vaccinate, or supply issues in those units. A large purple share, on the other hand, can point to data entry errors or problems in how the schedule is applied.
 
 > **Note**
 >
@@ -293,7 +294,7 @@ Each bar represents a geographic unit and is divided into segments: `TIMELY` (bl
 
 ### Step 3 — Inspect individual untimely records with `vt_inconsistent()`
 
-`vt_inconsistent()` returns a record-level table of all `UNTIMELY` and `DATE_MISSING` doses, including the number of days outside the timeliness window.
+`vt_inconsistent()` returns a record-level table of all `UNTIMELY_EARLY`, `UNTIMELY_LATE` and `DATE_MISSING` doses, including the number of days outside the timeliness window.
 
 > **Note**
 >
@@ -307,9 +308,9 @@ inconsistent_df <- vt_inconsistent(
 )
 
 inconsistent_df %>%
-  # shows up to 3 UNTIMELY and up to 3 DATE_MISSING records
+  # shows up to 2 records of each type: UNTIMELY_EARLY, UNTIMELY_LATE and DATE_MISSING
   group_by(timeliness) %>%
-  slice_head(n = 3) %>%
+  slice_head(n = 2) %>%
   ungroup() %>%
   kable(caption = "Sample of untimely and missing-date DTP1 records")
 ```

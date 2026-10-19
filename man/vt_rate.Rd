@@ -24,7 +24,19 @@ vt_rate(
 \item{birth_cohorts}{Numeric (optional). A vector specifying the birth cohort(s) for which the rate should be calculated. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.}
 }
 \value{
-A data frame with one row per \code{timeliness} category for the specified \code{geo_level}. Records are classified as \code{TIMELY} (administered within the timeliness window), \code{UNTIMELY} (administered outside it) or \code{DATE_MISSING} (missing \code{date_birth} or \code{date_vax}). Includes the number of records for each category (\code{n}), a corresponding \code{rate}, and a \code{total}.
+A data frame with one row per \code{timeliness} category for the specified \code{geo_level} (and \code{dose}, if \code{vaccines} is specified), with the following columns:
+\itemize{
+  \item \code{timeliness}: the category of each record, one of:
+  \itemize{
+    \item \code{TIMELY}: administered within the timeliness window.
+    \item \code{UNTIMELY_EARLY}: administered before the timeliness window, i.e. before \code{age_schedule_low}.
+    \item \code{UNTIMELY_LATE}: administered after the timeliness window, i.e. after \code{age_schedule_high}.
+    \item \code{DATE_MISSING}: missing \code{date_birth} or \code{date_vax}.
+  }
+  \item \code{n}: number of records in that category.
+  \item \code{total}: total number of records.
+  \item \code{rate}: percentage of records in that category (\code{n / total * 100}).
+}
 }
 \description{
 This function calculates the vaccination timeliness rate by comparing the age at vaccination (\code{date_vax - date_birth}) with the timeliness window defined in the vaccination schedule (\code{age_schedule_low}, \code{age_schedule_high}), further disaggregating by geographic level, using data from the electronic immunization registry (EIR).

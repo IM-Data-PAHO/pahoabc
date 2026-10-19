@@ -28,5 +28,5 @@ vt_inconsistent_plot(
 A ggplot object representing the lollipop plot.
 }
 \description{
-Generates a lollipop plot of untimely records by the absolute value of days outside the timeliness window, binned into customizable intervals. Records vaccinated too late (after \code{age_schedule_high}) and too early (before \code{age_schedule_low}) are shown in separate rows.
+Generates a lollipop plot showing the distribution of untimely records, grouping them in bins of days outside of the timeliness window. The \code{UNTIMELY_LATE} records and the \code{UNTIMELY_EARLY} records are shown in separate rows.
 }

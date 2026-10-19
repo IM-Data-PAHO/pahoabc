@@ -1,6 +1,6 @@
 #' (V)accination (T)imeliness Barplot
 #'
-#' Generates a bar plot of timeliness rates (doses administered within vs outside the timeliness window), grouped by geographic area and colored by timeliness result. If \code{data} is disaggregated by \code{dose} (i.e. \code{vt_rate} was run with \code{vaccines} specified), the plot is faceted by dose.
+#' Generates a bar plot showing percentage of doses administered within, before or after the timeliness window, grouped by geographic area. If \code{vt_rate} was run with \code{vaccines} specified, the plot is faceted by dose.
 #'
 #' @param data The output from the \code{pahoabc::vt_rate} function.
 #' @param within_ADM1 Character (optional). When analyzing data at the "ADM2" level, this optional character vector lets you specify one or several "ADM1" to filter. Default is \code{NULL}, which means no filtering by "ADM1".
@@ -36,7 +36,7 @@ vt_barplot <- function(data, within_ADM1 = NULL, plot_missing = TRUE) {
     pull(n)
 
   prepare_data <- prepare_data %>%
-    mutate(timeliness = factor(timeliness, levels = c("DATE_MISSING", "UNTIMELY", "TIMELY"))) %>%
+    mutate(timeliness = factor(timeliness, levels = c("DATE_MISSING", "UNTIMELY_EARLY", "UNTIMELY_LATE", "TIMELY"))) %>%
     filter(if(plot_missing == FALSE){timeliness != "DATE_MISSING"} else {TRUE})
 
   # build base plot depending on geo_level
@@ -56,7 +56,7 @@ vt_barplot <- function(data, within_ADM1 = NULL, plot_missing = TRUE) {
       caption = paste0("Number of records with at least one date missing: ", n_missing)
     ) +
     scale_y_continuous(limits = c(0, 100.9), n.breaks = 5) +
-    scale_fill_manual(values = c("TIMELY" = "#9cdbf4", "UNTIMELY" = "#fabf7b", "DATE_MISSING" = "#838383")) +
+    scale_fill_manual(values = c("TIMELY" = "#9cdbf4", "UNTIMELY_LATE" = "#fabf7b", "UNTIMELY_EARLY" = "#c9a3dd", "DATE_MISSING" = "#838383")) +
     theme_classic() +
     theme(
       axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),

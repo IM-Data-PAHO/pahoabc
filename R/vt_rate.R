@@ -8,7 +8,19 @@
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis, disaggregating results by \code{dose}. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together (no \code{dose} column in the output).
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which the rate should be calculated. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.
 #'
-#' @return A data frame with one row per \code{timeliness} category for the specified \code{geo_level}. Records are classified as \code{TIMELY} (administered within the timeliness window), \code{UNTIMELY} (administered outside it) or \code{DATE_MISSING} (missing \code{date_birth} or \code{date_vax}). Includes the number of records for each category (\code{n}), a corresponding \code{rate}, and a \code{total}.
+#' @return A data frame with one row per \code{timeliness} category for the specified \code{geo_level} (and \code{dose}, if \code{vaccines} is specified), with the following columns:
+#' \itemize{
+#'   \item \code{timeliness}: the category of each record, one of:
+#'   \itemize{
+#'     \item \code{TIMELY}: administered within the timeliness window.
+#'     \item \code{UNTIMELY_EARLY}: administered before the timeliness window, i.e. before \code{age_schedule_low}.
+#'     \item \code{UNTIMELY_LATE}: administered after the timeliness window, i.e. after \code{age_schedule_high}.
+#'     \item \code{DATE_MISSING}: missing \code{date_birth} or \code{date_vax}.
+#'   }
+#'   \item \code{n}: number of records in that category.
+#'   \item \code{total}: total number of records.
+#'   \item \code{rate}: percentage of records in that category (\code{n / total * 100}).
+#' }
 #'
 #' @import dplyr
 #' @import lubridate

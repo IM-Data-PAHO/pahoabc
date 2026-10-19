@@ -76,7 +76,7 @@
   return(converted)
 }
 
-#' Classify each EIR record as TIMELY, UNTIMELY or DATE_MISSING according to the timeliness window in data.schedule, and compute its days_outside_range.
+#' Classify each EIR record as TIMELY, UNTIMELY_EARLY, UNTIMELY_LATE or DATE_MISSING according to the timeliness window in data.schedule, and compute its days_outside_range.
 #'
 #' NOTE: Does not validate its inputs (it only warns about negative ages at vaccination). Callers must validate data.EIR, data.schedule, vaccines and birth_cohorts before calling it.
 #'
@@ -111,10 +111,11 @@
 
   classified <- prepare_EIR %>%
     left_join(data.schedule, by = "dose") %>%
-    # Clasify timely, untimely and date missing
+    # Clasify timely, early (before the timeliness window), late (after it) and date missing
     mutate(timeliness = case_when(
       is.na(date_vax) | is.na(date_birth) ~ "DATE_MISSING",
-      age_at_vax < age_schedule_low | age_at_vax > age_schedule_high ~ "UNTIMELY",
+      age_at_vax < age_schedule_low ~ "UNTIMELY_EARLY",
+      age_at_vax > age_schedule_high ~ "UNTIMELY_LATE",
       TRUE ~ "TIMELY"
     )) %>%
     # Days outside the timeliness window: negative if before age_schedule_low,
