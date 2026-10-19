@@ -94,7 +94,7 @@ El análisis probabilístico estima la **incidencia acumulada** del evento "admi
 
 > **Nota**
 >
-> Idealmente, este análisis considera a toda la población que debería recibir la vacuna (por ejemplo, a partir del registro de nacidos vivos). En PAHOabc se trabaja con la base de vacunados del RNVe, es decir, solo con los individuos que recibieron la dosis analizada. En este caso, la probabilidad final siempre será del 100 %, lo que **sobreestima** la probabilidad real de vacunación de la población.
+> Idealmente, este análisis considera a toda la población que debería recibir la vacuna (por ejemplo, a partir del registro de nacidos vivos). En PAHOabc se trabaja con la base de vacunados del RNVe, es decir, solo con los individuos que recibieron la dosis analizada. En este caso, la probabilidad final siempre será del 100%, lo que **sobreestima** la probabilidad real de vacunación de la población.
 
 ### Definiciones operativas
 
@@ -282,7 +282,7 @@ vt_barplot(data = rate_by_dose_df)
 
 - `data`: Resultado de `vt_rate()`.
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1 específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
-- `plot_missing`: Booleano. Si es `TRUE` (predeterminado), los registros `DATE_MISSING` se muestran como un segmento separado para que todas las barras sumen 100 %.
+- `plot_missing`: Booleano. Si es `TRUE` (predeterminado), los registros `DATE_MISSING` se muestran como un segmento separado para que todas las barras sumen 100%.
 
 #### Interpretación
 
@@ -308,7 +308,7 @@ inconsistent_df <- vt_inconsistent(
 )
 
 inconsistent_df %>%
-  # muestra hasta 2 registros de dada tipo: UNTIMELY_EARLY, UNTIMELY_LATE y DATE_MISSING
+  # muestra hasta 2 registros de cada tipo: UNTIMELY_EARLY, UNTIMELY_LATE y DATE_MISSING
   group_by(timeliness) %>%
   slice_head(n = 2) %>%
   ungroup() %>%
@@ -473,7 +473,7 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, x_axis = "relative")
 - `percentile`: Un único percentil (mayor que 0 y hasta 100) a destacar en el gráfico, para el conjunto de todas las unidades y para cada unidad en `highlight`. Valor predeterminado: `NULL` (ninguno).
 - `highlight`: Vector de caracteres con hasta 5 unidades geográficas (del nivel geográfico de `data`) a destacar en color. Solo disponible si los datos están desagregados por ADM1 o ADM2. Valor predeterminado: `NULL` (ninguna).
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1 específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
-- `max_days`: Número máximo de días desde el inicio del periodo de oportunidad a mostrar en el eje horizontal. El valor predeterminado (`NULL`) muestra hasta el día en que el 95 % de los registros se ha vacunado, para que unas pocas vacunaciones muy tardías (o con errores de fecha) no estiren el eje.
+- `max_days`: Número máximo de días desde el inicio del periodo de oportunidad a mostrar en el eje horizontal. El valor predeterminado (`NULL`) muestra hasta el día en que el 95% de los registros se ha vacunado, para que unas pocas vacunaciones muy tardías (o con errores de fecha) no estiren el eje.
 - `x_axis`: `"absolute"` (predeterminado) muestra la edad al momento de la vacunación (en días); `"relative"` muestra, para cada dosis, los días que han transcurrido desde el inicio del periodo de oportunidad.
 
 `vt_pdf_plot()` grafica el porcentaje de registros vacunados en cada día (o en un grupo de días, determinado por el parámetro `binwidth`), lo que permite ver en qué momento se concentran las vacunaciones:

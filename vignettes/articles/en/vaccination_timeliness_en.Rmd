@@ -354,7 +354,7 @@ vt_inconsistent_plot(
 - `data.schedule`: Vaccination schedule data frame in PAHOabc format.
 - `vaccines`: Character vector of doses to include, adding one column per `dose`. Default `NULL` pools the results of all doses into a single column.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to include. Default `NULL` uses all available cohorts.
-- `day_groups`: Defines the categories on the horizontal axis. It is a list of `c(lower, upper)` numeric pairs defining the lower and upper limits of each category, in days. Categories must start at 0 and be contiguous (each one starts where the previous one ends). The last category always extends to the maximum value in the data and is labelled `"X+"`. Default: 10-day groups from 0 up to 90+ days.
+- `day_groups`: Defines the categories on the horizontal axis. It is a list of `c(lower, upper)` numeric pairs defining the lower and upper limits of each category, in days. Categories must start at 0 and be contiguous (each one starts where the previous one ends). The last category always extends to the maximum value in the data and is labeled `"X+"`. Default: 10-day groups from 0 up to 90+ days.
 
 Time categories are defined by each country. For example, to use the categories 0 to 39 days, 40 to 49 days, 50 to 59 days, 60 to 89 days, and 90 days or more:
 
