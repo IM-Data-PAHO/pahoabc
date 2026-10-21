@@ -1,12 +1,12 @@
-# PAHOabc
+# immunABC
 
 > 🌐 [**Lea esto en
-> español**](https://im-data-paho.github.io/pahoabc/README.es.html)
+> español**](https://im-data-paho.github.io/immunabc/README.es.html)
 
-PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond
+immunABC is an R package aimed at immunization (A)nalyses (B)eyond
 (C)overage.
 
-PAHOabc aims to support the Pan American Health Organization’s (PAHO)
+immunABC aims to support the Pan American Health Organization’s (PAHO)
 Comprehensive Immunization Unit (CIM) mission by providing advanced data
 analysis tools for immunization programs in the Americas. Specifically,
 it facilitates the calculation of innovative indicators beyond basic
@@ -19,37 +19,37 @@ To learn more about PAHO’s work on immunization, visit the [PAHO
 Immunization site](https://www.paho.org/en/topics/immunization).
 
 For documentation and vignettes for this R package, see:
-<https://im-data-paho.github.io/pahoabc>.
+<https://im-data-paho.github.io/immunabc>.
 
 ## Installation
 
 ``` r
 
 # Install from GitHub
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ## Usage
 
-Currently, PAHOabc contains six main modules. Follow the links below to
+Currently, immunABC contains six main modules. Follow the links below to
 explore detailed vignettes with practical examples and guidance on how
 to use each module:
 
 1.  [**Nominal Dropout
-    Rate**](https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.html)  
+    Rate**](https://im-data-paho.github.io/immunabc/articles/en/nominal_dropout_en.html)  
     Calculates dropout rates between any two vaccine doses using nominal
     data. This module ensures accurate follow-up tracking across a
     vaccination schedule.
 
 2.  [**Residence vs. Occurrence
-    Analyses**](https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.html)  
+    Analyses**](https://im-data-paho.github.io/immunabc/articles/en/residence_occurrence_en.html)  
     Functions for comparing vaccination coverage and dose distribution
     based on where people live versus where they were vaccinated. This
     module helps identify population movement and service coverage gaps
     across geographic areas.
 
 3.  [**Complete Schedule
-    Coverage**](https://im-data-paho.github.io/pahoabc/articles/en/complete_schedule_en.html)  
+    Coverage**](https://im-data-paho.github.io/immunabc/articles/en/complete_schedule_en.html)  
     Evaluates whether individuals have received all required doses in a
     national immunization schedule (for a specific cohort up to a
     specified age). This module differs from standard coverage
@@ -57,20 +57,20 @@ to use each module:
     national immunization schedule.
 
 4.  [**Birth Cohort
-    Coverage**](https://im-data-paho.github.io/pahoabc/articles/en/birth_cohort_coverage_en.html)  
+    Coverage**](https://im-data-paho.github.io/immunabc/articles/en/birth_cohort_coverage_en.html)  
     Lets users track and visualize vaccination status among a specific
     cohort of newborns. Helps evaluate population-level protection
     against vaccine-preventable diseases.
 
 5.  [**Date Consistency
-    Comparison**](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.html)  
+    Comparison**](https://im-data-paho.github.io/immunabc/articles/en/date_consistency_comparison_en.html)  
     Identifies and quantifies logical inconsistencies between any two
     date variables in the EIR (e.g., vaccination date before date of
     birth). Helps detect data entry errors and record linkage issues
     before downstream analyses.
 
 6.  [**Vaccination
-    Timeliness**](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.html)  
+    Timeliness**](https://im-data-paho.github.io/immunabc/articles/en/vaccination_timeliness_en.html)  
     Analyzes the vaccination timeliness of the population, that is, the
     time that elapses between the age of eligibility for each dose and
     its administration, using nominal data from the electronic
@@ -87,7 +87,7 @@ Each module works seamlessly with the example datasets provided in the
 package. These examples make it easy to test out the functionality and
 serve as a reference when preparing your own data. Learn more about
 these example datasets [in this
-vignette](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.html).
+vignette](https://im-data-paho.github.io/immunabc/articles/en/example_datasets_en.html).
 
 > **Note**
 >
@@ -97,9 +97,9 @@ vignette](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en
 ## Contribute
 
 We welcome suggestions, bug reports, and feature requests through the
-[GitHub Issues](https://github.com/IM-Data-PAHO/pahoabc/issues) page. If
-you’d like to contribute code or fixes, feel free to open a [pull
-request](https://github.com/IM-Data-PAHO/pahoabc/pulls).
+[GitHub Issues](https://github.com/IM-Data-PAHO/immunabc/issues) page.
+If you’d like to contribute code or fixes, feel free to open a [pull
+request](https://github.com/IM-Data-PAHO/immunabc/pulls).
 
 # Package index
 
@@ -108,13 +108,13 @@ request](https://github.com/IM-Data-PAHO/pahoabc/pulls).
 Functions for identifying and visualizing date inconsistencies in the
 EIR.
 
-- [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+- [`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
   : (D)ate (C)onsistency (C)omparison Rate
-- [`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+- [`dcc_barplot()`](https://im-data-paho.github.io/immunabc/reference/dcc_barplot.md)
   : (D)ate (C)onsistency (C)omparison Barplot
-- [`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+- [`dcc_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent.md)
   : (D)ate (C)onsistency (C)omparison Inconsistent Records
-- [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+- [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent_plot.md)
   : (D)ate (C)onsistency (C)omparison Inconsistent Records Plot
 
 ## Vaccination Timeliness
@@ -122,32 +122,32 @@ EIR.
 Functions for calculating and visualizing vaccination timeliness in the
 EIR.
 
-- [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+- [`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md)
   : (V)accination (T)imeliness Rate
-- [`vt_barplot()`](https://im-data-paho.github.io/pahoabc/reference/vt_barplot.md)
+- [`vt_barplot()`](https://im-data-paho.github.io/immunabc/reference/vt_barplot.md)
   : (V)accination (T)imeliness Barplot
-- [`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md)
+- [`vt_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent.md)
   : (V)accination (T)imeliness Inconsistent Records
-- [`vt_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent_plot.md)
+- [`vt_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent_plot.md)
   : (V)accination (T)imeliness Inconsistent Records Plot
-- [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+- [`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md)
   : (V)accination (T)imeliness Distribution
-- [`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md)
+- [`vt_cdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_cdf_plot.md)
   : (V)accination (T)imeliness Cumulative Distribution Plot
-- [`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md)
+- [`vt_pdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_pdf_plot.md)
   : (V)accination (T)imeliness Probability Distribution Plot
-- [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md)
+- [`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md)
   : (V)accination (T)imeliness Percentiles
-- [`vt_percentile_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile_plot.md)
+- [`vt_percentile_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile_plot.md)
   : (V)accination (T)imeliness Percentile Plot
 
 ## Nominal Dropout Rate
 
 Functions for calculating and visualizing nominal dropout rate.
 
-- [`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+- [`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
   : (No)minal (D)ropout Rate
-- [`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+- [`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md)
   : (No)minal (D)ropout Bar Plot
 
 ## Residence vs. Ocurrence Analyses
@@ -155,39 +155,39 @@ Functions for calculating and visualizing nominal dropout rate.
 Functions for calculating and visualizing coverage and dose distribution
 by place of residence or vaccination.
 
-- [`roc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage.md)
+- [`roc_coverage()`](https://im-data-paho.github.io/immunabc/reference/roc_coverage.md)
   : (R)esidence (Oc)currence Coverage
-- [`roc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/roc_barplot.md)
+- [`roc_barplot()`](https://im-data-paho.github.io/immunabc/reference/roc_barplot.md)
   : (R)esidence (Oc)currence Bar Plot
-- [`roc_distribution()`](https://im-data-paho.github.io/pahoabc/reference/roc_distribution.md)
+- [`roc_distribution()`](https://im-data-paho.github.io/immunabc/reference/roc_distribution.md)
   : (R)esidence (Oc)currence Dose Distribution
-- [`roc_heatmap()`](https://im-data-paho.github.io/pahoabc/reference/roc_heatmap.md)
+- [`roc_heatmap()`](https://im-data-paho.github.io/immunabc/reference/roc_heatmap.md)
   : (R)esidence (Oc)currence Heatmap
-- [`roc_coverage_by()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage_by.md)
+- [`roc_coverage_by()`](https://im-data-paho.github.io/immunabc/reference/roc_coverage_by.md)
   : (R)esidence or (Oc)currence Coverage
-- [`bc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+- [`bc_coverage()`](https://im-data-paho.github.io/immunabc/reference/bc_coverage.md)
   : (B)irth (C)ohort Coverage
-- [`bc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/bc_barplot.md)
+- [`bc_barplot()`](https://im-data-paho.github.io/immunabc/reference/bc_barplot.md)
   : (B)irth (C)ohort Coverage Bar Plot
 
 ## Complete Schedule Coverage
 
 Functions for calculating and visualizing complete schedule coverage.
 
-- [`cs_coverage()`](https://im-data-paho.github.io/pahoabc/reference/cs_coverage.md)
+- [`cs_coverage()`](https://im-data-paho.github.io/immunabc/reference/cs_coverage.md)
   : (C)omplete (S)chedule Coverage
-- [`cs_barplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_barplot.md)
+- [`cs_barplot()`](https://im-data-paho.github.io/immunabc/reference/cs_barplot.md)
   : (C)omplete (S)chedule Coverage Bar Plot
-- [`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
+- [`cs_upsetplot()`](https://im-data-paho.github.io/immunabc/reference/cs_upsetplot.md)
   : (C)omplete (S)chedule Coverage Upset Plot
 
 ## Birth Cohort Coverage
 
 Functions for calculating and visualizing birth cohort coverage.
 
-- [`bc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+- [`bc_coverage()`](https://im-data-paho.github.io/immunabc/reference/bc_coverage.md)
   : (B)irth (C)ohort Coverage
-- [`bc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/bc_barplot.md)
+- [`bc_barplot()`](https://im-data-paho.github.io/immunabc/reference/bc_barplot.md)
   : (B)irth (C)ohort Coverage Bar Plot
 
 ## Example Data
@@ -195,46 +195,46 @@ Functions for calculating and visualizing birth cohort coverage.
 Example data frames to understand how the package works and what it
 expects.
 
-- [`pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
-  : PAHOABC Electronic Immunization Registry (EIR)
-- [`pahoabc.pop.ADM0`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM0.md)
-  : PAHOABC Aggregated Population Data by ADM0
-- [`pahoabc.pop.ADM1`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM1.md)
-  : PAHOABC Aggregated Population Data by ADM1
-- [`pahoabc.pop.ADM2`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM2.md)
-  : PAHOABC Aggregated Population Data by ADM1 and ADM2
-- [`pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
-  : PAHOABC Vaccination Schedule
+- [`immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
+  : immunABC Electronic Immunization Registry (EIR)
+- [`immunABC.pop.ADM0`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM0.md)
+  : immunABC Aggregated Population Data by ADM0
+- [`immunABC.pop.ADM1`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM1.md)
+  : immunABC Aggregated Population Data by ADM1
+- [`immunABC.pop.ADM2`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM2.md)
+  : immunABC Aggregated Population Data by ADM1 and ADM2
+- [`immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
+  : immunABC Vaccination Schedule
 
 # Articles
 
 ### All vignettes
 
 - [Birth Cohort
-  Coverage](https://im-data-paho.github.io/pahoabc/articles/en/birth_cohort_coverage_en.md):
+  Coverage](https://im-data-paho.github.io/immunabc/articles/en/birth_cohort_coverage_en.md):
 - [Cobertura por cohorte de
-  nacimiento](https://im-data-paho.github.io/pahoabc/articles/es/birth_cohort_coverage_es.md):
+  nacimiento](https://im-data-paho.github.io/immunabc/articles/es/birth_cohort_coverage_es.md):
 - [Complete Schedule
-  Coverage](https://im-data-paho.github.io/pahoabc/articles/en/complete_schedule_en.md):
+  Coverage](https://im-data-paho.github.io/immunabc/articles/en/complete_schedule_en.md):
 - [Cobertura de esquema
-  completo](https://im-data-paho.github.io/pahoabc/articles/es/complete_schedule_es.md):
+  completo](https://im-data-paho.github.io/immunabc/articles/es/complete_schedule_es.md):
 - [Date Consistency
-  Comparison](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.md):
+  Comparison](https://im-data-paho.github.io/immunabc/articles/en/date_consistency_comparison_en.md):
 - [Comparación de consistencia de
-  fechas](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.md):
+  fechas](https://im-data-paho.github.io/immunabc/articles/es/date_consistency_comparison_es.md):
 - [Using our Example
-  Datasets](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.md):
+  Datasets](https://im-data-paho.github.io/immunabc/articles/en/example_datasets_en.md):
 - [Uso de los datos de
-  ejemplo](https://im-data-paho.github.io/pahoabc/articles/es/example_datasets_es.md):
+  ejemplo](https://im-data-paho.github.io/immunabc/articles/es/example_datasets_es.md):
 - [Nominal Dropout
-  Rate](https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.md):
+  Rate](https://im-data-paho.github.io/immunabc/articles/en/nominal_dropout_en.md):
 - [Tasa de abandono
-  nominal](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.md):
+  nominal](https://im-data-paho.github.io/immunabc/articles/es/nominal_dropout_es.md):
 - [Residence vs. Occurrence
-  Analyses](https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.md):
+  Analyses](https://im-data-paho.github.io/immunabc/articles/en/residence_occurrence_en.md):
 - [Análisis de residencia vs. lugar de
-  vacunación](https://im-data-paho.github.io/pahoabc/articles/es/residence_occurrence_es.md):
+  vacunación](https://im-data-paho.github.io/immunabc/articles/es/residence_occurrence_es.md):
 - [Vaccination
-  Timeliness](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.md):
+  Timeliness](https://im-data-paho.github.io/immunabc/articles/en/vaccination_timeliness_en.md):
 - [Oportunidad de
-  vacunación](https://im-data-paho.github.io/pahoabc/articles/es/vaccination_timeliness_es.md):
+  vacunación](https://im-data-paho.github.io/immunabc/articles/es/vaccination_timeliness_es.md):

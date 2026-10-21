@@ -1,7 +1,7 @@
 # Nominal Dropout Rate
 
 [🌐 Lea esto en
-español](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.md)
+español](https://im-data-paho.github.io/immunabc/articles/es/nominal_dropout_es.md)
 
 ## Rationale
 
@@ -31,7 +31,7 @@ Figure 1. Visual representation of a nominal dropout analysis.
 
 > **Note**
 >
-> All functions used for nominal dropout analyses within PAHOabc begin
+> All functions used for nominal dropout analyses within immunABC begin
 > with the `nod_` prefix.
 
 ## Glossary
@@ -41,10 +41,10 @@ Figure 1. Visual representation of a nominal dropout analysis.
 Throughout this vignette, we will make reference to different levels of
 political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which
+Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1.  ADM0: The country. This is the top-most administrative level.
@@ -60,7 +60,7 @@ doses. This might not match your own naming schemes, but it will not
 affect the usage of the package as long as you make sure to be
 consistent when naming vaccine doses.
 
-For example, the vaccine names used in the PAHOabc package are:
+For example, the vaccine names used in the immunABC package are:
 
 | Abbreviation | Full Name                                             |
 |--------------|-------------------------------------------------------|
@@ -76,11 +76,11 @@ For example, the vaccine names used in the PAHOabc package are:
 ### Install Package
 
 The first step to run the nominal dropout rate analysis is to install
-the PAHOabc package available on Github
+the immunABC package available on Github
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Load Data
@@ -88,15 +88,15 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 The functions in this module require you to provide your **EIR dataset**
 in a specific format.
 
-To make it easy for you to test out PAHOabc’s functionality and
+To make it easy for you to test out immunABC’s functionality and
 understand the structure we require for your datasets, we will now
-explore the example dataset provided by PAHOabc that is required by this
-module.
+explore the example dataset provided by immunABC that is required by
+this module.
 
 #### EIR
 
 The
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 data frame provides a simulated, nominal-level table representing
 individual vaccination events from an Electronic Immunization Registry
 (EIR). Each row corresponds to a single vaccination act for a person,
@@ -105,7 +105,7 @@ including information on their residence, where they were vaccinated
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -135,9 +135,9 @@ Example Electronic Immunization Registry {.table style="width:100%;"}
 
 ### Nominal Dropout Analysis
 
-PAHOabc includes the functionality to estimate the nominal dropout rate,
-on a per-person basis. This allows for the analysis of any pair of doses
-by specifying an initial dose and a final dose. For correct
+immunABC includes the functionality to estimate the nominal dropout
+rate, on a per-person basis. This allows for the analysis of any pair of
+doses by specifying an initial dose and a final dose. For correct
 interpretation, the initial dose must precede the final dose in the
 vaccination schedule, for example: DTP1 – DTP3 or DTP1 – MCV1.
 Additionally, it allows users to select the level of aggregation for the
@@ -147,16 +147,16 @@ or ADM2).
 #### Expected workflow
 
 The
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 and
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md)
 functions work together to perform nominal dropout analysis and
 visualization. The
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 function computes the nominal dropout and complete cases by residence
 across selected administrative levels, birth cohorts, and vaccines. Its
 output (a data table) is structured to be directly compatible with
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md),
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md),
 which generates a visualization for the data computed.
 
 ![Figure 2. Expected workflow for nominal dropout rate
@@ -169,14 +169,14 @@ Figure 2. Expected workflow for nominal dropout rate analysis.
 #### Example
 
 Here is a simple use case of the
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 function, where we compute nominal dropout for ADM 1 for DTP1 and DTP3
 in our example dataset.
 
 ``` r
 
 #Runs the nominal dropout function
-example_dropout <- nod_dropout(data.EIR = pahoabc.EIR,
+example_dropout <- nod_dropout(data.EIR = immunABC.EIR,
                                vaccine_init = "DTP1", #Starting vaccine based on your dataset
                                vaccine_end= "DTP3", #Ending vaccine based on your dataset
                                geo_level = "ADM1", #Can be ADM0, ADM1 or ADM2
@@ -235,7 +235,7 @@ additional information.
 #### Handling residence inconsistencies
 
 At the ADM1 or ADM2 level,
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 needs to match a person’s initial and final doses under a single
 residence group. If a person’s registered residence is not the same on
 every record (e.g., they moved between their DTP1 and DTP3 doses, and
@@ -244,7 +244,7 @@ split across two different residence groups and each dose would
 incorrectly appear as an incomplete schedule.
 
 The `fix_residence` parameter controls how
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 handles this:
 
 - `fix_residence = TRUE` (default): before computing dropout, all of a
@@ -253,7 +253,7 @@ handles this:
   vaccination**, so their doses are correctly grouped together.
 - `fix_residence = FALSE`: residence values are left as recorded. If
   inconsistencies are found,
-  [`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+  [`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
   will warn you that results may be inaccurate, and that they should
   either be resolved manually beforehand or `fix_residence` should be
   set back to `TRUE`.
@@ -321,7 +321,7 @@ Result with fix_residence = TRUE {.table}
 
 With `fix_residence = FALSE`, `ID 1`’s two doses stay split between
 `ADM1_1` and `ADM1_2`, so
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 incorrectly reports a dropout in both groups, and warns that the
 residence inconsistency was not corrected:
 
@@ -358,7 +358,7 @@ unfixed_result %>% kable(digits = 3, caption = "Result with fix_residence = FALS
 Result with fix_residence = FALSE {.table}
 
 This output may be fed directly into the
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md)
 function as shown below.
 
 ``` r
@@ -375,11 +375,11 @@ example_dropout_plot
 ##### Parameters accepted
 
 The function
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md)
 accepts the following parameters:
 
 - `data`: Dataframe formatted from the result of the
-  [`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+  [`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
   function.
 - `order`: Organizes the bars based on three options: “alpha”, “desc” or
   “asc”, default is “alpha”.
@@ -408,22 +408,22 @@ vital for immunisation programmes. The *nominal dropout rate*—the
 proportion of individuals who begin a series (e.g., DTP1) but fail to
 receive its final dose (e.g., DTP3)—offers a person-level view of
 programme performance that aggregated counts cannot. This vignette
-introduces PAHOabc, an R package that streamlines nominal dropout
+introduces immunABC, an R package that streamlines nominal dropout
 analysis by harnessing electronic immunisation registry (EIR) data.
 
 After defining key concepts—administrative units (ADM0–2) and
 standardised vaccine-dose codes—the document walks the reader through a
 reproducible workflow: installing the package, exploring the bundled
 example EIR, computing dropout with
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md),
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md),
 and visualising results with
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md).
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md).
 A worked example estimates DTP1→DTP3 dropout at the ADM1 level,
 revealing that every subdivision exceeds the 25 % dropout threshold;
 ADM1_1 performs the worst, while ADM1_4 performs the best relative to a
 5 % target line.
 
 By coupling granular EIR data with a transparent analytical pipeline,
-PAHOabc enables precise, geographically disaggregated insights into
+immunABC enables precise, geographically disaggregated insights into
 follow-up losses, equipping health authorities to target interventions
 where they are most needed.

@@ -1,7 +1,7 @@
 # Complete Schedule Coverage
 
 [🌐 Lea esto en
-español](https://im-data-paho.github.io/pahoabc/articles/es/complete_schedule_es.md)
+español](https://im-data-paho.github.io/immunabc/articles/es/complete_schedule_es.md)
 
 ## Rationale
 
@@ -32,7 +32,7 @@ individual received all doses specified in the schedule.
 > **Note**
 >
 > All functions used for complete schedule coverage analyses within
-> PAHOabc begin with the `cs_` prefix.
+> immunABC begin with the `cs_` prefix.
 
 ## Glossary
 
@@ -41,10 +41,10 @@ individual received all doses specified in the schedule.
 Throughout this vignette, we will make reference to different levels of
 political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which
+Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1.  ADM0: The country. This is the top-most administrative level.
@@ -60,7 +60,7 @@ doses. This might not match your own naming schemes, but it will not
 affect the usage of the package as long as you make sure to be
 consistent when naming vaccine doses.
 
-For example, the vaccine names used in the PAHOabc package are:
+For example, the vaccine names used in the immunABC package are:
 
 | Abbreviation | Full Name                                             |
 |--------------|-------------------------------------------------------|
@@ -76,11 +76,11 @@ For example, the vaccine names used in the PAHOabc package are:
 ### Install Package
 
 The first step to run the complete schedule coverage analyses is to
-install the PAHOabc package available on GitHub.
+install the immunABC package available on GitHub.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Load Data
@@ -93,18 +93,18 @@ specific format.
 3.  A table with population denominators depending on the geographic
     level of your analysis.
     1.  This is optional for the
-        [`cs_coverage()`](https://im-data-paho.github.io/pahoabc/reference/cs_coverage.md)
+        [`cs_coverage()`](https://im-data-paho.github.io/immunabc/reference/cs_coverage.md)
         function (but not shown in this vignette).
 
-To make it easy for you to test out PAHOabc’s functionality and
+To make it easy for you to test out immunABC’s functionality and
 understand the structure we require for your datasets, we will now
-explore the example datasets provided by PAHOabc that are required by
+explore the example datasets provided by immunABC that are required by
 this module.
 
 #### EIR
 
 The
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 data frame provides a simulated, nominal-level table representing
 individual vaccination events from an Electronic Immunization Registry
 (EIR). Each row corresponds to a single vaccination act for a person,
@@ -113,7 +113,7 @@ including information on their residence, where they were vaccinated
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -144,7 +144,7 @@ Example Electronic Immunization Registry {.table style="width:100%;"}
 #### Vaccination Schedule
 
 The
-[`pahoabc::pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+[`immunABC::immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
 dataset defines the national immunization schedule, listing each vaccine
 dose and its recommended age of administration (in days). It helps the
 package determine whether an individual is up to date with their
@@ -152,7 +152,7 @@ vaccinations.
 
 ``` r
 
-pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
+immunABC.schedule %>% kable(caption = "Example Immunization Schedule")
 ```
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
@@ -177,7 +177,7 @@ Example Immunization Schedule {.table}
 > **Note**
 >
 > The `dose` names must match exactly those in the `dose` column of the
-> `pahoabc.EIR` dataset.
+> `immunABC.EIR` dataset.
 
 #### Population Denominators
 
@@ -189,7 +189,7 @@ denominator table must contain the following.
 
 ``` r
 
-pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
+immunABC.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
 ```
 
 | ADM1   | year | age | population |
@@ -212,10 +212,10 @@ certain `ADM1` level.
 #### Expected Workflow
 
 The
-[`cs_coverage()`](https://im-data-paho.github.io/pahoabc/reference/cs_coverage.md),
-[`cs_barplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_barplot.md)
+[`cs_coverage()`](https://im-data-paho.github.io/immunabc/reference/cs_coverage.md),
+[`cs_barplot()`](https://im-data-paho.github.io/immunabc/reference/cs_barplot.md)
 and
-[`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
+[`cs_upsetplot()`](https://im-data-paho.github.io/immunabc/reference/cs_upsetplot.md)
 functions provide a way of analyzing and visualizing complete schedule
 coverage. Their relationships are shown in Figure 1.
 
@@ -236,8 +236,8 @@ birth cohort of the year 2022.
 
 # compute coverage
 coverage_df <- cs_coverage(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level = "ADM1",
   birth_cohorts = 2022 # this can be a vector of years
 )
@@ -261,7 +261,7 @@ Complete schedule coverage by ADM1 level {.table}
 
 It is possible to display the previously obtained results in a bar plot
 with
-[`cs_barplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_barplot.md).
+[`cs_barplot()`](https://im-data-paho.github.io/immunabc/reference/cs_barplot.md).
 
 ``` r
 
@@ -277,7 +277,7 @@ coverage_plot
 #### Upset plot
 
 The
-[`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
+[`cs_upsetplot()`](https://im-data-paho.github.io/immunabc/reference/cs_upsetplot.md)
 function allows us to produce an upset plot to evaluate the percentage
 of individuals included in the EIR who have received any of the possible
 combinations of the available vaccines. The orange bar represents the
@@ -290,8 +290,8 @@ the coverage for that vaccine).
 
 # produce upset plot
 coverage_upset <- cs_upsetplot(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   birth_cohort = 2022
 )
 ```

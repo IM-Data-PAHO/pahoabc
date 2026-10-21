@@ -23,7 +23,7 @@ dcc_inconsistent_plot(
 - data.EIR:
 
   Data frame. A data frame containing individual vaccination records.
-  See `pahoabc.EIR` for expected structure.
+  See `immunABC.EIR` for expected structure.
 
 - date_1:
 

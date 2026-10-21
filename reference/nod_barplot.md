@@ -13,7 +13,7 @@ nod_barplot(data, order = "alpha", within_ADM1 = NULL)
 - data:
 
   Dataframe formatted from the output of the
-  [`pahoabc::nod_dropout`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+  [`immunABC::nod_dropout`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
   function.
 
 - order:

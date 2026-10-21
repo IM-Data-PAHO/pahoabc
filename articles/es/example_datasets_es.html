@@ -5,12 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Uso de los datos de ejemplo • pahoabc</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
-<link rel="icon" type="”image/svg+xml”" href="../../favicon.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
-<link rel="icon" sizes="any" href="../../favicon.ico">
-<link rel="manifest" href="../../site.webmanifest">
+<title>Uso de los datos de ejemplo • immunABC</title>
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -23,9 +18,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
+    <a class="navbar-brand me-2" href="../../index.html">immunABC</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/pahoabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/immunabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -68,12 +63,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../../logo.png" class="logo" alt=""><h1>Uso de los datos de ejemplo</h1>
+
+      <h1>Uso de los datos de ejemplo</h1>
                         <h4 data-toc-skip class="author">OPS/CIM</h4>
             
             <h4 data-toc-skip class="date">14 de abril de 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/vignettes/articles/es/example_datasets_es.Rmd" class="external-link"><code>vignettes/articles/es/example_datasets_es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/immunabc/blob/v0.11.2/vignettes/articles/es/example_datasets_es.Rmd" class="external-link"><code>vignettes/articles/es/example_datasets_es.Rmd</code></a></small>
       <div class="d-none name"><code>example_datasets_es.Rmd</code></div>
     </div>
 
@@ -84,7 +80,7 @@ Read this in English</a></p>
 <div class="section level2">
 <h2 id="fundamento">Fundamento<a class="anchor" aria-label="anchor" href="#fundamento"></a>
 </h2>
-<p>El paquete PAHOabc incluye conjuntos de datos de ejemplo para ayudar
+<p>El paquete immunABC incluye conjuntos de datos de ejemplo para ayudar
 a los usuarios a entender cómo funcionan sus herramientas. Estos datos
 simulan el sistema de información de inmunización de un país ficticio y
 están estructurados para funcionar con las funciones del paquete. Esta
@@ -99,10 +95,10 @@ distintos módulos.</p>
 </h3>
 <p>A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.</p>
-<p>En concreto, PAHOabc puede distinguir tres niveles administrativos
+<p>En concreto, immunABC puede distinguir tres niveles administrativos
 que, listados del nivel superior al inferior, son: ADM0, ADM1 y
 ADM2.</p>
 <ol style="list-style-type: decimal">
@@ -122,7 +118,7 @@ para nombrar las dosis de vacunas. Es posible que esta convención no
 coincida con la que usa su país o institución, pero esto no afecta el
 uso del paquete si los nombres se aplican de manera consistente.</p>
 <p>Por ejemplo, los nombres de las vacunas utilizados en el paquete
-PAHOabc son:</p>
+immunABC son:</p>
 <table class="table">
 <colgroup>
 <col width="17%">
@@ -165,16 +161,16 @@ PAHOabc son:</p>
 <h2 id="lista-de-conjuntos-de-datos-de-ejemplo">Lista de conjuntos de datos de ejemplo<a class="anchor" aria-label="anchor" href="#lista-de-conjuntos-de-datos-de-ejemplo"></a>
 </h2>
 <div class="section level3">
-<h3 id="pahoabc-eir">pahoabc.EIR<a class="anchor" aria-label="anchor" href="#pahoabc-eir"></a>
+<h3 id="immunabc-eir">immunABC.EIR<a class="anchor" aria-label="anchor" href="#immunabc-eir"></a>
 </h3>
-<p>El conjunto de datos <code><a href="../../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> es el más
+<p>El conjunto de datos <code><a href="../../reference/immunABC.EIR.html">immunABC::immunABC.EIR</a></code> es el más
 importante del paquete. Proporciona un ejemplo de Registro Nominal de
 Vacunación electrónico (RNVe). Es una tabla nominal simulada con eventos
 individuales de vacunación. Cada fila corresponde a una vacunación e
 incluye información sobre la residencia de la persona, el lugar donde
 fue vacunada, su fecha de nacimiento y la dosis recibida.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de Registro Nominal de Vacunación electrónico"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de Registro Nominal de Vacunación electrónico"</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <caption>Ejemplo de Registro Nominal de Vacunación electrónico</caption>
 <colgroup>
@@ -280,14 +276,14 @@ difteria, tétanos y tos ferina.</li>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="pahoabc-schedule">pahoabc.schedule<a class="anchor" aria-label="anchor" href="#pahoabc-schedule"></a>
+<h3 id="immunabc-schedule">immunABC.schedule<a class="anchor" aria-label="anchor" href="#immunabc-schedule"></a>
 </h3>
-<p>El conjunto de datos <code><a href="../../reference/pahoabc.schedule.html">pahoabc::pahoabc.schedule</a></code> define el
-esquema nacional de vacunación, con cada dosis y su edad recomendada de
-administración (en días). Esta tabla permite determinar si una persona
-tiene las vacunas que le corresponden según el esquema.</p>
+<p>El conjunto de datos <code><a href="../../reference/immunABC.schedule.html">immunABC::immunABC.schedule</a></code> define
+el esquema nacional de vacunación, con cada dosis y su edad recomendada
+de administración (en días). Esta tabla permite determinar si una
+persona tiene las vacunas que le corresponden según el esquema.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de esquema de vacunación"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de esquema de vacunación"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Ejemplo de esquema de vacunación</caption>
 <thead><tr class="header">
@@ -351,7 +347,7 @@ superior de la edad objetivo, en días.</li>
 <p><strong>Nota</strong></p>
 <p>Los nombres de las dosis en la columna <code>dose</code> deben
 coincidir exactamente con los del conjunto de datos
-<code>pahoabc.EIR</code>.</p>
+<code>immunABC.EIR</code>.</p>
 </blockquote>
 </div>
 <div class="section level3">
@@ -360,16 +356,16 @@ coincidir exactamente con los del conjunto de datos
 <p>Los conjuntos de datos de población proporcionan estimaciones
 poblacionales en distintos niveles geográficos, para varios años y para
 niños de diferentes edades. Según el nivel geográfico del análisis,
-PAHOabc puede requerir la población correspondiente para usarla como
+immunABC puede requerir la población correspondiente para usarla como
 denominador, principalmente en los análisis de cobertura.</p>
 <div class="section level4">
-<h4 id="pahoabc-pop-adm0">pahoabc.pop.ADM0<a class="anchor" aria-label="anchor" href="#pahoabc-pop-adm0"></a>
+<h4 id="immunabc-pop-adm0">immunABC.pop.ADM0<a class="anchor" aria-label="anchor" href="#immunabc-pop-adm0"></a>
 </h4>
-<p>El conjunto de datos <code><a href="../../reference/pahoabc.pop.ADM0.html">pahoabc::pahoabc.pop.ADM0</a></code>
+<p>El conjunto de datos <code><a href="../../reference/immunABC.pop.ADM0.html">immunABC::immunABC.pop.ADM0</a></code>
 proporciona estimaciones poblacionales agregadas a nivel nacional
 (ADM0).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.pop.ADM0</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de población a nivel ADM0"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.pop.ADM0</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de población a nivel ADM0"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Ejemplo de población a nivel ADM0</caption>
 <thead><tr class="header">
@@ -405,14 +401,14 @@ proporciona estimaciones poblacionales agregadas a nivel nacional
 específica durante un año (<code>year</code>) determinado.</p>
 </div>
 <div class="section level4">
-<h4 id="pahoabc-pop-adm1">pahoabc.pop.ADM1<a class="anchor" aria-label="anchor" href="#pahoabc-pop-adm1"></a>
+<h4 id="immunabc-pop-adm1">immunABC.pop.ADM1<a class="anchor" aria-label="anchor" href="#immunabc-pop-adm1"></a>
 </h4>
-<p>El conjunto de datos <code><a href="../../reference/pahoabc.pop.ADM1.html">pahoabc::pahoabc.pop.ADM1</a></code>
+<p>El conjunto de datos <code><a href="../../reference/immunABC.pop.ADM1.html">immunABC::immunABC.pop.ADM1</a></code>
 proporciona datos poblacionales agregados al primer nivel administrativo
 subnacional (ADM1), que suele corresponder a regiones, provincias o
 estados.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.pop.ADM1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de población a nivel ADM1"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.pop.ADM1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de población a nivel ADM1"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Ejemplo de población a nivel ADM1</caption>
 <thead><tr class="header">
@@ -466,13 +462,13 @@ específica durante un año (<code>year</code>) determinado a nivel
 <code>ADM1</code>.</p>
 </div>
 <div class="section level4">
-<h4 id="pahoabc-pop-adm2">pahoabc.pop.ADM2<a class="anchor" aria-label="anchor" href="#pahoabc-pop-adm2"></a>
+<h4 id="immunabc-pop-adm2">immunABC.pop.ADM2<a class="anchor" aria-label="anchor" href="#immunabc-pop-adm2"></a>
 </h4>
-<p>El conjunto de datos <code><a href="../../reference/pahoabc.pop.ADM2.html">pahoabc::pahoabc.pop.ADM2</a></code>
+<p>El conjunto de datos <code><a href="../../reference/immunABC.pop.ADM2.html">immunABC::immunABC.pop.ADM2</a></code>
 proporciona datos poblacionales más detallados por niveles ADM1 y ADM2,
 lo que permite análisis con mayor desagregación geográfica.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.pop.ADM2</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de población a nivel ADM2"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.pop.ADM2</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de población a nivel ADM2"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Ejemplo de población a nivel ADM2</caption>
 <thead><tr class="header">
@@ -555,23 +551,23 @@ disponibles para su referencia.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>pahoabc.EIR</code></td>
+<td><code>immunABC.EIR</code></td>
 <td>Registro Nominal de Vacunación electrónico (RNVe)</td>
 </tr>
 <tr class="even">
-<td><code>pahoabc.schedule</code></td>
+<td><code>immunABC.schedule</code></td>
 <td>Esquema de vacunación con nombres de dosis y edades</td>
 </tr>
 <tr class="odd">
-<td><code>pahoabc.pop.ADM0</code></td>
+<td><code>immunABC.pop.ADM0</code></td>
 <td>Estimaciones poblacionales agregadas a nivel nacional</td>
 </tr>
 <tr class="even">
-<td><code>pahoabc.pop.ADM1</code></td>
+<td><code>immunABC.pop.ADM1</code></td>
 <td>Estimaciones poblacionales a nivel ADM1</td>
 </tr>
 <tr class="odd">
-<td><code>pahoabc.pop.ADM2</code></td>
+<td><code>immunABC.pop.ADM2</code></td>
 <td>Estimaciones poblacionales a nivel ADM2</td>
 </tr>
 </tbody>
@@ -584,7 +580,7 @@ disponibles para su referencia.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/immunabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

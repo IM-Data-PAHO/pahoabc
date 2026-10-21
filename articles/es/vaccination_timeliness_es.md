@@ -1,7 +1,7 @@
 # Oportunidad de vacunación
 
 [🌐 Read this in
-English](https://im-data-paho.github.io/pahoabc/articles/en/vaccination_timeliness_en.md)
+English](https://im-data-paho.github.io/immunabc/articles/en/vaccination_timeliness_en.md)
 
 ## Fundamento
 
@@ -44,7 +44,7 @@ los Registros Nominales de Vacunación electrónicos (RNVe).
 > **Nota**
 >
 > 1.  Todas las funciones utilizadas para el análisis de oportunidad de
->     vacunación dentro de PAHOabc comienzan con el prefijo `vt_` (del
+>     vacunación dentro de immunABC comienzan con el prefijo `vt_` (del
 >     inglés *vaccination timeliness*).
 
 ### Análisis no probabilístico
@@ -79,7 +79,7 @@ Antes de realizar el análisis, el país debe definir:
   varias dosis.
 - **Oportunidad por vacuna**: para cada dosis se define el periodo que
   se considera oportuno, con una edad mínima y una edad máxima, de
-  acuerdo con las normas del país. En PAHOabc, este periodo corresponde
+  acuerdo con las normas del país. En immunABC, este periodo corresponde
   a las columnas `age_schedule_low` y `age_schedule_high` del esquema de
   vacunación.
 - **Categorías de tiempo**: rangos de días para distribuir las
@@ -96,7 +96,7 @@ Antes de realizar el análisis, el país debe definir:
 
 > **Advertencia**
 >
-> PAHOabc no verifica el periodo mínimo de observación. Si se incluyen
+> immunABC no verifica el periodo mínimo de observación. Si se incluyen
 > cohortes de nacimiento que aún no completan el periodo de oportunidad
 > a la fecha de extracción de los datos, solo aparecerán en el RNVe
 > quienes ya fueron vacunados, lo que sobreestima la oportunidad. Elija
@@ -145,7 +145,7 @@ tiempo necesario para vacunar a distintos percentiles de la población.
 >
 > Idealmente, este análisis considera a toda la población que debería
 > recibir la vacuna (por ejemplo, a partir del registro de nacidos
-> vivos). En PAHOabc se trabaja con la base de vacunados del RNVe, es
+> vivos). En immunABC se trabaja con la base de vacunados del RNVe, es
 > decir, solo con los individuos que recibieron la dosis analizada. En
 > este caso, la probabilidad final siempre será del 100%, lo que
 > **sobreestima** la probabilidad real de vacunación de la población.
@@ -175,7 +175,7 @@ tiempo necesario para vacunar a distintos percentiles de la población.
   (entre `age_schedule_low` y `age_schedule_high`).
 - **Percentiles de la población**: se recomienda estimar al menos los
   tiempos para 25%, 50% y 75%.
-- **Año a evaluar**: se sugiere usar una cohorte de nacimiento. PAHOabc
+- **Año a evaluar**: se sugiere usar una cohorte de nacimiento. immunABC
   también permite combinar varias cohortes (ver la advertencia a
   continuación).
 - **Nivel de desagregación geográfica**: ADM0, ADM1 o ADM2.
@@ -234,7 +234,7 @@ F(t) \;(\%) = \frac{\text{Registros vacunados entre el día 0 y el día t}}{\tex
 > numerador como del denominador, y se reportan aparte. Por lo tanto,
 > $`F(t)`$ evaluada en el último día del periodo de oportunidad **no es
 > igual** al porcentaje `TIMELY` de
-> [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md),
+> [`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md),
 > que sí incluye en su denominador a los vacunados antes del periodo.
 
 ## Glosario
@@ -243,11 +243,11 @@ F(t) \;(\%) = \frac{\text{Registros vacunados entre el día 0 y el día t}}{\tex
 
 A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que,
+En concreto, immunABC puede distinguir tres niveles administrativos que,
 listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1.  ADM0: El país. Este es el nivel administrativo más alto.
@@ -271,26 +271,26 @@ listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Cargar los datos
 
 Las funciones de este módulo requieren su **RNVe** y un **esquema de
 vacunación** con los periodos de oportunidad, ambos en el formato
-estándar de PAHOabc.
+estándar de immunABC.
 
 #### RNVe
 
 El conjunto de datos
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 proporciona una tabla nominal simulada con eventos individuales de
 vacunación de un RNVe. Cada fila corresponde a una vacunación de una
 persona.
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -322,13 +322,13 @@ style="width:100%;"}
 >     **consistencia de fechas**. Cuando esto ocurre, las funciones
 >     `vt_` emiten una advertencia que remite al [módulo de comparación
 >     de consistencia de
->     fechas](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.md)
+>     fechas](https://im-data-paho.github.io/immunabc/articles/es/date_consistency_comparison_es.md)
 >     para identificar y resolver esos registros primero.
 > 2.  Las funciones de este módulo cuentan registros de vacunación, no
 >     individuos. Si `data.EIR` contiene registros duplicados (el mismo
 >     `ID` y `dose` registrados más de una vez), ese individuo se cuenta
 >     más de una vez tanto en el numerador como en el denominador.
->     PAHOabc no elimina duplicados, por lo que usted debe eliminarlos
+>     immunABC no elimina duplicados, por lo que usted debe eliminarlos
 >     antes de realizar el análisis. Tenga en cuenta que queda a su
 >     criterio decidir qué registro conservar para cada `ID` y `dose`
 >     (p. ej., el de fecha de vacunación más temprana).
@@ -336,13 +336,13 @@ style="width:100%;"}
 #### Esquema de vacunación
 
 El conjunto de datos
-[`pahoabc::pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+[`immunABC::immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
 define el esquema nacional de vacunación, indicando para cada dosis la
 edad de administración y el periodo de oportunidad, en días.
 
 ``` r
 
-pahoabc.schedule %>% kable(caption = "Ejemplo de esquema de vacunación con periodos de oportunidad")
+immunABC.schedule %>% kable(caption = "Ejemplo de esquema de vacunación con periodos de oportunidad")
 ```
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
@@ -375,18 +375,18 @@ edad.
 
 Las funciones correspondientes al análisis no probabilístico son:
 
-1.  [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md):
+1.  [`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md):
     calcula el porcentaje de vacunación oportuna, agregado para varias
     dosis o desagregado por dosis, y por nivel geográfico.
-2.  [`vt_barplot()`](https://im-data-paho.github.io/pahoabc/reference/vt_barplot.md):
+2.  [`vt_barplot()`](https://im-data-paho.github.io/immunabc/reference/vt_barplot.md):
     visualiza el resultado de
-    [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+    [`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md)
     como un gráfico de barras apiladas.
-3.  [`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md):
+3.  [`vt_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent.md):
     lista de forma individual los registros no oportunos y con fechas
     faltantes, indicando además el número de días fuera del periodo de
     oportunidad.
-4.  [`vt_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent_plot.md):
+4.  [`vt_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent_plot.md):
     visualiza la distribución de las dosis no oportunas según el número
     de días fuera del periodo de oportunidad.
 
@@ -411,7 +411,7 @@ de oportunidad de vacunación.
 
 #### Paso 1 — Calcular el indicador con `vt_rate()`
 
-[`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+[`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md)
 compara la edad al momento de la vacunación con el periodo de
 oportunidad de cada dosis y devuelve el número (`n`) y el porcentaje
 (`rate`) de registros clasificados como `TIMELY`, `UNTIMELY_EARLY`,
@@ -424,8 +424,8 @@ ADM1:
 ``` r
 
 rate_df <- vt_rate(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1",
   birth_cohorts = 2022
 )
@@ -459,8 +459,8 @@ Al especificar `vaccines`, los resultados se desagregan por dosis
 ``` r
 
 rate_by_dose_df <- vt_rate(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1",
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
@@ -486,8 +486,8 @@ Oportunidad de vacunación por dosis y ADM1, cohorte 2022 {.table}
 
 ##### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
-- `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
+- `data.schedule`: Tabla del esquema de vacunación en formato immunABC.
 - `geo_level`: `"ADM0"` (predeterminado), `"ADM1"` o `"ADM2"`.
 - `vaccines`: Vector de caracteres con las dosis a incluir, desagregando
   los resultados por `dose`. El valor predeterminado `NULL` agrega todas
@@ -499,9 +499,9 @@ Oportunidad de vacunación por dosis y ADM1, cohorte 2022 {.table}
 #### Paso 2 — Visualizar el indicador con `vt_barplot()`
 
 El resultado de
-[`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+[`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md)
 puede pasarse directamente a
-[`vt_barplot()`](https://im-data-paho.github.io/pahoabc/reference/vt_barplot.md)
+[`vt_barplot()`](https://im-data-paho.github.io/immunabc/reference/vt_barplot.md)
 para producir un gráfico de barras apiladas. Si los datos están
 desagregados por `dose`, el gráfico se organiza automáticamente en
 paneles (*facets*) por dosis.
@@ -523,7 +523,7 @@ vt_barplot(data = rate_by_dose_df)
 ##### Parámetros aceptados
 
 - `data`: Resultado de
-  [`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md).
+  [`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md).
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1
   específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
 - `plot_missing`: Booleano. Si es `TRUE` (predeterminado), los registros
@@ -549,7 +549,7 @@ indicar errores de registro o problemas en la aplicación del calendario.
 
 #### Paso 3 — Inspeccionar los registros no oportunos con `vt_inconsistent()`
 
-[`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md)
+[`vt_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent.md)
 devuelve una tabla a nivel de registro con todas las dosis
 `UNTIMELY_EARLY`, `UNTIMELY_LATE` y `DATE_MISSING`, incluyendo el número
 de días fuera del periodo de oportunidad.
@@ -562,8 +562,8 @@ de días fuera del periodo de oportunidad.
 ``` r
 
 inconsistent_df <- vt_inconsistent(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = "DTP1"
 )
 
@@ -589,8 +589,8 @@ style="width:100%;"}
 
 ##### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
-- `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
+- `data.schedule`: Tabla del esquema de vacunación en formato immunABC.
 - `vaccines`: Vector de caracteres con las dosis a incluir. El valor
   predeterminado `NULL` incluye todas las dosis de `data.schedule`.
 - `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a
@@ -604,7 +604,7 @@ puede exportarse para dar seguimiento a nivel de registro.
 
 #### Paso 4 — Visualizar la distribución según tiempo transcurrido con `vt_inconsistent_plot()`
 
-[`vt_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent_plot.md)
+[`vt_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent_plot.md)
 produce un gráfico de las dosis no oportunas, agrupadas según el número
 de días fuera del periodo de oportunidad. Las dosis administradas
 después del periodo de oportunidad y antes de él se muestran en filas
@@ -613,8 +613,8 @@ separadas, cada una con su propia escala en el eje vertical.
 ``` r
 
 vt_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = "DTP1",
   birth_cohorts = 2022
 )
@@ -629,8 +629,8 @@ escala, por lo que pueden compararse entre sí:
 ``` r
 
 vt_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
 )
@@ -640,8 +640,8 @@ vt_inconsistent_plot(
 
 ##### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
-- `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
+- `data.schedule`: Tabla del esquema de vacunación en formato immunABC.
 - `vaccines`: Vector de caracteres con las dosis a incluir, agregando
   una columna por cada `dose`. El valor predeterminado `NULL` suma los
   resultados de todas las dosis en una única columna.
@@ -664,8 +664,8 @@ y 90 días o más:
 ``` r
 
 vt_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022,
   day_groups    = list(c(0, 40), c(40, 50), c(50, 60), c(60, 90), c(90, 120))
@@ -693,27 +693,27 @@ o problemas en la aplicación del calendario.
 
 Las funciones correspondientes al análisis probabilístico son:
 
-1.  [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md):
+1.  [`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md):
     calcula, para cada día desde el inicio del periodo de oportunidad,
     el porcentaje de registros vacunados ese día y el porcentaje
     acumulado (incidencia acumulada). Los resultados se desagregan por
     dosis y, opcionalmente, por nivel geográfico.
-2.  [`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md)
+2.  [`vt_cdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_cdf_plot.md)
     y
-    [`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md):
+    [`vt_pdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_pdf_plot.md):
     visualizan el resultado de
-    [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+    [`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md)
     como una curva de incidencia acumulada (similar a una curva de
     Kaplan-Meier) o como una curva del porcentaje de vacunados por día,
     respectivamente.
-3.  [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md):
+3.  [`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md):
     a partir del resultado de
-    [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md),
+    [`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md),
     calcula el número de días necesario para vacunar a distintos
     percentiles de la población.
-4.  [`vt_percentile_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile_plot.md):
+4.  [`vt_percentile_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile_plot.md):
     genera visualizaciones a partir de los resultados de
-    [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md).
+    [`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md).
 
 ![Figura 2. Flujo de trabajo esperado para el análisis probabilístico de
 oportunidad de vacunación.](vt_workflow_2.svg)
@@ -732,7 +732,7 @@ oportunidad de vacunación.
 
 #### Paso 1 — Calcular la distribución con `vt_distribution()`
 
-[`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+[`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md)
 calcula la edad al momento de la vacunación y la expresa como días desde
 el inicio del periodo de oportunidad (donde el día 0 corresponde a
 `age_schedule_low`). Por defecto, `vaccines = NULL` incluye todas las
@@ -741,8 +741,8 @@ dosis de `data.schedule`:
 ``` r
 
 dist_df <- vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   birth_cohorts = 2022
 )
 
@@ -770,8 +770,8 @@ desagregarlas geográficamente:
 ``` r
 
 dist_by_dose_ADM1_df <- vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1",
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
@@ -821,8 +821,8 @@ ocurrido al menos una vacunación), con las siguientes columnas:
 
 ##### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
-- `data.schedule`: Tabla del esquema de vacunación en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
+- `data.schedule`: Tabla del esquema de vacunación en formato immunABC.
 - `geo_level`: `"ADM0"` (predeterminado), `"ADM1"` o `"ADM2"`.
 - `vaccines`: Vector de caracteres con las dosis a incluir.
 - `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a
@@ -832,9 +832,9 @@ ocurrido al menos una vacunación), con las siguientes columnas:
 #### Paso 2 — Visualizar la distribución con `vt_cdf_plot()` y `vt_pdf_plot()`
 
 El resultado de
-[`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+[`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md)
 puede pasarse directamente a
-[`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md),
+[`vt_cdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_cdf_plot.md),
 que grafica la curva de incidencia acumulada. El parámetro `percentile`
 agrega una línea y una etiqueta con el número de días necesario para
 alcanzar ese percentil:
@@ -886,7 +886,7 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, x_axis = "relative")
 ##### Parámetros aceptados en `vt_cdf_plot()`
 
 - `data`: Resultado de
-  [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md).
+  [`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md).
 - `percentile`: Un único percentil (mayor que 0 y hasta 100) a destacar
   en el gráfico, para el conjunto de todas las unidades y para cada
   unidad en `highlight`. Valor predeterminado: `NULL` (ninguno).
@@ -905,7 +905,7 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, x_axis = "relative")
   la vacunación (en días); `"relative"` muestra, para cada dosis, los
   días que han transcurrido desde el inicio del periodo de oportunidad.
 
-[`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md)
+[`vt_pdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_pdf_plot.md)
 grafica el porcentaje de registros vacunados en cada día (o en un grupo
 de días, determinado por el parámetro `binwidth`), lo que permite ver en
 qué momento se concentran las vacunaciones:
@@ -913,8 +913,8 @@ qué momento se concentran las vacunaciones:
 ``` r
 
 dist_by_dose_ADM0_df <- vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
 )
@@ -941,7 +941,7 @@ vt_pdf_plot(data = dist_by_dose_ADM1_df, binwidth = 7, highlight = "ADM1_1", max
 ##### Parámetros aceptados en `vt_pdf_plot()`
 
 Acepta los mismos parámetros que
-[`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md),
+[`vt_cdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_cdf_plot.md),
 pero adicionalmente acepta:
 
 - `binwidth`: Número de días que cada punto de la curva representa (por
@@ -964,9 +964,9 @@ haberse vacunado antes del periodo de oportunidad o por tener alguna
 fecha faltante. Un número importante de vacunaciones antes del periodo
 puede indicar errores de registro o problemas en la aplicación del
 calendario; para revisarlas, use
-[`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md)
+[`vt_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent.md)
 y
-[`vt_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent_plot.md).
+[`vt_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent_plot.md).
 
 > **Advertencia**
 >
@@ -977,12 +977,12 @@ y
 
 #### Paso 3 — Calcular los percentiles con `vt_percentile()`
 
-[`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md)
+[`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md)
 recibe el resultado de
-[`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+[`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md)
 y calcula, para cada percentil, la cantidad de días necesarios para
 alcanzarlo. Los resultados mantienen la misma desagregación que
-[`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+[`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md)
 (por dosis y nivel geográfico):
 
 ``` r
@@ -1044,7 +1044,7 @@ periodo de oportunidad de la dosis.
 ##### Parámetros aceptados
 
 - `data`: Resultado de
-  [`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md).
+  [`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md).
 - `percentiles`: Vector numérico con los percentiles a calcular. Valor
   predeterminado: `c(25, 50, 75)`.
 
@@ -1060,9 +1060,9 @@ abastecimiento.
 #### Paso 4 — Comparar los percentiles entre unidades geográficas con `vt_percentile_plot()`
 
 El resultado de
-[`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md)
+[`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md)
 puede pasarse directamente a
-[`vt_percentile_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile_plot.md),
+[`vt_percentile_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile_plot.md),
 que muestra una fila por unidad geográfica (o por dosis, si los datos no
 están desagregados geográficamente). Cada percentil se dibuja como un
 punto, unidos por una línea desde el percentil más bajo hasta el más
@@ -1094,8 +1094,8 @@ parámetro `n_slowest` permite mostrar solo las unidades más tardías:
 ``` r
 
 vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   # a nivel ADM2 hay muchas unidades geográficas
   geo_level     = "ADM2",
   vaccines      = c("DTP1", "DTP3"),
@@ -1111,7 +1111,7 @@ vt_distribution(
 ##### Parámetros aceptados
 
 - `data`: Resultado de
-  [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md).
+  [`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md).
 - `within_ADM1`: Vector de caracteres para filtrar unidades ADM1
   específicas cuando `geo_level = "ADM2"`. Valor predeterminado: `NULL`.
 - `n_slowest`: Número de unidades geográficas a mostrar, empezando por
@@ -1131,35 +1131,35 @@ indica que la vacunación está muy dispersa en el tiempo.
 > percentiles extremos solo por azar. Antes de concluir que cierta
 > unidad geográfica está vacunando lentamente, revise su número de
 > registros en la columna `total` de
-> [`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md).
+> [`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md).
 
 ## Resumen
 
 Este módulo le permite estimar el indicador de oportunidad de vacunación
 a partir de los datos del RNVe. En el análisis **no probabilístico**,
-[`vt_rate()`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+[`vt_rate()`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md)
 y
-[`vt_barplot()`](https://im-data-paho.github.io/pahoabc/reference/vt_barplot.md)
+[`vt_barplot()`](https://im-data-paho.github.io/immunabc/reference/vt_barplot.md)
 devuelven el porcentaje de vacunación oportuna con distintas
 desagregaciones geográficas o por dosis;
-[`vt_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent.md)
+[`vt_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent.md)
 le permite generar un listado de los registros detectados como no
 oportunos o sin fechas de vacunación/nacimiento; y
-[`vt_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_inconsistent_plot.md)
+[`vt_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_inconsistent_plot.md)
 caracteriza la distribución de registros no oportunos de acuerdo a días
 fuera del periodo de oportunidad.
 
 En el **análisis probabilístico**,
-[`vt_distribution()`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md),
-[`vt_cdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_cdf_plot.md)
+[`vt_distribution()`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md),
+[`vt_cdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_cdf_plot.md)
 y
-[`vt_pdf_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_pdf_plot.md)
+[`vt_pdf_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_pdf_plot.md)
 describen cómo se acumulan las vacunaciones a medida que transcurren los
 días desde el inicio del periodo de oportunidad,
-[`vt_percentile()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile.md)
+[`vt_percentile()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile.md)
 estima cuántos días se necesitan para vacunar a distintos percentiles de
 la población, y
-[`vt_percentile_plot()`](https://im-data-paho.github.io/pahoabc/reference/vt_percentile_plot.md)
+[`vt_percentile_plot()`](https://im-data-paho.github.io/immunabc/reference/vt_percentile_plot.md)
 permite comparar esos tiempos de manera visual entre unidades
 geográficas.
 

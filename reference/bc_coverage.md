@@ -23,12 +23,12 @@ bc_coverage(
 - data.EIR:
 
   Data frame. A data frame containing individual vaccination records.
-  See `pahoabc.EIR` for expected structure.
+  See `immunABC.EIR` for expected structure.
 
 - data.schedule:
 
   Data frame. A data frame defining the vaccination schedule. See
-  `pahoabc.schedule` for expected structure.
+  `immunABC.schedule` for expected structure.
 
 - geo_level:
 
@@ -52,7 +52,7 @@ bc_coverage(
 - data.pop:
 
   Data frame (optional). A data frame with population denominators. See
-  `pahoabc.pop.ADMX` for structure examples. If `NULL` (default), the
+  `immunABC.pop.ADMX` for structure examples. If `NULL` (default), the
   denominator is taken from `data.EIR` for each year and `geo_level`.
 
 - validate_doses:

@@ -22,7 +22,7 @@ vt_pdf_plot(
 - data:
 
   The output from the
-  [`pahoabc::vt_distribution`](https://im-data-paho.github.io/pahoabc/reference/vt_distribution.md)
+  [`immunABC::vt_distribution`](https://im-data-paho.github.io/immunabc/reference/vt_distribution.md)
   function.
 
 - percentile:

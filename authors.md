@@ -14,22 +14,22 @@
 
 - **Marcela Contreras**. Reviewer.
 
-- **[![PAHO](https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true)](https://www.paho.org/en)**.
+- **[![PAHO](https://github.com/IM-Data-PAHO/immunabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true)](https://www.paho.org/en)**.
   Author, copyright holder, funder, maintainer.
 
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/IM-Data-PAHO/immunabc/blob/v0.11.2/DESCRIPTION)
 
-Pan American Health Organization (2026). *pahoabc: PAHOabc is an R
+Pan American Health Organization (2026). *immunABC: immunABC is an R
 package aimed at immunization (A)nalyses (B)eyond (C)overage*. R package
-version 0.11.1, <https://im-data-paho.github.io/pahoabc/>.
+version 0.11.2, <https://im-data-paho.github.io/immunabc/>.
 
     @Manual{,
-      title = {pahoabc: PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage},
+      title = {immunABC: immunABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage},
       author = {{Pan American Health Organization}},
       year = {2026},
-      note = {R package version 0.11.1},
-      url = {https://im-data-paho.github.io/pahoabc/},
+      note = {R package version 0.11.2},
+      url = {https://im-data-paho.github.io/immunabc/},
     }

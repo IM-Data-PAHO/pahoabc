@@ -1,11 +1,11 @@
 # Using our Example Datasets
 
 [🌐 Lea esto en
-español](https://im-data-paho.github.io/pahoabc/articles/es/example_datasets_es.md)
+español](https://im-data-paho.github.io/immunabc/articles/es/example_datasets_es.md)
 
 ## Rationale
 
-The PAHOabc package includes a set of example datasets to help users
+The immunABC package includes a set of example datasets to help users
 understand how to use its functions effectively. These datasets simulate
 a fictional country’s immunization information system and are structured
 to work seamlessly with the tools provided by the package. This vignette
@@ -19,10 +19,10 @@ throughout the package’s modules.
 Throughout this vignette, we will make reference to different levels of
 political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which
+Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1.  ADM0: The country. This is the top-most administrative level.
@@ -40,7 +40,8 @@ doses. This might not match your own naming schemes, but it will not
 affect the usage of the package as long as you make sure to be
 consistent when naming vaccine doses.
 
-For example, the vaccine names used in the PAHOabc example datasets are:
+For example, the vaccine names used in the immunABC example datasets
+are:
 
 | Abbreviation | Full Name                                             |
 |--------------|-------------------------------------------------------|
@@ -53,10 +54,10 @@ For example, the vaccine names used in the PAHOabc example datasets are:
 
 ## List of example datasets
 
-### pahoabc.EIR
+### immunABC.EIR
 
 The
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 dataframe is the most important dataset in the package. It is a
 nominal-level table representing individual vaccination events from an
 Electronic Immunization Registry (EIR). Each row corresponds to a single
@@ -66,7 +67,7 @@ received.
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -94,10 +95,10 @@ Example Electronic Immunization Registry {.table style="width:100%;"}
   corresponding dose number. For example, DTP1 refers to the first dose
   of a vaccine containing diphtheria, tetanus, and pertussis components.
 
-### pahoabc.schedule
+### immunABC.schedule
 
 The
-[`pahoabc::pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+[`immunABC::immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
 dataset defines the national immunization schedule, listing each vaccine
 dose and its recommended age of administration (in days). It helps the
 package determine whether an individual is up to date with their
@@ -105,7 +106,7 @@ vaccinations.
 
 ``` r
 
-pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
+immunABC.schedule %>% kable(caption = "Example Immunization Schedule")
 ```
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
@@ -130,26 +131,26 @@ Example Immunization Schedule {.table}
 > **Note**
 >
 > The `dose` names must match exactly those in the `dose` column of the
-> `pahoabc.EIR` dataset.
+> `immunABC.EIR` dataset.
 
 ### Population Datasets
 
 Population datasets provide population estimates at different geographic
 levels, for various years and children of varying ages. Depending on the
-geographic level at which we want to perform an analysis, PAHOabc may
+geographic level at which we want to perform an analysis, immunABC may
 require you to provide the corresponding population to use as a
 denominator (mainly for coverage analyses).
 
-#### pahoabc.pop.ADM0
+#### immunABC.pop.ADM0
 
 The
-[`pahoabc::pahoabc.pop.ADM0`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM0.md)
+[`immunABC::immunABC.pop.ADM0`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM0.md)
 dataset provides aggregated population estimates at the national level
 (ADM0).
 
 ``` r
 
-pahoabc.pop.ADM0 %>% kable(caption = "Example Population at ADM0")
+immunABC.pop.ADM0 %>% kable(caption = "Example Population at ADM0")
 ```
 
 | year | age | population |
@@ -164,17 +165,17 @@ Example Population at ADM0 {.table}
 This table is in long format and contains the corresponding `population`
 of children of a specific `age` during a given `year`.
 
-#### pahoabc.pop.ADM1
+#### immunABC.pop.ADM1
 
 The
-[`pahoabc::pahoabc.pop.ADM1`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM1.md)
+[`immunABC::immunABC.pop.ADM1`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM1.md)
 dataset provides population data aggregated at the first subnational
 administrative level (ADM1), typically corresponding to regions,
 provinces, or states.
 
 ``` r
 
-pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
+immunABC.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
 ```
 
 | ADM1   | year | age | population |
@@ -192,16 +193,16 @@ Note that this table is in long format and contains the corresponding
 `population` of children of a specific `age` during a given `year` at
 the `ADM1` level.
 
-#### pahoabc.pop.ADM2
+#### immunABC.pop.ADM2
 
 The
-[`pahoabc::pahoabc.pop.ADM2`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM2.md)
+[`immunABC::immunABC.pop.ADM2`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM2.md)
 dataset provides more granular population data by both ADM1 and ADM2
 levels, allowing analyses at a finer geographic resolution.
 
 ``` r
 
-pahoabc.pop.ADM2 %>% head() %>% kable(caption = "Example Population at ADM2")
+immunABC.pop.ADM2 %>% head() %>% kable(caption = "Example Population at ADM2")
 ```
 
 | ADM1   | ADM2      | year | age | population |
@@ -229,10 +230,10 @@ test and understand each module with minimal setup.
 
 Here is a summary of the available datasets for your reference.
 
-| Dataset            | Description                                    |
-|--------------------|------------------------------------------------|
-| `pahoabc.EIR`      | Electronic Immunization Registry               |
-| `pahoabc.schedule` | Vaccination schedule with dose names and ages  |
-| `pahoabc.pop.ADM0` | Aggregated national-level population estimates |
-| `pahoabc.pop.ADM1` | ADM1-level population estimates                |
-| `pahoabc.pop.ADM2` | ADM2-level population estimates                |
+| Dataset             | Description                                    |
+|---------------------|------------------------------------------------|
+| `immunABC.EIR`      | Electronic Immunization Registry               |
+| `immunABC.schedule` | Vaccination schedule with dose names and ages  |
+| `immunABC.pop.ADM0` | Aggregated national-level population estimates |
+| `immunABC.pop.ADM1` | ADM1-level population estimates                |
+| `immunABC.pop.ADM2` | ADM2-level population estimates                |

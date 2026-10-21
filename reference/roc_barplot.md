@@ -14,7 +14,7 @@ roc_barplot(data, year, vaccine, within_ADM1 = NULL)
 - data:
 
   The output from the
-  [`pahoabc::roc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage.md)
+  [`immunABC::roc_coverage()`](https://im-data-paho.github.io/immunabc/reference/roc_coverage.md)
   function.
 
 - year:

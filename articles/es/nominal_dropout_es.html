@@ -5,12 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Tasa de abandono nominal • pahoabc</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
-<link rel="icon" type="”image/svg+xml”" href="../../favicon.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
-<link rel="icon" sizes="any" href="../../favicon.ico">
-<link rel="manifest" href="../../site.webmanifest">
+<title>Tasa de abandono nominal • immunABC</title>
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -23,9 +18,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
+    <a class="navbar-brand me-2" href="../../index.html">immunABC</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/pahoabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/immunabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -68,12 +63,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../../logo.png" class="logo" alt=""><h1>Tasa de abandono nominal</h1>
+
+      <h1>Tasa de abandono nominal</h1>
                         <h4 data-toc-skip class="author">OPS/CIM</h4>
             
             <h4 data-toc-skip class="date">22 de abril de 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/vignettes/articles/es/nominal_dropout_es.Rmd" class="external-link"><code>vignettes/articles/es/nominal_dropout_es.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/immunabc/blob/v0.11.2/vignettes/articles/es/nominal_dropout_es.Rmd" class="external-link"><code>vignettes/articles/es/nominal_dropout_es.Rmd</code></a></small>
       <div class="d-none name"><code>nominal_dropout_es.Rmd</code></div>
     </div>
 
@@ -108,7 +104,7 @@ de abandono nominal.</div>
 <blockquote>
 <p><strong>Nota</strong></p>
 <p>Todas las funciones utilizadas para los análisis de abandono nominal
-dentro de PAHOabc comienzan con el prefijo <code>nod_</code>.</p>
+dentro de immunABC comienzan con el prefijo <code>nod_</code>.</p>
 </blockquote>
 </div>
 <div class="section level2">
@@ -119,10 +115,10 @@ dentro de PAHOabc comienzan con el prefijo <code>nod_</code>.</p>
 </h3>
 <p>A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.</p>
-<p>En concreto, PAHOabc puede distinguir tres niveles administrativos
+<p>En concreto, immunABC puede distinguir tres niveles administrativos
 que, listados del nivel superior al inferior, son: ADM0, ADM1 y
 ADM2.</p>
 <ol style="list-style-type: decimal">
@@ -141,7 +137,7 @@ para nombrar las dosis de vacunas. Es posible que esta convención no
 coincida con la que usa su país o institución, pero esto no afecta el
 uso del paquete si los nombres se aplican de manera consistente.</p>
 <p>Por ejemplo, los nombres de las vacunas utilizados en el paquete
-PAHOabc son:</p>
+immunABC son:</p>
 <table class="table">
 <colgroup>
 <col width="17%">
@@ -187,29 +183,29 @@ PAHOabc son:</p>
 <h3 id="instalar-el-paquete">Instalar el paquete<a class="anchor" aria-label="anchor" href="#instalar-el-paquete"></a>
 </h3>
 <p>El primer paso para ejecutar el análisis de tasa de abandono nominal
-es instalar el paquete PAHOabc, disponible en GitHub.</p>
+es instalar el paquete immunABC, disponible en GitHub.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/immunabc"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="cargar-los-datos">Cargar los datos<a class="anchor" aria-label="anchor" href="#cargar-los-datos"></a>
 </h3>
 <p>Las funciones de este módulo requieren que proporcione su
 <strong>RNVe</strong> en un formato específico.</p>
-<p>Para facilitar la prueba de PAHOabc y la comprensión de la estructura
-requerida, a continuación se presenta el conjunto de datos de ejemplo
-que utiliza este módulo.</p>
+<p>Para facilitar la prueba de immunABC y la comprensión de la
+estructura requerida, a continuación se presenta el conjunto de datos de
+ejemplo que utiliza este módulo.</p>
 <div class="section level4">
 <h4 id="rnve">RNVe<a class="anchor" aria-label="anchor" href="#rnve"></a>
 </h4>
-<p>El conjunto de datos <code><a href="../../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> proporciona un
-ejemplo de Registro Nominal de Vacunación electrónico (RNVe). Es una
+<p>El conjunto de datos <code><a href="../../reference/immunABC.EIR.html">immunABC::immunABC.EIR</a></code> proporciona
+un ejemplo de Registro Nominal de Vacunación electrónico (RNVe). Es una
 tabla nominal simulada con eventos individuales de vacunación. Cada fila
 corresponde a una vacunación e incluye información sobre la residencia
 de la persona, el lugar donde fue vacunada (ocurrencia), su fecha de
 nacimiento y la dosis recibida.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de Registro Nominal de Vacunación electrónico"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Ejemplo de Registro Nominal de Vacunación electrónico"</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <caption>Ejemplo de Registro Nominal de Vacunación electrónico</caption>
 <colgroup>
@@ -318,7 +314,7 @@ difteria, tétanos y tos ferina.</li>
 <div class="section level3">
 <h3 id="análisis-de-abandono-nominal">Análisis de abandono nominal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-de-abandono-nominal"></a>
 </h3>
-<p>PAHOabc permite estimar la tasa de abandono nominal persona por
+<p>immunABC permite estimar la tasa de abandono nominal persona por
 persona. El análisis puede aplicarse a cualquier par de dosis, siempre
 que se indique una dosis inicial y una dosis final. Para interpretar
 correctamente los resultados, la dosis inicial debe preceder a la dosis
@@ -350,7 +346,7 @@ entre DTP1 y DTP3 a nivel ADM1 usando el conjunto de datos de
 ejemplo.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ejecuta la función de abandono nominal</span></span>
-<span><span class="va">example_dropout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_dropout.html">nod_dropout</a></span><span class="op">(</span>data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span><span class="va">example_dropout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/nod_dropout.html">nod_dropout</a></span><span class="op">(</span>data.EIR <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>                               vaccine_init <span class="op">=</span> <span class="st">"DTP1"</span>, <span class="co">#Vacuna inicial según su conjunto de datos</span></span>
 <span>                               vaccine_end<span class="op">=</span> <span class="st">"DTP3"</span>, <span class="co">#Vacuna final según su conjunto de datos</span></span>
 <span>                               geo_level <span class="op">=</span> <span class="st">"ADM1"</span>, <span class="co">#Puede ser ADM0, ADM1 o ADM2</span></span>
@@ -753,7 +749,7 @@ DTP3 a nivel ADM1 y muestra que todas las subdivisiones superan el
 umbral de 25 %; ADM1_1 presenta el peor resultado y ADM1_4 el mejor, en
 relación con una línea de referencia de 5 %.</p>
 <p>Al combinar datos nominales del RNVe con un flujo de análisis claro,
-PAHOabc ayuda a identificar pérdidas de seguimiento con desagregación
+immunABC ayuda a identificar pérdidas de seguimiento con desagregación
 geográfica y apoya a las autoridades de salud en la focalización de
 intervenciones.</p>
 </div>
@@ -764,7 +760,7 @@ intervenciones.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/immunabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

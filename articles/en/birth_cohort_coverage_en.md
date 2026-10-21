@@ -1,7 +1,7 @@
 # Birth Cohort Coverage
 
 [🌐 Lea esto en
-español](https://im-data-paho.github.io/pahoabc/articles/es/birth_cohort_coverage_es.md)
+español](https://im-data-paho.github.io/immunabc/articles/es/birth_cohort_coverage_es.md)
 
 ## Rationale
 
@@ -23,7 +23,7 @@ formula:
 
 > **Note**
 >
-> All functions used for birth cohort coverage analyses within PAHOabc
+> All functions used for birth cohort coverage analyses within immunABC
 > begin with the `bc_` prefix.
 
 ## Glossary
@@ -39,10 +39,10 @@ birth cohort comprises everyone born during the year 2022.
 Throughout this vignette, we will make reference to different levels of
 political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which
+Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1.  ADM0: The country. This is the top-most administrative level.
@@ -58,7 +58,7 @@ doses. This might not match your own naming schemes, but it will not
 affect the usage of the package as long as you make sure to be
 consistent when naming vaccine doses.
 
-For example, the vaccine names used in the PAHOabc package are:
+For example, the vaccine names used in the immunABC package are:
 
 | Abbreviation | Full Name                                             |
 |--------------|-------------------------------------------------------|
@@ -74,11 +74,11 @@ For example, the vaccine names used in the PAHOabc package are:
 ### Install Package
 
 The first step to run the birth cohort coverage analyses is to install
-the PAHOabc package available on GitHub.
+the immunABC package available on GitHub.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Load Data
@@ -91,15 +91,15 @@ specific format.
 3.  Optionally, a table with population denominators at the same
     geographic level of disaggregation as your analysis.
 
-To make it easy for you to test out PAHOabc’s functionality and
+To make it easy for you to test out immunABC’s functionality and
 understand the structure we require for your datasets, we will now
-explore the example datasets provided by PAHOabc that are required by
+explore the example datasets provided by immunABC that are required by
 this module.
 
 #### EIR
 
 The
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 data frame provides a simulated, nominal-level table representing
 individual vaccination events from an Electronic Immunization Registry
 (EIR). Each row corresponds to a single vaccination act for a person,
@@ -108,7 +108,7 @@ including information on their residence, where they were vaccinated
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -139,7 +139,7 @@ Example Electronic Immunization Registry {.table style="width:100%;"}
 #### Vaccination Schedule
 
 The
-[`pahoabc::pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+[`immunABC::immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
 dataset defines the national immunization schedule, listing each vaccine
 dose and its recommended age of administration (in days). It helps the
 package determine whether an individual is up to date with their
@@ -147,7 +147,7 @@ vaccinations.
 
 ``` r
 
-pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
+immunABC.schedule %>% kable(caption = "Example Immunization Schedule")
 ```
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
@@ -172,7 +172,7 @@ Example Immunization Schedule {.table}
 > **Note**
 >
 > The `dose` names must match exactly those in the `dose` column of the
-> `pahoabc.EIR` dataset.
+> `immunABC.EIR` dataset.
 
 #### Population Denominators
 
@@ -184,7 +184,7 @@ the required population denominator table must contain the following.
 
 ``` r
 
-pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
+immunABC.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
 ```
 
 | ADM1   | year | age | population |
@@ -224,9 +224,9 @@ levels (`ADM1` or `ADM2`).
 #### Expected Workflow
 
 The
-[`bc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+[`bc_coverage()`](https://im-data-paho.github.io/immunabc/reference/bc_coverage.md)
 and
-[`bc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/bc_barplot.md)
+[`bc_barplot()`](https://im-data-paho.github.io/immunabc/reference/bc_barplot.md)
 functions provide a way of analyzing and visualizing coverage by birth
 cohort. Their relationships are shown in Figure 1.
 
@@ -240,7 +240,7 @@ Figure 1. Expected workflow for the birth cohort coverage analysis.
 #### Example
 
 Here is a simple use case of the
-[`bc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+[`bc_coverage()`](https://im-data-paho.github.io/immunabc/reference/bc_coverage.md)
 function, where we use our example dataset to compute vaccination
 coverage for the first dose of the measles-containing vaccine, for the
 2022 birth year cohort.
@@ -249,8 +249,8 @@ coverage for the first dose of the measles-containing vaccine, for the
 
 # compute coverage
 coverage_df <- bc_coverage(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level = "ADM1",
   vaccines = "SRP1", # this can be a vector of vaccines
   birth_cohorts = 2022 # this can be a vector of years
@@ -272,7 +272,7 @@ coverage_df %>%
 Coverage by birth cohort by ADM1 level {.table}
 
 We can visually observe these results by calling the
-[`bc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/bc_barplot.md)
+[`bc_barplot()`](https://im-data-paho.github.io/immunabc/reference/bc_barplot.md)
 function as shown below.
 
 ``` r
@@ -293,7 +293,7 @@ vaccination (~47%), while the `ADM1_2` area exhibits the poorest result
 
 ## Summary
 
-By incorporating vaccination coverage based on birth cohort, PAHOabc
+By incorporating vaccination coverage based on birth cohort, immunABC
 enables public health officials to accurately assess the immunity level
 of specific population groups within a given territory. This deep,
 cohort-specific insight is essential for effective strategic planning,

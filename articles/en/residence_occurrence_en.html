@@ -5,12 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Residence vs. Occurrence Analyses • pahoabc</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
-<link rel="icon" type="”image/svg+xml”" href="../../favicon.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
-<link rel="icon" sizes="any" href="../../favicon.ico">
-<link rel="manifest" href="../../site.webmanifest">
+<title>Residence vs. Occurrence Analyses • immunABC</title>
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -23,9 +18,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
+    <a class="navbar-brand me-2" href="../../index.html">immunABC</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/pahoabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/immunabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -68,12 +63,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../../logo.png" class="logo" alt=""><h1>Residence vs. Occurrence Analyses</h1>
+
+      <h1>Residence vs. Occurrence Analyses</h1>
                         <h4 data-toc-skip class="author">PAHO/CIM</h4>
             
             <h4 data-toc-skip class="date">April 9, 2025</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/vignettes/articles/en/residence_occurrence_en.Rmd" class="external-link"><code>vignettes/articles/en/residence_occurrence_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/immunabc/blob/v0.11.2/vignettes/articles/en/residence_occurrence_en.Rmd" class="external-link"><code>vignettes/articles/en/residence_occurrence_en.Rmd</code></a></small>
       <div class="d-none name"><code>residence_occurrence_en.Rmd</code></div>
     </div>
 
@@ -93,12 +89,12 @@ estimated based on the place of residence.</p>
 underestimation or overestimation of coverage, and sometimes result in
 values above 100%, especially in areas where vaccination services are
 more available.</p>
-<p>The residence vs. occurrence module in the PAHOabc package provides a
-set of functions to explore and analyze this phenomenon.</p>
+<p>The residence vs. occurrence module in the immunABC package provides
+a set of functions to explore and analyze this phenomenon.</p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>All functions used for residence and occurrence analyses within
-PAHOabc begin with the <code>roc_</code> prefix.</p>
+immunABC begin with the <code>roc_</code> prefix.</p>
 </blockquote>
 </div>
 <div class="section level2">
@@ -110,9 +106,9 @@ PAHOabc begin with the <code>roc_</code> prefix.</p>
 <p>Throughout this vignette, we will make reference to different levels
 of political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.</p>
-<p>Namely, PAHOabc can distinguish three administrative levels, which
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.</p>
+<p>Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
 <ol style="list-style-type: decimal">
 <li>ADM0: The country. This is the top-most administrative level.</li>
@@ -129,7 +125,7 @@ contains several ADM2 subdivisions.</li>
 doses. This might not match your own naming schemes, but it will not
 affect the usage of the package as long as you make sure to be
 consistent when naming vaccine doses.</p>
-<p>For example, the vaccine names used in the PAHOabc package are:</p>
+<p>For example, the vaccine names used in the immunABC package are:</p>
 <table class="table">
 <colgroup>
 <col width="17%">
@@ -175,9 +171,9 @@ consistent when naming vaccine doses.</p>
 <h3 id="install-package">Install Package<a class="anchor" aria-label="anchor" href="#install-package"></a>
 </h3>
 <p>The first step to run the residence occurrence analyses is to install
-the PAHOabc package available on GitHub.</p>
+the immunABC package available on GitHub.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/immunabc"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="load-data">Load Data<a class="anchor" aria-label="anchor" href="#load-data"></a>
@@ -190,21 +186,21 @@ a specific format.</p>
 <li>A table with population denominators depending on the geographic
 level of your analysis.</li>
 </ol>
-<p>To make it easy for you to test out PAHOabc’s functionality and
+<p>To make it easy for you to test out immunABC’s functionality and
 understand the structure we require for your datasets, we will now
-explore the example datasets provided by PAHOabc that are required by
+explore the example datasets provided by immunABC that are required by
 this module.</p>
 <div class="section level4">
 <h4 id="eir">EIR<a class="anchor" aria-label="anchor" href="#eir"></a>
 </h4>
-<p>The <code><a href="../../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> data frame provides a
+<p>The <code><a href="../../reference/immunABC.EIR.html">immunABC::immunABC.EIR</a></code> data frame provides a
 simulated, nominal-level table representing individual vaccination
 events from an Electronic Immunization Registry (EIR). Each row
 corresponds to a single vaccination act for a person, including
 information on their residence, where they were vaccinated (occurrence),
 their date of birth, and the vaccine dose received.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <caption>Example Electronic Immunization Registry</caption>
 <colgroup>
@@ -316,13 +312,13 @@ components.</li>
 <div class="section level4">
 <h4 id="vaccination-schedule">Vaccination Schedule<a class="anchor" aria-label="anchor" href="#vaccination-schedule"></a>
 </h4>
-<p>The <code><a href="../../reference/pahoabc.schedule.html">pahoabc::pahoabc.schedule</a></code> dataset defines the
+<p>The <code><a href="../../reference/immunABC.schedule.html">immunABC::immunABC.schedule</a></code> dataset defines the
 national immunization schedule, listing each vaccine dose and its
 recommended age of administration (in days). It helps the package
 determine whether an individual is up to date with their
 vaccinations.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Immunization Schedule"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Immunization Schedule"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Example Immunization Schedule</caption>
 <thead><tr class="header">
@@ -389,7 +385,7 @@ in days.</li>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>The <code>dose</code> names must match exactly those in the
-<code>dose</code> column of the <code>pahoabc.EIR</code> dataset.</p>
+<code>dose</code> column of the <code>immunABC.EIR</code> dataset.</p>
 </blockquote>
 </div>
 <div class="section level4">
@@ -401,7 +397,7 @@ dependent on the geographic level of your analysis. For example, if you
 were to perform an analysis at ADM1 level, the required population
 denominator table must contain the following.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.pop.ADM1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Population at ADM1"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.pop.ADM1</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Population at ADM1"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Example Population at ADM1</caption>
 <thead><tr class="header">
@@ -456,8 +452,8 @@ level.</p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>If your analysis is at a different political geographic level, see
-<code><a href="../../reference/pahoabc.pop.ADM0.html">pahoabc::pahoabc.pop.ADM0</a></code> and
-<code><a href="../../reference/pahoabc.pop.ADM2.html">pahoabc::pahoabc.pop.ADM2</a></code> for the required format and
+<code><a href="../../reference/immunABC.pop.ADM0.html">immunABC::immunABC.pop.ADM0</a></code> and
+<code><a href="../../reference/immunABC.pop.ADM2.html">immunABC::immunABC.pop.ADM2</a></code> for the required format and
 columns.</p>
 </blockquote>
 </div>
@@ -497,9 +493,9 @@ in 2023 for our example datasets.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute coverage</span></span>
 <span><span class="va">coverage_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/roc_coverage.html">roc_coverage</a></span><span class="op">(</span></span>
-<span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
-<span>  data.pop <span class="op">=</span> <span class="va">pahoabc.pop.ADM1</span>,</span>
+<span>  data.EIR <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
+<span>  data.pop <span class="op">=</span> <span class="va">immunABC.pop.ADM1</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
 <span>  years <span class="op">=</span> <span class="fl">2023</span>, <span class="co"># this can be a vector of years</span></span>
 <span>  vaccines <span class="op">=</span> <span class="st">"DTP1"</span> <span class="co"># this can be a vector of vaccines</span></span>
@@ -703,7 +699,7 @@ DTP1 vaccine in 2023.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute distribution of doses for each place of residence</span></span>
 <span><span class="va">distribution_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/roc_distribution.html">roc_distribution</a></span><span class="op">(</span></span>
-<span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>  data.EIR <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>  vaccine <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
 <span>  birth_cohort <span class="op">=</span> <span class="fl">2023</span>,</span>
@@ -795,7 +791,7 @@ parameter to <code>FALSE</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute distribution of doses for each place of residence</span></span>
 <span><span class="va">distribution_df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/roc_distribution.html">roc_distribution</a></span><span class="op">(</span></span>
-<span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>  data.EIR <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>  vaccine <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
 <span>  birth_cohort <span class="op">=</span> <span class="fl">2023</span>,</span>
@@ -892,7 +888,7 @@ us repeat the above process, but at the second administrative level
 <code class="sourceCode R"><span><span class="co"># compute distribution of doses for each place of residence at second</span></span>
 <span><span class="co"># administrative level (focus on ADM1_3 only for this example)</span></span>
 <span><span class="va">distribution_df3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/roc_distribution.html">roc_distribution</a></span><span class="op">(</span></span>
-<span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>  data.EIR <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>  vaccine <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM2"</span>,</span>
 <span>  birth_cohort <span class="op">=</span> <span class="fl">2023</span>,</span>
@@ -929,7 +925,7 @@ a strong population flow.</p>
 <div class="section level2">
 <h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
-<p>This vignette showed how you can use the PAHOabc package to compare
+<p>This vignette showed how you can use the immunABC package to compare
 vaccination coverage by place of residence and place of occurrence, and
 to explore how people move between areas to get vaccinated.</p>
 <p>We saw that coverage can vary a lot depending on which location you
@@ -948,7 +944,7 @@ and supports better planning for immunization programs.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/immunabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

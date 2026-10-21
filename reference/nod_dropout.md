@@ -20,7 +20,7 @@ nod_dropout(
 - data.EIR:
 
   A data frame containing individual vaccination records. See
-  `pahoabc.EIR` for expected structure.
+  `immunABC.EIR` for expected structure.
 
 - vaccine_init:
 

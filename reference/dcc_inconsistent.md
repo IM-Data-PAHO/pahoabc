@@ -14,7 +14,7 @@ dcc_inconsistent(data.EIR, date_1, date_2, birth_cohorts = NULL)
 - data.EIR:
 
   Data frame. A data frame containing individual vaccination records.
-  See `pahoabc.EIR` for expected structure.
+  See `immunABC.EIR` for expected structure.
 
 - date_1:
 

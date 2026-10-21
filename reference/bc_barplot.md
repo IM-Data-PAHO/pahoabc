@@ -20,7 +20,7 @@ bc_barplot(
 - data:
 
   Data frame. The output from the
-  [`pahoabc::bc_coverage`](https://im-data-paho.github.io/pahoabc/reference/bc_coverage.md)
+  [`immunABC::bc_coverage`](https://im-data-paho.github.io/immunabc/reference/bc_coverage.md)
   function.
 
 - vaccine:

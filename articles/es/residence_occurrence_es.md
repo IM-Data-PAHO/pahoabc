@@ -1,7 +1,7 @@
 # Análisis de residencia vs. lugar de vacunación
 
 [🌐 Read this in
-English](https://im-data-paho.github.io/pahoabc/articles/en/residence_occurrence_en.md)
+English](https://im-data-paho.github.io/immunabc/articles/en/residence_occurrence_en.md)
 
 ## Fundamento
 
@@ -18,13 +18,13 @@ cobertura puede superar el 100 %, especialmente en áreas donde los
 servicios de vacunación están más disponibles o reciben personas de
 otras zonas.
 
-El módulo de residencia y lugar de vacunación de PAHOabc proporciona
+El módulo de residencia y lugar de vacunación de immunABC proporciona
 funciones para explorar y analizar este fenómeno.
 
 > **Nota**
 >
 > Todas las funciones utilizadas para los análisis de residencia y lugar
-> de vacunación dentro de PAHOabc comienzan con el prefijo `roc_`.
+> de vacunación dentro de immunABC comienzan con el prefijo `roc_`.
 
 ## Glosario
 
@@ -32,11 +32,11 @@ funciones para explorar y analizar este fenómeno.
 
 A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que,
+En concreto, immunABC puede distinguir tres niveles administrativos que,
 listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1.  ADM0: El país. Este es el nivel administrativo más alto.
@@ -52,8 +52,8 @@ para nombrar las dosis de vacunas. Es posible que esta convención no
 coincida con la que usa su país o institución, pero esto no afecta el
 uso del paquete si los nombres se aplican de manera consistente.
 
-Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc
-son:
+Por ejemplo, los nombres de las vacunas utilizados en el paquete
+immunABC son:
 
 | Abreviatura | Nombre completo                                          |
 |-------------|----------------------------------------------------------|
@@ -69,11 +69,11 @@ son:
 ### Instalar el paquete
 
 El primer paso para ejecutar los análisis de residencia y lugar de
-vacunación es instalar el paquete PAHOabc, disponible en GitHub.
+vacunación es instalar el paquete immunABC, disponible en GitHub.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Cargar los datos
@@ -86,14 +86,14 @@ formato específico.
 3.  Una tabla con denominadores poblacionales según el nivel geográfico
     de su análisis.
 
-Para facilitar la prueba de PAHOabc y la comprensión de la estructura
+Para facilitar la prueba de immunABC y la comprensión de la estructura
 requerida, a continuación se presentan los conjuntos de datos de ejemplo
 que utiliza este módulo.
 
 #### RNVe
 
 El conjunto de datos
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 proporciona un ejemplo de Registro Nominal de Vacunación electrónico
 (RNVe). Es una tabla nominal simulada con eventos individuales de
 vacunación. Cada fila corresponde a una vacunación e incluye información
@@ -102,7 +102,7 @@ sobre la residencia de la persona, el lugar donde fue vacunada
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -132,14 +132,14 @@ style="width:100%;"}
 #### Esquema de vacunación
 
 El conjunto de datos
-[`pahoabc::pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+[`immunABC::immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
 define el esquema nacional de vacunación, con cada dosis y su edad
 recomendada de administración (en días). Esta tabla permite determinar
 si una persona tiene las vacunas que le corresponden según el esquema.
 
 ``` r
 
-pahoabc.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
+immunABC.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
 ```
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
@@ -167,7 +167,7 @@ Ejemplo de esquema de vacunación {.table}
 > **Nota**
 >
 > Los nombres de las dosis en la columna `dose` deben coincidir
-> exactamente con los del conjunto de datos `pahoabc.EIR`.
+> exactamente con los del conjunto de datos `immunABC.EIR`.
 
 #### Denominadores poblacionales
 
@@ -178,7 +178,7 @@ denominadores poblacionales debe tener la siguiente estructura.
 
 ``` r
 
-pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
+immunABC.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
 ```
 
 | ADM1   | year | age | population |
@@ -199,9 +199,9 @@ determinado para un nivel `ADM1`.
 > **Nota**
 >
 > Si su análisis es a un nivel político-geográfico diferente, consulte
-> [`pahoabc::pahoabc.pop.ADM0`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM0.md)
+> [`immunABC::immunABC.pop.ADM0`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM0.md)
 > y
-> [`pahoabc::pahoabc.pop.ADM2`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM2.md)
+> [`immunABC::immunABC.pop.ADM2`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM2.md)
 > para conocer el formato y las columnas requeridas.
 
 ### Análisis de cobertura
@@ -212,23 +212,23 @@ lugar de residencia como por lugar de vacunación (ocurrencia).
 #### Flujo de trabajo esperado
 
 Las funciones
-[`roc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage.md)
+[`roc_coverage()`](https://im-data-paho.github.io/immunabc/reference/roc_coverage.md)
 y
-[`roc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/roc_barplot.md)
+[`roc_barplot()`](https://im-data-paho.github.io/immunabc/reference/roc_barplot.md)
 trabajan en conjunto para analizar y visualizar la cobertura. La función
-[`roc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage.md)
+[`roc_coverage()`](https://im-data-paho.github.io/immunabc/reference/roc_coverage.md)
 calcula la cobertura de vacunación por residencia y por lugar de
 vacunación, según los niveles administrativos, años y vacunas
 seleccionados. Su resultado es una tabla compatible con
-[`roc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/roc_barplot.md),
+[`roc_barplot()`](https://im-data-paho.github.io/immunabc/reference/roc_barplot.md),
 que genera una visualización para un año y una vacuna específicos.
 
 La función
-[`roc_coverage_by()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage_by.md)
+[`roc_coverage_by()`](https://im-data-paho.github.io/immunabc/reference/roc_coverage_by.md)
 está disponible cuando se desea calcular la cobertura solo por
 residencia o solo por lugar de vacunación. Aunque produce una tabla
 similar, su resultado no es compatible con
-[`roc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/roc_barplot.md).
+[`roc_barplot()`](https://im-data-paho.github.io/immunabc/reference/roc_barplot.md).
 
 ![Figura 1. Flujo de trabajo esperado para los análisis de
 cobertura.](roc_workflow_1.svg)
@@ -240,7 +240,7 @@ Figura 1. Flujo de trabajo esperado para los análisis de cobertura.
 #### Ejemplo
 
 A continuación se muestra un caso de uso sencillo de
-[`roc_coverage()`](https://im-data-paho.github.io/pahoabc/reference/roc_coverage.md),
+[`roc_coverage()`](https://im-data-paho.github.io/immunabc/reference/roc_coverage.md),
 en el que se calcula la cobertura por ambas métricas para la vacuna DTP1
 en 2023 usando los datos de ejemplo.
 
@@ -248,9 +248,9 @@ en 2023 usando los datos de ejemplo.
 
 # calcular la cobertura
 coverage_df <- roc_coverage(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
-  data.pop = pahoabc.pop.ADM1,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
+  data.pop = immunABC.pop.ADM1,
   geo_level = "ADM1",
   years = 2023, # esto puede ser un vector de años
   vaccines = "DTP1" # esto puede ser un vector de vacunas
@@ -277,7 +277,7 @@ coverage_df %>%
 Cobertura de vacunación a nivel ADM1 {.table}
 
 Esta salida puede pasarse directamente a la función
-[`roc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/roc_barplot.md)
+[`roc_barplot()`](https://im-data-paho.github.io/immunabc/reference/roc_barplot.md)
 como se muestra a continuación.
 
 ``` r
@@ -331,9 +331,9 @@ personas según su lugar de residencia.
 #### Flujo de trabajo esperado
 
 Las funciones
-[`roc_distribution()`](https://im-data-paho.github.io/pahoabc/reference/roc_distribution.md)
+[`roc_distribution()`](https://im-data-paho.github.io/immunabc/reference/roc_distribution.md)
 y
-[`roc_heatmap()`](https://im-data-paho.github.io/pahoabc/reference/roc_heatmap.md)
+[`roc_heatmap()`](https://im-data-paho.github.io/immunabc/reference/roc_heatmap.md)
 permiten analizar los flujos poblacionales entre áreas administrativas.
 Por ejemplo, se puede observar dónde se vacunan las personas que viven
 en una región: si se vacunan dentro de su propia región o si se
@@ -360,7 +360,7 @@ nivel administrativo para la vacuna DTP1 en 2023.
 
 # calcular la distribución de dosis para cada lugar de residencia
 distribution_df <- roc_distribution(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   vaccine = "DTP1",
   geo_level = "ADM1",
   birth_cohort = 2023,
@@ -399,7 +399,7 @@ vacunaron fuera de su lugar de residencia, use el parámetro
 
 # calcular la distribución de dosis para cada lugar de residencia
 distribution_df2 <- roc_distribution(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   vaccine = "DTP1",
   geo_level = "ADM1",
   birth_cohort = 2023,
@@ -426,7 +426,7 @@ Esto muestra que el 96 % de las personas de ADM1_3 **que no se vacunan
 en su lugar de residencia** lo hacen en ADM1_2.
 
 La función
-[`roc_heatmap()`](https://im-data-paho.github.io/pahoabc/reference/roc_heatmap.md)
+[`roc_heatmap()`](https://im-data-paho.github.io/immunabc/reference/roc_heatmap.md)
 muestra este patrón con mayor claridad.
 
 ``` r
@@ -478,7 +478,7 @@ administrativo, por ejemplo, distritos dentro de una región.
 # calcular la distribución de dosis para cada lugar de residencia al segundo
 # nivel administrativo (centrarse solo en ADM1_3 para este ejemplo)
 distribution_df3 <- roc_distribution(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   vaccine = "DTP1",
   geo_level = "ADM2",
   birth_cohort = 2023,
@@ -517,7 +517,7 @@ vacuna fuera de ADM1_3, lo que sugiere un flujo poblacional importante.
 
 ## Resumen
 
-Esta viñeta mostró cómo usar PAHOabc para comparar la cobertura de
+Esta viñeta mostró cómo usar immunABC para comparar la cobertura de
 vacunación por lugar de residencia y por lugar de vacunación, y para
 explorar cómo se desplazan las personas entre áreas para vacunarse.
 

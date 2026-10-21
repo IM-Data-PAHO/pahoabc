@@ -5,12 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Date Consistency Comparison • pahoabc</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
-<link rel="icon" type="”image/svg+xml”" href="../../favicon.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
-<link rel="icon" sizes="any" href="../../favicon.ico">
-<link rel="manifest" href="../../site.webmanifest">
+<title>Date Consistency Comparison • immunABC</title>
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -23,9 +18,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
+    <a class="navbar-brand me-2" href="../../index.html">immunABC</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/pahoabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/immunabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -68,12 +63,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../../logo.png" class="logo" alt=""><h1>Date Consistency Comparison</h1>
+
+      <h1>Date Consistency Comparison</h1>
                         <h4 data-toc-skip class="author">PAHO/CIM</h4>
             
             <h4 data-toc-skip class="date">June 1, 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/vignettes/articles/en/date_consistency_comparison_en.Rmd" class="external-link"><code>vignettes/articles/en/date_consistency_comparison_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/immunabc/blob/v0.11.2/vignettes/articles/en/date_consistency_comparison_en.Rmd" class="external-link"><code>vignettes/articles/en/date_consistency_comparison_en.Rmd</code></a></small>
       <div class="d-none name"><code>date_consistency_comparison_en.Rmd</code></div>
     </div>
 
@@ -96,7 +92,7 @@ date variables in the EIR.</p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>All functions used for date consistency comparison analyses within
-PAHOabc begin with the <code>dcc_</code> prefix.</p>
+immunABC begin with the <code>dcc_</code> prefix.</p>
 </blockquote>
 </div>
 <div class="section level2">
@@ -108,9 +104,9 @@ PAHOabc begin with the <code>dcc_</code> prefix.</p>
 <p>Throughout this vignette, we will make reference to different levels
 of political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.</p>
-<p>Namely, PAHOabc can distinguish three administrative levels, which
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.</p>
+<p>Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
 <ol style="list-style-type: decimal">
 <li>ADM0: The country. This is the top-most administrative level.</li>
@@ -160,22 +156,22 @@ order is violated.</td>
 <h3 id="install-package">Install Package<a class="anchor" aria-label="anchor" href="#install-package"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/immunabc"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="load-data">Load Data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h3>
 <p>The functions in this module require your <strong>EIR
-dataset</strong> in the standard PAHOabc format.</p>
+dataset</strong> in the standard immunABC format.</p>
 <div class="section level4">
 <h4 id="eir">EIR<a class="anchor" aria-label="anchor" href="#eir"></a>
 </h4>
-<p>The <code><a href="../../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> data frame provides a
+<p>The <code><a href="../../reference/immunABC.EIR.html">immunABC::immunABC.EIR</a></code> data frame provides a
 simulated, nominal-level table representing individual vaccination
 events from an Electronic Immunization Registry (EIR). Each row
 corresponds to a single vaccination act for a person.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <caption>Example Electronic Immunization Registry</caption>
 <colgroup>
@@ -318,7 +314,7 @@ is consistent with <code>date_birth</code> (date_2, the earlier date) at
 the ADM1 level.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rate_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dcc_rate.html">dcc_rate</a></span><span class="op">(</span></span>
-<span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>  data.EIR <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>  date_1   <span class="op">=</span> <span class="st">"date_vax"</span>,</span>
 <span>  date_2   <span class="op">=</span> <span class="st">"date_birth"</span>,</span>
 <span>  geo_level <span class="op">=</span> <span class="st">"ADM1"</span></span>
@@ -433,7 +429,7 @@ the ADM1 level.</p>
 </h5>
 <ul>
 <li>
-<code>data.EIR</code>: EIR data frame in PAHOabc format.</li>
+<code>data.EIR</code>: EIR data frame in immunABC format.</li>
 <li>
 <code>date_1</code>: Name of the date variable being checked (the
 chronologically later date).</li>
@@ -503,7 +499,7 @@ requiring attention.</p>
 including the day difference between the two dates.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inconsistent_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dcc_inconsistent.html">dcc_inconsistent</a></span><span class="op">(</span></span>
-<span>  data.EIR <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>  data.EIR <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>  date_1   <span class="op">=</span> <span class="st">"date_vax"</span>,</span>
 <span>  date_2   <span class="op">=</span> <span class="st">"date_birth"</span></span>
 <span><span class="op">)</span></span>
@@ -607,7 +603,7 @@ including the day difference between the two dates.</p>
 </h5>
 <ul>
 <li>
-<code>data.EIR</code>: EIR data frame in PAHOabc format.</li>
+<code>data.EIR</code>: EIR data frame in immunABC format.</li>
 <li>
 <code>date_1</code>: Name of the date variable being checked.</li>
 <li>
@@ -633,7 +629,7 @@ inconsistencies: small differences may reflect data entry typos, while
 large differences suggest more systematic issues.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/dcc_inconsistent_plot.html">dcc_inconsistent_plot</a></span><span class="op">(</span></span>
-<span>  data.EIR    <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>  data.EIR    <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>  date_1      <span class="op">=</span> <span class="st">"date_vax"</span>,</span>
 <span>  date_2      <span class="op">=</span> <span class="st">"date_birth"</span>,</span>
 <span>  date_1_name <span class="op">=</span> <span class="st">"Vaccination date"</span>,</span>
@@ -645,7 +641,7 @@ large differences suggest more systematic issues.</p>
 </h5>
 <ul>
 <li>
-<code>data.EIR</code>: EIR data frame in PAHOabc format.</li>
+<code>data.EIR</code>: EIR data frame in immunABC format.</li>
 <li>
 <code>date_1</code>: Name of the date variable being checked.</li>
 <li>
@@ -666,7 +662,7 @@ extended to <code>Inf</code> and labelled <code>"X+"</code>. Default:
 differences:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/dcc_inconsistent_plot.html">dcc_inconsistent_plot</a></span><span class="op">(</span></span>
-<span>  data.EIR    <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
+<span>  data.EIR    <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
 <span>  date_1      <span class="op">=</span> <span class="st">"date_vax"</span>,</span>
 <span>  date_2      <span class="op">=</span> <span class="st">"date_birth"</span>,</span>
 <span>  date_1_name <span class="op">=</span> <span class="st">"Vaccination date"</span>,</span>
@@ -709,7 +705,7 @@ corrections before any downstream analysis.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/immunabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

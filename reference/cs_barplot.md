@@ -14,7 +14,7 @@ cs_barplot(data, birth_cohorts = NULL, within_ADM1 = NULL)
 - data:
 
   The output from the
-  [`pahoabc::cs_coverage`](https://im-data-paho.github.io/pahoabc/reference/cs_coverage.md)
+  [`immunABC::cs_coverage`](https://im-data-paho.github.io/immunabc/reference/cs_coverage.md)
   function.
 
 - birth_cohorts:

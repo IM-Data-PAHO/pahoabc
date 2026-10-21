@@ -16,7 +16,7 @@ vt_barplot(data, within_ADM1 = NULL, plot_missing = TRUE)
 - data:
 
   The output from the
-  [`pahoabc::vt_rate`](https://im-data-paho.github.io/pahoabc/reference/vt_rate.md)
+  [`immunABC::vt_rate`](https://im-data-paho.github.io/immunabc/reference/vt_rate.md)
   function.
 
 - within_ADM1:

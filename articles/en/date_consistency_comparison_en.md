@@ -1,7 +1,7 @@
 # Date Consistency Comparison
 
 [🌐 Lea esto en
-español](https://im-data-paho.github.io/pahoabc/articles/es/date_consistency_comparison_es.md)
+español](https://im-data-paho.github.io/immunabc/articles/es/date_consistency_comparison_es.md)
 
 ## Rationale
 
@@ -19,7 +19,7 @@ date variables in the EIR.
 > **Note**
 >
 > All functions used for date consistency comparison analyses within
-> PAHOabc begin with the `dcc_` prefix.
+> immunABC begin with the `dcc_` prefix.
 
 ## Glossary
 
@@ -28,10 +28,10 @@ date variables in the EIR.
 Throughout this vignette, we will make reference to different levels of
 political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which
+Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1.  ADM0: The country. This is the top-most administrative level.
@@ -54,25 +54,25 @@ listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Load Data
 
 The functions in this module require your **EIR dataset** in the
-standard PAHOabc format.
+standard immunABC format.
 
 #### EIR
 
 The
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 data frame provides a simulated, nominal-level table representing
 individual vaccination events from an Electronic Immunization Registry
 (EIR). Each row corresponds to a single vaccination act for a person.
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -100,16 +100,16 @@ Example Electronic Immunization Registry {.table style="width:100%;"}
 
 The `dcc_` suite contains four functions that work together:
 
-1.  [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+1.  [`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
     — computes consistency rates aggregated by geographic level.
-2.  [`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+2.  [`dcc_barplot()`](https://im-data-paho.github.io/immunabc/reference/dcc_barplot.md)
     — visualizes the output of
-    [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+    [`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
     as a stacked bar chart.
-3.  [`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+3.  [`dcc_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent.md)
     — lists individual inconsistent and missing records with their day
     difference.
-4.  [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+4.  [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent_plot.md)
     — visualizes the distribution of day differences for inconsistent
     records.
 
@@ -125,7 +125,7 @@ analysis.
 
 #### Step 1 — Compute consistency rates with `dcc_rate()`
 
-[`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+[`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
 compares two date variables in the EIR and returns, for each geographic
 unit, the count and percentage of records that are `CONSISTENT`,
 `INCONSISTENT`, or `DATE_MISSING`.
@@ -136,7 +136,7 @@ with `date_birth` (date_2, the earlier date) at the ADM1 level.
 ``` r
 
 rate_df <- dcc_rate(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   date_1   = "date_vax",
   date_2   = "date_birth",
   geo_level = "ADM1"
@@ -165,7 +165,7 @@ Date consistency rates by ADM1 {.table}
 
 ##### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
 - `date_1`: Name of the date variable being checked (the chronologically
   later date).
 - `date_2`: Name of the date variable checked against (the
@@ -177,9 +177,9 @@ Date consistency rates by ADM1 {.table}
 #### Step 2 — Visualize rates with `dcc_barplot()`
 
 The output of
-[`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+[`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
 can be passed directly to
-[`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+[`dcc_barplot()`](https://im-data-paho.github.io/immunabc/reference/dcc_barplot.md)
 to produce a stacked bar chart showing the breakdown of consistency
 categories per geographic unit.
 
@@ -197,7 +197,7 @@ dcc_barplot(
 ##### Parameters accepted
 
 - `data`: Output of
-  [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md).
+  [`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md).
 - `date_1_name`: Display label for `date_1` in the plot subtitle.
   Default: `"date 1"`.
 - `date_2_name`: Display label for `date_2` in the plot subtitle.
@@ -216,14 +216,14 @@ indicate units with data quality issues requiring attention.
 
 #### Step 3 — Inspect individual inconsistent records with `dcc_inconsistent()`
 
-[`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+[`dcc_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent.md)
 returns a record-level table of all `INCONSISTENT` and `DATE_MISSING`
 entries, including the day difference between the two dates.
 
 ``` r
 
 inconsistent_df <- dcc_inconsistent(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   date_1   = "date_vax",
   date_2   = "date_birth"
 )
@@ -248,7 +248,7 @@ Sample of inconsistent and missing records {.table}
 
 ##### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
 - `date_1`: Name of the date variable being checked.
 - `date_2`: Name of the date variable checked against.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to.
@@ -260,7 +260,7 @@ table can be exported for record-level correction workflows.
 
 #### Step 4 — Visualize the distribution of day differences with `dcc_inconsistent_plot()`
 
-[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent_plot.md)
 produces a histogram of the **absolute** day differences for
 inconsistent records, grouped into customizable bins. This helps
 characterize the severity of inconsistencies: small differences may
@@ -270,7 +270,7 @@ systematic issues.
 ``` r
 
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Vaccination date",
@@ -282,7 +282,7 @@ dcc_inconsistent_plot(
 
 ##### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
 - `date_1`: Name of the date variable being checked.
 - `date_2`: Name of the date variable checked against.
 - `date_1_name`: Display label for `date_1` in the plot subtitle.
@@ -299,7 +299,7 @@ differences:
 ``` r
 
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Vaccination date",
@@ -323,13 +323,13 @@ point to more serious systematic problems.
 
 The `dcc_` module provides a complete pipeline for assessing date
 consistency in EIR data. Starting from
-[`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+[`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
 for a geographic overview, through
-[`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+[`dcc_barplot()`](https://im-data-paho.github.io/immunabc/reference/dcc_barplot.md)
 for visualization, to
-[`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+[`dcc_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent.md)
 for record-level inspection and
-[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent_plot.md)
 for characterizing the magnitude of errors, the suite equips data
 managers and public health analysts with the tools needed to detect,
 quantify, and prioritize data quality corrections before any downstream

@@ -1,11 +1,11 @@
 # Uso de los datos de ejemplo
 
 [🌐 Read this in
-English](https://im-data-paho.github.io/pahoabc/articles/en/example_datasets_en.md)
+English](https://im-data-paho.github.io/immunabc/articles/en/example_datasets_en.md)
 
 ## Fundamento
 
-El paquete PAHOabc incluye conjuntos de datos de ejemplo para ayudar a
+El paquete immunABC incluye conjuntos de datos de ejemplo para ayudar a
 los usuarios a entender cómo funcionan sus herramientas. Estos datos
 simulan el sistema de información de inmunización de un país ficticio y
 están estructurados para funcionar con las funciones del paquete. Esta
@@ -18,11 +18,11 @@ distintos módulos.
 
 A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que,
+En concreto, immunABC puede distinguir tres niveles administrativos que,
 listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1.  ADM0: El país. Este es el nivel administrativo más alto.
@@ -40,8 +40,8 @@ para nombrar las dosis de vacunas. Es posible que esta convención no
 coincida con la que usa su país o institución, pero esto no afecta el
 uso del paquete si los nombres se aplican de manera consistente.
 
-Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc
-son:
+Por ejemplo, los nombres de las vacunas utilizados en el paquete
+immunABC son:
 
 | Abreviatura | Nombre completo                                          |
 |-------------|----------------------------------------------------------|
@@ -54,10 +54,10 @@ son:
 
 ## Lista de conjuntos de datos de ejemplo
 
-### pahoabc.EIR
+### immunABC.EIR
 
 El conjunto de datos
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 es el más importante del paquete. Proporciona un ejemplo de Registro
 Nominal de Vacunación electrónico (RNVe). Es una tabla nominal simulada
 con eventos individuales de vacunación. Cada fila corresponde a una
@@ -66,7 +66,7 @@ lugar donde fue vacunada, su fecha de nacimiento y la dosis recibida.
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -93,17 +93,17 @@ style="width:100%;"}
   primera dosis de una vacuna que contiene componentes de difteria,
   tétanos y tos ferina.
 
-### pahoabc.schedule
+### immunABC.schedule
 
 El conjunto de datos
-[`pahoabc::pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+[`immunABC::immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
 define el esquema nacional de vacunación, con cada dosis y su edad
 recomendada de administración (en días). Esta tabla permite determinar
 si una persona tiene las vacunas que le corresponden según el esquema.
 
 ``` r
 
-pahoabc.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
+immunABC.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
 ```
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
@@ -131,26 +131,26 @@ Ejemplo de esquema de vacunación {.table}
 > **Nota**
 >
 > Los nombres de las dosis en la columna `dose` deben coincidir
-> exactamente con los del conjunto de datos `pahoabc.EIR`.
+> exactamente con los del conjunto de datos `immunABC.EIR`.
 
 ### Conjuntos de datos de población
 
 Los conjuntos de datos de población proporcionan estimaciones
 poblacionales en distintos niveles geográficos, para varios años y para
 niños de diferentes edades. Según el nivel geográfico del análisis,
-PAHOabc puede requerir la población correspondiente para usarla como
+immunABC puede requerir la población correspondiente para usarla como
 denominador, principalmente en los análisis de cobertura.
 
-#### pahoabc.pop.ADM0
+#### immunABC.pop.ADM0
 
 El conjunto de datos
-[`pahoabc::pahoabc.pop.ADM0`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM0.md)
+[`immunABC::immunABC.pop.ADM0`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM0.md)
 proporciona estimaciones poblacionales agregadas a nivel nacional
 (ADM0).
 
 ``` r
 
-pahoabc.pop.ADM0 %>% kable(caption = "Ejemplo de población a nivel ADM0")
+immunABC.pop.ADM0 %>% kable(caption = "Ejemplo de población a nivel ADM0")
 ```
 
 | year | age | population |
@@ -166,17 +166,17 @@ Esta tabla está en formato largo y contiene la población (`population`)
 de niños de una edad (`age`) específica durante un año (`year`)
 determinado.
 
-#### pahoabc.pop.ADM1
+#### immunABC.pop.ADM1
 
 El conjunto de datos
-[`pahoabc::pahoabc.pop.ADM1`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM1.md)
+[`immunABC::immunABC.pop.ADM1`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM1.md)
 proporciona datos poblacionales agregados al primer nivel administrativo
 subnacional (ADM1), que suele corresponder a regiones, provincias o
 estados.
 
 ``` r
 
-pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
+immunABC.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
 ```
 
 | ADM1   | year | age | population |
@@ -194,16 +194,16 @@ Esta tabla está en formato largo y contiene la población (`population`)
 de niños de una edad (`age`) específica durante un año (`year`)
 determinado a nivel `ADM1`.
 
-#### pahoabc.pop.ADM2
+#### immunABC.pop.ADM2
 
 El conjunto de datos
-[`pahoabc::pahoabc.pop.ADM2`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.pop.ADM2.md)
+[`immunABC::immunABC.pop.ADM2`](https://im-data-paho.github.io/immunabc/reference/immunABC.pop.ADM2.md)
 proporciona datos poblacionales más detallados por niveles ADM1 y ADM2,
 lo que permite análisis con mayor desagregación geográfica.
 
 ``` r
 
-pahoabc.pop.ADM2 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM2")
+immunABC.pop.ADM2 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM2")
 ```
 
 | ADM1   | ADM2      | year | age | population |
@@ -232,10 +232,10 @@ permite probar y comprender cada módulo con una configuración mínima.
 A continuación se presenta un resumen de los conjuntos de datos
 disponibles para su referencia.
 
-| Conjunto de datos  | Descripción                                           |
-|--------------------|-------------------------------------------------------|
-| `pahoabc.EIR`      | Registro Nominal de Vacunación electrónico (RNVe)     |
-| `pahoabc.schedule` | Esquema de vacunación con nombres de dosis y edades   |
-| `pahoabc.pop.ADM0` | Estimaciones poblacionales agregadas a nivel nacional |
-| `pahoabc.pop.ADM1` | Estimaciones poblacionales a nivel ADM1               |
-| `pahoabc.pop.ADM2` | Estimaciones poblacionales a nivel ADM2               |
+| Conjunto de datos   | Descripción                                           |
+|---------------------|-------------------------------------------------------|
+| `immunABC.EIR`      | Registro Nominal de Vacunación electrónico (RNVe)     |
+| `immunABC.schedule` | Esquema de vacunación con nombres de dosis y edades   |
+| `immunABC.pop.ADM0` | Estimaciones poblacionales agregadas a nivel nacional |
+| `immunABC.pop.ADM1` | Estimaciones poblacionales a nivel ADM1               |
+| `immunABC.pop.ADM2` | Estimaciones poblacionales a nivel ADM2               |

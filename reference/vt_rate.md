@@ -23,12 +23,12 @@ vt_rate(
 - data.EIR:
 
   Data frame. A data frame containing individual vaccination records.
-  See `pahoabc.EIR` for expected structure.
+  See `immunABC.EIR` for expected structure.
 
 - data.schedule:
 
   Data frame. A data frame defining the vaccination schedule. See
-  `pahoabc.schedule` for expected structure.
+  `immunABC.schedule` for expected structure.
 
 - geo_level:
 

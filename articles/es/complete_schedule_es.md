@@ -1,7 +1,7 @@
 # Cobertura de esquema completo
 
 [🌐 Read this in
-English](https://im-data-paho.github.io/pahoabc/articles/en/complete_schedule_en.md)
+English](https://im-data-paho.github.io/immunabc/articles/en/complete_schedule_en.md)
 
 ## Fundamento
 
@@ -33,7 +33,7 @@ las dosis incluidas en el esquema.
 > **Nota**
 >
 > Todas las funciones utilizadas para los análisis de cobertura de
-> esquema completo dentro de PAHOabc comienzan con el prefijo `cs_`.
+> esquema completo dentro de immunABC comienzan con el prefijo `cs_`.
 
 ## Glosario
 
@@ -41,11 +41,11 @@ las dosis incluidas en el esquema.
 
 A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que,
+En concreto, immunABC puede distinguir tres niveles administrativos que,
 listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1.  ADM0: El país. Este es el nivel administrativo más alto.
@@ -61,8 +61,8 @@ para nombrar las dosis de vacunas. Es posible que esta convención no
 coincida con la que usa su país o institución, pero esto no afecta el
 uso del paquete si los nombres se aplican de manera consistente.
 
-Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc
-son:
+Por ejemplo, los nombres de las vacunas utilizados en el paquete
+immunABC son:
 
 | Abreviatura | Nombre completo                                          |
 |-------------|----------------------------------------------------------|
@@ -78,11 +78,11 @@ son:
 ### Instalar el paquete
 
 El primer paso para ejecutar los análisis de cobertura de esquema
-completo es instalar el paquete PAHOabc disponible en GitHub.
+completo es instalar el paquete immunABC disponible en GitHub.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Cargar los datos
@@ -95,17 +95,17 @@ formato específico.
 3.  Una tabla con denominadores poblacionales según el nivel geográfico
     de su análisis.
     1.  Esto es opcional para la función
-        [`cs_coverage()`](https://im-data-paho.github.io/pahoabc/reference/cs_coverage.md)
+        [`cs_coverage()`](https://im-data-paho.github.io/immunabc/reference/cs_coverage.md)
         (pero no se muestra en esta viñeta).
 
-Para facilitar la prueba de PAHOabc y la comprensión de la estructura
+Para facilitar la prueba de immunABC y la comprensión de la estructura
 requerida, a continuación se presentan los conjuntos de datos de ejemplo
 que utiliza este módulo.
 
 #### RNVe
 
 El conjunto de datos
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 proporciona un ejemplo de Registro Nominal de Vacunación electrónico
 (RNVe). Es una tabla nominal simulada con eventos individuales de
 vacunación. Cada fila corresponde a una vacunación e incluye información
@@ -114,7 +114,7 @@ sobre la residencia de la persona, el lugar donde fue vacunada
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -144,14 +144,14 @@ style="width:100%;"}
 #### Esquema de vacunación
 
 El conjunto de datos
-[`pahoabc::pahoabc.schedule`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.schedule.md)
+[`immunABC::immunABC.schedule`](https://im-data-paho.github.io/immunabc/reference/immunABC.schedule.md)
 define el esquema nacional de vacunación, con cada dosis y su edad
 recomendada de administración (en días). Esta tabla permite determinar
 si una persona tiene las vacunas que le corresponden según el esquema.
 
 ``` r
 
-pahoabc.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
+immunABC.schedule %>% kable(caption = "Ejemplo de esquema de vacunación")
 ```
 
 | dose   | age_schedule | age_schedule_low | age_schedule_high |
@@ -179,7 +179,7 @@ Ejemplo de esquema de vacunación {.table}
 > **Nota**
 >
 > Los nombres de las dosis en la columna `dose` deben coincidir
-> exactamente con los del conjunto de datos `pahoabc.EIR`.
+> exactamente con los del conjunto de datos `immunABC.EIR`.
 
 #### Denominadores poblacionales
 
@@ -190,7 +190,7 @@ denominadores poblacionales debe tener la siguiente estructura.
 
 ``` r
 
-pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
+immunABC.pop.ADM1 %>% head() %>% kable(caption = "Ejemplo de población a nivel ADM1")
 ```
 
 | ADM1   | year | age | population |
@@ -213,10 +213,10 @@ determinado para un nivel `ADM1`.
 #### Flujo de trabajo esperado
 
 Las funciones
-[`cs_coverage()`](https://im-data-paho.github.io/pahoabc/reference/cs_coverage.md),
-[`cs_barplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_barplot.md)
+[`cs_coverage()`](https://im-data-paho.github.io/immunabc/reference/cs_coverage.md),
+[`cs_barplot()`](https://im-data-paho.github.io/immunabc/reference/cs_barplot.md)
 y
-[`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
+[`cs_upsetplot()`](https://im-data-paho.github.io/immunabc/reference/cs_upsetplot.md)
 permiten analizar y visualizar la cobertura de esquema completo. Su
 relación se muestra en la Figura 1.
 
@@ -238,8 +238,8 @@ subnacional, usando la cohorte de nacimiento de 2022.
 
 # calcular la cobertura
 coverage_df <- cs_coverage(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level = "ADM1",
   birth_cohorts = 2022 # esto puede ser un vector de años
 )
@@ -263,7 +263,7 @@ Cobertura de esquema completo a nivel ADM1 {.table}
 
 Es posible mostrar los resultados obtenidos previamente en un gráfico de
 barras con
-[`cs_barplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_barplot.md).
+[`cs_barplot()`](https://im-data-paho.github.io/immunabc/reference/cs_barplot.md).
 
 ``` r
 
@@ -279,7 +279,7 @@ coverage_plot
 #### Gráfico UpSet
 
 La función
-[`cs_upsetplot()`](https://im-data-paho.github.io/pahoabc/reference/cs_upsetplot.md)
+[`cs_upsetplot()`](https://im-data-paho.github.io/immunabc/reference/cs_upsetplot.md)
 genera un gráfico UpSet para evaluar el porcentaje de personas incluidas
 en el RNVe que recibieron las distintas combinaciones posibles de
 vacunas. La barra naranja representa la proporción de personas que
@@ -292,8 +292,8 @@ cobertura de esa vacuna.
 
 # producir el gráfico UpSet
 coverage_upset <- cs_upsetplot(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   birth_cohort = 2022
 )
 ```

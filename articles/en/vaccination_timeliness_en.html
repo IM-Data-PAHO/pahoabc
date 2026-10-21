@@ -5,12 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Vaccination Timeliness • pahoabc</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../../favicon-96x96.png">
-<link rel="icon" type="”image/svg+xml”" href="../../favicon.svg">
-<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
-<link rel="icon" sizes="any" href="../../favicon.ico">
-<link rel="manifest" href="../../site.webmanifest">
+<title>Vaccination Timeliness • immunABC</title>
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -23,9 +18,9 @@
 
     <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../../index.html">pahoabc</a>
+    <a class="navbar-brand me-2" href="../../index.html">immunABC</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/pahoabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IM-Data-PAHO/immunabc/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -68,12 +63,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../../logo.png" class="logo" alt=""><h1>Vaccination Timeliness</h1>
+
+      <h1>Vaccination Timeliness</h1>
                         <h4 data-toc-skip class="author">PAHO/CIM</h4>
             
             <h4 data-toc-skip class="date">October 8, 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/pahoabc/blob/v0.11.1/vignettes/articles/en/vaccination_timeliness_en.Rmd" class="external-link"><code>vignettes/articles/en/vaccination_timeliness_en.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IM-Data-PAHO/immunabc/blob/v0.11.2/vignettes/articles/en/vaccination_timeliness_en.Rmd" class="external-link"><code>vignettes/articles/en/vaccination_timeliness_en.Rmd</code></a></small>
       <div class="d-none name"><code>vaccination_timeliness_en.Rmd</code></div>
     </div>
 
@@ -120,7 +116,7 @@ Immunization Registries (EIR).</p>
 <p><strong>Note</strong></p>
 <ol style="list-style-type: decimal">
 <li>All functions used for vaccination timeliness analyses within
-PAHOabc begin with the <code>vt_</code> prefix.</li>
+immunABC begin with the <code>vt_</code> prefix.</li>
 </ol>
 </blockquote>
 <div class="section level3">
@@ -166,7 +162,7 @@ carried out.</li>
 <li>
 <strong>Timeliness per vaccine</strong>: for each dose, the period
 considered timely is defined, with a minimum and a maximum age,
-according to the country’s guidelines. In PAHOabc, this period
+according to the country’s guidelines. In immunABC, this period
 corresponds to the <code>age_schedule_low</code> and
 <code>age_schedule_high</code> columns of the vaccination schedule.</li>
 <li>
@@ -189,7 +185,7 @@ window of the dose being evaluated.</li>
 </ul>
 <blockquote>
 <p><strong>Warning</strong></p>
-<p>PAHOabc does not verify the minimum observation period. If birth
+<p>immunABC does not verify the minimum observation period. If birth
 cohorts that have not yet completed the timeliness window by the date
 the data were extracted are included, only those already vaccinated will
 appear in the EIR, which overestimates timeliness. Choose
@@ -243,10 +239,10 @@ estimated.</p>
 <blockquote>
 <p><strong>Note</strong></p>
 <p>Ideally, this analysis considers the entire population that should
-receive the vaccine (for example, from the live birth registry). PAHOabc
-works with the database of vaccinated individuals in the EIR, that is,
-only with the individuals who received the dose analyzed. In this case,
-the final probability will always be 100%, which
+receive the vaccine (for example, from the live birth registry).
+immunABC works with the database of vaccinated individuals in the EIR,
+that is, only with the individuals who received the dose analyzed. In
+this case, the final probability will always be 100%, which
 <strong>overestimates</strong> the real probability of vaccination of
 the population.</p>
 </blockquote>
@@ -289,7 +285,7 @@ non-probabilistic analysis (between <code>age_schedule_low</code> and
 estimate at least the times for 25%, 50% and 75%.</li>
 <li>
 <strong>Year to evaluate</strong>: using a birth cohort is
-suggested. PAHOabc also allows combining several cohorts (see the
+suggested. immunABC also allows combining several cohorts (see the
 warning below).</li>
 <li>
 <strong>Level of geographic disaggregation</strong>: ADM0, ADM1 or
@@ -369,9 +365,9 @@ window in its denominator.</p>
 <p>Throughout this vignette, we will make reference to different levels
 of political geographic boundaries. These levels are defined by the
 country/territory and can have different names from country to country.
-PAHOabc is agnostic to these names and requires the user to recode their
-variable names to fit the PAHOabc structure.</p>
-<p>Namely, PAHOabc can distinguish three administrative levels, which
+immunABC is agnostic to these names and requires the user to recode
+their variable names to fit the immunABC structure.</p>
+<p>Namely, immunABC can distinguish three administrative levels, which
 listed from top to bottom level are: ADM0, ADM1 and ADM2.</p>
 <ol style="list-style-type: decimal">
 <li>ADM0: The country. This is the top-most administrative level.</li>
@@ -426,23 +422,23 @@ contains several ADM2 subdivisions.</li>
 <h3 id="install-package">Install Package<a class="anchor" aria-label="anchor" href="#install-package"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/pahoabc"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"IM-Data-PAHO/immunabc"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="load-data">Load Data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h3>
 <p>The functions in this module require your <strong>EIR
 dataset</strong> and a <strong>vaccination schedule</strong> with the
-timeliness windows, both in the standard PAHOabc format.</p>
+timeliness windows, both in the standard immunABC format.</p>
 <div class="section level4">
 <h4 id="eir">EIR<a class="anchor" aria-label="anchor" href="#eir"></a>
 </h4>
-<p>The <code><a href="../../reference/pahoabc.EIR.html">pahoabc::pahoabc.EIR</a></code> data frame provides a
+<p>The <code><a href="../../reference/immunABC.EIR.html">immunABC::immunABC.EIR</a></code> data frame provides a
 simulated, nominal-level table representing individual vaccination
 events from an EIR. Each row corresponds to a single vaccination act for
 a person.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.EIR</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Electronic Immunization Registry"</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <caption>Example Electronic Immunization Registry</caption>
 <colgroup>
@@ -556,7 +552,7 @@ module</a> to identify and resolve those records first.</li>
 individuals. If <code>data.EIR</code> contains duplicate records (the
 same <code>ID</code> and <code>dose</code> registered more than once),
 that individual is counted more than once in both the numerator and the
-denominator. PAHOabc does not remove duplicates, so make sure to remove
+denominator. immunABC does not remove duplicates, so make sure to remove
 them before running the analysis. Note that it is up to you to decide
 which record to keep for each <code>ID</code> and <code>dose</code>
 (e.g., the one with the earliest <code>date_vax</code>).</li>
@@ -566,11 +562,11 @@ which record to keep for each <code>ID</code> and <code>dose</code>
 <div class="section level4">
 <h4 id="vaccination-schedule">Vaccination Schedule<a class="anchor" aria-label="anchor" href="#vaccination-schedule"></a>
 </h4>
-<p>The <code><a href="../../reference/pahoabc.schedule.html">pahoabc::pahoabc.schedule</a></code> dataset defines the
+<p>The <code><a href="../../reference/immunABC.schedule.html">immunABC::immunABC.schedule</a></code> dataset defines the
 national immunization schedule, listing for each vaccine dose its age of
 administration and its timeliness window, in days.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pahoabc.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Immunization Schedule with timeliness windows"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">immunABC.schedule</span> <span class="op">%&gt;%</span> <span class="fu">kable</span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Example Immunization Schedule with timeliness windows"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>Example Immunization Schedule with timeliness windows</caption>
 <thead><tr class="header">
@@ -691,8 +687,8 @@ total number of records (<code>total</code>).</p>
 pooled indicator at the ADM1 level:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rate_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_rate.html">vt_rate</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  geo_level     <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
 <span><span class="op">)</span></span>
@@ -819,8 +815,8 @@ pooled indicator at the ADM1 level:</p>
 <code>dose</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rate_by_dose_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_rate.html">vt_rate</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  geo_level     <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP2"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
@@ -925,10 +921,10 @@ pooled indicator at the ADM1 level:</p>
 </h5>
 <ul>
 <li>
-<code>data.EIR</code>: EIR data frame in PAHOabc format.</li>
+<code>data.EIR</code>: EIR data frame in immunABC format.</li>
 <li>
 <code>data.schedule</code>: Vaccination schedule data frame in
-PAHOabc format.</li>
+immunABC format.</li>
 <li>
 <code>geo_level</code>: <code>"ADM0"</code> (default),
 <code>"ADM1"</code>, or <code>"ADM2"</code>.</li>
@@ -1006,8 +1002,8 @@ would exclude records with no date of birth.</p>
 </blockquote>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inconsistent_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_inconsistent.html">vt_inconsistent</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="st">"DTP1"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -1115,10 +1111,10 @@ would exclude records with no date of birth.</p>
 </h5>
 <ul>
 <li>
-<code>data.EIR</code>: EIR data frame in PAHOabc format.</li>
+<code>data.EIR</code>: EIR data frame in immunABC format.</li>
 <li>
 <code>data.schedule</code>: Vaccination schedule data frame in
-PAHOabc format.</li>
+immunABC format.</li>
 <li>
 <code>vaccines</code>: Character vector of doses to include. Default
 <code>NULL</code> includes all doses in <code>data.schedule</code>.</li>
@@ -1143,8 +1139,8 @@ Doses administered after the timeliness window and before it are shown
 in separate rows, each with its own y-axis scale.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_inconsistent_plot.html">vt_inconsistent_plot</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="st">"DTP1"</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -1154,8 +1150,8 @@ dose. Within each row, all doses share the same scale, so they can be
 compared with each other:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_inconsistent_plot.html">vt_inconsistent_plot</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP2"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -1165,10 +1161,10 @@ compared with each other:</p>
 </h5>
 <ul>
 <li>
-<code>data.EIR</code>: EIR data frame in PAHOabc format.</li>
+<code>data.EIR</code>: EIR data frame in immunABC format.</li>
 <li>
 <code>data.schedule</code>: Vaccination schedule data frame in
-PAHOabc format.</li>
+immunABC format.</li>
 <li>
 <code>vaccines</code>: Character vector of doses to include, adding
 one column per <code>dose</code>. Default <code>NULL</code> pools the
@@ -1190,8 +1186,8 @@ categories 0 to 39 days, 40 to 49 days, 50 to 59 days, 60 to 89 days,
 and 90 days or more:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_inconsistent_plot.html">vt_inconsistent_plot</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP2"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span>,</span>
 <span>  day_groups    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">120</span><span class="op">)</span><span class="op">)</span></span>
@@ -1263,8 +1259,8 @@ expresses it as days since the start of the timeliness window (where day
 <code>data.schedule</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dist_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -1459,8 +1455,8 @@ cohort</caption>
 with <code>geo_level</code> disaggregate them geographically:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dist_by_dose_ADM1_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  geo_level     <span class="op">=</span> <span class="st">"ADM1"</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP2"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
@@ -1706,9 +1702,9 @@ according to <code>data.schedule</code> (in days).</li>
 </h5>
 <ul>
 <li>
-<code>data.EIR</code>: EIR table in PAHOabc format.</li>
+<code>data.EIR</code>: EIR table in immunABC format.</li>
 <li>
-<code>data.schedule</code>: Vaccination schedule table in PAHOabc
+<code>data.schedule</code>: Vaccination schedule table in immunABC
 format.</li>
 <li>
 <code>geo_level</code>: <code>"ADM0"</code> (default),
@@ -1790,8 +1786,8 @@ on each day (or in a group of days, set by the <code>binwidth</code>
 parameter), which lets you see when vaccinations are concentrated:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dist_by_dose_ADM0_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP2"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
 <span>  birth_cohorts <span class="op">=</span> <span class="fl">2022</span></span>
 <span><span class="op">)</span></span>
@@ -2204,8 +2200,8 @@ level), the <code>n_slowest</code> parameter lets you show only the
 slowest areas:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/vt_distribution.html">vt_distribution</a></span><span class="op">(</span></span>
-<span>  data.EIR      <span class="op">=</span> <span class="va">pahoabc.EIR</span>,</span>
-<span>  data.schedule <span class="op">=</span> <span class="va">pahoabc.schedule</span>,</span>
+<span>  data.EIR      <span class="op">=</span> <span class="va">immunABC.EIR</span>,</span>
+<span>  data.schedule <span class="op">=</span> <span class="va">immunABC.schedule</span>,</span>
 <span>  <span class="co"># at the ADM2 level there are many geographic areas</span></span>
 <span>  geo_level     <span class="op">=</span> <span class="st">"ADM2"</span>,</span>
 <span>  vaccines      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DTP1"</span>, <span class="st">"DTP3"</span><span class="op">)</span>,</span>
@@ -2280,7 +2276,7 @@ to vaccinate, and guide actions to prevent future dropouts.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
+  <p>Developed by <a href="https://www.paho.org/en" class="external-link"><img src="https://github.com/IM-Data-PAHO/immunabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true" height="100" alt="PAHO"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

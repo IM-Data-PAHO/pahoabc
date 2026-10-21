@@ -1,7 +1,7 @@
 # Tasa de abandono nominal
 
 [🌐 Read this in
-English](https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.md)
+English](https://im-data-paho.github.io/immunabc/articles/en/nominal_dropout_en.md)
 
 ## Fundamento
 
@@ -34,7 +34,7 @@ Figura 1. Representación visual de un análisis de abandono nominal.
 > **Nota**
 >
 > Todas las funciones utilizadas para los análisis de abandono nominal
-> dentro de PAHOabc comienzan con el prefijo `nod_`.
+> dentro de immunABC comienzan con el prefijo `nod_`.
 
 ## Glosario
 
@@ -42,11 +42,11 @@ Figura 1. Representación visual de un análisis de abandono nominal.
 
 A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que,
+En concreto, immunABC puede distinguir tres niveles administrativos que,
 listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1.  ADM0: El país. Este es el nivel administrativo más alto.
@@ -62,8 +62,8 @@ para nombrar las dosis de vacunas. Es posible que esta convención no
 coincida con la que usa su país o institución, pero esto no afecta el
 uso del paquete si los nombres se aplican de manera consistente.
 
-Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc
-son:
+Por ejemplo, los nombres de las vacunas utilizados en el paquete
+immunABC son:
 
 | Abreviatura | Nombre completo                                          |
 |-------------|----------------------------------------------------------|
@@ -79,11 +79,11 @@ son:
 ### Instalar el paquete
 
 El primer paso para ejecutar el análisis de tasa de abandono nominal es
-instalar el paquete PAHOabc, disponible en GitHub.
+instalar el paquete immunABC, disponible en GitHub.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Cargar los datos
@@ -91,14 +91,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 Las funciones de este módulo requieren que proporcione su **RNVe** en un
 formato específico.
 
-Para facilitar la prueba de PAHOabc y la comprensión de la estructura
+Para facilitar la prueba de immunABC y la comprensión de la estructura
 requerida, a continuación se presenta el conjunto de datos de ejemplo
 que utiliza este módulo.
 
 #### RNVe
 
 El conjunto de datos
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 proporciona un ejemplo de Registro Nominal de Vacunación electrónico
 (RNVe). Es una tabla nominal simulada con eventos individuales de
 vacunación. Cada fila corresponde a una vacunación e incluye información
@@ -107,7 +107,7 @@ sobre la residencia de la persona, el lugar donde fue vacunada
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -136,9 +136,9 @@ style="width:100%;"}
 
 ### Análisis de abandono nominal
 
-PAHOabc permite estimar la tasa de abandono nominal persona por persona.
-El análisis puede aplicarse a cualquier par de dosis, siempre que se
-indique una dosis inicial y una dosis final. Para interpretar
+immunABC permite estimar la tasa de abandono nominal persona por
+persona. El análisis puede aplicarse a cualquier par de dosis, siempre
+que se indique una dosis inicial y una dosis final. Para interpretar
 correctamente los resultados, la dosis inicial debe preceder a la dosis
 final en el esquema de vacunación; por ejemplo, DTP1-DTP3 o DTP1-MCV1.
 Además, el usuario puede seleccionar el nivel de agregación de los
@@ -147,16 +147,16 @@ resultados: nacional, ADM1 o ADM2.
 #### Flujo de trabajo esperado
 
 Las funciones
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 y
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md)
 trabajan en conjunto para analizar y visualizar el abandono nominal. La
 función
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 calcula el abandono nominal y los casos completos por residencia, según
 los niveles administrativos, cohortes de nacimiento y vacunas
 seleccionados. Su resultado es una tabla compatible con
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md),
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md),
 que genera la visualización correspondiente.
 
 ![Figura 2. Flujo de trabajo esperado para el análisis de tasa de
@@ -170,14 +170,14 @@ nominal.
 #### Ejemplo
 
 A continuación se muestra un caso de uso sencillo de
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md),
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md),
 en el que se calcula el abandono nominal entre DTP1 y DTP3 a nivel ADM1
 usando el conjunto de datos de ejemplo.
 
 ``` r
 
 # Ejecuta la función de abandono nominal
-example_dropout <- nod_dropout(data.EIR = pahoabc.EIR,
+example_dropout <- nod_dropout(data.EIR = immunABC.EIR,
                                vaccine_init = "DTP1", #Vacuna inicial según su conjunto de datos
                                vaccine_end= "DTP3", #Vacuna final según su conjunto de datos
                                geo_level = "ADM1", #Puede ser ADM0, ADM1 o ADM2
@@ -236,7 +236,7 @@ obtener más información.
 #### Manejo de inconsistencias de residencia
 
 A nivel ADM1 o ADM2,
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 necesita agrupar la dosis inicial y final de una persona bajo un mismo
 grupo de residencia. Si la residencia registrada de una persona no es la
 misma en todos sus registros (por ejemplo, se mudó entre su dosis de
@@ -245,7 +245,7 @@ quedarían divididas entre dos grupos de residencia distintos, y cada una
 aparecería incorrectamente como un esquema incompleto.
 
 El parámetro `fix_residence` controla cómo maneja esto
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md):
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md):
 
 - `fix_residence = TRUE` (predeterminado): antes de calcular el
   abandono, todos los registros de una persona se corrigen para usar el
@@ -253,7 +253,7 @@ El parámetro `fix_residence` controla cómo maneja esto
   de modo que sus dosis queden agrupadas correctamente.
 - `fix_residence = FALSE`: los valores de residencia se dejan tal como
   fueron registrados. Si se detectan inconsistencias,
-  [`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+  [`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
   mostrará una advertencia indicando que los resultados podrían ser
   inexactos, y que deben resolverse manualmente de antemano o volver a
   establecer `fix_residence` en `TRUE`.
@@ -321,7 +321,7 @@ Resultado con fix_residence = TRUE {.table}
 
 Con `fix_residence = FALSE`, las dos dosis de `ID 1` permanecen
 divididas entre `ADM1_1` y `ADM1_2`, por lo que
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 reporta incorrectamente un abandono en ambos grupos, y advierte que la
 inconsistencia de residencia no fue corregida:
 
@@ -358,7 +358,7 @@ unfixed_result %>% kable(digits = 3, caption = "Resultado con fix_residence = FA
 Resultado con fix_residence = FALSE {.table}
 
 Esta salida puede pasarse directamente a la función
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md)
 como se muestra a continuación.
 
 ``` r
@@ -375,11 +375,11 @@ example_dropout_plot
 ##### Parámetros aceptados
 
 La función
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md)
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md)
 acepta los siguientes parámetros:
 
 - `data`: Tabla generada a partir del resultado de la función
-  [`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md).
+  [`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md).
 - `order`: Organiza las barras según tres opciones: alfabético
   (“alpha”), descendente (“desc”) o ascendente (“asc”); el valor
   predeterminado es “alpha”.
@@ -414,15 +414,15 @@ permiten observar.
 
 Esta viñeta presenta un flujo de trabajo reproducible: instalar el
 paquete, explorar el RNVe de ejemplo, calcular el abandono con
-[`nod_dropout()`](https://im-data-paho.github.io/pahoabc/reference/nod_dropout.md)
+[`nod_dropout()`](https://im-data-paho.github.io/immunabc/reference/nod_dropout.md)
 y visualizar los resultados con
-[`nod_barplot()`](https://im-data-paho.github.io/pahoabc/reference/nod_barplot.md).
+[`nod_barplot()`](https://im-data-paho.github.io/immunabc/reference/nod_barplot.md).
 El ejemplo estima el abandono entre DTP1 y DTP3 a nivel ADM1 y muestra
 que todas las subdivisiones superan el umbral de 25 %; ADM1_1 presenta
 el peor resultado y ADM1_4 el mejor, en relación con una línea de
 referencia de 5 %.
 
 Al combinar datos nominales del RNVe con un flujo de análisis claro,
-PAHOabc ayuda a identificar pérdidas de seguimiento con desagregación
+immunABC ayuda a identificar pérdidas de seguimiento con desagregación
 geográfica y apoya a las autoridades de salud en la focalización de
 intervenciones.

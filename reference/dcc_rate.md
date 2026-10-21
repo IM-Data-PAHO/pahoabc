@@ -15,7 +15,7 @@ dcc_rate(data.EIR, date_1, date_2, geo_level = "ADM0", birth_cohorts = NULL)
 - data.EIR:
 
   Data frame. A data frame containing individual vaccination records.
-  See `pahoabc.EIR` for expected structure.
+  See `immunABC.EIR` for expected structure.
 
 - date_1:
 

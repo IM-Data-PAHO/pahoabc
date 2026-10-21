@@ -22,16 +22,16 @@ roc_coverage(
 - data.EIR:
 
   A data frame containing individual vaccination records. See
-  `pahoabc.EIR` for expected structure.
+  `immunABC.EIR` for expected structure.
 
 - data.schedule:
 
-  A data frame defining the vaccination schedule. See `pahoabc.schedule`
-  for expected structure.
+  A data frame defining the vaccination schedule. See
+  `immunABC.schedule` for expected structure.
 
 - data.pop:
 
-  A data frame with population denominators. See `pahoabc.pop.ADMX` for
+  A data frame with population denominators. See `immunABC.pop.ADMX` for
   structure examples.
 
 - geo_level:

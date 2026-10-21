@@ -1,7 +1,7 @@
 # Comparación de consistencia de fechas
 
 [🌐 Read this in
-English](https://im-data-paho.github.io/pahoabc/articles/en/date_consistency_comparison_en.md)
+English](https://im-data-paho.github.io/immunabc/articles/en/date_consistency_comparison_en.md)
 
 ## Fundamento
 
@@ -20,7 +20,7 @@ entre cualquier par de variables de fecha en el RNVe.
 > **Nota**
 >
 > Todas las funciones utilizadas para los análisis de comparación de
-> consistencia de fechas dentro de PAHOabc comienzan con el prefijo
+> consistencia de fechas dentro de immunABC comienzan con el prefijo
 > `dcc_`.
 
 ## Glosario
@@ -29,11 +29,11 @@ entre cualquier par de variables de fecha en el RNVe.
 
 A lo largo de esta viñeta se hace referencia a distintos niveles de
 división político-geográfica. Estos niveles son definidos por cada país
-o territorio y pueden recibir nombres diferentes. PAHOabc no depende de
+o territorio y pueden recibir nombres diferentes. immunABC no depende de
 esos nombres locales; por eso, el usuario debe recodificar sus variables
 para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que,
+En concreto, immunABC puede distinguir tres niveles administrativos que,
 listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1.  ADM0: El país. Este es el nivel administrativo más alto.
@@ -56,25 +56,25 @@ listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 ``` r
 
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ### Cargar los datos
 
 Las funciones de este módulo requieren que proporcione su **RNVe** en el
-formato estándar de PAHOabc.
+formato estándar de immunABC.
 
 #### RNVe
 
 El conjunto de datos
-[`pahoabc::pahoabc.EIR`](https://im-data-paho.github.io/pahoabc/reference/pahoabc.EIR.md)
+[`immunABC::immunABC.EIR`](https://im-data-paho.github.io/immunabc/reference/immunABC.EIR.md)
 proporciona una tabla nominal simulada con eventos individuales de
 vacunación de un Registro Nominal de Vacunación electrónico (RNVe). Cada
 fila corresponde a una vacunación de una persona.
 
 ``` r
 
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 | ID | date_birth | date_vax | ADM1_residence | ADM2_residence | ADM1_occurrence | ADM2_occurrence | dose |
@@ -104,16 +104,16 @@ style="width:100%;"}
 El conjunto de funciones `dcc_` contiene cuatro funciones que trabajan
 en conjunto:
 
-1.  [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+1.  [`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
     — calcula las tasas de consistencia agregadas por nivel geográfico.
-2.  [`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+2.  [`dcc_barplot()`](https://im-data-paho.github.io/immunabc/reference/dcc_barplot.md)
     — visualiza el resultado de
-    [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+    [`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
     como un gráfico de barras apiladas.
-3.  [`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+3.  [`dcc_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent.md)
     — lista los registros inconsistentes e incompletos de forma
     individual, con su diferencia en días.
-4.  [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+4.  [`dcc_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent_plot.md)
     — visualiza la distribución de las diferencias en días para los
     registros inconsistentes.
 
@@ -129,7 +129,7 @@ consistencia de fechas.
 
 #### Paso 1 — Calcular las tasas de consistencia con `dcc_rate()`
 
-[`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+[`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
 compara dos variables de fecha en el RNVe y devuelve, para cada unidad
 geográfica, el conteo y el porcentaje de registros clasificados como
 `CONSISTENT`, `INCONSISTENT` o `DATE_MISSING`.
@@ -141,7 +141,7 @@ temprana) a nivel ADM1.
 ``` r
 
 rate_df <- dcc_rate(
-  data.EIR  = pahoabc.EIR,
+  data.EIR  = immunABC.EIR,
   date_1    = "date_vax",
   date_2    = "date_birth",
   geo_level = "ADM1"
@@ -170,7 +170,7 @@ Tasas de consistencia de fechas por ADM1 {.table}
 
 ##### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
 - `date_1`: Nombre de la variable de fecha que se verifica (la fecha
   cronológicamente más reciente).
 - `date_2`: Nombre de la variable de fecha de referencia (la fecha
@@ -183,9 +183,9 @@ Tasas de consistencia de fechas por ADM1 {.table}
 #### Paso 2 — Visualizar las tasas con `dcc_barplot()`
 
 El resultado de
-[`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+[`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
 puede pasarse directamente a
-[`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+[`dcc_barplot()`](https://im-data-paho.github.io/immunabc/reference/dcc_barplot.md)
 para producir un gráfico de barras apiladas con el desglose de
 categorías de consistencia por unidad geográfica.
 
@@ -203,7 +203,7 @@ dcc_barplot(
 ##### Parámetros aceptados
 
 - `data`: Resultado de
-  [`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md).
+  [`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md).
 - `date_1_name`: Etiqueta para `date_1` en el subtítulo del gráfico.
   Valor predeterminado: `"date 1"`.
 - `date_2_name`: Etiqueta para `date_2` en el subtítulo del gráfico.
@@ -224,7 +224,7 @@ atención.
 
 #### Paso 3 — Inspeccionar los registros inconsistentes con `dcc_inconsistent()`
 
-[`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+[`dcc_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent.md)
 devuelve una tabla a nivel de registro con todas las entradas
 `INCONSISTENT` y `DATE_MISSING`, incluyendo la diferencia en días entre
 las dos fechas.
@@ -232,7 +232,7 @@ las dos fechas.
 ``` r
 
 inconsistent_df <- dcc_inconsistent(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   date_1   = "date_vax",
   date_2   = "date_birth"
 )
@@ -257,7 +257,7 @@ Muestra de registros inconsistentes e incompletos {.table}
 
 ##### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
 - `date_1`: Nombre de la variable de fecha que se verifica.
 - `date_2`: Nombre de la variable de fecha de referencia.
 - `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a
@@ -271,7 +271,7 @@ nivel de registro.
 
 #### Paso 4 — Visualizar la distribución de las diferencias en días con `dcc_inconsistent_plot()`
 
-[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent_plot.md)
 produce un histograma de las diferencias en días en **valor absoluto**
 para los registros inconsistentes, agrupados en intervalos
 personalizables. Esto permite caracterizar la gravedad de las
@@ -282,7 +282,7 @@ sistemáticos más serios.
 ``` r
 
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Fecha de vacunación",
@@ -294,7 +294,7 @@ dcc_inconsistent_plot(
 
 ##### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
 - `date_1`: Nombre de la variable de fecha que se verifica.
 - `date_2`: Nombre de la variable de fecha de referencia.
 - `date_1_name`: Etiqueta para `date_1` en el subtítulo del gráfico.
@@ -312,7 +312,7 @@ diferencias pequeñas:
 ``` r
 
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Fecha de vacunación",
@@ -337,13 +337,13 @@ sistemáticos más serios.
 
 El módulo `dcc_` ofrece una cadena completa de análisis para evaluar la
 consistencia de fechas en datos del RNVe. Partiendo de
-[`dcc_rate()`](https://im-data-paho.github.io/pahoabc/reference/dcc_rate.md)
+[`dcc_rate()`](https://im-data-paho.github.io/immunabc/reference/dcc_rate.md)
 para una visión geográfica general, pasando por
-[`dcc_barplot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_barplot.md)
+[`dcc_barplot()`](https://im-data-paho.github.io/immunabc/reference/dcc_barplot.md)
 para la visualización, hasta
-[`dcc_inconsistent()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent.md)
+[`dcc_inconsistent()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent.md)
 para la inspección a nivel de registro y
-[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/pahoabc/reference/dcc_inconsistent_plot.md)
+[`dcc_inconsistent_plot()`](https://im-data-paho.github.io/immunabc/reference/dcc_inconsistent_plot.md)
 para caracterizar la magnitud de los errores, el conjunto de funciones
 provee a los gestores de datos y analistas de salud pública las
 herramientas necesarias para detectar, cuantificar y priorizar
