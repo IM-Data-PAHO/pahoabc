@@ -14,11 +14,11 @@ roc_coverage(
 )
 }
 \arguments{
-\item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.}
 
-\item{data.schedule}{A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
+\item{data.schedule}{A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.}
 
-\item{data.pop}{A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples.}
+\item{data.pop}{A data frame with population denominators. See \code{immunABC.pop.ADMX} for structure examples.}
 
 \item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". \code{data.pop} must contain the columns to match.}
 

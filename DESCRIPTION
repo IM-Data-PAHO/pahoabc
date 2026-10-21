@@ -1,6 +1,6 @@
-Package: pahoabc
+Package: immunABC
 Type: Package
-Title: PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage
+Title: immunABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage
 Version: 0.11.1
 Authors@R: c(
     person("Ignacio", "Castro", email = "castroign@paho.org", role = "ctb"),

@@ -14,7 +14,7 @@ nod_dropout(
 )
 }
 \arguments{
-\item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.}
 
 \item{vaccine_init}{Initial vaccine to use in nominal dropout calculation.}
 

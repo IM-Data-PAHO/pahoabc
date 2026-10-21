@@ -3,8 +3,8 @@
 #' Generates an UpSet plot showing the number of individuals who received various combinations of vaccine doses defined in a vaccination schedule, for a given birth cohort.
 #' Individuals with a complete schedule are highlighted.
 #'
-#' @param data.EIR A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.schedule A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
+#' @param data.EIR A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
+#' @param data.schedule A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.
 #' @param birth_cohort Numeric. A single birth year for which to calculate and visualize coverage.
 #' @param denominator The denominator to use. If \code{NULL} (default), then the number of unique IDs in \code{data.EIR} is used.
 #' @param min_size The minimum number of doses (as a percentage of the \code{denominator}) a group has to have in order to be shown in the plot. Default is 1 percent.

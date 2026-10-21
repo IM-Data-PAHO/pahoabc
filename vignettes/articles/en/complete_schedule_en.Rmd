@@ -16,7 +16,7 @@ output:
 <a href="../es/complete_schedule_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
 
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
-library(pahoabc)
+library(immunABC)
 library(dplyr)
 library(knitr)
 ```
@@ -38,15 +38,15 @@ To construct this indicator, it is essential to assess if each individual receiv
 
 > **Note**
 > 
-> All functions used for complete schedule coverage analyses within PAHOabc begin with the `cs_` prefix.
+> All functions used for complete schedule coverage analyses within immunABC begin with the `cs_` prefix.
 
 # Glossary
 
 ## Political Geographic Boundaries
 
-Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. immunABC is agnostic to these names and requires the user to recode their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+Namely, immunABC can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1. ADM0: The country. This is the top-most administrative level.
 2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
@@ -56,7 +56,7 @@ Namely, PAHOabc can distinguish three administrative levels, which listed from t
 
 Our example datasets use a specific naming convention for the vaccine doses. This might not match your own naming schemes, but it will not affect the usage of the package as long as you make sure to be consistent when naming vaccine doses.
 
-For example, the vaccine names used in the PAHOabc package are:
+For example, the vaccine names used in the immunABC package are:
 
 | Abbreviation | Full Name                                                        |
 |--------------|------------------------------------------------------------------|
@@ -71,7 +71,7 @@ For example, the vaccine names used in the PAHOabc package are:
 
 ## Install Package
 
-The first step to run the complete schedule coverage analyses is to install the PAHOabc package available on GitHub.
+The first step to run the complete schedule coverage analyses is to install the immunABC package available on GitHub.
 
 ```{r, install_package, eval=FALSE}
 devtools::install_github("IM-Data-PAHO/pahoabc")
@@ -86,14 +86,14 @@ The functions in this module require you to provide three datasets in a specific
 3. A table with population denominators depending on the geographic level of your analysis.
     1. This is optional for the `cs_coverage()` function (but not shown in this vignette).
 
-To make it easy for you to test out PAHOabc's functionality and understand the structure we require for your datasets, we will now explore the example datasets provided by PAHOabc that are required by this module.
+To make it easy for you to test out immunABC's functionality and understand the structure we require for your datasets, we will now explore the example datasets provided by immunABC that are required by this module.
 
 ### EIR
 
-The `pahoabc::pahoabc.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person, including information on their residence, where they were vaccinated (occurrence), their date of birth, and the vaccine dose received.
+The `immunABC::immunABC.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person, including information on their residence, where they were vaccinated (occurrence), their date of birth, and the vaccine dose received.
 
-```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+```{r immunABC-EIR, message=FALSE}
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 - `ID`: Unique person identification number.
@@ -107,10 +107,10 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 
 ### Vaccination Schedule
 
-The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing each vaccine dose and its recommended age of administration (in days). It helps the package determine whether an individual is up to date with their vaccinations.
+The `immunABC::immunABC.schedule` dataset defines the national immunization schedule, listing each vaccine dose and its recommended age of administration (in days). It helps the package determine whether an individual is up to date with their vaccinations.
 
-```{r pahoabc-schedule, message=FALSE}
-pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
+```{r immunABC-schedule, message=FALSE}
+immunABC.schedule %>% kable(caption = "Example Immunization Schedule")
 ```
 
 - `dose`: A combined variable representing the vaccine type and its corresponding dose number. For example, DTP1 refers to the first dose of a vaccine containing diphtheria, tetanus, and pertussis components.
@@ -120,14 +120,14 @@ pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
 
 > **Note**
 > 
-> The `dose` names must match exactly those in the `dose` column of the `pahoabc.EIR` dataset.
+> The `dose` names must match exactly those in the `dose` column of the `immunABC.EIR` dataset.
 
 ### Population Denominators
 
 This module will require you to provide a table with population denominators. The geographic level of this table will be directly dependent on the geographic level of your analysis. For example, if you were to perform an analysis at ADM1 level, the required population denominator table must contain the following.
 
-```{r pahoabc-pop-ADM1, message=FALSE}
-pahoabc.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
+```{r immunABC-pop-ADM1, message=FALSE}
+immunABC.pop.ADM1 %>% head() %>% kable(caption = "Example Population at ADM1")
 ```
 
 Note that this table is in long format and contains the corresponding `population` of children of a specific `age` during a given `year` for a certain `ADM1` level.
@@ -150,8 +150,8 @@ Below is a simplified example of the calculation of complete schedule coverage f
 
 # compute coverage
 coverage_df <- cs_coverage(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level = "ADM1",
   birth_cohorts = 2022 # this can be a vector of years
 )
@@ -182,8 +182,8 @@ The `cs_upsetplot()` function allows us to produce an upset plot to evaluate the
 
 # produce upset plot
 coverage_upset <- cs_upsetplot(
-  data.EIR = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   birth_cohort = 2022
 )
 

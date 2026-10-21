@@ -4,8 +4,8 @@
 #'
 #' Day 0 corresponds to \code{age_schedule_low}, so records vaccinated before the timeliness window (\code{n_early}) are excluded from the distribution and from its denominator (\code{total}), as are records with a missing date (\code{n_missing}). Because of this, the \code{cdf} at \code{window_end} is not equal to the \code{TIMELY} rate from \code{vt_rate}, which keeps early records in its denominator. Also note that, since only vaccinated records are analyzed, the \code{cdf} always reaches 100\%, which overestimates the probability of vaccination of the whole target population.
 #'
-#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
+#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
+#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.
 #' @param geo_level Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included.
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which the distribution should be calculated. If \code{NULL} (default), all available cohorts are pooled together. Note that the most recent cohorts may not have had time to receive late vaccinations, which biases the distribution towards faster vaccination; consider excluding cohorts with incomplete follow-up. Specifying cohorts also excludes records with no \code{date_birth}, so \code{n_missing} may be undercounted.

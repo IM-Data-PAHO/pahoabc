@@ -1,6 +1,6 @@
 #' (No)minal (D)ropout Rate
 #'
-#' @param data.EIR A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
+#' @param data.EIR A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
 #' @param vaccine_init Initial vaccine to use in nominal dropout calculation.
 #' @param vaccine_end Final vaccine to use in nominal dropout calculation.
 #' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".

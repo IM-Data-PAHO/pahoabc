@@ -17,7 +17,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(pahoabc)
+library(immunABC)
 library(dplyr)
 library(ggplot2)
 library(knitr)
@@ -40,15 +40,15 @@ Performing the analysis with aggregated data does not guarantee that the individ
 
 > **Note**
 > 
-> All functions used for nominal dropout analyses within PAHOabc begin with the `nod_` prefix.
+> All functions used for nominal dropout analyses within immunABC begin with the `nod_` prefix.
 
 # Glossary
 
 ## Political Geographic Boundaries
 
-Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. immunABC is agnostic to these names and requires the user to recode their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+Namely, immunABC can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1. ADM0: The country. This is the top-most administrative level.
 2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
@@ -58,7 +58,7 @@ Namely, PAHOabc can distinguish three administrative levels, which listed from t
 
 Our example datasets use a specific naming convention for the vaccine doses. This might not match your own naming schemes, but it will not affect the usage of the package as long as you make sure to be consistent when naming vaccine doses.
 
-For example, the vaccine names used in the PAHOabc package are:
+For example, the vaccine names used in the immunABC package are:
 
 | Abbreviation | Full Name                                                        |
 |--------------|------------------------------------------------------------------|
@@ -73,7 +73,7 @@ For example, the vaccine names used in the PAHOabc package are:
 
 ## Install Package
 
-The first step to run the nominal dropout rate analysis is to install the PAHOabc package available on Github
+The first step to run the nominal dropout rate analysis is to install the immunABC package available on Github
 
 ```{r, install_package, eval=FALSE}
 devtools::install_github("IM-Data-PAHO/pahoabc")
@@ -83,14 +83,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 The functions in this module require you to provide your **EIR dataset** in a specific format.
 
-To make it easy for you to test out PAHOabc's functionality and understand the structure we require for your datasets, we will now explore the example dataset provided by PAHOabc that is required by this module.
+To make it easy for you to test out immunABC's functionality and understand the structure we require for your datasets, we will now explore the example dataset provided by immunABC that is required by this module.
 
 ### EIR
 
-The `pahoabc::pahoabc.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person, including information on their residence, where they were vaccinated (occurrence), their date of birth, and the vaccine dose received.
+The `immunABC::immunABC.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person, including information on their residence, where they were vaccinated (occurrence), their date of birth, and the vaccine dose received.
 
-```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+```{r immunABC-EIR, message=FALSE}
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 - `ID`: Unique person identification number.
@@ -104,7 +104,7 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 
 ## Nominal Dropout Analysis
 
-PAHOabc includes the functionality to estimate the nominal dropout rate, on a per-person basis. This allows for the analysis of any pair of doses by specifying an initial dose and a final dose. For correct interpretation, the initial dose must precede the final dose in the vaccination schedule, for example: DTP1 – DTP3 or DTP1 – MCV1. Additionally, it allows users to select the level of aggregation for the results, which can be at the national level or subnational levels (ADM1 or ADM2).
+immunABC includes the functionality to estimate the nominal dropout rate, on a per-person basis. This allows for the analysis of any pair of doses by specifying an initial dose and a final dose. For correct interpretation, the initial dose must precede the final dose in the vaccination schedule, for example: DTP1 – DTP3 or DTP1 – MCV1. Additionally, it allows users to select the level of aggregation for the results, which can be at the national level or subnational levels (ADM1 or ADM2).
 
 ### Expected workflow
 
@@ -120,7 +120,7 @@ Here is a simple use case of the `nod_dropout()` function, where we compute nomi
 
 ```{r, nom-dropout-analysis, warning=FALSE, message=FALSE}
 #Runs the nominal dropout function
-example_dropout <- nod_dropout(data.EIR = pahoabc.EIR,
+example_dropout <- nod_dropout(data.EIR = immunABC.EIR,
                                vaccine_init = "DTP1", #Starting vaccine based on your dataset
                                vaccine_end= "DTP3", #Ending vaccine based on your dataset
                                geo_level = "ADM1", #Can be ADM0, ADM1 or ADM2
@@ -226,8 +226,8 @@ All of the administrative units have a nominal dropout rate above **25%** meanin
 
 # Summary
 
-Accurately monitoring continuity in multi-dose vaccination schedules is vital for immunisation programmes. The *nominal dropout rate*—the proportion of individuals who begin a series (e.g., DTP1) but fail to receive its final dose (e.g., DTP3)—offers a person-level view of programme performance that aggregated counts cannot. This vignette introduces PAHOabc, an R package that streamlines nominal dropout analysis by harnessing electronic immunisation registry (EIR) data.
+Accurately monitoring continuity in multi-dose vaccination schedules is vital for immunisation programmes. The *nominal dropout rate*—the proportion of individuals who begin a series (e.g., DTP1) but fail to receive its final dose (e.g., DTP3)—offers a person-level view of programme performance that aggregated counts cannot. This vignette introduces immunABC, an R package that streamlines nominal dropout analysis by harnessing electronic immunisation registry (EIR) data.
 
 After defining key concepts—administrative units (ADM0–2) and standardised vaccine-dose codes—the document walks the reader through a reproducible workflow: installing the package, exploring the bundled example EIR, computing dropout with `nod_dropout()`, and visualising results with `nod_barplot()`. A worked example estimates DTP1→DTP3 dropout at the ADM1 level, revealing that every subdivision exceeds the 25 % dropout threshold; ADM1_1 performs the worst, while ADM1_4 performs the best relative to a 5 % target line.
 
-By coupling granular EIR data with a transparent analytical pipeline, PAHOabc enables precise, geographically disaggregated insights into follow-up losses, equipping health authorities to target interventions where they are most needed.
+By coupling granular EIR data with a transparent analytical pipeline, immunABC enables precise, geographically disaggregated insights into follow-up losses, equipping health authorities to target interventions where they are most needed.

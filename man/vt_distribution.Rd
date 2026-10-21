@@ -13,9 +13,9 @@ vt_distribution(
 )
 }
 \arguments{
-\item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.}
 
-\item{data.schedule}{Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
+\item{data.schedule}{Data frame. A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.}
 
 \item{geo_level}{Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0".}
 

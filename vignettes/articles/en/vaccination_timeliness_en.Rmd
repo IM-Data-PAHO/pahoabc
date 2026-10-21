@@ -16,7 +16,7 @@ output:
 <a href="../es/vaccination_timeliness_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
 
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
-library(pahoabc)
+library(immunABC)
 library(dplyr)
 library(knitr)
 
@@ -40,7 +40,7 @@ Therefore, **the objective of this indicator** is to analyze vaccination timelin
 
 > **Note**
 >
-> 1. All functions used for vaccination timeliness analyses within PAHOabc begin with the `vt_` prefix.
+> 1. All functions used for vaccination timeliness analyses within immunABC begin with the `vt_` prefix.
 
 ## Non-probabilistic Analysis
 
@@ -57,7 +57,7 @@ The non-probabilistic analysis measures the time that elapses between the age in
 Before carrying out the analysis, the country must define:
 
 - **Vaccines to evaluate**: each vaccine dose is analyzed individually. An aggregated analysis of several doses can then be carried out.
-- **Timeliness per vaccine**: for each dose, the period considered timely is defined, with a minimum and a maximum age, according to the country's guidelines. In PAHOabc, this period corresponds to the `age_schedule_low` and `age_schedule_high` columns of the vaccination schedule.
+- **Timeliness per vaccine**: for each dose, the period considered timely is defined, with a minimum and a maximum age, according to the country's guidelines. In immunABC, this period corresponds to the `age_schedule_low` and `age_schedule_high` columns of the vaccination schedule.
 - **Time categories**: ranges of days used to distribute untimely vaccinations. The country defines the ranges, although the package includes predefined ranges.
 - **Year to evaluate**: it is up to the country to analyze by birth cohort or by calendar year. The `vt_` functions allow filtering by birth cohort with the `birth_cohorts` parameter.
 - **Level of geographic disaggregation**: national (ADM0), first subnational level (ADM1), or second subnational level (ADM2).
@@ -65,7 +65,7 @@ Before carrying out the analysis, the country must define:
 
 > **Warning**
 >
-> PAHOabc does not verify the minimum observation period. If birth cohorts that have not yet completed the timeliness window by the date the data were extracted are included, only those already vaccinated will appear in the EIR, which overestimates timeliness. Choose `birth_cohorts` that have had enough time to complete the timeliness window of the doses analyzed.
+> immunABC does not verify the minimum observation period. If birth cohorts that have not yet completed the timeliness window by the date the data were extracted are included, only those already vaccinated will appear in the EIR, which overestimates timeliness. Choose `birth_cohorts` that have had enough time to complete the timeliness window of the doses analyzed.
 
 ### Characteristics of the Analysis
 
@@ -94,7 +94,7 @@ The probabilistic analysis estimates the **cumulative incidence** of the event "
 
 > **Note**
 >
-> Ideally, this analysis considers the entire population that should receive the vaccine (for example, from the live birth registry). PAHOabc works with the database of vaccinated individuals in the EIR, that is, only with the individuals who received the dose analyzed. In this case, the final probability will always be 100%, which **overestimates** the real probability of vaccination of the population.
+> Ideally, this analysis considers the entire population that should receive the vaccine (for example, from the live birth registry). immunABC works with the database of vaccinated individuals in the EIR, that is, only with the individuals who received the dose analyzed. In this case, the final probability will always be 100%, which **overestimates** the real probability of vaccination of the population.
 
 ### Operational Definitions
 
@@ -107,7 +107,7 @@ The probabilistic analysis estimates the **cumulative incidence** of the event "
 - **Vaccines to evaluate**: each dose is analyzed individually, since each one has its own timeliness window.
 - **Timeliness per vaccine**: same as in the non-probabilistic analysis (between `age_schedule_low` and `age_schedule_high`).
 - **Population percentiles**: it is recommended to estimate at least the times for 25%, 50% and 75%.
-- **Year to evaluate**: using a birth cohort is suggested. PAHOabc also allows combining several cohorts (see the warning below).
+- **Year to evaluate**: using a birth cohort is suggested. immunABC also allows combining several cohorts (see the warning below).
 - **Level of geographic disaggregation**: ADM0, ADM1 or ADM2.
 
 > **Warning**
@@ -144,9 +144,9 @@ $$
 
 ## Political Geographic Boundaries
 
-Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. immunABC is agnostic to these names and requires the user to recode their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+Namely, immunABC can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1. ADM0: The country. This is the top-most administrative level.
 2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
@@ -171,14 +171,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Load Data
 
-The functions in this module require your **EIR dataset** and a **vaccination schedule** with the timeliness windows, both in the standard PAHOabc format.
+The functions in this module require your **EIR dataset** and a **vaccination schedule** with the timeliness windows, both in the standard immunABC format.
 
 ### EIR
 
-The `pahoabc::pahoabc.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an EIR. Each row corresponds to a single vaccination act for a person.
+The `immunABC::immunABC.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an EIR. Each row corresponds to a single vaccination act for a person.
 
-```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+```{r immunABC-EIR, message=FALSE}
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 - `ID`: Unique person identification number.
@@ -190,14 +190,14 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 > **Warning**
 >
 > 1. The functions in this module calculate age at vaccination as `date_vax - date_birth`. If `data.EIR` contains records where `date_vax` occurs before `date_birth` (i.e., a negative age at vaccination), this points to a **date consistency** error. When this happens, `vt_` functions will emit a warning directing you to the [Date Consistency Comparison module](date_consistency_comparison_en.html) to identify and resolve those records first.
-> 2. The functions in this module count vaccination records, not individuals. If `data.EIR` contains duplicate records (the same `ID` and `dose` registered more than once), that individual is counted more than once in both the numerator and the denominator. PAHOabc does not remove duplicates, so make sure to remove them before running the analysis. Note that it is up to you to decide which record to keep for each `ID` and `dose` (e.g., the one with the earliest `date_vax`).
+> 2. The functions in this module count vaccination records, not individuals. If `data.EIR` contains duplicate records (the same `ID` and `dose` registered more than once), that individual is counted more than once in both the numerator and the denominator. immunABC does not remove duplicates, so make sure to remove them before running the analysis. Note that it is up to you to decide which record to keep for each `ID` and `dose` (e.g., the one with the earliest `date_vax`).
 
 ### Vaccination Schedule
 
-The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing for each vaccine dose its age of administration and its timeliness window, in days.
+The `immunABC::immunABC.schedule` dataset defines the national immunization schedule, listing for each vaccine dose its age of administration and its timeliness window, in days.
 
-```{r pahoabc-schedule, message=FALSE}
-pahoabc.schedule %>% kable(caption = "Example Immunization Schedule with timeliness windows")
+```{r immunABC-schedule, message=FALSE}
+immunABC.schedule %>% kable(caption = "Example Immunization Schedule with timeliness windows")
 ```
 
 - `dose`: Combined variable representing vaccine type and dose number.
@@ -235,8 +235,8 @@ By default, `vaccines = NULL` pools all doses in `data.schedule` into a single i
 
 ```{r vt-rate, message=FALSE}
 rate_df <- vt_rate(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1",
   birth_cohorts = 2022
 )
@@ -248,8 +248,8 @@ Specifying `vaccines` disaggregates the results by `dose`:
 
 ```{r vt-rate-by-dose, message=FALSE}
 rate_by_dose_df <- vt_rate(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1",
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
@@ -260,8 +260,8 @@ rate_by_dose_df %>% head(10) %>% kable(digits = 2, caption = "Vaccination timeli
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
-- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
+- `data.schedule`: Vaccination schedule data frame in immunABC format.
 - `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
 - `vaccines`: Character vector of doses to include, disaggregating results by `dose`. Default `NULL` pools all doses in `data.schedule`.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to include. Default `NULL` uses all available cohorts.
@@ -302,8 +302,8 @@ Each bar represents a geographic unit and is divided into segments: `TIMELY` (bl
 
 ```{r vt-inconsistent, message=FALSE}
 inconsistent_df <- vt_inconsistent(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = "DTP1"
 )
 
@@ -317,8 +317,8 @@ inconsistent_df %>%
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
-- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
+- `data.schedule`: Vaccination schedule data frame in immunABC format.
 - `vaccines`: Character vector of doses to include. Default `NULL` includes all doses in `data.schedule`.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to include. Default `NULL` uses all available cohorts.
 
@@ -330,8 +330,8 @@ The `days_outside_range` column is negative when a person was vaccinated before 
 
 ```{r vt-inconsistent-plot, message=FALSE, fig.width=10, fig.height=6}
 vt_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = "DTP1",
   birth_cohorts = 2022
 )
@@ -341,8 +341,8 @@ When more than one vaccine is specified, the plot adds one column per dose. With
 
 ```{r vt-inconsistent-plot-facet, message=FALSE, fig.width=12, fig.height=6}
 vt_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
 )
@@ -350,8 +350,8 @@ vt_inconsistent_plot(
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
-- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
+- `data.schedule`: Vaccination schedule data frame in immunABC format.
 - `vaccines`: Character vector of doses to include, adding one column per `dose`. Default `NULL` pools the results of all doses into a single column.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to include. Default `NULL` uses all available cohorts.
 - `day_groups`: Defines the categories on the horizontal axis. It is a list of `c(lower, upper)` numeric pairs defining the lower and upper limits of each category, in days. Categories must start at 0 and be contiguous (each one starts where the previous one ends). The last category always extends to the maximum value in the data and is labeled `"X+"`. Default: 10-day groups from 0 up to 90+ days.
@@ -360,8 +360,8 @@ Time categories are defined by each country. For example, to use the categories 
 
 ```{r vt-inconsistent-plot-custom, message=FALSE, fig.width=12, fig.height=6}
 vt_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022,
   day_groups    = list(c(0, 40), c(40, 50), c(50, 60), c(60, 90), c(90, 120))
@@ -397,8 +397,8 @@ The functions for the probabilistic analysis are:
 
 ```{r vt-distribution, message=FALSE}
 dist_df <- vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   birth_cohorts = 2022
 )
 
@@ -409,8 +409,8 @@ With `vaccines` you can select the doses to analyze, and with `geo_level` disagg
 
 ```{r vt-distribution-by-dose, message=FALSE}
 dist_by_dose_ADM1_df <- vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1",
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
@@ -435,8 +435,8 @@ The table contains one row per dose and day (as long as at least one vaccination
 
 #### Parameters accepted
 
-- `data.EIR`: EIR table in PAHOabc format.
-- `data.schedule`: Vaccination schedule table in PAHOabc format.
+- `data.EIR`: EIR table in immunABC format.
+- `data.schedule`: Vaccination schedule table in immunABC format.
 - `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
 - `vaccines`: Character vector with the doses to include.
 - `birth_cohorts`: Numeric vector with the birth cohort(s) to include. The default `NULL` uses all available cohorts.
@@ -480,8 +480,8 @@ vt_cdf_plot(data = dist_by_dose_ADM1_df, percentile = 80, x_axis = "relative")
 
 ```{r vt-distribution-plot-pdf, message=FALSE, fig.width=12, fig.height=5}
 dist_by_dose_ADM0_df <- vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = c("DTP1", "DTP2", "DTP3"),
   birth_cohorts = 2022
 )
@@ -559,8 +559,8 @@ When there are many geographic areas (for example, at the ADM2 level), the `n_sl
 
 ```{r vt-percentile-plot-adm2, message=FALSE, fig.width=10, fig.height=6}
 vt_distribution(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   # at the ADM2 level there are many geographic areas
   geo_level     = "ADM2",
   vaccines      = c("DTP1", "DTP3"),

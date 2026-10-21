@@ -16,7 +16,7 @@ output:
 <a href="../es/eligibility_consistency_comparison_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
 
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
-library(pahoabc)
+library(immunABC)
 library(dplyr)
 library(knitr)
 ```
@@ -29,7 +29,7 @@ The eligibility consistency comparison module allows users to systematically ide
 
 > **Note**
 >
-> All functions used for eligibility consistency comparison analyses within PAHOabc begin with the `ecc_` prefix.
+> All functions used for eligibility consistency comparison analyses within immunABC begin with the `ecc_` prefix.
 
 > **Warning**
 >
@@ -39,9 +39,9 @@ The eligibility consistency comparison module allows users to systematically ide
 
 ## Political Geographic Boundaries
 
-Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. immunABC is agnostic to these names and requires the user to recode their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+Namely, immunABC can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1. ADM0: The country. This is the top-most administrative level.
 2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
@@ -65,14 +65,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Load Data
 
-The functions in this module require your **EIR dataset** and a **vaccination schedule**, both in the standard PAHOabc format.
+The functions in this module require your **EIR dataset** and a **vaccination schedule**, both in the standard immunABC format.
 
 ### EIR
 
-The `pahoabc::pahoabc.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person.
+The `immunABC::immunABC.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person.
 
-```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+```{r immunABC-EIR, message=FALSE}
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 - `ID`: Unique person identification number.
@@ -83,10 +83,10 @@ pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Regi
 
 ### Vaccination Schedule
 
-The `pahoabc::pahoabc.schedule` dataset defines the national immunization schedule, listing each vaccine dose and the target age window for its administration, in days.
+The `immunABC::immunABC.schedule` dataset defines the national immunization schedule, listing each vaccine dose and the target age window for its administration, in days.
 
-```{r pahoabc-schedule, message=FALSE}
-pahoabc.schedule %>% kable(caption = "Example Immunization Schedule")
+```{r immunABC-schedule, message=FALSE}
+immunABC.schedule %>% kable(caption = "Example Immunization Schedule")
 ```
 
 - `dose`: Combined variable representing vaccine type and dose number.
@@ -119,8 +119,8 @@ By default, `vaccines = NULL` pools all doses in `data.schedule` together. Here 
 
 ```{r ecc-rate, message=FALSE}
 rate_df <- ecc_rate(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1"
 )
 
@@ -131,8 +131,8 @@ Specifying `vaccines` disaggregates the results by `dose`, one row set per vacci
 
 ```{r ecc-rate-by-dose, message=FALSE}
 rate_by_dose_df <- ecc_rate(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   geo_level     = "ADM1",
   vaccines      = c("DTP1", "DTP2", "DTP3")
 )
@@ -142,8 +142,8 @@ rate_by_dose_df %>% head(10) %>% kable(digits = 2, caption = "Eligibility rates 
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
-- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
+- `data.schedule`: Vaccination schedule data frame in immunABC format.
 - `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
 - `vaccines`: Character vector of doses to include, disaggregating by `dose`. Default `NULL` pools all doses in `data.schedule`.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to. Default `NULL` uses all available cohorts.
@@ -176,8 +176,8 @@ Each bar represents a geographic unit and is divided into segments: `ELIGIBLE` (
 
 ```{r ecc-inconsistent, message=FALSE}
 inconsistent_df <- ecc_inconsistent(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = "DTP1"
 )
 
@@ -186,8 +186,8 @@ inconsistent_df %>% head(10) %>% kable(caption = "Sample of ineligible and missi
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
-- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
+- `data.schedule`: Vaccination schedule data frame in immunABC format.
 - `vaccines`: Character vector of doses to include. Default `NULL` includes all doses in `data.schedule`.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to. Default `NULL` uses all available cohorts.
 
@@ -199,8 +199,8 @@ The `days_outside_range` column is negative when a person was vaccinated before 
 
 ```{r ecc-inconsistent-plot, message=FALSE, fig.width=10, fig.height=5}
 ecc_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = "DTP1"
 )
 ```
@@ -209,16 +209,16 @@ When more than one vaccine is specified, the plot is automatically faceted by do
 
 ```{r ecc-inconsistent-plot-facet, message=FALSE, fig.width=12, fig.height=7}
 ecc_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = c("DTP1", "DTP2", "DTP3")
 )
 ```
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
-- `data.schedule`: Vaccination schedule data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
+- `data.schedule`: Vaccination schedule data frame in immunABC format.
 - `vaccines`: Character vector of doses to include, faceting the plot by `dose` when more than one is given. Default `NULL` pools all doses in `data.schedule` (no facet).
 - `day_groups`: List of `c(lower, upper)` numeric pairs defining the magnitude bins shared by both directions. The last bin is always extended to `Inf` and labelled `"X+"`. Default: 10-day bins from 0 to 100.
 
@@ -226,8 +226,8 @@ To use custom bin widths — for example, finer resolution for small differences
 
 ```{r ecc-inconsistent-plot-custom, message=FALSE, fig.width=10, fig.height=5}
 ecc_inconsistent_plot(
-  data.EIR      = pahoabc.EIR,
-  data.schedule = pahoabc.schedule,
+  data.EIR      = immunABC.EIR,
+  data.schedule = immunABC.schedule,
   vaccines      = "DTP1",
   day_groups    = list(c(0, 5), c(5, 15), c(15, 30), c(30, 60), c(60, 120))
 )

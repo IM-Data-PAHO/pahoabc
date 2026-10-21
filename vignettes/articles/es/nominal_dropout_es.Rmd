@@ -17,7 +17,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(pahoabc)
+library(immunABC)
 library(dplyr)
 library(ggplot2)
 library(knitr)
@@ -40,15 +40,15 @@ El análisis con datos agregados no permite confirmar que las personas que recib
 
 > **Nota**
 >
-> Todas las funciones utilizadas para los análisis de abandono nominal dentro de PAHOabc comienzan con el prefijo `nod_`.
+> Todas las funciones utilizadas para los análisis de abandono nominal dentro de immunABC comienzan con el prefijo `nod_`.
 
 # Glosario
 
 ## Divisiones político-geográficas
 
-A lo largo de esta viñeta se hace referencia a distintos niveles de división político-geográfica. Estos niveles son definidos por cada país o territorio y pueden recibir nombres diferentes. PAHOabc no depende de esos nombres locales; por eso, el usuario debe recodificar sus variables para ajustarlas a la estructura que utiliza el paquete.
+A lo largo de esta viñeta se hace referencia a distintos niveles de división político-geográfica. Estos niveles son definidos por cada país o territorio y pueden recibir nombres diferentes. immunABC no depende de esos nombres locales; por eso, el usuario debe recodificar sus variables para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
+En concreto, immunABC puede distinguir tres niveles administrativos que, listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1. ADM0: El país. Este es el nivel administrativo más alto.
 2. ADM1: La primera subdivisión geográfica del país. ADM0 contiene varias subdivisiones ADM1.
@@ -58,7 +58,7 @@ En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados
 
 Los conjuntos de datos de ejemplo utilizan una convención específica para nombrar las dosis de vacunas. Es posible que esta convención no coincida con la que usa su país o institución, pero esto no afecta el uso del paquete si los nombres se aplican de manera consistente.
 
-Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc son:
+Por ejemplo, los nombres de las vacunas utilizados en el paquete immunABC son:
 
 | Abreviatura  | Nombre completo                                                  |
 |--------------|------------------------------------------------------------------|
@@ -73,7 +73,7 @@ Por ejemplo, los nombres de las vacunas utilizados en el paquete PAHOabc son:
 
 ## Instalar el paquete
 
-El primer paso para ejecutar el análisis de tasa de abandono nominal es instalar el paquete PAHOabc, disponible en GitHub.
+El primer paso para ejecutar el análisis de tasa de abandono nominal es instalar el paquete immunABC, disponible en GitHub.
 
 ```{r, install_package, eval=FALSE}
 devtools::install_github("IM-Data-PAHO/pahoabc")
@@ -83,14 +83,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 Las funciones de este módulo requieren que proporcione su **RNVe** en un formato específico.
 
-Para facilitar la prueba de PAHOabc y la comprensión de la estructura requerida, a continuación se presenta el conjunto de datos de ejemplo que utiliza este módulo.
+Para facilitar la prueba de immunABC y la comprensión de la estructura requerida, a continuación se presenta el conjunto de datos de ejemplo que utiliza este módulo.
 
 ### RNVe
 
-El conjunto de datos `pahoabc::pahoabc.EIR` proporciona un ejemplo de Registro Nominal de Vacunación electrónico (RNVe). Es una tabla nominal simulada con eventos individuales de vacunación. Cada fila corresponde a una vacunación e incluye información sobre la residencia de la persona, el lugar donde fue vacunada (ocurrencia), su fecha de nacimiento y la dosis recibida.
+El conjunto de datos `immunABC::immunABC.EIR` proporciona un ejemplo de Registro Nominal de Vacunación electrónico (RNVe). Es una tabla nominal simulada con eventos individuales de vacunación. Cada fila corresponde a una vacunación e incluye información sobre la residencia de la persona, el lugar donde fue vacunada (ocurrencia), su fecha de nacimiento y la dosis recibida.
 
-```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+```{r immunABC-EIR, message=FALSE}
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 - `ID`: Número único de identificación de la persona.
@@ -104,7 +104,7 @@ pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacun
 
 ## Análisis de abandono nominal
 
-PAHOabc permite estimar la tasa de abandono nominal persona por persona. El análisis puede aplicarse a cualquier par de dosis, siempre que se indique una dosis inicial y una dosis final. Para interpretar correctamente los resultados, la dosis inicial debe preceder a la dosis final en el esquema de vacunación; por ejemplo, DTP1-DTP3 o DTP1-MCV1. Además, el usuario puede seleccionar el nivel de agregación de los resultados: nacional, ADM1 o ADM2.
+immunABC permite estimar la tasa de abandono nominal persona por persona. El análisis puede aplicarse a cualquier par de dosis, siempre que se indique una dosis inicial y una dosis final. Para interpretar correctamente los resultados, la dosis inicial debe preceder a la dosis final en el esquema de vacunación; por ejemplo, DTP1-DTP3 o DTP1-MCV1. Además, el usuario puede seleccionar el nivel de agregación de los resultados: nacional, ADM1 o ADM2.
 
 ### Flujo de trabajo esperado
 
@@ -120,7 +120,7 @@ A continuación se muestra un caso de uso sencillo de `nod_dropout()`, en el que
 
 ```{r, nom-dropout-analysis, warning=FALSE, message=FALSE}
 # Ejecuta la función de abandono nominal
-example_dropout <- nod_dropout(data.EIR = pahoabc.EIR,
+example_dropout <- nod_dropout(data.EIR = immunABC.EIR,
                                vaccine_init = "DTP1", #Vacuna inicial según su conjunto de datos
                                vaccine_end= "DTP3", #Vacuna final según su conjunto de datos
                                geo_level = "ADM1", #Puede ser ADM0, ADM1 o ADM2
@@ -230,4 +230,4 @@ Monitorear la continuidad en los esquemas de vacunación de múltiples dosis es 
 
 Esta viñeta presenta un flujo de trabajo reproducible: instalar el paquete, explorar el RNVe de ejemplo, calcular el abandono con `nod_dropout()` y visualizar los resultados con `nod_barplot()`. El ejemplo estima el abandono entre DTP1 y DTP3 a nivel ADM1 y muestra que todas las subdivisiones superan el umbral de 25 %; ADM1_1 presenta el peor resultado y ADM1_4 el mejor, en relación con una línea de referencia de 5 %.
 
-Al combinar datos nominales del RNVe con un flujo de análisis claro, PAHOabc ayuda a identificar pérdidas de seguimiento con desagregación geográfica y apoya a las autoridades de salud en la focalización de intervenciones.
+Al combinar datos nominales del RNVe con un flujo de análisis claro, immunABC ayuda a identificar pérdidas de seguimiento con desagregación geográfica y apoya a las autoridades de salud en la focalización de intervenciones.

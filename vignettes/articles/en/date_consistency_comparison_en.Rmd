@@ -16,7 +16,7 @@ output:
 <a href="../es/date_consistency_comparison_es.html" class="btn btn-outline-primary" role="button">🌐 Lea esto en español</a>
 
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
-library(pahoabc)
+library(immunABC)
 library(dplyr)
 library(knitr)
 ```
@@ -29,15 +29,15 @@ The date consistency comparison module allows users to systematically identify, 
 
 > **Note**
 >
-> All functions used for date consistency comparison analyses within PAHOabc begin with the `dcc_` prefix.
+> All functions used for date consistency comparison analyses within immunABC begin with the `dcc_` prefix.
 
 # Glossary
 
 ## Political Geographic Boundaries
 
-Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. PAHOabc is agnostic to these names and requires the user to recode their variable names to fit the PAHOabc structure.
+Throughout this vignette, we will make reference to different levels of political geographic boundaries. These levels are defined by the country/territory and can have different names from country to country. immunABC is agnostic to these names and requires the user to recode their variable names to fit the immunABC structure.
 
-Namely, PAHOabc can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
+Namely, immunABC can distinguish three administrative levels, which listed from top to bottom level are: ADM0, ADM1 and ADM2.
 
 1. ADM0: The country. This is the top-most administrative level.
 2. ADM1: The first geographic subdivision in the country. ADM0 contains several ADM1 subdivisions.
@@ -61,14 +61,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Load Data
 
-The functions in this module require your **EIR dataset** in the standard PAHOabc format.
+The functions in this module require your **EIR dataset** in the standard immunABC format.
 
 ### EIR
 
-The `pahoabc::pahoabc.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person.
+The `immunABC::immunABC.EIR` data frame provides a simulated, nominal-level table representing individual vaccination events from an Electronic Immunization Registry (EIR). Each row corresponds to a single vaccination act for a person.
 
-```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
+```{r immunABC-EIR, message=FALSE}
+immunABC.EIR %>% head() %>% kable(caption = "Example Electronic Immunization Registry")
 ```
 
 - `ID`: Unique person identification number.
@@ -102,7 +102,7 @@ Here we check whether `date_vax` (date_1, the later date) is consistent with `da
 
 ```{r dcc-rate, message=FALSE}
 rate_df <- dcc_rate(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   date_1   = "date_vax",
   date_2   = "date_birth",
   geo_level = "ADM1"
@@ -113,7 +113,7 @@ rate_df %>% kable(digits = 2, caption = "Date consistency rates by ADM1")
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
 - `date_1`: Name of the date variable being checked (the chronologically later date).
 - `date_2`: Name of the date variable checked against (the chronologically earlier date).
 - `geo_level`: `"ADM0"` (default), `"ADM1"`, or `"ADM2"`.
@@ -149,7 +149,7 @@ Each bar represents a geographic unit and is divided into three segments: `CONSI
 
 ```{r dcc-inconsistent, message=FALSE}
 inconsistent_df <- dcc_inconsistent(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   date_1   = "date_vax",
   date_2   = "date_birth"
 )
@@ -159,7 +159,7 @@ inconsistent_df %>% head(10) %>% kable(caption = "Sample of inconsistent and mis
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
 - `date_1`: Name of the date variable being checked.
 - `date_2`: Name of the date variable checked against.
 - `birth_cohorts`: Numeric vector of birth cohort year(s) to filter to. Default `NULL` uses all available cohorts.
@@ -172,7 +172,7 @@ The `diff` column reports `date_1 - date_2` in days. Negative values indicate `d
 
 ```{r dcc-inconsistent-plot, message=FALSE, fig.width=10, fig.height=5}
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Vaccination date",
@@ -182,7 +182,7 @@ dcc_inconsistent_plot(
 
 #### Parameters accepted
 
-- `data.EIR`: EIR data frame in PAHOabc format.
+- `data.EIR`: EIR data frame in immunABC format.
 - `date_1`: Name of the date variable being checked.
 - `date_2`: Name of the date variable checked against.
 - `date_1_name`: Display label for `date_1` in the plot subtitle. Default: `"date 1"`.
@@ -193,7 +193,7 @@ To use custom bin widths — for example, finer resolution for small differences
 
 ```{r dcc-inconsistent-plot-custom, message=FALSE, fig.width=10, fig.height=5}
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Vaccination date",

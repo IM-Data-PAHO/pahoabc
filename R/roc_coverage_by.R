@@ -3,9 +3,9 @@
 #' Calculates vaccine coverage by either residence or occurrence at a specified geographic level, for a set of years and vaccines.
 #'
 #' @param coverage_type A character string specifying the type of analysis: either "residence" or "occurrence".
-#' @param data.EIR A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.schedule A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
-#' @param data.pop A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples.
+#' @param data.EIR A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
+#' @param data.schedule A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.
+#' @param data.pop A data frame with population denominators. See \code{immunABC.pop.ADMX} for structure examples.
 #' @param geo_level The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". \code{data.pop} must contain the columns to match.
 #' @param years Numeric (optional). The years for which the coverage calculation is done. If \code{NULL} (default), all vaccination years in \code{data.EIR} are included.
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all vaccines in \code{data.EIR} are included.

@@ -2,8 +2,8 @@
 #'
 #' Generates a lollipop plot showing the distribution of untimely records, grouping them in bins of days outside of the timeliness window. The \code{UNTIMELY_LATE} records and the \code{UNTIMELY_EARLY} records are shown in separate rows.
 #'
-#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
+#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
+#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together.
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) to include in the plot. If \code{NULL} (default), all available cohorts are used. Note that specifying cohorts excludes records with no \code{date_birth}, so the \code{DATE_MISSING} category may be undercounted.
 #' @param day_groups List of numeric vectors of length 2. Each element is a \code{c(lower, upper)} pair defining each bin's lower and upper limit in days. Bins must start at 0 and be contiguous (each bin starts where the previous one ends). The last bin is extended to \code{Inf}, so its upper value is ignored (e.g. \code{c(90, 120)} and \code{c(90, 100)} both produce a "90+" bin). Default is 10-day bins from 0 to 100.

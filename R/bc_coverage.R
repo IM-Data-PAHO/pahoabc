@@ -2,12 +2,12 @@
 #' 
 #' This function calculates the coverage by birth cohort, further disagreggating by geographic level, using data from the electronic immunization registry (EIR).
 #'
-#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
+#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
+#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.
 #' @param geo_level Character. The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If not specified, the default is "ADM0". Note also that if \code{data.pop} is in use, it must contain the columns to match.
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all vaccines in \code{data.EIR} are included.
 #' @param birth_cohorts Numeric (optional). A vector specifying the birth cohort(s) for which coverage should be calculated. If \code{NULL} (default), coverage is calculated for all available cohorts.
-#' @param data.pop Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.
+#' @param data.pop Data frame (optional). A data frame with population denominators. See \code{immunABC.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.
 #' @param validate_doses Logical (optional). If \code{TRUE} (default), only count vaccinations that occurred within the valid age window defined by \code{age_schedule_low} and \code{age_schedule_high}. If \code{FALSE}, does not validate doses before counting them.
 #' 
 #' @return A data frame containing the coverage by birth cohort for the specified \code{geo_level}.

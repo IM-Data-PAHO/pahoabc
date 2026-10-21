@@ -7,7 +7,7 @@
 dcc_rate(data.EIR, date_1, date_2, geo_level = "ADM0", birth_cohorts = NULL)
 }
 \arguments{
-\item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.}
 
 \item{date_1}{Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking for consistency.}
 

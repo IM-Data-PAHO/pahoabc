@@ -16,7 +16,7 @@ output:
 <a href="../en/date_consistency_comparison_en.html" class="btn btn-outline-primary" role="button">🌐 Read this in English</a>
 
 ```{r setup, include = FALSE, message = FALSE, warning = FALSE}
-library(pahoabc)
+library(immunABC)
 library(dplyr)
 library(knitr)
 ```
@@ -29,15 +29,15 @@ El módulo de comparación de consistencia de fechas permite identificar, cuanti
 
 > **Nota**
 >
-> Todas las funciones utilizadas para los análisis de comparación de consistencia de fechas dentro de PAHOabc comienzan con el prefijo `dcc_`.
+> Todas las funciones utilizadas para los análisis de comparación de consistencia de fechas dentro de immunABC comienzan con el prefijo `dcc_`.
 
 # Glosario
 
 ## Divisiones político-geográficas
 
-A lo largo de esta viñeta se hace referencia a distintos niveles de división político-geográfica. Estos niveles son definidos por cada país o territorio y pueden recibir nombres diferentes. PAHOabc no depende de esos nombres locales; por eso, el usuario debe recodificar sus variables para ajustarlas a la estructura que utiliza el paquete.
+A lo largo de esta viñeta se hace referencia a distintos niveles de división político-geográfica. Estos niveles son definidos por cada país o territorio y pueden recibir nombres diferentes. immunABC no depende de esos nombres locales; por eso, el usuario debe recodificar sus variables para ajustarlas a la estructura que utiliza el paquete.
 
-En concreto, PAHOabc puede distinguir tres niveles administrativos que, listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
+En concreto, immunABC puede distinguir tres niveles administrativos que, listados del nivel superior al inferior, son: ADM0, ADM1 y ADM2.
 
 1. ADM0: El país. Este es el nivel administrativo más alto.
 2. ADM1: La primera subdivisión geográfica del país. ADM0 contiene varias subdivisiones ADM1.
@@ -61,14 +61,14 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Cargar los datos
 
-Las funciones de este módulo requieren que proporcione su **RNVe** en el formato estándar de PAHOabc.
+Las funciones de este módulo requieren que proporcione su **RNVe** en el formato estándar de immunABC.
 
 ### RNVe
 
-El conjunto de datos `pahoabc::pahoabc.EIR` proporciona una tabla nominal simulada con eventos individuales de vacunación de un Registro Nominal de Vacunación electrónico (RNVe). Cada fila corresponde a una vacunación de una persona.
+El conjunto de datos `immunABC::immunABC.EIR` proporciona una tabla nominal simulada con eventos individuales de vacunación de un Registro Nominal de Vacunación electrónico (RNVe). Cada fila corresponde a una vacunación de una persona.
 
-```{r pahoabc-EIR, message=FALSE}
-pahoabc.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
+```{r immunABC-EIR, message=FALSE}
+immunABC.EIR %>% head() %>% kable(caption = "Ejemplo de Registro Nominal de Vacunación electrónico")
 ```
 
 - `ID`: Número único de identificación de la persona.
@@ -102,7 +102,7 @@ En este ejemplo se verifica si `date_vax` (date_1, la fecha más reciente) es co
 
 ```{r dcc-rate, message=FALSE}
 rate_df <- dcc_rate(
-  data.EIR  = pahoabc.EIR,
+  data.EIR  = immunABC.EIR,
   date_1    = "date_vax",
   date_2    = "date_birth",
   geo_level = "ADM1"
@@ -113,7 +113,7 @@ rate_df %>% kable(digits = 2, caption = "Tasas de consistencia de fechas por ADM
 
 #### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
 - `date_1`: Nombre de la variable de fecha que se verifica (la fecha cronológicamente más reciente).
 - `date_2`: Nombre de la variable de fecha de referencia (la fecha cronológicamente más temprana).
 - `geo_level`: `"ADM0"` (predeterminado), `"ADM1"` o `"ADM2"`.
@@ -149,7 +149,7 @@ Cada barra representa una unidad geográfica y se divide en tres segmentos: `CON
 
 ```{r dcc-inconsistent, message=FALSE}
 inconsistent_df <- dcc_inconsistent(
-  data.EIR = pahoabc.EIR,
+  data.EIR = immunABC.EIR,
   date_1   = "date_vax",
   date_2   = "date_birth"
 )
@@ -159,7 +159,7 @@ inconsistent_df %>% head(10) %>% kable(caption = "Muestra de registros inconsist
 
 #### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
 - `date_1`: Nombre de la variable de fecha que se verifica.
 - `date_2`: Nombre de la variable de fecha de referencia.
 - `birth_cohorts`: Vector numérico con la(s) cohorte(s) de nacimiento a filtrar. El valor predeterminado `NULL` usa todas las cohortes disponibles.
@@ -172,7 +172,7 @@ La columna `diff` reporta `date_1 - date_2` en días. Los valores negativos indi
 
 ```{r dcc-inconsistent-plot, message=FALSE, fig.width=10, fig.height=5}
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Fecha de vacunación",
@@ -182,7 +182,7 @@ dcc_inconsistent_plot(
 
 #### Parámetros aceptados
 
-- `data.EIR`: Tabla del RNVe en formato PAHOabc.
+- `data.EIR`: Tabla del RNVe en formato immunABC.
 - `date_1`: Nombre de la variable de fecha que se verifica.
 - `date_2`: Nombre de la variable de fecha de referencia.
 - `date_1_name`: Etiqueta para `date_1` en el subtítulo del gráfico. Valor predeterminado: `"date 1"`.
@@ -193,7 +193,7 @@ Para usar intervalos personalizados — por ejemplo, mayor resolución para dife
 
 ```{r dcc-inconsistent-plot-custom, message=FALSE, fig.width=10, fig.height=5}
 dcc_inconsistent_plot(
-  data.EIR    = pahoabc.EIR,
+  data.EIR    = immunABC.EIR,
   date_1      = "date_vax",
   date_2      = "date_birth",
   date_1_name = "Fecha de vacunación",

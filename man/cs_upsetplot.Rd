@@ -14,9 +14,9 @@ cs_upsetplot(
 )
 }
 \arguments{
-\item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.}
 
-\item{data.schedule}{A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
+\item{data.schedule}{A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.}
 
 \item{birth_cohort}{Numeric. A single birth year for which to calculate and visualize coverage.}
 

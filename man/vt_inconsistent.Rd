@@ -7,9 +7,9 @@
 vt_inconsistent(data.EIR, data.schedule, vaccines = NULL, birth_cohorts = NULL)
 }
 \arguments{
-\item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.}
 
-\item{data.schedule}{Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
+\item{data.schedule}{Data frame. A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.}
 
 \item{vaccines}{Character (optional). A character vector specifying the doses to include in the analysis. If \code{NULL} (default), all doses in \code{data.schedule} are included.}
 

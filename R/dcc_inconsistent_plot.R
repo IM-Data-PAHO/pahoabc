@@ -3,7 +3,7 @@
 #' Generates a histogram of absolute day differences for inconsistent records,
 #' binned into customizable intervals with a final open-ended category.
 #'
-#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
+#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
 #' @param date_1 Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking for consistency.
 #' @param date_2 Character. The name of a DATE formatted variable present in the EIR. This variable is the date we are checking consistency against. Represents a date chronologically earlier than date_1.
 #' @param date_1_name Character. Label for the first date variable, used in the plot subtitle. Default is \code{"date 1"}.

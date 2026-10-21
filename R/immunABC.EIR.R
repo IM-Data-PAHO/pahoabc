@@ -1,4 +1,4 @@
-#' PAHOABC Electronic Immunization Registry (EIR)
+#' immunABC Electronic Immunization Registry (EIR)
 #'
 #' A dataset containing nominal vaccination events from an immunization information system.
 #' Each row represents a vaccination act for a specific person, along with relevant geographic and demographic information.
@@ -14,5 +14,5 @@
 #'   \item{ADM2_occurrence}{The second geographic administrative level where the vaccination occurred.}
 #'   \item{dose}{The dose received during the vaccination event.}
 #' }
-#' @source pahoabc
-"pahoabc.EIR"
+#' @source immunABC
+"immunABC.EIR"

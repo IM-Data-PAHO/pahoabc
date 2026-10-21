@@ -4,8 +4,8 @@
 #'
 #' Generates a diverging lollipop plot of ineligible records by the magnitude of days outside the scheduled age window, binned into customizable intervals with a final open-ended category. The same magnitude bins are shared by both directions on the x axis: records vaccinated too early (before \code{age_schedule_low}) are plotted below zero, and records vaccinated too late (after \code{age_schedule_high}) are plotted above zero.
 #'
-#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.
-#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.
+#' @param data.EIR Data frame. A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.
+#' @param data.schedule Data frame. A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.
 #' @param vaccines Character (optional). A character vector specifying the doses to include in the analysis, faceting the plot by \code{dose} when more than one is given. If \code{NULL} (default), all doses in \code{data.schedule} are included and pooled together (no facet).
 #' @param day_groups List of numeric vectors of length 2. Each element is a \code{c(lower, upper)} pair defining a magnitude bin, shared by both the "before" and "after" direction. The last bin is extended to \code{Inf}. Default is 10-day bins from 0 to 100.
 #'

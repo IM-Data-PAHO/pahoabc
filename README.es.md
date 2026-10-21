@@ -1,10 +1,10 @@
-# PAHOabc <img src="man/figures/logo.png" align="right" height="138" />
+# immunABC
 
 > 🌐 [**Read this in English**](https://im-data-paho.github.io/pahoabc/index.html)
 
-PAHOabc es un paquete de R orientado a análisis de inmunización más allá de la cobertura (*(A)nalysis (B)eyond (C)overage*).
+immunABC es un paquete de R orientado a análisis de inmunización más allá de la cobertura (*(A)nalysis (B)eyond (C)overage*).
 
-PAHOabc busca apoyar la misión de la Unidad de Inmunización Integral (CIM) de la Organización Panamericana de la Salud (OPS) con herramientas de análisis de datos para los programas de inmunización en las Américas. En concreto, facilita el cálculo de indicadores más allá de la cobertura básica, apoya la toma de decisiones basada en evidencia mediante la exploración y visualización de datos, y contribuye a fortalecer las capacidades de los programas de inmunización para aprovechar mejor sus datos.
+immunABC busca apoyar la misión de la Unidad de Inmunización Integral (CIM) de la Organización Panamericana de la Salud (OPS) con herramientas de análisis de datos para los programas de inmunización en las Américas. En concreto, facilita el cálculo de indicadores más allá de la cobertura básica, apoya la toma de decisiones basada en evidencia mediante la exploración y visualización de datos, y contribuye a fortalecer las capacidades de los programas de inmunización para aprovechar mejor sus datos.
 
 Para conocer más sobre el trabajo de la OPS en inmunización, visite el [sitio de Inmunización de la OPS](https://www.paho.org/es/temas/inmunizacion).
 
@@ -19,7 +19,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Uso
 
-Actualmente, PAHOabc contiene seis módulos principales. Siga los enlaces a continuación para explorar viñetas detalladas con ejemplos prácticos y orientación sobre cómo usar cada módulo:
+Actualmente, immunABC contiene seis módulos principales. Siga los enlaces a continuación para explorar viñetas detalladas con ejemplos prácticos y orientación sobre cómo usar cada módulo:
 
 1. [**Tasa de abandono nominal**](https://im-data-paho.github.io/pahoabc/articles/es/nominal_dropout_es.html)  
    Calcula las tasas de abandono entre cualquier par de dosis de vacunas utilizando datos nominales. Este módulo permite dar seguimiento a la continuidad de las personas dentro de un esquema de vacunación.

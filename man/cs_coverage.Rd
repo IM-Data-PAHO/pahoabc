@@ -14,9 +14,9 @@ cs_coverage(
 )
 }
 \arguments{
-\item{data.EIR}{A data frame containing individual vaccination records. See \code{pahoabc.EIR} for expected structure.}
+\item{data.EIR}{A data frame containing individual vaccination records. See \code{immunABC.EIR} for expected structure.}
 
-\item{data.schedule}{A data frame defining the vaccination schedule. See \code{pahoabc.schedule} for expected structure.}
+\item{data.schedule}{A data frame defining the vaccination schedule. See \code{immunABC.schedule} for expected structure.}
 
 \item{geo_level}{The geographic level to aggregate results by. Must be "ADM0", "ADM1" or "ADM2". If \code{data.pop} is in use, it must contain the columns to match.}
 
@@ -24,7 +24,7 @@ cs_coverage(
 
 \item{max_age}{Numeric (optional). The maximum age (in days) up to which vaccination completeness is assessed. If \code{NULL} (default), all doses in \code{data.schedule} are considered.}
 
-\item{data.pop}{Data frame (optional). A data frame with population denominators. See \code{pahoabc.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.}
+\item{data.pop}{Data frame (optional). A data frame with population denominators. See \code{immunABC.pop.ADMX} for structure examples. If \code{NULL} (default), the denominator is taken from \code{data.EIR} for each year and \code{geo_level}.}
 }
 \value{
 A data frame containing the complete schedule coverage by birth cohort for the specified \code{geo_level}.

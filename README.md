@@ -1,10 +1,10 @@
-# PAHOabc <img src="man/figures/logo.png" align="right" height="138" />
+# immunABC
 
 > 🌐 [**Lea esto en español**](https://im-data-paho.github.io/pahoabc/README.es.html)
 
-PAHOabc is an R package aimed at immunization (A)nalyses (B)eyond (C)overage. 
+immunABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage. 
 
-PAHOabc aims to support the Pan American Health Organization's (PAHO) Comprehensive Immunization Unit (CIM) mission by providing advanced data analysis tools for immunization programs in the Americas. Specifically, it facilitates the calculation of innovative indicators beyond basic coverage, supports evidence-based decision-making through in-depth data exploration and visualization, and contributes to strengthening data capabilities within immunization programs by empowering human resources to effectively leverage their data.
+immunABC aims to support the Pan American Health Organization's (PAHO) Comprehensive Immunization Unit (CIM) mission by providing advanced data analysis tools for immunization programs in the Americas. Specifically, it facilitates the calculation of innovative indicators beyond basic coverage, supports evidence-based decision-making through in-depth data exploration and visualization, and contributes to strengthening data capabilities within immunization programs by empowering human resources to effectively leverage their data.
 
 To learn more about PAHO's work on immunization, visit the [PAHO Immunization site](https://www.paho.org/en/topics/immunization).
 
@@ -19,7 +19,7 @@ devtools::install_github("IM-Data-PAHO/pahoabc")
 
 ## Usage
 
-Currently, PAHOabc contains six main modules. Follow the links below to explore detailed vignettes with practical examples and guidance on how to use each module:
+Currently, immunABC contains six main modules. Follow the links below to explore detailed vignettes with practical examples and guidance on how to use each module:
 
 1. [**Nominal Dropout Rate**](https://im-data-paho.github.io/pahoabc/articles/en/nominal_dropout_en.html)  
    Calculates dropout rates between any two vaccine doses using nominal data. This module ensures accurate follow-up tracking across a vaccination schedule.
