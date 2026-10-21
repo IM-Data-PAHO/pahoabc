@@ -68,7 +68,7 @@ Por ejemplo, los nombres de las vacunas utilizados en el paquete immunABC son:
 El primer paso para ejecutar los análisis de residencia y lugar de vacunación es instalar el paquete immunABC, disponible en GitHub.
 
 ```{r, install_package, eval=FALSE}
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ## Cargar los datos

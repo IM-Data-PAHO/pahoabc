@@ -1,7 +1,7 @@
 Package: immunABC
 Type: Package
 Title: immunABC is an R package aimed at immunization (A)nalyses (B)eyond (C)overage
-Version: 0.11.1
+Version: 0.11.2
 Authors@R: c(
     person("Ignacio", "Castro", email = "castroign@paho.org", role = "ctb"),
     person("Dan", "Alvarez", email = "alvarezdan@paho.org", role = "ctb"),
@@ -23,8 +23,8 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-URL: https://im-data-paho.github.io/pahoabc/, https://github.com/IM-Data-PAHO/pahoabc
-BugReports: https://github.com/IM-Data-PAHO/pahoabc/issues
+URL: https://im-data-paho.github.io/immunabc/, https://github.com/IM-Data-PAHO/immunabc
+BugReports: https://github.com/IM-Data-PAHO/immunabc/issues
 Imports: 
     ComplexUpset,
     dplyr,

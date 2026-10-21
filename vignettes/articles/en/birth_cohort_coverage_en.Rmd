@@ -74,7 +74,7 @@ For example, the vaccine names used in the immunABC package are:
 The first step to run the birth cohort coverage analyses is to install the immunABC package available on GitHub.
 
 ```{r, install_package, eval=FALSE}
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ## Load Data

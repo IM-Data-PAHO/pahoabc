@@ -1,4 +1,4 @@
-url: https://im-data-paho.github.io/pahoabc/
+url: https://im-data-paho.github.io/immunabc/
 
 template:
   bootstrap: 5
@@ -33,7 +33,7 @@ navbar:
 
 authors:
    Pan American Health Organization:
-     html: "<img src='https://github.com/IM-Data-PAHO/pahoabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true' height='100' alt='PAHO'/>"
+     html: "<img src='https://github.com/IM-Data-PAHO/immunabc/blob/main/man/figures/pahobrand-blue-stacked-2024-en.png?raw=true' height='100' alt='PAHO'/>"
      href: "https://www.paho.org/en"
 
 reference:

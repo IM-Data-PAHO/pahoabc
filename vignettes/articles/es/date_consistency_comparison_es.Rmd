@@ -56,7 +56,7 @@ En concreto, immunABC puede distinguir tres niveles administrativos que, listado
 ## Instalar el paquete
 
 ```{r install_package, eval=FALSE}
-devtools::install_github("IM-Data-PAHO/pahoabc")
+devtools::install_github("IM-Data-PAHO/immunabc")
 ```
 
 ## Cargar los datos
